@@ -19,7 +19,11 @@
 <h2 align="left">Deatiles</h2>
 <p align="center">
 <img src="https://komarev.com/ghpvc/?username=puppala-koushik&label=Profile%20views&color=0e75b6&style=flat" alt="puppala-koushik" />
-<a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website-up-down-green-red/http/shields.io.svg" /></a> 
+<a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website-up-down-green-red/http/shields.io.svg" /></a>
+<a href="https://github.com/puppala-koushik/stargazers"><img src="https://img.shields.io/github/stars/puppala-koushik" alt="Stars Badge"/></a>
+<a href="https://github.com/puppala-koushik/puppala-koushik/blob/master/LICENSE"><img src="https://img.shields.io/github/license/puppala-koushik/puppala-koushik?color=2b9348" alt="License Badge"/></a>
+
+
 </p>
 
 <h2 align="left">Connect with me:</h2>
