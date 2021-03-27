@@ -19,11 +19,7 @@
 <h2 align="left">Deatiles</h2>
 <p align="center">
 <img src="https://komarev.com/ghpvc/?username=puppala-koushik&label=Profile%20views&color=0e75b6&style=flat" alt="puppala-koushik" />
-<a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website-up-down-green-red/http/shields.io.svg" /></a>
-<a href="https://github.com/puppala-koushik/stargazers"><img src="https://img.shields.io/github/stars/puppala-koushik" alt="Stars Badge"/></a>
-<a href="https://github.com/puppala-koushik/puppala-koushik/blob/master/LICENSE"><img src="https://img.shields.io/github/license/puppala-koushik/puppala-koushik?color=2b9348" alt="License Badge"/></a>
-
-
+<a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website-up-down-green-red/http/shields.io.svg" /></a> 
 </p>
 
 <h2 align="left">Connect with me:</h2>
@@ -33,23 +29,22 @@
 <a href="https://fb.com/puppalakoushik" target="blank"><img align="center" src="https://img.icons8.com/nolan/64/facebook-circled.png" alt="puppalakoushik" width="40" /></a>
 <a href="https://instagram.com/koushikpuppala" target="blank"><img align="center" src="https://img.icons8.com/nolan/64/instagram-new.png" alt="koushikpuppala" width="40" /></a>
 <a href="https://discord.gg/MsJ99j5Bcv" target="blank"><img align="center" src="https://img.icons8.com/nolan/64/discord-new-logo.png" alt="MsJ99j5Bcv" width="40" /></a>
-<a href="contact@koushikpuppala.live"><img align="center" src="https://img.icons8.com/nolan/64/secured-letter.png" alt="koushikpuppala" width="40" /></a>
+<a href="mailto:contact@koushikpuppala.live"><img align="center" src="https://img.icons8.com/nolan/64/secured-letter.png" alt="koushikpuppala" width="40" /></a>
 </p>
 
 <h2 align="left">Languages and Tools:</h2>
 <p align="center">
-<img src="https://img.icons8.com/nolan/64/visual-studio-code-2019.png" alt="vscode" width="40" height="40"/>
-<img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" alt="c" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="cplusplus" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/>
-<img src="https://www.vectorlogo.zone/logos/jekyllrb/jekyllrb-icon.svg" alt="jekyll" width="40" height="40"/>
-<img src="https://img.icons8.com/windows/64/26e07f/nodejs.png" alt="nodejs" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain-wordmark.svg" alt="bootstrap" width="40" height="40"/>
+<code><img src="https://img.icons8.com/nolan/64/visual-studio-code-2019.png" alt="vscode" width="40" height="40"/></code>
+<code><img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/></code>
+<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" alt="c" width="40" height="40"/></code>
+<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="cplusplus" width="40" height="40"/></code>
+<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/></code>
+<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/></code>
+<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/></code>
+<code><img src="https://www.vectorlogo.zone/logos/jekyllrb/jekyllrb-icon.svg" alt="jekyll" width="40" height="40"/></code>
+<code><img src="https://img.icons8.com/windows/64/26e07f/nodejs.png" alt="nodejs" width="40" height="40"/></code>
+<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/></code>
+<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain-wordmark.svg" alt="bootstrap" width="40" height="40"/></code>
 </p>
 
 <details>
