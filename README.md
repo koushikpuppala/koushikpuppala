@@ -51,15 +51,13 @@
 <details>
 <summary>GitHub Statistics
 </summary>
+<br /><br />
 
 <p align="center">
-<a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=puppala-koushik" alt="puppala-koushik" /></a> 
+<img src="https://github-profile-trophy.vercel.app/?username=puppala-koushik" alt="puppala-koushik" /> <br /><br />
+<img src="https://github-readme-stats.vercel.app/api/top-langs?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /> <br /><br />
+<img src="https://github-readme-stats.vercel.app/api?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /> <br /><br />
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=puppala-koushik&theme=blue-green" alt="puppala-koushik" />
 </p>
-
-<p><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /></p>
-
-<p>&nbsp;<img align="center" src="https://github-readme-stats.vercel.app/api?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /></p>
-
-<p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=puppala-koushik&theme=blue-green" alt="puppala-koushik" /></p>
 
 </details>
