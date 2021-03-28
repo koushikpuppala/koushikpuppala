@@ -58,9 +58,9 @@
 </summary>
 <br />
 <p align="center">
-<img src="https://github-profile-trophy.vercel.app/?username=puppala-koushik&row=1&theme=juicyfresh" alt="puppala-koushik" />
-<img src="https://github-readme-stats.vercel.app/api/top-langs?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" />
-<img src="https://github-readme-stats.vercel.app/api?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" />
+<img src="https://github-profile-trophy.vercel.app/?username=puppala-koushik&row=1&theme=juicyfresh" alt="puppala-koushik" /><br />
+<img src="https://github-readme-stats.vercel.app/api/top-langs?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /><br />
+<img src="https://github-readme-stats.vercel.app/api?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /><br />
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=puppala-koushik&theme=blue-green" alt="puppala-koushik" />
 </p>
 
