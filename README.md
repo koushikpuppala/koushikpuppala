@@ -18,8 +18,12 @@
 
 <h2 align="left">Deatiles</h2>
 <p align="center">
+<a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website-up-down-green-red/http/shields.io.svg?style=social" /></a> &nbsp;
+<a href="https://github.com/puppala-koushik?tab=followers"><img alt="GitHub followers" src="https://img.shields.io/github/followers/puppala-koushik.svg?style=social&label=Follow" /></a> &nbsp;
+<img alt="MIT license" src="https://img.shields.io/badge/License-MIT-blue.svg?style=social" />
+<br />
 <img src="https://komarev.com/ghpvc/?username=puppala-koushik&label=Profile%20views&color=0e75b6&style=flat" alt="puppala-koushik" />
-<a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website-up-down-green-red/http/shields.io.svg" /></a> 
+<img src="https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github" alt="Open Source? Yes!">
 </p>
 
 <h2 align="left">Connect with me:</h2>
@@ -50,12 +54,11 @@
 <details>
 <summary>GitHub Statistics
 </summary>
-<br /><br />
-
+<br />
 <p align="center">
-<img src="https://github-profile-trophy.vercel.app/?username=puppala-koushik" alt="puppala-koushik" /> <br /><br />
-<img src="https://github-readme-stats.vercel.app/api/top-langs?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /> <br /><br />
-<img src="https://github-readme-stats.vercel.app/api?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /> <br /><br />
+<img src="https://github-profile-trophy.vercel.app/?username=puppala-koushik&row=1&theme=juicyfresh" alt="puppala-koushik" />
+<img src="https://github-readme-stats.vercel.app/api/top-langs?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" />
+<img src="https://github-readme-stats.vercel.app/api?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" />
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=puppala-koushik&theme=blue-green" alt="puppala-koushik" />
 </p>
 
