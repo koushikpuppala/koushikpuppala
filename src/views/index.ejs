@@ -4,11 +4,33 @@
 			<!-- ======= Hero Section ======= -->
 			<section id="hero">
 				<div class="hero-container">
+					<% if((typeof alert !='undefined' ) || (success) ) { %>
+					<div style="margin: 20px;">
+						<% if(typeof alert !='undefined' ) { %>
+							<% alert.forEach(function(error) { %>
+								<div class="alert alert-warning alert-dismissible fade show" role="alert">
+									<i class="fas fa-exclamation-triangle"></i>
+									<%= error.msg %>
+										<button type="button" class="btn-close" data-bs-dismiss="alert"
+											aria-label="Close"></button>
+								</div>
+								<% }) %>
+									<% } %>
+										<% if(success) { %>
+											<div class="alert alert-success alert-dismissible fade show" role="alert">
+												<i class="far fa-check-circle"></i> Your form has been successfully
+												submitted..!
+												<button type="button" class="btn-close" data-bs-dismiss="alert"
+													aria-label="Close"></button>
+											</div>
+											<% } %>
+					</div>
+					<% } %>
 					<h1><strong>Koushik Puppala</strong></h1>
 					<h3 style="text-align: center; font-style: italic; font-size: 50px; color: whitesmoke;"
 						class="intro-subtitle">A
-						<span class="text-slider-items" style="display: none;">Student,Learner,Coder,Web Developer,Web
-							Designer</span><span class="text-slider"></span>
+						<span class="text-slider-items" style="display: none;">Student,Learner,Programmer,Web
+							Developer,Web Designer,Freelancer</span><span class="text-slider"></span>
 					</h3>
 
 					<a href="#about" class="btn-scroll scrollto" title="Scroll Down"><i
@@ -18,7 +40,6 @@
 			<!-- End Hero -->
 
 			<main id="main">
-
 				<!-- ======= About Me Section ======= -->
 				<section id="about" class="about">
 					<div class="container">
@@ -27,16 +48,14 @@
 							<span>About Me</span>
 							<h2>About Me</h2>
 							<h3 style="text-align: center; font-style: italic;">Hello Friends, I am
-								<strong>Koushik puppala</strong> student of Bachelor of Technology in Computer Science
-								and
-								Engineering at Indian Institute of Information Technology Raichur, which is control by
-								the
-								Indian Institute of Technology Hyderabad.
+								<strong>Koushik Puppala</strong> student of Bachelor of Technology in Computer Science
+								and Engineering at Indian Institute of Information Technology Raichur, which is control
+								by the Indian Institute of Technology Hyderabad.
 							</h3>
 							<h3 style="text-align: center; font-style: italic;">My Home town is Rajahmundry, Andhra
-								Pradesh,
-								and I belong to a middle-class family. I have learned so many things from my past and
-								surrounding people, which motivates me to work hard to make a better future.</h3>
+								Pradesh, and I belong to a middle-class family. I have learned so many things from my
+								past and surrounding people, which motivates me to work hard to make a better future.
+							</h3>
 						</div>
 
 						<div class="row">
@@ -62,136 +81,46 @@
 													Institute of Information Technology, Raichur</li>
 											</ul>
 										</div>
+										<div class="col-lg-12">
+											<div class="progress" style="margin-top: 25px;">
+												<div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+													role="progressbar" aria-valuenow="100" aria-valuemin="0"
+													aria-valuemax="100" style="width: 100%"><strong>C - 100%</strong>
+												</div>
+											</div>
+											<div class="progress" style="margin-top: 25px;">
+												<div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+													role="progressbar" aria-valuenow="85" aria-valuemin="0"
+													aria-valuemax="100" style="width: 85%"><strong>C++ - 85%</strong>
+												</div>
+											</div>
+											<div class="progress" style="margin-top: 25px;">
+												<div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+													role="progressbar" aria-valuenow="80" aria-valuemin="0"
+													aria-valuemax="100" style="width: 80%"><strong>HTML - 80%</strong>
+												</div>
+											</div>
+											<div class="progress" style="margin-top: 25px;">
+												<div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+													role="progressbar" aria-valuenow="80" aria-valuemin="0"
+													aria-valuemax="100" style="width: 80%"><strong>JavaScript -
+														80%</strong></div>
+											</div>
+											<div class="progress" style="margin-top: 25px;">
+												<div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary"
+													role="progressbar" aria-valuenow="80" aria-valuemin="0"
+													aria-valuemax="100" style="width: 75%"><strong>CSS - 75%</strong>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<!-- End .content-->
-
-								<div class="skills-content pl-lg-4">
-									<div class="progress">
-										<span class="skill">C <i class="val">100%</i></span>
-										<div class="progress-bar-wrap">
-											<div class="progress-bar" role="progressbar" aria-valuenow="100"
-												aria-valuemin="0" aria-valuemax="100"></div>
-										</div>
-									</div>
-
-									<div class="progress">
-										<span class="skill">C++ <i class="val">85%</i></span>
-										<div class="progress-bar-wrap">
-											<div class="progress-bar" role="progressbar" aria-valuenow="85"
-												aria-valuemin="0" aria-valuemax="100"></div>
-										</div>
-									</div>
-
-									<div class="progress">
-										<span class="skill">HTML <i class="val">70%</i></span>
-										<div class="progress-bar-wrap">
-											<div class="progress-bar" role="progressbar" aria-valuenow="70"
-												aria-valuemin="0" aria-valuemax="100"></div>
-										</div>
-									</div>
-
-									<div class="progress">
-										<span class="skill">CSS <i class="val">60%</i></span>
-										<div class="progress-bar-wrap">
-											<div class="progress-bar" role="progressbar" aria-valuenow="60"
-												aria-valuemin="0" aria-valuemax="100"></div>
-										</div>
-									</div>
-								</div>
-
 							</div>
 						</div>
 
 					</div>
 				</section>
 				<!-- End About Me Section -->
-
-				<!-- ======= Contact Me Section ======= -->
-				<section id="contact" class="contact">
-					<div class="container">
-
-						<div class="section-title">
-							<span>Contact Me</span>
-							<h2>Contact Me</h2>
-						</div>
-
-						<div class="row">
-
-							<div class="col-lg-6">
-
-								<div class="row">
-									<div class="col-md-12">
-										<div class="info-box">
-											<i class="bx bx-share-alt"></i>
-											<h3>Social Profiles</h3>
-											<div class="social-links">
-												<a href="https://twitter.com/puppala_koushik" class="twitter"><i
-														class="icofont-twitter"></i></a>
-												<a href="https://www.facebook.com/puppalakoushik" class="facebook"><i
-														class="icofont-facebook"></i></a>
-												<a href="https://www.instagram.com/koushikpuppala" class="instagram"><i
-														class="icofont-instagram"></i></a>
-												<a href="https://www.linkedin.com/in/puppalakoushik" class="linkedin"><i
-														class="icofont-linkedin"></i></a>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="info-box mt-4">
-											<i class="bx bx-envelope"></i>
-											<h3>Email Me</h3>
-											<p>contact@koushikpuppala.live</p>
-										</div>
-									</div>
-								</div>
-
-							</div>
-
-							<div class="col-lg-6">
-								<form action="https://formspree.io/f/mnqownvq" method="post" role="form"
-									class="email-form">
-									<div class="row">
-										<div class="col-md-6 form-group">
-											<input type="text" name="name" class="form-control" id="name"
-												placeholder="Your Name" data-rule="minlen:4"
-												data-msg="Please enter at least 4 chars" />
-											<div class="validate"></div>
-										</div>
-										<div class="col-md-6 form-group mt-3 mt-md-0">
-											<input type="email" class="form-control" name="email" id="email"
-												placeholder="Your Email" data-rule="email"
-												data-msg="Please enter a valid email" />
-											<div class="validate"></div>
-										</div>
-									</div>
-									<div class="form-group mt-3">
-										<input type="text" class="form-control" name="subject" id="subject"
-											placeholder="Subject" data-rule="minlen:4"
-											data-msg="Please enter at least 8 chars of subject" />
-										<div class="validate"></div>
-									</div>
-									<div class="form-group mt-3">
-										<textarea class="form-control" name="message" rows="6" data-rule="required"
-											data-msg="Please write something for us" placeholder="Message"></textarea>
-										<div class="validate"></div>
-									</div>
-									<div class="mb-3">
-										<div class="loading">Loading</div>
-										<div class="error-message"></div>
-										<div class="sent-message">Your message has been sent. Thank you!</div>
-									</div>
-									<div class="text-center"><button type="submit">Send Message</button></div>
-								</form>
-							</div>
-
-						</div>
-
-					</div>
-				</section>
-				<!-- End Contact Me Section -->
-
-			</main>
-			<!-- End #main -->
-
-			<%- include('connections/footer') %>
+				<%- include('connections/contact') %>
+					<%- include('connections/footer') %>

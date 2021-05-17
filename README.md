@@ -8,7 +8,7 @@
 
 - 👯 I’m collaborating on [Indian Institute of Information Technology, Raichur](https://iiitr.ac.in/)
 
-- 🤝 I’m looking for help with [Avengers Assemble Server Website](https://github.com/Discord-Avengers-Assemble-Server/Avengers-Assemble)
+- 🤝 I’m looking for help with [Avengers Assemble Server Website](https://github.com/puppala-koushik/Avengers)
 
 - 🌱 I’m currently learning **JavaScript, EJS, Game Development, Data Bases**
 
