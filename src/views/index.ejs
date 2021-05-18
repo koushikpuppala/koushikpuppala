@@ -5,36 +5,38 @@
 			<section id="hero">
 				<div class="hero-container">
 					<% if((typeof alert !='undefined' ) || (success) ) { %>
-					<div style="margin: 20px;">
-						<% if(typeof alert !='undefined' ) { %>
-							<% alert.forEach(function(error) { %>
-								<div class="alert alert-warning alert-dismissible fade show" role="alert">
-									<i class="fas fa-exclamation-triangle"></i>
-									<%= error.msg %>
-										<button type="button" class="btn-close" data-bs-dismiss="alert"
-											aria-label="Close"></button>
-								</div>
-								<% }) %>
-									<% } %>
-										<% if(success) { %>
-											<div class="alert alert-success alert-dismissible fade show" role="alert">
-												<i class="far fa-check-circle"></i> Your form has been successfully
-												submitted..!
-												<button type="button" class="btn-close" data-bs-dismiss="alert"
-													aria-label="Close"></button>
-											</div>
-											<% } %>
-					</div>
-					<% } %>
-					<h1><strong>Koushik Puppala</strong></h1>
-					<h3 style="text-align: center; font-style: italic; font-size: 50px; color: whitesmoke;"
-						class="intro-subtitle">A
-						<span class="text-slider-items" style="display: none;">Student,Learner,Programmer,Web
-							Developer,Web Designer,Freelancer</span><span class="text-slider"></span>
-					</h3>
+						<div style="margin: 20px;">
+							<% if(typeof alert !='undefined' ) { %>
+								<% alert.forEach(function(error) { %>
+									<div class="alert alert-warning alert-dismissible fade show" role="alert">
+										<i class="fas fa-exclamation-triangle"></i>
+										<%= error.msg %>
+											<button type="button" class="btn-close" data-bs-dismiss="alert"
+												aria-label="Close"></button>
+									</div>
+									<% }) %>
+										<% } %>
+											<% if(success) { %>
+												<div class="alert alert-success alert-dismissible fade show"
+													role="alert">
+													<i class="far fa-check-circle"></i> Your form has been successfully
+													submitted..!
+													<button type="button" class="btn-close" data-bs-dismiss="alert"
+														aria-label="Close"></button>
+												</div>
+												<% } %>
+						</div>
+						<% } %>
+							<h1><strong>Koushik Puppala</strong></h1>
+							<h3 style="text-align: center; font-style: italic; font-size: 50px; color: whitesmoke;"
+								class="intro-subtitle">A
+								<span class="text-slider-items" style="display: none;">
+									Student,Learner,Programmer,Web Developer,Web Designer,Freelancer
+								</span><span class="text-slider"></span>
+							</h3>
 
-					<a href="#about" class="btn-scroll scrollto" title="Scroll Down"><i
-							class="bx bx-chevron-down"></i></a>
+							<a href="#about" class="btn-scroll scrollto" title="Scroll Down"><i
+									class="bx bx-chevron-down"></i></a>
 				</div>
 			</section>
 			<!-- End Hero -->
