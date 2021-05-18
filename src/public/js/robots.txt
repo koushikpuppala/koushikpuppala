@@ -1,0 +1,10 @@
+# Group 1
+User-agent: Googlebot
+Disallow: /nogooglebot/
+
+# Group 2
+User-agent: *
+Allow: /
+
+Sitemap: https://koushikpuppala.live/sitemap.xml
+Sitemap: https://www.koushikpuppala.live/sitemap.xml

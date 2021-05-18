@@ -8,6 +8,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import main from './routers/main.js';
 import error from './routers/404.js';
+import robots from './routers/robots.js';
+import arc from './routers/arc-sw.js';
+import sitemap from './routers/sitemap.js';
 import database from './database/index.js';
 import Store from 'connect-mongo';
 import session from 'express-session';
@@ -52,6 +55,9 @@ database();
 
 /* Setting up the Pages */
 app.use('/', main);
+app.use('/sitemap.xml', sitemap);
+app.use('/robots.txt', robots);
+app.use('/arc-sw.js', arc);
 app.get('*', error);
 
 /* Running the server */
