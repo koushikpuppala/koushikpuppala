@@ -55,10 +55,10 @@ database();
 app.use('/', main);
 app.use('/sitemap.xml', sitemap);
 app.use('/arc-sw.js', (req, res) => {
-	res.sendFile(path.join(__dirname, '/arc-sw.js'));
+	res.sendFile(path.join(__dirname, '/../arc-sw.js'));
 });
 app.get('/robots.txt', (req, res) => {
-	res.sendFile(path.join(__dirname + '/robots.txt'));
+	res.sendFile(path.join(__dirname + '/../robots.txt'));
 });
 app.get('*', error);
 
