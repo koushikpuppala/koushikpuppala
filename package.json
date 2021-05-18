@@ -4,13 +4,13 @@
   "description": "This is my own website with my own domain",
   "main": "src/main.js",
   "type": "module",
-	"directories": {
-		"doc": "docs"
-	},
-	"engines": {
-		"node": "14.x",
-		"npm": "6.x"
-	},
+  "directories": {
+    "doc": "docs"
+  },
+  "engines": {
+    "node": "14.x",
+    "npm": "6.x"
+  },
   "scripts": {
     "start": "node src/main.js",
     "dev": "nodemon src/main.js",
@@ -38,6 +38,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
+    "express-robots-txt": "^0.5.0",
     "express-session": "^1.17.1",
     "express-validator": "^6.11.1",
     "mongoose": "^5.12.9",
