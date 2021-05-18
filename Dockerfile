@@ -16,4 +16,8 @@ RUN npm ci --only=production
 COPY . .
 
 EXPOSE 8080
-CMD [ "node", "src/main.js" ]
+RUN npm install pm2 -g
+ENV PM2_PUBLIC_KEY 7p2sdvta4dfs83u
+ENV PM2_SECRET_KEY eh1fk6q4z0e780s
+
+CMD ["pm2-runtime", "src/main.js"]

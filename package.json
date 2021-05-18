@@ -1,12 +1,13 @@
 {
   "name": "puppala-koushik",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This is my own website with my own domain",
   "main": "src/main.js",
   "type": "module",
   "scripts": {
     "start": "node src/main.js",
     "dev": "nodemon src/main.js",
+    "build": "pm2 link eh1fk6q4z0e780s 7p2sdvta4dfs83u && pm2 install pm2-server-monit && pm2 start src/main.js --watch --name=puppala-koushik ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -33,6 +34,7 @@
     "express-session": "^1.17.1",
     "express-validator": "^6.11.1",
     "mongoose": "^5.12.9",
+    "pm2": "^4.5.6",
     "sitemap": "^7.0.0"
   },
   "devDependencies": {
