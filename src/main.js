@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import main from './routers/main.js';
+import error from './routers/404.js';
 import database from './database/index.js';
 import Store from 'connect-mongo';
 import session from 'express-session';
@@ -51,6 +52,7 @@ database();
 
 /* Setting up the Pages */
 app.use('/', main);
+app.get('*', error);
 
 /* Running the server */
 app.listen(port, () => {
