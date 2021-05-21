@@ -7,6 +7,23 @@ body {
   color: #444444;
 }
 
+.submit-text {
+  background: rgb(53, 47, 47);
+  height: 595px;
+  color: white;
+  text-align: center;
+  padding: 50px;
+}
+
+.alert-submit {
+  margin-left: 20%;
+  width: 60%
+}
+
+.submit-header {
+  margin: 10px;
+}
+
 a {
   color: lightgreen;
   text-decoration: none;
@@ -556,7 +573,7 @@ section {
 }
 
 .about .image {
-  background: url("../img/RedK.webp") center center no-repeat;
+  background: url("../img/koushik.webp") center center no-repeat;
   background-size: cover;
   height: 450px;
 }

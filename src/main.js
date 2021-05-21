@@ -4,6 +4,8 @@ const express = require('express')
 const RateLimit = require('express-rate-limit')
 const bodyParser = require('body-parser')
 const path = require('path')
+const session = require('express-session')
+const Store = require('connect-mongo')
 const main = require('./routers/main.js')
 const error = require('./routers/404.js')
 const sitemap = require('./routers/sitemap.js')
@@ -31,6 +33,17 @@ app.use(
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(
+  session({
+    secret: process.env.SECRET,
+    saveUninitialized: false,
+    resave: false,
+    name: 'Koushik Puppala',
+    store: Store.create({
+      mongoUrl: process.env.MONGODB_URL
+    })
+  })
+)
 database()
 
 /* Setting up the Pages */
