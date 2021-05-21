@@ -8,11 +8,10 @@ body {
 }
 
 .submit-text {
-  background: rgb(53, 47, 47);
-  height: 595px;
+  background: #444444;
   color: white;
   text-align: center;
-  padding: 50px;
+  padding: 3.5%;
 }
 
 .alert-submit {
