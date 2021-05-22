@@ -4,9 +4,10 @@
   "description": "Puppala Koushik is a Student at Indian Institute of Information Technology, Raichur. He is pursuing B.Tech in C.S.E Department. I am making few Websites, helping in IIITR website and making few app",
   "icons": [
     {
-      "src": "../img/koushik.webp",
-      "sizes": "1200x1200",
-      "type": "image/webp"
+      "src": "../img/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
