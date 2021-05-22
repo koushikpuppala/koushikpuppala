@@ -3,6 +3,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable camelcase */
+
+window.addEventListener('load', () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('services.js')
+  }
+})
+
 !(function ($) {
   'use strict'
 

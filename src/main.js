@@ -49,6 +49,9 @@ database()
 /* Setting up the Pages */
 app.use('/', main)
 app.use('/sitemap.xml', sitemap)
+app.get('/offline', (req, res) => {
+  res.render('offline')
+})
 app.use('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, 'robots.txt'))
 })
