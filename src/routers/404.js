@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 router.get('*', (req, res) => {
-  res.render('404', {
+  res.status(404).render('404', {
     TITLE: 'Puppala Koushik | 404',
     DESCRIPTION: '',
     KEYWORDS: '',

@@ -19,7 +19,7 @@ const port = process.env.PORT
 const limiter = new RateLimit({
   // 1  Hour
   windowMs: 60 * 60 * 1000,
-  max: 1000
+  max: 10000
 })
 
 /* Setting up the Environment */
