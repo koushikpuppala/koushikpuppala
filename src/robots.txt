@@ -6,5 +6,8 @@ Disallow: /nogooglebot/
 User-agent: *
 Allow: /
 
+User-agent: Twitterbot
+Disallow: *
+
 Sitemap: https://koushikpuppala.live/sitemap.xml
 Sitemap: https://www.koushikpuppala.live/sitemap.xml
