@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 
 	<head>
-		<meta charset="utf-8" />
-		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="theme-color" content="#764ABC" />
-		<link rel="manifest" href="/js/main.webmanifest" />
+		<meta charset='utf-8' />
+		<meta content='width=device-width, initial-scale=1.0' name='viewport' />
+		<meta name='viewport' content='width=device-width, initial-scale=1.0' />
+		<meta name='theme-color' content='#764ABC' />
+		<link rel='manifest' href='/js/main.webmanifest' />
 
 		<!--Title of the page-->
 		<title><%= TITLE %></title>
@@ -18,51 +18,52 @@
 		<meta name='keywords' content='<%= KEYWORDS %>' />
 
 		<!-- Search Engine tags -->
+		<meta property='og:type' content='website' />
+		<meta property='og:locale' content='en_US' />
 		<meta property='og:title' content='<%= TITLE %>' />
-		<meta property="og:site_name" content="IMDb" />
+		<meta property='og:site_name' content='<%= TITLE %>' />
 		<meta property='og:description' content='<%= DESCRIPTION %>' />
-		<meta property='og:image' content='https://koushikpuppala.live/img/Favicon.webp' />
-		<meta property="og:image:width" content="300" />
-		<meta property="og:image:height" content="300" />
-		<meta property='og:url' content='https://koushikpuppala.live' />
-		<meta property="og:locale" content="en_US" />
+		<meta property='og:image' content='https://koushikpuppala.live/img/website.webp' />
+		<meta property='og:image:width' content='300' />
+		<meta property='og:image:height' content='300' />
+		<meta property='og:url' content='https://koushikpuppala.live/' />
 
 		<!-- Twitter Card -->
 
-		<meta name="twitter:card" content="summary" />
-		<meta name="twitter:site" content="@puppala_koushik" />
-		<meta name="twitter:creator" content="puppala_koushik" />
-		<meta name="twitter:title" content="<%= TITLE %>" />
-		<meta name="twitter:description" content="<%= DESCRIPTION %>" />
-		<meta name="twitter:image" content="https://koushikpuppala.live/img/koushik.webp" />
+		<meta name='twitter:card' content='summary' />
+		<meta name='twitter:site' content='@puppala_koushik' />
+		<meta name='twitter:creator' content='@puppala_koushik' />
+		<meta name='twitter:title' content='<%= TITLE %>' />
+		<meta name='twitter:description' content='<%= DESCRIPTION %>' />
+		<meta name='twitter:image' content='https://koushikpuppala.live/img/twitter.webp' />
 
 		<!-- Favicons -->
-		<link href="/img/Favicon.webp" rel="icon" />
-		<link href="/img/Favicon.webp" rel="apple-touch-icon" />
+		<link href='/img/Favicon.webp' rel='icon' />
+		<link href='/img/Favicon.webp' rel='apple-touch-icon' />
 
-		<script async src="https://arc.io/widget.min.js#ZnURt9ra"></script>
+		<script async src='https://arc.io/widget.min.js#ZnURt9ra'></script>
 
 		<!-- Canonical tags -->
-		<link rel="canonical" href="https://koushikpuppala.live/" />
+		<link rel='canonical' href='https://koushikpuppala.live/' />
 
 		<!-- Vendor CSS Files -->
-		<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-		<link href="/vendor/icofont/icofont.min.css" rel="stylesheet" />
-		<link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
-		<link href="/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet" />
-		<link href="/vendor/venobox/venobox.css" rel="stylesheet" />
+		<link href='/vendor/bootstrap/css/bootstrap.min.css' rel='stylesheet' />
+		<link href='/vendor/icofont/icofont.min.css' rel='stylesheet' />
+		<link href='/vendor/boxicons/css/boxicons.min.css' rel='stylesheet' />
+		<link href='/vendor/owl.carousel/assets/owl.carousel.min.css' rel='stylesheet' />
+		<link href='/vendor/venobox/venobox.css' rel='stylesheet' />
 
 		<!-- Bootstrap Core CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-			integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-			crossorigin="anonymous" />
+		<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css' rel='stylesheet'
+			integrity='sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x'
+			crossorigin='anonymous' />
 
 		<!-- Main CSS File -->
-		<link href="/css/style.css" rel="stylesheet" />
-		<link href="/css/hover-min.css" rel="stylesheet" />
+		<link href='/css/style.css' rel='stylesheet' />
+		<link href='/css/hover-min.css' rel='stylesheet' />
 
 		<% if(success) { %>
-			<meta http-equiv="refresh" content="5; url=https://koushikpuppala.live" />
+			<meta http-equiv='refresh' content='5; url=https://koushikpuppala.live' />
 			<% } %>
 
 				<% if((typeof alert !='undefined' ) || (success) ) { %>

@@ -4,7 +4,7 @@ const { check, validationResult } = require('express-validator')
 
 router.get('/', (req, res) => {
   res.render('index', {
-    TITLE: 'Puppala Koushik | Computer Science Engineer | Indian Institute of Information Technology, Raichur',
+    TITLE: 'Puppala Koushik | Computer Science Engineer',
     DESCRIPTION: 'Puppala Koushik is a Student at Indian Institute of Information Technology, Raichur. He is pursuing B.Tech in C.S.E Department. I am making few Websites, helping in IIITR website and making few app',
     KEYWORDS: 'Puppala Koushik,PuppalaKoushik,Koushik Puppala,KoushikPuppala,Computer Science and Engineer,IIIT Raichur,IIT Hyderabad,Hyderabad,Rajahmundry,Raichur,IIITR,IITH',
     success: false
@@ -22,7 +22,7 @@ router.post('/', [
   if (!errors.isEmpty()) {
     const alert = errors.array()
     res.render('submit', {
-      TITLE: 'Puppala Koushik | Computer Science Engineer | Indian Institute of Information Technology, Raichur',
+      TITLE: 'Puppala Koushik | Computer Science Engineer',
       DESCRIPTION: 'Puppala Koushik is a Student at Indian Institute of Information Technology, Raichur. He is pursuing B.Tech in C.S.E Department. I am making few Websites, helping in IIITR website and making few app',
       KEYWORDS: 'Puppala Koushik,PuppalaKoushik,Koushik Puppala,KoushikPuppala,Computer Science and Engineer,IIIT Raichur,IIT Hyderabad,Hyderabad,Rajahmundry,Raichur,IIITR,IITH',
       alert,
@@ -40,7 +40,7 @@ router.post('/', [
         res.send(err)
       } else {
         res.render('submit', {
-          TITLE: 'Puppala Koushik | Computer Science Engineer | Indian Institute of Information Technology, Raichur',
+          TITLE: 'Puppala Koushik | Computer Science Engineer',
           DESCRIPTION: 'Puppala Koushik is a Student at Indian Institute of Information Technology, Raichur. He is pursuing B.Tech in C.S.E Department. I am making few Websites, helping in IIITR website and making few app',
           KEYWORDS: 'Puppala Koushik,PuppalaKoushik,Koushik Puppala,KoushikPuppala,Computer Science and Engineer,IIIT Raichur,IIT Hyderabad,Hyderabad,Rajahmundry,Raichur,IIITR,IITH',
           success: true
