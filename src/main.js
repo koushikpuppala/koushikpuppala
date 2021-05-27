@@ -61,6 +61,9 @@ app.use('/robots.txt', (req, res) => {
 app.use('/arc-sw.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'arc-sw.js'))
 })
+app.use('/KOUSHIK_LICENSE', (req, res) => {
+  res.sendFile(path.join(__dirname, './../LICENSE'))
+})
 app.get('*', error)
 
 /* Running the server */

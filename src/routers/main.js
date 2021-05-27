@@ -4,8 +4,8 @@ const { check, validationResult } = require('express-validator')
 
 router.get('/', (req, res) => {
   res.render('index', {
-    TITLE: 'Puppala Koushik | Computer Science Engineer',
-    DESCRIPTION: 'Puppala Koushik is a Student at Indian Institute of Information Technology, Raichur. He is pursuing B.Tech in C.S.E Department. I am making few Websites, helping in IIITR website and making few app',
+    TITLE: 'Koushik Puppala | Computer Science Engineer',
+    DESCRIPTION: 'Koushik Puppala is a Student at the Indian Institute of Information Technology, Raichur. I am making few Websites, helping with the IIITR website, and making a few apps',
     KEYWORDS: 'Puppala Koushik,PuppalaKoushik,Koushik Puppala,KoushikPuppala,Computer Science and Engineer,IIIT Raichur,IIT Hyderabad,Hyderabad,Rajahmundry,Raichur,IIITR,IITH',
     success: false
   })
@@ -22,8 +22,8 @@ router.post('/', [
   if (!errors.isEmpty()) {
     const alert = errors.array()
     res.render('submit', {
-      TITLE: 'Puppala Koushik | Computer Science Engineer',
-      DESCRIPTION: 'Puppala Koushik is a Student at Indian Institute of Information Technology, Raichur. He is pursuing B.Tech in C.S.E Department. I am making few Websites, helping in IIITR website and making few app',
+      TITLE: 'Koushik Puppala | Computer Science Engineer',
+      DESCRIPTION: 'Koushik Puppala is a Student at the Indian Institute of Information Technology, Raichur. I am making few Websites, helping with the IIITR website, and making a few apps',
       KEYWORDS: 'Puppala Koushik,PuppalaKoushik,Koushik Puppala,KoushikPuppala,Computer Science and Engineer,IIIT Raichur,IIT Hyderabad,Hyderabad,Rajahmundry,Raichur,IIITR,IITH',
       alert,
       success: false
@@ -40,8 +40,8 @@ router.post('/', [
         res.send(err)
       } else {
         res.render('submit', {
-          TITLE: 'Puppala Koushik | Computer Science Engineer',
-          DESCRIPTION: 'Puppala Koushik is a Student at Indian Institute of Information Technology, Raichur. He is pursuing B.Tech in C.S.E Department. I am making few Websites, helping in IIITR website and making few app',
+          TITLE: 'Koushik Puppala | Computer Science Engineer',
+          DESCRIPTION: 'Koushik Puppala is a Student at the Indian Institute of Information Technology, Raichur. I am making few Websites, helping with the IIITR website, and making a few apps',
           KEYWORDS: 'Puppala Koushik,PuppalaKoushik,Koushik Puppala,KoushikPuppala,Computer Science and Engineer,IIIT Raichur,IIT Hyderabad,Hyderabad,Rajahmundry,Raichur,IIITR,IITH',
           success: true
         })
