@@ -22131,6 +22131,7 @@ a:hover {
 }
 #hero {
   width: 100%;
+  height: 100vh !important;
   background: url(../img/Header.webp) no-repeat;
   background-size: cover;
   position: relative;
