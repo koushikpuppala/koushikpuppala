@@ -4,8 +4,11 @@ application:
   project: "koushik puppala"
   organization: "QoveryCommunity"
 routers:
-- name: "main-puppala-koushik"
+- name: main-puppala-koushik
+  custom_domains:
+  - branch: Puppala-Koushik
+    domain: koushikpuppala.live
   routes:
-  - application_name: "puppala-koushik"
+  - application_name: puppala-koushik
     paths:
-    - "/*"
+    - /

@@ -1,6 +1,6 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑷𝒖𝒑𝒑𝒂𝒍𝒂%20𝑲𝒐𝒖𝒔𝒉𝒊𝒌&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" />
 <h1 align="center">Hi 👋, I'm Puppala Koushik</h1>
-<h2 align="center">I am 18 years old developer making websites, Discord Bots and now collaborating with Indian Institute of Information Technology, Raichur Official website.</h2>
+<h2 align="center">I am 18 years old developer making websites, Discord Bots and now collaborating with Indian Institute of Information Technology, Raichur Karnataka Official website.</h2>
 
 - 👨‍💻 My First project is [koushikpuppala](https://koushikpuppala.live)
 
@@ -10,13 +10,14 @@
 
 - 🤝 I’m looking for help with [Avengers Assemble Server Website](https://github.com/puppala-koushik/Avengers)
 
-- 🌱 I’m currently learning **JavaScript, EJS, Game Development, Data Bases**
+- 🌱 I’m currently learning ***JavaScript, EJS, Game Development, Data Bases, MongoDB, ReactJS, Electron JS***
 
-- 💬 Ask me about **HTML, C, C++, and some JavaScript, CSS.**
+- 💬 Ask me about ***HTML, C, C++, and some JavaScript, CSS.***
 
-- 📫 How to reach me **```contact@koushikpuppala.live```**
+- 📫 How to reach me ***contact@koushikpuppala.live***
 
-<h2 align="left">Deatiles</h2>
+
+<h2 align="left">Details</h2>
 <p align="center">
 <a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.live" /></a> &nbsp;
 <img alt="Website Uptime" src="https://img.shields.io/uptimerobot/ratio/m787304452-a092fc16db28ac06a0c01825?style=social"> &nbsp;
@@ -43,7 +44,7 @@
 <code><img src="https://img.icons8.com/nolan/64/visual-studio-code-2019.png" alt="vscode" width="40" height="40"/></code>
 <code><img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/></code>
 <code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" alt="c" width="40" height="40"/></code>
-<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="cplusplus" width="40" height="40"/></code>
+<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="c++" width="40" height="40"/></code>
 <code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/></code>
 <code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/></code>
 <code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/></code>
