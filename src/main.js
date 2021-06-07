@@ -40,8 +40,8 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60
     },
-    saveUninitialized: false,
-    resave: false,
+    saveUninitialized: true,
+    resave: true,
     name: 'Koushik Puppala',
     store: Store.create({
       mongoUrl: process.env.MONGODB_URL
