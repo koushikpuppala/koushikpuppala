@@ -1,6 +1,6 @@
 {
     "name": "puppala-koushik",
-    "version": "1.0.0",
+    "version": "1.5.0",
     "description": "This is my own website with my own domain",
     "main": "src/main.js",
     "directories": {
