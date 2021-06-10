@@ -1,5 +1,5 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑷𝒖𝒑𝒑𝒂𝒍𝒂%20𝑲𝒐𝒖𝒔𝒉𝒊𝒌&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" />
-<h1 align="center">Hi 👋, I'm Puppala Koushik</h1>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑲𝒐𝒖𝒔𝒉𝒊𝒌%20𝑷𝒖𝒑𝒑𝒂𝒍𝒂&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" />
+<h1 align="center">Hi 👋, I'm Koushik Puppala</h1>
 <h2 align="center">I am 18 years old developer making websites, Discord Bots and now collaborating with Indian Institute of Information Technology, Raichur Karnataka Official website.</h2>
 
 - 👨‍💻 My First project is [koushikpuppala](https://koushikpuppala.live)
