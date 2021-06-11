@@ -1,0 +1,11 @@
+---
+application:
+  name: "koushikpuppala"
+  project: "Koushikpuppala"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-koushikpuppala"
+  routes:
+  - application_name: "koushikpuppala"
+    paths:
+    - "/*"
