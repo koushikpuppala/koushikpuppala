@@ -1,7 +1,9 @@
 const { connect, connection } = require('mongoose');
+const config = require('../config');
+const MongoURL = config.MongoDB.URL;
 
 module.exports = database => {
-    connect(process.env.MONGODB_URL, {
+    connect(MongoURL, {
         useNewUrlParser: true,
         autoIndex: false,
         poolSize: 5,

@@ -5,6 +5,9 @@ application:
   organization: "QoveryCommunity"
 routers:
 - name: "main-koushikpuppala"
+  custom_domains:
+  - branch: koushikpuppala
+    domain: koushikpuppala.live
   routes:
   - application_name: "koushikpuppala"
     paths:

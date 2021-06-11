@@ -1,5 +1,5 @@
 /* Import Modules */
-require('dotenv').config()
+const config = require('./config')
 const express = require('express')
 const RateLimit = require('express-rate-limit')
 const bodyParser = require('body-parser')
@@ -13,8 +13,8 @@ const database = require('./database/index.js')
 
 /* Making Constants */
 const app = express()
-const port = process.env.PORT
-const host = process.env.HOST
+const port = config.Port
+const host = config.Host
 
 /* Setting up rate limiter: maximum of hundred requests per hour */
 const limiter = new RateLimit({
@@ -36,7 +36,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(
   session({
-    secret: process.env.SECRET,
+    secret: config.Secret,
     cookie: {
       maxAge: 1000 * 60 * 60
     },
@@ -44,7 +44,7 @@ app.use(
     resave: true,
     name: 'Koushik Puppala',
     store: Store.create({
-      mongoUrl: process.env.MONGODB_URL
+      mongoUrl: config.MongoDB.URL
     })
   })
 )
