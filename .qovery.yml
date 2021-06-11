@@ -2,6 +2,8 @@
 application:
   name: "koushikpuppala"
   project: "Koushikpuppala"
+  publicly_accessible: true
+  port: 8080
   organization: "QoveryCommunity"
 routers:
 - name: "main-koushikpuppala"

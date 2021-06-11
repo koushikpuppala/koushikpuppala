@@ -9,7 +9,7 @@ const config = {
 
 	// Host & Port
 	Host: '0.0.0.0',
-	Port: 3000,
+	Port: 8080,
 
 	// Secret
 	Secret: 'e0ce9fc3b9b76e5808222143889f107d10d6011a99ed204caa026b83d02bb3fe',
