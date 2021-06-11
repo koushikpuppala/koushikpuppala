@@ -8,7 +8,7 @@ application:
 routers:
 - name: "main-koushikpuppala"
   custom_domains:
-  - branch: Koushikpuppala
+  - branch: koushikpuppala
     domain: koushikpuppala.live
   routes:
   - application_name: "koushikpuppala"
