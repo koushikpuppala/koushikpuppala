@@ -34,7 +34,7 @@
     "dependencies": {
         "body-parser": "^1.19.0",
         "connect-mongo": "^4.4.1",
-        "dotenv": "^9.0.2",
+        "dotenv": "^10.0.0",
         "ejs": "^3.1.6",
         "express": "^4.17.1",
         "express-rate-limit": "^5.2.6",
@@ -43,7 +43,7 @@
         "express-validator": "^6.11.1",
         "figlet": "^1.5.0",
         "mongoose": "^5.12.11",
-        "normalize-url": "^4.5.1",
+        "normalize-url": "^6.1.0",
         "sitemap": "^7.0.0",
         "ws": "^7.4.6"
     },
@@ -52,8 +52,8 @@
         "eslint-config-standard": "^16.0.3",
         "eslint-plugin-import": "^2.23.3",
         "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^4.3.1",
+        "eslint-plugin-promise": "^5.1.0",
         "nodemon": "^2.0.7",
-        "pm2": "^4.5.6"
+        "pm2": "^5.1.0"
     }
 }

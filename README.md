@@ -8,7 +8,7 @@
 
 - 👯 I’m collaborating on [Indian Institute of Information Technology, Raichur](https://iiitr.ac.in/)
 
-- 🤝 I’m looking for help with [Avengers Assemble Server Website](https://github.com/puppala-koushik/Avengers)
+- 🤝 I’m looking for help with [Avengers Assemble Server Website](https://github.com/koushikpuppala/Avengers)
 
 - 🌱 I’m currently learning ***JavaScript, EJS, Game Development, Data Bases, MongoDB, ReactJS, Electron JS***
 
@@ -21,11 +21,11 @@
 <p align="center">
 <a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.live" /></a> &nbsp;
 <img alt="Website Uptime" src="https://img.shields.io/uptimerobot/ratio/m787304452-a092fc16db28ac06a0c01825?style=social"> &nbsp;
-<a href="https://github.com/puppala-koushik?tab=followers"><img alt="GitHub followers" src="https://img.shields.io/github/followers/puppala-koushik.svg?style=social&label=Follow" /></a> &nbsp;
+<a href="https://github.com/koushikpuppala?tab=followers"><img alt="GitHub followers" src="https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow" /></a> &nbsp;
 <img alt="MIT license" src="https://img.shields.io/badge/License-MIT-blue.svg?style=social" /> &nbsp;
-<a href="https://github.com/puppala-koushik?tab=stars"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/puppala-koushik?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social" /></a>
+<a href="https://github.com/koushikpuppala?tab=stars"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social" /></a>
 <br />
-<img src="https://komarev.com/ghpvc/?username=puppala-koushik&label=Profile%20views&color=0e75b6&style=flat" alt="puppala-koushik" />
+<img src="https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6&style=flat" alt="koushikpuppala" />
 <img src="https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github" alt="Open Source? Yes!">
 </p>
 
@@ -59,10 +59,10 @@
 </summary>
 <br />
 <p align="center">
-<img src="https://github-profile-trophy.vercel.app/?username=puppala-koushik&row=1&theme=juicyfresh" alt="puppala-koushik" /><br />
-<img src="https://github-readme-stats.vercel.app/api/top-langs?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /><br />
-<img src="https://github-readme-stats.vercel.app/api?username=puppala-koushik&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="puppala-koushik" /><br />
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=puppala-koushik&theme=blue-green" alt="puppala-koushik" />
+<img src="https://github-profile-trophy.vercel.app/?username=koushikpuppala&row=1&theme=juicyfresh" alt="koushikpuppala" /><br />
+<img src="https://github-readme-stats.vercel.app/api/top-langs?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="koushikpuppala" /><br />
+<img src="https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="koushikpuppala" /><br />
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green" alt="koushikpuppala" />
 </p>
 
 </details>
