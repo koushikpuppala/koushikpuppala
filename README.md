@@ -2,34 +2,27 @@
 <h1 align="center">Hi 👋, I'm Koushik Puppala</h1>
 <h2 align="center">I am 18 years old developer making websites, Discord Bots and now collaborating with Indian Institute of Information Technology, Raichur Karnataka Official website.</h2>
 
-- 👨‍💻 My First project is [koushikpuppala](https://koushikpuppala.live)
+-   👨‍💻 My First project is [koushikpuppala](https://koushikpuppala.live)
 
-- 🔭 I’m currently working on [Avengers Assemble Server Website](https://avengers-assemble.tech)
+-   🔭 I’m currently working on [Avengers Assemble Server Website](https://avengers-assemble.tech)
 
-- 👯 I’m collaborating on [Indian Institute of Information Technology, Raichur](https://iiitr.ac.in/)
+-   👯 I’m collaborating on [Indian Institute of Information Technology, Raichur](https://iiitr.ac.in/)
 
-- 🤝 I’m looking for help with [Avengers Assemble Server Website](https://github.com/koushikpuppala/Avengers)
+-   🤝 I’m looking for help with [Avengers Assemble Server Website](https://github.com/koushikpuppala/Avengers)
 
-- 🌱 I’m currently learning ***JavaScript, EJS, Game Development, Data Bases, MongoDB, ReactJS, Electron JS***
+-   🌱 I’m currently learning **_JavaScript, EJS, Game Development, Data Bases, MongoDB, ReactJS, Electron JS_**
 
-- 💬 Ask me about ***HTML, C, C++, and some JavaScript, CSS.***
+-   💬 Ask me about **_HTML, C, C++, and some JavaScript, CSS._**
 
-- 📫 How to reach me ***contact@koushikpuppala.live***
-
+-   📫 How to reach me ***contact@koushikpuppala.live***
 
 <h2 align="left">Details</h2>
 <p align="center">
 <a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.live" /></a> &nbsp;
 <img alt="Website Uptime" src="https://img.shields.io/uptimerobot/ratio/m787304452-a092fc16db28ac06a0c01825?style=social"> &nbsp;
-<<<<<<< HEAD
 <a href="https://github.com/koushikpuppala?tab=followers"><img alt="GitHub followers" src="https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow" /></a> &nbsp;
 <img alt="MIT license" src="https://img.shields.io/badge/License-MIT-blue.svg?style=social" /> &nbsp;
 <a href="https://github.com/koushikpuppala?tab=stars"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social" /></a>
-=======
-<a href="https://github.com/koushikpuppala?tab=followers"><img alt="GitHub followers" src="https://img.shields.io/github/followers/puppala-koushik.svg?style=social&label=Follow" /></a> &nbsp;
-<img alt="MIT license" src="https://img.shields.io/badge/License-MIT-blue.svg?style=social" /> &nbsp;
-<a href="https://github.com/koushikpuppala?tab=stars"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/puppala-koushik?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social" /></a>
->>>>>>> 1ae0338ecb93cca043f1ffe9a5dc6246942da3b2
 <br />
 <img src="https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6&style=flat" alt="koushikpuppala" />
 <img src="https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github" alt="Open Source? Yes!">
