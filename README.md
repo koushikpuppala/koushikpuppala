@@ -21,9 +21,15 @@
 <p align="center">
 <a href="http://koushikpuppala.live"><img alt="Website" src="https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.live" /></a> &nbsp;
 <img alt="Website Uptime" src="https://img.shields.io/uptimerobot/ratio/m787304452-a092fc16db28ac06a0c01825?style=social"> &nbsp;
+<<<<<<< HEAD
 <a href="https://github.com/koushikpuppala?tab=followers"><img alt="GitHub followers" src="https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow" /></a> &nbsp;
 <img alt="MIT license" src="https://img.shields.io/badge/License-MIT-blue.svg?style=social" /> &nbsp;
 <a href="https://github.com/koushikpuppala?tab=stars"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social" /></a>
+=======
+<a href="https://github.com/koushikpuppala?tab=followers"><img alt="GitHub followers" src="https://img.shields.io/github/followers/puppala-koushik.svg?style=social&label=Follow" /></a> &nbsp;
+<img alt="MIT license" src="https://img.shields.io/badge/License-MIT-blue.svg?style=social" /> &nbsp;
+<a href="https://github.com/koushikpuppala?tab=stars"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/puppala-koushik?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social" /></a>
+>>>>>>> 1ae0338ecb93cca043f1ffe9a5dc6246942da3b2
 <br />
 <img src="https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6&style=flat" alt="koushikpuppala" />
 <img src="https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github" alt="Open Source? Yes!">
