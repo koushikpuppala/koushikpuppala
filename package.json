@@ -14,8 +14,8 @@
         "start": "node src/main.js",
         "dev": "nodemon src/main.js",
         "publish": "npm publish",
-        "build": "pm2 link eh1fk6q4z0e780s 7p2sdvta4dfs83u && pm2 install pm2-server-monit && pm2 start src/main.js --watch --name=puppala-koushik",
-        "test": "pm2 link eh1fk6q4z0e780s 7p2sdvta4dfs83u && pm2 install pm2-server-monit && pm2 start src/main.js --watch --name=puppala-koushik"
+        "build": "pm2 link eh1fk6q4z0e780s 7p2sdvta4dfs83u && pm2 install pm2-server-monit",
+        "test": "pm2 start src/main.js --watch --name=puppala-koushik"
     },
     "repository": {
         "type": "git",
