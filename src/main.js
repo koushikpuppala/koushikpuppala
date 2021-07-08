@@ -18,18 +18,18 @@ const host = config.Host
 
 /* Setting up rate limiter: maximum of hundred requests per hour */
 const limiter = new RateLimit({
-	// 1  Hour
-	windowMs: 60 * 60 * 1000,
-	max: 10000
+  // 1  Hour
+  windowMs: 60 * 60 * 1000,
+  max: 10000
 })
 
 /* Setting up the Environment */
 app.use(limiter)
 app.use(bodyParser.json())
 app.use(
-	bodyParser.urlencoded({
-		extended: true
-	})
+  bodyParser.urlencoded({
+    extended: true
+  })
 )
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
@@ -54,20 +54,20 @@ database()
 app.use('/', main)
 app.use('/sitemap.xml', sitemap)
 app.get('/offline', (req, res) => {
-	res.render('offline')
+  res.render('offline')
 })
 app.use('/robots.txt', (req, res) => {
-	res.sendFile(path.join(__dirname, 'robots.txt'))
+  res.sendFile(path.join(__dirname, 'robots.txt'))
 })
 app.use('/arc-sw.js', (req, res) => {
-	res.sendFile(path.join(__dirname, 'arc-sw.js'))
+  res.sendFile(path.join(__dirname, 'arc-sw.js'))
 })
 app.use('/KOUSHIK_LICENSE', (req, res) => {
-	res.sendFile(path.join(__dirname, './../LICENSE'))
+  res.sendFile(path.join(__dirname, './../LICENSE'))
 })
 app.get('*', error)
 
 /* Running the server */
 app.listen(port, host, () => {
-	console.log(`Website is running at http://localhost:${port}`)
+  console.log(`Website is running at http://localhost:${port}`)
 })
