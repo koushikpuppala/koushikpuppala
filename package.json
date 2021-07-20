@@ -43,16 +43,11 @@
         "express-validator": "^6.11.1",
         "figlet": "^1.5.0",
         "mongoose": "^5.12.11",
-        "normalize-url": "^6.1.0",
+        "normalize-url": "^7.0.0",
         "sitemap": "^7.0.0",
         "ws": "^7.4.6"
     },
     "devDependencies": {
-        "eslint": "^7.27.0",
-        "eslint-config-standard": "^16.0.3",
-        "eslint-plugin-import": "^2.23.3",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^5.1.0",
         "nodemon": "^2.0.7",
         "pm2": "^5.1.0"
     }

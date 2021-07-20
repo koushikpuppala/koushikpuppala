@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:16.4.2
 
 # Create app directory
 WORKDIR /puppalakoushik
