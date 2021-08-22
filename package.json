@@ -1,54 +1,101 @@
 {
-    "name": "@koushikpuppala/koushikpuppala",
-    "version": "2.0.0",
-    "description": "This is my own website with my own domain",
-    "main": "src/main.js",
-    "directories": {
-        "doc": "docs"
-    },
-    "engines": {
-        "node": ">=14.x",
-        "npm": ">=6.x"
-    },
-    "scripts": {
-        "start": "node src/main.js",
-        "dev": "nodemon src/main.js",
-        "publish": "npm publish",
-        "build": "pm2 link eh1fk6q4z0e780s 7p2sdvta4dfs83u && pm2 install pm2-server-monit",
-        "test": "pm2 start src/main.js --watch --name=puppala-koushik"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/puppala-koushik/puppala-koushik.git"
-    },
-    "keywords": [
-        "Koushikpuppala",
-        "Puppalakoushik"
-    ],
-    "author": "Koushik Puppala",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/puppala-koushik/puppala-koushik/issues"
-    },
-    "homepage": "https://github.com/puppala-koushik/puppala-koushik#readme",
-    "dependencies": {
-        "body-parser": "^1.19.0",
-        "connect-mongo": "^4.4.1",
-        "dotenv": "^10.0.0",
-        "ejs": "^3.1.6",
-        "express": "^4.17.1",
-        "express-rate-limit": "^5.2.6",
-        "express-robots-txt": "^0.5.0",
-        "express-session": "^1.17.2",
-        "express-validator": "^6.11.1",
-        "figlet": "^1.5.0",
-        "mongoose": "^5.12.11",
-        "normalize-url": "^7.0.0",
-        "sitemap": "^7.0.0",
-        "ws": "^7.4.6"
-    },
-    "devDependencies": {
-        "nodemon": "^2.0.7",
-        "pm2": "^5.1.0"
-    }
+	"name": "@koushikpuppala/koushikpuppala",
+	"version": "2.0.0",
+	"description": "This is my own website with my own domain",
+	"main": "src/main.js",
+	"directories": {
+		"doc": "docs"
+	},
+	"engines": {
+		"node": ">=14.x",
+		"npm": ">=6.x"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test",
+		"eject": "react-scripts eject",
+		"server": "node server/main.js",
+		"dev_server": "nodemon server/main.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/koushikpuppala/koushikpuppala.git"
+	},
+	"keywords": [
+		"Koushikpuppala",
+		"Puppalakoushik"
+	],
+	"author": "Koushik Puppala <contact@koushikpuppala.live> (https://koushikpuppala.live)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/koushikpuppala/koushikpuppala/issues"
+	},
+	"homepage": "https://koushikpuppala.live",
+	"dependencies": {
+		"@material-ui/core": "^4.12.3",
+		"@material-ui/icons": "^4.11.2",
+		"@testing-library/jest-dom": "^5.14.1",
+		"@testing-library/react": "^12.0.0",
+		"@testing-library/user-event": "^13.2.1",
+		"aos": "^2.3.4",
+		"axios": "^0.21.1",
+		"body-parser": "^1.19.0",
+		"bootstrap": "^5.1.0",
+		"bootstrap-icons": "^1.5.0",
+		"boxicons": "^2.0.9",
+		"connect-mongo": "^4.4.1",
+		"cors": "^2.8.5",
+		"dotenv": "^10.0.0",
+		"ejs": "^3.1.6",
+		"express": "^4.17.1",
+		"express-rate-limit": "^5.2.6",
+		"express-robots-txt": "^0.5.0",
+		"express-session": "^1.17.2",
+		"express-validator": "^6.11.1",
+		"figlet": "^1.5.0",
+		"glightbox": "^3.0.9",
+		"isotope-layout": "^3.0.6",
+		"mongoose": "^5.12.11",
+		"particles-bg": "^2.5.5",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-helmet": "^6.1.0",
+		"react-router-dom": "^5.2.0",
+		"react-router-sitemap": "^1.2.0",
+		"react-scripts": "^1.1.5",
+		"simple-react-lightbox": "^3.6.6",
+		"sitemap": "^7.0.0",
+		"swiper": "^6.8.2",
+		"typed.js": "^2.0.12",
+		"uuid": "^3.4.0",
+		"waypoints": "^4.0.1",
+		"web-vitals": "^2.1.0"
+	},
+	"devDependencies": {
+		"@types/bootstrap": "^5.1.0",
+		"bindings": "^1.5.0",
+		"nan": "^2.14.2",
+		"nodemon": "^2.0.7",
+		"normalize-url": "^7.0.0",
+		"pm2": "^5.1.0",
+		"ws": "^8.0.0"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	}
 }

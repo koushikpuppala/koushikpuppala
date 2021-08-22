@@ -1,0 +1,24 @@
+/** @format */
+
+.swiper-container {
+	width: 100%;
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.swiper-slide {
+	width: 300px;
+}
+
+.swiper-slide img {
+	display: block;
+	width: 100%;
+}
+
+.swiper-slide .tech-item {
+	text-align: center;
+}
+
+.tech-item-content {
+	padding: 10px;
+}
