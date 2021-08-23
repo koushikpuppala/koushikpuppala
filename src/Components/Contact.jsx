@@ -37,7 +37,7 @@ class Contact extends React.Component {
 				Error.Email = regularExpression.test(value) ? '' : 'Email is not valid'
 				break
 			case 'Subject':
-				Error.Subject = value.length <= 20 ? 'Password should 20 characters long' : ''
+				Error.Subject = value.length <= 20 ? 'Subject should 20 characters long' : ''
 				break
 			case 'Message':
 				Error.Message = value.length <= 75 ? 'Message should be 75 characters long' : ''
@@ -52,8 +52,8 @@ class Contact extends React.Component {
 		})
 	}
 
-	handleSubmit = (e) => {
-		e.preventDefault()
+	handleSubmit = (event) => {
+		event.preventDefault()
 
 		if (
 			this.state.Name === '' ||
@@ -76,18 +76,54 @@ class Contact extends React.Component {
 				Subject: this.state.Subject,
 				Message: this.state.Message,
 			}
-			console.log(details)
 			axios
-				.post('http://localhost:8080/contact', details)
+				.post('https://koushikpuppala.puppalakoushik.repl.co/contact', details)
 				.then((res) => {
 					console.log(res)
-					e.target.reset()
+					this.handleReset()
 					alert('Your message has been submitted👍')
 				})
 				.catch((err) => {
 					console.log(err)
 					alert('There are some error in server side please try later')
 				})
+		}
+	}
+
+	handleReset = () => {
+		this.setState({
+			Name: '',
+			Email: '',
+			Subject: '',
+			Message: '',
+			Error: {
+				Name: '',
+				Email: '',
+				Subject: '',
+				Message: '',
+			},
+		})
+	}
+
+	handleClose = () => {
+		if (
+			this.state.Name === '' &&
+			this.state.Email === '' &&
+			this.state.Subject === '' &&
+			this.state.Message === ''
+		) {
+			this.setState({
+				Name: '',
+				Email: '',
+				Subject: '',
+				Message: '',
+				Error: {
+					Name: '',
+					Email: '',
+					Subject: '',
+					Message: '',
+				},
+			})
 		}
 	}
 
@@ -110,13 +146,11 @@ class Contact extends React.Component {
 									<h5 className='modal-title' id='staticBackdropLabel'>
 										Contact Me
 									</h5>
-									<button
-										type='button'
-										className='btn-close'
-										data-bs-dismiss='modal'
-										aria-label='Close'></button>
 								</div>
-								<form onSubmit={this.handleSubmit.bind(this)} noValidate>
+								<form
+									id='contact-form'
+									onSubmit={this.handleSubmit.bind(this)}
+									noValidate>
 									<div className='modal-body'>
 										<div className='row g-2'>
 											<div className='col-md'>
@@ -131,6 +165,7 @@ class Contact extends React.Component {
 														id='Name'
 														placeholder='Name'
 														onChange={this.handleChange.bind(this)}
+														value={this.state.Name}
 														required
 													/>
 													<label htmlFor='floatingInputGrid'>
@@ -155,6 +190,7 @@ class Contact extends React.Component {
 														id='Email'
 														placeholder='Email'
 														onChange={this.handleChange.bind(this)}
+														value={this.state.Email}
 														required
 													/>
 													<label htmlFor='floatingInputGrid'>
@@ -178,6 +214,7 @@ class Contact extends React.Component {
 													id='Subject'
 													placeholder='Subject'
 													onChange={this.handleChange.bind(this)}
+													value={this.state.Subject}
 													required
 												/>
 												<label htmlFor='floatingInputGrid'>
@@ -199,6 +236,7 @@ class Contact extends React.Component {
 													placeholder='Message'
 													id='Message'
 													onChange={this.handleChange.bind(this)}
+													value={this.state.Message}
 													required
 													style={{ height: '100px' }}></textarea>
 												<label htmlFor='floatingTextarea2'>
@@ -213,6 +251,13 @@ class Contact extends React.Component {
 										</div>
 									</div>
 									<div className='modal-footer'>
+										<button
+											type='button'
+											className='hvr-float-shadow btn btn-outline-secondary'
+											data-bs-dismiss='modal'
+											onClick={this.handleClose.bind(this)}>
+											Close
+										</button>
 										<button
 											className='hvr-float-shadow btn btn-outline-info'
 											type='submit'

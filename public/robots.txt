@@ -1,6 +1,4 @@
 # https://www.robotstxt.org/robotstxt.html
-User-agent: *
-Disallow: 
 
 # Group 1
 User-agent: Googlebot

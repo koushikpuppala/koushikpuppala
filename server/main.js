@@ -2,7 +2,6 @@
 
 const config = require('./config')
 const express = require('express')
-const RateLimit = require('express-rate-limit')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const database = require('./database/index')
@@ -13,15 +12,7 @@ const app = express()
 const port = config.Port
 const host = config.Host
 
-/* Setting up rate limiter: maximum of hundred requests per hour */
-const limiter = new RateLimit({
-	// 1  Hour
-	windowMs: 60 * 60 * 1000,
-	max: 10000,
-})
-
 /* Setting up the Environment */
-app.use(limiter)
 app.use(cors())
 app.use(bodyParser.json())
 app.use(
