@@ -2,7 +2,11 @@
 
 # Group 1
 User-agent: Googlebot
-Disallow: /nogooglebot/
+Disallow: /
+
+User-agent: Googlebot
+User-agent: AdsBot-Google
+Disallow: /
 
 # Group 2
 User-agent: *
@@ -11,6 +15,10 @@ Allow: /
 # Group 3
 User-agent: Twitterbot
 Disallow: *
+
+# Group 4
+User-agent: SiteCheckerBotCrawler
+Allow: /
 
 Sitemap: https://koushikpuppala.live/sitemap.xml
 Sitemap: https://www.koushikpuppala.live/sitemap.xml

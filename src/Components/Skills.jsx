@@ -30,6 +30,7 @@ class Skills extends React.Component {
 														<div
 															className='bg-info progress-bar progress-bar-striped progress-bar-animated'
 															role='progressbar'
+															aria-label={e.Name}
 															aria-valuenow={e.Width}
 															aria-valuemin='0'
 															aria-valuemax='100'
@@ -52,6 +53,7 @@ class Skills extends React.Component {
 														<div
 															className='bg-info progress-bar progress-bar-striped progress-bar-animated'
 															role='progressbar'
+															aria-label={e.Name}
 															aria-valuenow={e.Width}
 															aria-valuemin='0'
 															aria-valuemax='100'
