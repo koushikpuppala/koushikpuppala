@@ -51,8 +51,8 @@ class Portfolio extends React.Component {
 												<p className='portfolio-item-description'>
 													{e.Description}
 												</p>
-												<a className='portfolio-item-link' href='#hero'>
-													Learn More
+												<a className='portfolio-item-link' href={e.Link}>
+													{e.LinkName}
 												</a>
 											</div>
 										</div>
