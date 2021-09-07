@@ -6,7 +6,7 @@
 
 .portfolio #portfolio-filters {
 	padding: 0;
-	margin: 0 auto 35px auto;
+	margin: 0 auto 35px;
 	list-style: none;
 	text-align: center;
 	background: #fff;
@@ -17,7 +17,7 @@
 .portfolio #portfolio-filters li {
 	cursor: pointer;
 	display: inline-block;
-	padding: 10px 15px 8px 15px;
+	padding: 10px 15px 8px;
 	font-size: 14px;
 	font-weight: 600;
 	line-height: 1;
@@ -66,7 +66,7 @@
 
 .portfolio-details .portfolio-info {
 	padding: 30px;
-	box-shadow: 0px 0 30px rgba(5, 13, 24, 0.08);
+	box-shadow: 0 0 30px rgba(5, 13, 24, 0.08);
 }
 
 .portfolio-details .portfolio-info h3 {
@@ -115,9 +115,9 @@
 	background-repeat: no-repeat !important;
 	max-width: 35ch;
 	overflow: hidden;
-	box-shadow: rgba(0, 200, 255, 0.25) 0px 54px 55px, rgba(0, 200, 255, 0.12) 0px -12px 30px,
-		rgba(0, 200, 255, 0.12) 0px 4px 6px, rgba(0, 200, 255, 0.17) 0px 12px 13px,
-		rgba(0, 200, 255, 0.09) 0px -3px 5px;
+	box-shadow: rgba(0, 200, 255, 0.25) 0 54px 55px, rgba(0, 200, 255, 0.12) 0 -12px 30px,
+		rgba(0, 200, 255, 0.12) 0 4px 6px, rgba(0, 200, 255, 0.17) 0 12px 13px,
+		rgba(0, 200, 255, 0.09) 0 -3px 5px;
 	backdrop-filter: blur(5px);
 	border-radius: 15px;
 	border: 1.5px outset rgba(255, 123, 0, 0.25);
