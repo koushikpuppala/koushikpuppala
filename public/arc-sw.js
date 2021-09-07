@@ -61,7 +61,7 @@
 		n((n.s = 99));
 })({
 	2: function (e, t, n) {
-		"use strict";
+		
 		n.d(t, "a", function () {
 			return r;
 		}),
@@ -209,7 +209,7 @@
 		var v = "".concat("https://warden.arc.io", "/mailbox/propertySession");
 	},
 	99: function (e, t, n) {
-		"use strict";
+		
 		n.r(t);
 		const r = n(2);
 		if (typeof ServiceWorkerGlobalScope !== "undefined") {
