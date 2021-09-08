@@ -1,7 +1,6 @@
 /** @format */
 
 import { select, on } from './Default'
-import Swiper from 'swiper/bundle'
 import Isotope from 'isotope-layout'
 import AOS from 'aos'
 
@@ -38,22 +37,5 @@ export const PortfolioActions = () => {
 				true
 			)
 		}
-	})
-
-	/**
-	 * Portfolio details slider
-	 */
-	new Swiper('.portfolio-details-slider', {
-		speed: 400,
-		loop: true,
-		autoplay: {
-			delay: 5000,
-			disableOnInteraction: false,
-		},
-		pagination: {
-			el: '.swiper-pagination',
-			type: 'bullets',
-			clickable: true,
-		},
 	})
 }
