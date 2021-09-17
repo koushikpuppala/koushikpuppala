@@ -2,11 +2,11 @@
 
 # Group 1
 User-agent: Googlebot
-Disallow: /
+Allow: /
 
 User-agent: Googlebot
 User-agent: AdsBot-Google
-Disallow: /
+Allow: /
 
 # Group 2
 User-agent: *

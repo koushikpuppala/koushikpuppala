@@ -51,7 +51,7 @@ export const PortfolioData = [
 			'This is my First App made this is Desktop Screen Recorder with Google Drive Access.',
 		Image: 'https://i.ibb.co/T89KZp7/Edith.png',
 		Link: 'https://github.com/koushikpuppala/E.D.I.T.H-Screen-Recorder',
-		LinkName: 'Learn More',
+		LinkName: 'Check the Details',
 	},
 	{
 		id: uuidv4(),
