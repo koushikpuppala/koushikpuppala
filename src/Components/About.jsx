@@ -1,6 +1,7 @@
 /** @format */
 
 import React from 'react'
+import { Icon } from '../Images'
 import '../Stylesheets/About.css'
 
 class About extends React.Component {
@@ -25,9 +26,11 @@ class About extends React.Component {
 						<div className='row'>
 							<div className='col-lg-4' data-aos='fade-right'>
 								<img
-									src='https://i.ibb.co/txxsv3b/koushik.webp'
+									src={Icon}
 									className='img-fluid'
-									alt='Koushik'
+									alt='Icon'
+									width={720}
+									height={720}
 								/>
 							</div>
 							<div className='col-lg-8 pt-4 pt-lg-0 content' data-aos='fade-left'>

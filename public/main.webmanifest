@@ -1,22 +1,22 @@
 {
-	"name": "Puppala Koushik | Computer Science Student",
-	"short_name": "Puppala koushik",
+	"name": "Puppala Koushik | Freelancer",
+	"short_name": "Koushik",
 	"description": "Puppala Koushik is a Student at Indian Institute of Information Technology, Raichur. He is pursuing B.Tech in C.S.E Department. I am making few Websites, helping in IIITR website and making few app",
 	"icons": [
 		{
-			"src": "favicon.ico",
+			"src": "./favicon.ico",
 			"sizes": "64x64 32x32 24x24 16x16",
 			"type": "image/x-icon",
 			"purpose": "any maskable"
 		},
 		{
-			"src": "logo192.png",
+			"src": "./logo192.png",
 			"type": "image/png",
 			"sizes": "192x192",
 			"purpose": "any maskable"
 		},
 		{
-			"src": "logo512.png",
+			"src": "./logo512.png",
 			"type": "image/png",
 			"sizes": "512x512",
 			"purpose": "any maskable"

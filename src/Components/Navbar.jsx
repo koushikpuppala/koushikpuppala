@@ -3,6 +3,7 @@
 import React from 'react'
 import '../Stylesheets/Navbar.css'
 import { NavActions } from '../Actions/Navbar'
+import { Koushik } from '../Images'
 
 class Navbar extends React.Component {
 	componentDidMount() {
@@ -18,9 +19,11 @@ class Navbar extends React.Component {
 					<div className='d-flex flex-column'>
 						<div className='profile'>
 							<img
-								src='https://i.ibb.co/41R5tZT/koushik.jpg'
-								alt='logo'
+								src={Koushik}
+								alt='Koushik'
 								className='img-fluid rounded-circle'
+								width={250}
+								height={250}
 							/>
 							<h1 className='text-light'>Koushik Puppala</h1>
 							<div className='social-links mt-3 text-center'>
@@ -29,42 +32,84 @@ class Navbar extends React.Component {
 									target='_blank'
 									rel='noopener noreferrer'
 									className='github bx-tada-hover'>
-									<i className='bx bxl-github'></i>
+									<i className='bx bxl-github'>
+										<span
+											style={{
+												display: 'none',
+											}}>
+											Github
+										</span>
+									</i>
 								</a>
 								<a
 									href='https://www.facebook.com/puppalakoushik'
 									target='_blank'
 									rel='noopener noreferrer'
 									className='facebook bx-tada-hover'>
-									<i className='bx bxl-facebook'></i>
+									<i className='bx bxl-facebook'>
+										<span
+											style={{
+												display: 'none',
+											}}>
+											Facebook
+										</span>
+									</i>
 								</a>
 								<a
 									href='https://instagram.com/koushikpuppala'
 									target='_blank'
 									rel='noopener noreferrer'
 									className='instagram bx-tada-hover'>
-									<i className='bx bxl-instagram'></i>
+									<i className='bx bxl-instagram'>
+										<span
+											style={{
+												display: 'none',
+											}}>
+											Instagram
+										</span>
+									</i>
 								</a>
 								<a
 									href='https://twitter.com/puppala_koushik'
 									target='_blank'
 									rel='noopener noreferrer'
 									className='twitter bx-tada-hover'>
-									<i className='bx bxl-twitter'></i>
+									<i className='bx bxl-twitter'>
+										<span
+											style={{
+												display: 'none',
+											}}>
+											Twitter
+										</span>
+									</i>
 								</a>
 								<a
 									href='https://www.linkedin.com/in/koushikpuppala'
 									target='_blank'
 									rel='noopener noreferrer'
 									className='linkedin bx-tada-hover'>
-									<i className='bx bxl-linkedin'></i>
+									<i className='bx bxl-linkedin'>
+										<span
+											style={{
+												display: 'none',
+											}}>
+											Linkedin
+										</span>
+									</i>
 								</a>
 								<a
 									href='https://discord.com/channels/@me/735813371433058354'
 									target='_blank'
 									rel='noopener noreferrer'
 									className='discord bx-tada-hover'>
-									<i className='bx bxl-discord'></i>
+									<i className='bx bxl-discord'>
+										<span
+											style={{
+												display: 'none',
+											}}>
+											Discord
+										</span>
+									</i>
 								</a>
 							</div>
 						</div>

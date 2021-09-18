@@ -137,8 +137,7 @@ class Contact extends React.Component {
 					data-bs-backdrop='static'
 					data-bs-keyboard='false'
 					tabIndex='-1'
-					aria-labelledby='staticBackdropLabel'
-					aria-hidden='true'>
+					aria-labelledby='staticBackdropLabel'>
 					<div>
 						<div className='modal-dialog'>
 							<div className='modal-content'>

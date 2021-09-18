@@ -57,24 +57,12 @@
 	border-radius: 15px;
 	border: 1.5px outset rgba(255, 123, 0, 0.25);
 	transition: transform 0.5s ease;
-	-webkit-transition: transform 0.5s ease;
-	-moz-transition: transform 0.5s ease;
-	-ms-transition: transform 0.5s ease;
-	-o-transition: transform 0.5s ease;
-	-webkit-border-radius: 15px;
-	-moz-border-radius: 15px;
-	-ms-border-radius: 15px;
-	-o-border-radius: 15px;
 }
 
 .portfolio-wrap:hover,
 .portfolio-wrap:focus-within {
 	background: rgba(0, 255, 255, 0.2);
 	transform: scale(1.05);
-	-webkit-transform: scale(1.05);
-	-moz-transform: scale(1.05);
-	-ms-transform: scale(1.05);
-	-o-transform: scale(1.05);
 }
 
 .portfolio-content {
@@ -116,10 +104,6 @@
 .portfolio-wrap:hover .portfolio-item-title::after,
 .portfolio-wrap:focus-within .portfolio-item-title::after {
 	transform: scaleX(1);
-	-webkit-transform: scaleX(1);
-	-moz-transform: scaleX(1);
-	-ms-transform: scaleX(1);
-	-o-transform: scaleX(1);
 }
 
 .portfolio-item-link {
@@ -130,10 +114,6 @@
 	background-color: var(--clr-neutral-400);
 	padding: 0.5em 1.25em;
 	border-radius: 0.25rem;
-	-webkit-border-radius: 0.25rem;
-	-moz-border-radius: 0.25rem;
-	-ms-border-radius: 0.25rem;
-	-o-border-radius: 0.25rem;
 }
 
 .portfolio-item-link:hover,
@@ -145,14 +125,6 @@
 	.portfolio-content {
 		transform: translateY(62.5%);
 		transition: transform 0.5s ease;
-		-webkit-transform: translateY(62.5%);
-		-moz-transform: translateY(62.5%);
-		-ms-transform: translateY(62.5%);
-		-o-transform: translateY(62.5%);
-		-webkit-transition: transform 0.5s ease;
-		-moz-transition: transform 0.5s ease;
-		-ms-transition: transform 0.5s ease;
-		-o-transition: transform 0.5s ease;
 	}
 
 	.portfolio-wrap {
@@ -163,10 +135,6 @@
 	.portfolio-wrap:focus-within .portfolio-content {
 		transform: translateY(0);
 		transition-delay: 500ms;
-		-webkit-transform: translateY(0);
-		-moz-transform: translateY(0);
-		-ms-transform: translateY(0);
-		-o-transform: translateY(0);
 	}
 
 	.portfolio-wrap:focus-within .portfolio-content {
@@ -176,10 +144,6 @@
 	.portfolio-content > *:not(.portfolio-item-title) {
 		opacity: 0;
 		transition: opacity 0.5s linear;
-		-webkit-transition: opacity 0.5s linear;
-		-moz-transition: opacity 0.5s linear;
-		-ms-transition: opacity 0.5s linear;
-		-o-transition: opacity 0.5s linear;
 	}
 
 	.portfolio-wrap:hover .portfolio-content > *:not(.portfolio-item-title),
@@ -192,14 +156,6 @@
 		transform: scaleX(0);
 		transform-origin: left;
 		transition: transform 0.5s ease;
-		-webkit-transform: scaleX(0);
-		-moz-transform: scaleX(0);
-		-ms-transform: scaleX(0);
-		-o-transform: scaleX(0);
-		-webkit-transition: transform 0.5s ease;
-		-moz-transition: transform 0.5s ease;
-		-ms-transition: transform 0.5s ease;
-		-o-transition: transform 0.5s ease;
 	}
 }
 

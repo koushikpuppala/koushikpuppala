@@ -54,7 +54,12 @@ class Technology extends React.Component {
 									<SwiperSlide key={e.Id}>
 										<div className='tech-item'>
 											<div className='tech-item-image'>
-												<img src={e.ImageUrl} alt={e.Name} />
+												<img
+													src={e.ImageUrl}
+													alt={e.Name}
+													width={250}
+													height={250}
+												/>
 											</div>
 											<div className='tech-item-content'>
 												<h3>

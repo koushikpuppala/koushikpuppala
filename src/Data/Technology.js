@@ -1,84 +1,92 @@
 /** @format */
 
 import { v4 as uuidv4 } from 'uuid'
+import {
+	CSS,
+	Docker,
+	EJS,
+	Express,
+	Firebase,
+	Git,
+	HTML5,
+	JavaScript,
+	Mongo,
+	Node,
+	React,
+	VisualStudio,
+} from '../Images'
 
-// https://i.ibb.co/sHb09NV/Git.png
-// https://i.ibb.co/8DWqXCK/Expressjs.png
-//
-// https://i.ibb.co/
-// https://i.ibb.co/
-// https://i.ibb.co/b540Vnb/git-logo.png
 export const TechData = [
 	{
 		Id: uuidv4(),
 		Name: 'React JS',
 		Using: true,
-		ImageUrl: 'https://i.ibb.co/cv0rkvP/React.png',
+		ImageUrl: React,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'Mongo DB',
 		Using: true,
-		ImageUrl: 'https://i.ibb.co/DGvyJYS/Mongo.png',
+		ImageUrl: Mongo,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'Node JS',
 		Using: true,
-		ImageUrl: 'https://i.ibb.co/2vLrm1s/node.png',
+		ImageUrl: Node,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'Git',
 		Using: true,
-		ImageUrl: 'https://i.ibb.co/sHb09NV/Git.png',
+		ImageUrl: Git,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'CSS',
 		Using: true,
-		ImageUrl: 'https://i.ibb.co/N7Dkfcw/css.png',
+		ImageUrl: CSS,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'JavaScript',
 		Using: true,
-		ImageUrl: 'https://i.ibb.co/dc7PN6x/Javascript.png',
+		ImageUrl: JavaScript,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'Express',
 		Using: true,
-		ImageUrl: 'https://i.ibb.co/whzJQ1Y/Expressjs.webp',
+		ImageUrl: Express,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'Firebase',
 		Using: true,
-		ImageUrl: 'https://i.ibb.co/ykwfdxb/firebase.png',
+		ImageUrl: Firebase,
 	},
 	{
 		Id: uuidv4(),
-		Name: 'VS Code Insider',
+		Name: 'Visual Studio Code',
 		Using: true,
-		ImageUrl: 'https://i.ibb.co/kmqjgQJ/Visual-Studio-Code-Insiders.png',
+		ImageUrl: VisualStudio,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'HTML',
 		Using: false,
-		ImageUrl: 'https://i.ibb.co/x71kvsB/html.png',
+		ImageUrl: HTML5,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'EJS',
 		Using: false,
-		ImageUrl: 'https://i.ibb.co/Hd3VSQ9/ejs.png',
+		ImageUrl: EJS,
 	},
 	{
 		Id: uuidv4(),
 		Name: 'Docker',
 		Using: false,
-		ImageUrl: 'https://i.ibb.co/q1Lb1xK/docker.png',
+		ImageUrl: Docker,
 	},
 ]
