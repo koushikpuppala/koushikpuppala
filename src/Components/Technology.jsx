@@ -57,8 +57,8 @@ class Technology extends React.Component {
 												<img
 													src={e.ImageUrl}
 													alt={e.Name}
-													width={250}
-													height={250}
+													width={300}
+													height={300}
 												/>
 											</div>
 											<div className='tech-item-content'>
