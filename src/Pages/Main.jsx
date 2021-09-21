@@ -15,25 +15,10 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import '../Stylesheets/Main.css'
 import 'boxicons/css/boxicons.min.css'
 import 'aos/dist/aos.css'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 
-toast.configure()
 class Main extends React.Component {
-	constructor() {
-		super()
-		this.state = {
-			online: navigator.onLine,
-		}
-	}
 	componentDidMount() {
 		MainAction()
-		console.log(this.state.online)
-		if (this.state.online) {
-			toast.success('You are online!')
-		} else {
-			toast.error('You are offline!', { autoClose: false })
-		}
 	}
 	render() {
 		return (
