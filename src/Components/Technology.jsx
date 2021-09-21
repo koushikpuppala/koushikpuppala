@@ -52,33 +52,22 @@ class Technology extends React.Component {
 							{TechData.map((e) => {
 								return (
 									<SwiperSlide key={e.Id}>
-										<div className='tech-item'>
-											<div className='tech-item-image'>
-												<img
-													src={e.ImageUrl}
-													alt={e.Name}
-													width={300}
-													height={300}
+										<img src={e.ImageUrl} alt={e.Name} width={300} />
+										<h3>
+											{e.Name}
+											<br />
+											{e.Using ? (
+												<Chip
+													variant='outlined'
+													color='secondary'
+													size='small'
+													label='Active in Projects'
+													icon={<VerifiedUserTwoTone />}
 												/>
-											</div>
-											<div className='tech-item-content'>
-												<h3>
-													{e.Name}
-													<br />
-													{e.Using ? (
-														<Chip
-															variant='outlined'
-															color='secondary'
-															size='small'
-															label='Active in Projects'
-															icon={<VerifiedUserTwoTone />}
-														/>
-													) : (
-														''
-													)}
-												</h3>
-											</div>
-										</div>
+											) : (
+												''
+											)}
+										</h3>
 									</SwiperSlide>
 								)
 							})}

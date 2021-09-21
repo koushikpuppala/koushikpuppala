@@ -8,15 +8,11 @@
 
 .swiper-slide {
 	width: 300px;
-}
-
-.swiper-slide img {
-	display: block;
-	width: 100%;
-}
-
-.swiper-slide .tech-item {
+	height: 400px;
 	text-align: center;
+	align-items: center;
+	justify-content: center;
+	direction: row;
 	backdrop-filter: blur(16px) saturate(180%);
 	border-radius: 12px;
 	border: 1px solid rgba(255, 255, 255, 0.125);
@@ -24,6 +20,11 @@
 		rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
-.tech-item-content {
+.swiper-slide img {
+	display: block;
+	width: 100%;
+}
+
+.swiper-slide h3 {
 	padding: 10px;
 }
