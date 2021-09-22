@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <div align="center">
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑲𝒐𝒖𝒔𝒉𝒊𝒌%20𝑷𝒖𝒑𝒑𝒂𝒍𝒂&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" />
 <h2>Hi 👋, I'm Koushik Puppala</h2>
@@ -13,11 +15,11 @@
 
 <li>🤝 I’m looking for help with <a target="_blank" href="https://github.com/koushikpuppala/Avengers">Avengers Assemble Discord Server and Discord Bot Website</a></li>
 
-<li>🌱 I’m currently learning <b><i>Game Development, Data Bases, ReactJS, Electron JS</i></b></li>
+<li>🌱 I’m currently learning <b><i>Game Development, Data Science, ReactJS, Electron JS</i></b></li>
 
 <li>💬 Ask me about <b><i>HTML, C, C++, JavaScript, CSS, EJS, Express.JS, MongoDB.</i></b></li>
 
-<li>📫 How to reach me <a target="_blank" href="mailto:contact@koushikpuppala.live">contact@koushikpuppala.live</a></li>
+<li>📫 How to reach me <a target="_blank" href="mailto:koushikpuppala203@gmail.com">koushikpuppala203@gmail.com</a></li>
 </ul>
 
 <h3>Details</h3>
@@ -58,14 +60,15 @@
 </div>
 
 <details>
-<summary>GitHub Statistics
-</summary>
+<summary>GitHub Statistics</summary>
 <br />
 <div align="center">
 <img src="https://github-profile-trophy.vercel.app/?username=koushikpuppala&row=1&theme=juicyfresh" alt="koushikpuppala" /><br />
 <img src="https://github-readme-stats.vercel.app/api/top-langs?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="koushikpuppala" /><br />
 <img src="https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="koushikpuppala" /><br />
 <img src="https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green" alt="koushikpuppala" />
+<img src="https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode" 
+alt="koushikpuppala" />
 </div>
 
 </details>
