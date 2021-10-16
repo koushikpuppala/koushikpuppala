@@ -35,11 +35,11 @@ class About extends React.Component {
 							</div>
 							<div className='col-lg-8 pt-4 pt-lg-0 content' data-aos='fade-left'>
 								<h3>Student &amp; Web Developer.</h3>
-								<h5 className='fst-italic'>
+								<h4 className='fst-italic'>
 									I am Full Stack Web Developer. I have a made so many projects
 									like Websites, Discord Bots for the Discord Server and made One
 									Desktop App.
-								</h5>
+								</h4>
 								<br />
 								<div className='row'>
 									<div className='col-lg-6'>

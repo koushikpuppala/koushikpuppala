@@ -53,7 +53,12 @@ class Technology extends React.Component {
 								return (
 									<SwiperSlide key={e.Id}>
 										<div className='swiper'>
-											<img src={e.ImageUrl} alt={e.Name} width={300} />
+											<img
+												src={e.ImageUrl}
+												alt={e.Name}
+												width={300}
+												height={300}
+											/>
 											<h3>
 												{e.Name}
 												<br />

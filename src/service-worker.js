@@ -53,11 +53,23 @@ registerRoute(
 	// Add in any other file extensions or routing criteria as needed.
 	({ url }) =>
 		url.origin === self.location.origin &&
-		(url.pathname.endsWith('.ico') ||
-			url.pathname.endsWith('.png') ||
-			url.pathname.endsWith('.webmanifest') ||
-			url.pathname.endsWith('.js') ||
-			url.pathname.endsWith('.txt')), // Customize this strategy as needed, e.g., by changing to CacheFirst.
+		url.pathname.endsWith('.js') &&
+		url.pathname.endsWith('.ico') &&
+		url.pathname.endsWith('.png') &&
+		url.pathname.endsWith('.css') &&
+		url.pathname.endsWith('.xml') &&
+		url.pathname.endsWith('.txt') &&
+		url.pathname.endsWith('.svg') &&
+		url.pathname.endsWith('.ttf') &&
+		url.pathname.endsWith('.eot') &&
+		url.pathname.endsWith('.otf') &&
+		url.pathname.endsWith('.map') &&
+		url.pathname.endsWith('.html') &&
+		url.pathname.endsWith('.webp') &&
+		url.pathname.endsWith('.json') &&
+		url.pathname.endsWith('.woff') &&
+		url.pathname.endsWith('.woff2') &&
+		url.pathname.endsWith('.webmanifest'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
 	new StaleWhileRevalidate({
 		cacheName: 'Koushikpuppala',
 		plugins: [

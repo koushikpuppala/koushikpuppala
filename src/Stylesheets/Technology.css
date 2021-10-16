@@ -6,13 +6,10 @@
 	padding-bottom: 50px;
 }
 
-.swiper {
+.swiper-slide {
 	box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 	border-radius: 12px;
-	border: 1px solid rgba(255, 255, 255, 0.125);
-}
-
-.swiper-slide {
+	border: 1px solid rgba(0, 0, 0, 0.5);
 	width: 300px;
 	height: 400px;
 	text-align: center;
@@ -20,9 +17,4 @@
 
 .swiper-slide img {
 	display: block;
-	width: 100%;
-}
-
-.swiper-slide h3 {
-	padding: 10px;
 }
