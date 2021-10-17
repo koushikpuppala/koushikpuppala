@@ -28,7 +28,7 @@ class Navbar extends React.Component {
 							<h1 className='text-light'>Koushik Puppala</h1>
 							<div className='social-links mt-3 text-center'>
 								<a
-									href='https://github.com/koushikpuppala'
+									href='https://github.koushikpuppala.live'
 									target='_blank'
 									rel='noopener noreferrer'
 									className='github bx-tada-hover'>
@@ -84,7 +84,7 @@ class Navbar extends React.Component {
 									</i>
 								</a>
 								<a
-									href='https://www.linkedin.com/in/koushikpuppala'
+									href='https://linkedin.koushikpuppala.live'
 									target='_blank'
 									rel='noopener noreferrer'
 									className='linkedin bx-tada-hover'>
@@ -98,7 +98,7 @@ class Navbar extends React.Component {
 									</i>
 								</a>
 								<a
-									href='https://discord.com/channels/@me/735813371433058354'
+									href='https://discord.koushikpuppala.live'
 									target='_blank'
 									rel='noopener noreferrer'
 									className='discord bx-tada-hover'>
