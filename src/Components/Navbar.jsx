@@ -13,7 +13,7 @@ class Navbar extends React.Component {
 	render() {
 		return (
 			<div>
-				<i className='bi bi-list mobile-nav-toggle d-xl-none'></i>
+				<i className='bi bi-list mobile-nav-toggle d-xl-none bx-tada-hover'></i>
 
 				<header id='header'>
 					<div className='d-flex flex-column'>
