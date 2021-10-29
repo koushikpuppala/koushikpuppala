@@ -4,7 +4,7 @@
  * Easy selector helper function
  */
 export const select = (el, all = false) => {
-	var le = el.trim()
+	const le = el.trim()
 	return all ? [...document.querySelectorAll(le)] : document.querySelector(le)
 }
 
