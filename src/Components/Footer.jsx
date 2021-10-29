@@ -34,8 +34,9 @@ class Footer extends React.Component {
 		return false
 	}
 	render() {
-		const Today =
-			this.state.date + ' ' + this.state.monthNames[this.state.month] + ' ' + this.state.year
+		const Today = `${this.state.date} ${this.state.monthNames[this.state.month]} ${
+			this.state.year
+		}`
 		return (
 			<div>
 				<footer id='footer'>
