@@ -20,22 +20,23 @@ class Skills extends React.Component {
 							return (
 								<div className='row skills-content' key={uuidv4}>
 									<div className='col-lg-6' data-aos='fade-up'>
-										{e.Frontend.map((e) => {
+										{e.Frontend.map((frontend) => {
 											return (
-												<div className='progress' key={e.Id}>
+												<div className='progress' key={frontend.Id}>
 													<span className='skill'>
-														{e.Name} <i className='val'>{e.Width}%</i>
+														{frontend.Name}{' '}
+														<i className='val'>{frontend.Width}%</i>
 													</span>
 													<div className='progress-bar-wrap'>
 														<div
 															className='bg-info progress-bar progress-bar-striped progress-bar-animated'
 															role='progressbar'
-															aria-label={e.Name}
-															aria-valuenow={e.Width}
+															aria-label={frontend.Name}
+															aria-valuenow={frontend.Width}
 															aria-valuemin='0'
 															aria-valuemax='100'
 															style={{
-																width: `${e.Width}%`,
+																width: `${frontend.Width}%`,
 															}}></div>
 													</div>
 												</div>
@@ -43,22 +44,23 @@ class Skills extends React.Component {
 										})}
 									</div>
 									<div className='col-lg-6' data-aos='fade-up'>
-										{e.Backend.map((e) => {
+										{e.Backend.map((backend) => {
 											return (
-												<div className='progress' key={e.Id}>
+												<div className='progress' key={backend.Id}>
 													<span className='skill'>
-														{e.Name} <i className='val'>{e.Width}%</i>
+														{backend.Name}{' '}
+														<i className='val'>{backend.Width}%</i>
 													</span>
 													<div className='progress-bar-wrap'>
 														<div
 															className='bg-info progress-bar progress-bar-striped progress-bar-animated'
 															role='progressbar'
-															aria-label={e.Name}
-															aria-valuenow={e.Width}
+															aria-label={backend.Name}
+															aria-valuenow={backend.Width}
 															aria-valuemin='0'
 															aria-valuemax='100'
 															style={{
-																width: `${e.Width}%`,
+																width: `${backend.Width}%`,
 															}}></div>
 													</div>
 												</div>

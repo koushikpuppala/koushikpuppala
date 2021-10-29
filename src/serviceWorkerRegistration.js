@@ -19,39 +19,8 @@ const isLocalhost = Boolean(
 		// [::1] is the IPv6 localhost address.
 		window.location.hostname === '[::1]' ||
 		// 127.0.0.0/8 are considered localhost for IPv4.
-		window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
+		/^127(?:.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/.test(window.location.hostname)
 )
-
-export function register(config) {
-	if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-		// The URL constructor is available in all browsers that support SW.
-		const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href)
-		if (publicUrl.origin !== window.location.origin) {
-			// Our service worker won't work if PUBLIC_URL is on a different origin
-			// from what our page is served on. This might happen if a CDN is used to
-			// serve assets; see https://github.com/facebook/create-react-app/issues/2374
-			return
-		}
-
-		window.addEventListener('load', () => {
-			const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
-
-			if (isLocalhost) {
-				// This is running on localhost. Let's check if a service worker still exists or not.
-				checkValidServiceWorker(swUrl, config)
-
-				// Add some additional logging to localhost, pointing developers to the
-				// service worker/PWA documentation.
-				navigator.serviceWorker.ready.then(() => {
-					
-				})
-			} else {
-				// Is not localhost. Just register service worker
-				registerValidSW(swUrl, config)
-			}
-		})
-	}
-}
 
 function registerValidSW(swUrl, config) {
 	navigator.serviceWorker
@@ -62,7 +31,6 @@ function registerValidSW(swUrl, config) {
 			// Check for updates every 5 min.
 			setInterval(() => {
 				registration.update()
-				
 			}, 1000 * 60 * 5)
 			registration.onupdatefound = () => {
 				const installingWorker = registration.installing
@@ -75,7 +43,6 @@ function registerValidSW(swUrl, config) {
 							// At this point, the updated precached content has been fetched,
 							// but the previous service worker will still serve the older
 							// content until all client tabs are closed.
-							
 
 							toast.info(
 								'Update available! To update, close all windows and reopen.',
@@ -94,7 +61,6 @@ function registerValidSW(swUrl, config) {
 							// At this point, everything has been precached.
 							// It's the perfect time to display a
 							// "Content is cached for offline use." message.
-							
 
 							// Execute callback
 							if (config && config.onSuccess) {
@@ -106,7 +72,7 @@ function registerValidSW(swUrl, config) {
 			}
 		})
 		.catch((error) => {
-			
+			console.error(error)
 		})
 }
 
@@ -133,9 +99,7 @@ function checkValidServiceWorker(swUrl, config) {
 				registerValidSW(swUrl, config)
 			}
 		})
-		.catch(() => {
-			
-		})
+		.catch(() => {})
 }
 
 export function unregister() {
@@ -145,7 +109,36 @@ export function unregister() {
 				registration.unregister()
 			})
 			.catch((error) => {
-				
+				console.error(error)
 			})
+	}
+}
+
+export function register(config) {
+	if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+		// The URL constructor is available in all browsers that support SW.
+		const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href)
+		if (publicUrl.origin !== window.location.origin) {
+			// Our service worker won't work if PUBLIC_URL is on a different origin
+			// from what our page is served on. This might happen if a CDN is used to
+			// serve assets; see https://github.com/facebook/create-react-app/issues/2374
+			return
+		}
+
+		window.addEventListener('load', () => {
+			const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`
+
+			if (isLocalhost) {
+				// This is running on localhost. Let's check if a service worker still exists or not.
+				checkValidServiceWorker(swUrl, config)
+
+				// Add some additional logging to localhost, pointing developers to the
+				// service worker/PWA documentation.
+				navigator.serviceWorker.ready.then(() => {})
+			} else {
+				// Is not localhost. Just register service worker
+				registerValidSW(swUrl, config)
+			}
+		})
 	}
 }

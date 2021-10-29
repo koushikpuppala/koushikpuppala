@@ -6,12 +6,12 @@ export const NavActions = () => {
 	/**
 	 * Navbar links active state on scroll
 	 */
-	let navbarlinks = select('#navbar .scrollto', true)
+	const navbarlinks = select('#navbar .scrollto', true)
 	const navbarlinksActive = () => {
-		let position = window.scrollY + 200
+		const position = window.scrollY + 200
 		navbarlinks.forEach((navbarlink) => {
 			if (!navbarlink.hash) return
-			let section = select(navbarlink.hash)
+			const section = select(navbarlink.hash)
 			if (!section) return
 			if (
 				position >= section.offsetTop &&
@@ -31,7 +31,7 @@ export const NavActions = () => {
 	/**
 	 * Mobile nav toggle
 	 */
-	on('click', '.mobile-nav-toggle', function (e) {
+	on('click', '.mobile-nav-toggle', function () {
 		select('body').classList.toggle('mobile-nav-active')
 		this.classList.toggle('bi-list')
 		this.classList.toggle('bi-x')
@@ -46,10 +46,10 @@ export const NavActions = () => {
 		function (e) {
 			e.preventDefault()
 
-			let body = select('body')
+			const body = select('body')
 			if (body.classList.contains('mobile-nav-active')) {
 				body.classList.remove('mobile-nav-active')
-				let navbarToggle = select('.mobile-nav-toggle')
+				const navbarToggle = select('.mobile-nav-toggle')
 				navbarToggle.classList.toggle('bi-list')
 				navbarToggle.classList.toggle('bi-x')
 			}

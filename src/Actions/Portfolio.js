@@ -9,13 +9,13 @@ export const PortfolioActions = () => {
 	 * Portfolio isotope and filter
 	 */
 	window.addEventListener('load', () => {
-		let portfolioContainer = select('.portfolio-container')
+		const portfolioContainer = select('.portfolio-container')
 		if (portfolioContainer) {
-			let portfolioIsotope = new Isotope(portfolioContainer, {
+			const portfolioIsotope = new Isotope(portfolioContainer, {
 				itemSelector: '.portfolio-item',
 			})
 
-			let portfolioFilters = select('#portfolio-filters li', true)
+			const portfolioFilters = select('#portfolio-filters li', true)
 
 			on(
 				'click',

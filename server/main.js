@@ -13,6 +13,7 @@ const port = config.Port
 const host = config.Host
 
 /* Setting up the Environment */
+app.disable('x-powered-by')
 app.use(cors())
 app.use(bodyParser.json())
 app.use(

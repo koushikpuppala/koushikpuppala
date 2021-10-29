@@ -31,18 +31,14 @@ class Footer extends React.Component {
 		FooterAction()
 	}
 	render() {
+		const Today =
+			this.state.date + ' ' + this.state.monthNames[this.state.month] + ' ' + this.state.year
 		return (
 			<div>
 				<footer id='footer'>
 					<div className='container'>
 						<div className='copyright'>
-							&copy; Copyright{' '}
-							{this.state.date +
-								' ' +
-								this.state.monthNames[this.state.month] +
-								' ' +
-								this.state.year +
-								' '}
+							&copy; Copyright {Today}
 							<strong>
 								<span>
 									<a

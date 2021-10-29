@@ -6,7 +6,7 @@ export const FooterAction = () => {
 	/**
 	 * Back to top button
 	 */
-	let backtotop = select('.back-to-top')
+	const backtotop = select('.back-to-top')
 	if (backtotop) {
 		const toggleBacktotop = () => {
 			if (window.scrollY > 100) {

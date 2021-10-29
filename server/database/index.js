@@ -1,8 +1,8 @@
-const { connect, connection } = require("mongoose");
-const config = require("../config");
-const MongoURL = config.MongoDB.URL;
+const { connect, connection } = require('mongoose')
+const config = require('../config')
+const MongoURL = config.MongoDB.URL
 
-module.exports = (database) => {
+module.exports = () => {
 	connect(MongoURL, {
 		useNewUrlParser: true,
 		autoIndex: false,
@@ -11,15 +11,15 @@ module.exports = (database) => {
 		family: 4,
 		useUnifiedTopology: true,
 		useFindAndModify: false,
-	});
+	})
 
-	connection.on("connected", () => {
-		console.log("Mongoose connection successfully opened");
-	});
-	connection.on("err", (err) => {
-		console.log(`Mongoose connection error: \n ${err.stack}`);
-	});
-	connection.on("disconnected", () => {
-		console.log("Mongoose disconnected");
-	});
-};
+	connection.on('connected', () => {
+		console.log('Mongoose connection successfully opened')
+	})
+	connection.on('err', (err) => {
+		console.log(`Mongoose connection error: \n ${err.stack}`)
+	})
+	connection.on('disconnected', () => {
+		console.log('Mongoose disconnected')
+	})
+}

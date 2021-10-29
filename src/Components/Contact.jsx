@@ -27,7 +27,7 @@ class Contact extends React.Component {
 		event.preventDefault()
 
 		const { id, value } = event.target
-		let Error = { ...this.state.Error }
+		const Error = { ...this.state.Error }
 
 		switch (id) {
 			case 'Name':
@@ -70,7 +70,7 @@ class Contact extends React.Component {
 		) {
 			alert('Please fill all the fields with valid values')
 		} else {
-			let details = {
+			const details = {
 				Name: this.state.Name,
 				Email: this.state.Email,
 				Subject: this.state.Subject,
