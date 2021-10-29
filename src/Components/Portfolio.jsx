@@ -9,6 +9,9 @@ class Portfolio extends React.Component {
 	componentDidMount() {
 		PortfolioActions()
 	}
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<div>

@@ -22,6 +22,9 @@ import SwiperCore, { Autoplay, EffectCoverflow, Pagination } from 'swiper/core'
 SwiperCore.use([Autoplay, EffectCoverflow, Pagination])
 
 class Technology extends React.Component {
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<div>
@@ -32,7 +35,7 @@ class Technology extends React.Component {
 						</div>
 						<Swiper
 							effect={'coverflow'}
-							centeredSlides={true}
+							centeredSlides
 							slidesPerView={'auto'}
 							coverflowEffect={{
 								rotate: 50,

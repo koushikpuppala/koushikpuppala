@@ -9,36 +9,21 @@ class Footer extends React.Component {
 		super()
 		this.state = {
 			year: new Date().getFullYear(),
-			month: new Date().getMonth(),
-			monthNames: [
-				'January',
-				'February',
-				'March',
-				'April',
-				'May',
-				'June',
-				'July',
-				'August',
-				'September',
-				'October',
-				'November',
-				'December',
-			],
-			date: new Date().getDate(),
 		}
 	}
 	componentDidMount() {
 		FooterAction()
 	}
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
-		const Today =
-			this.state.date + ' ' + this.state.monthNames[this.state.month] + ' ' + this.state.year
 		return (
 			<div>
 				<footer id='footer'>
 					<div className='container'>
 						<div className='copyright'>
-							&copy; Copyright {Today}
+							&copy; Copyright {this.state.year}
 							<strong>
 								<span>
 									<a

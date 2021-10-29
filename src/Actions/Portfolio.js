@@ -22,7 +22,7 @@ export const PortfolioActions = () => {
 				'#portfolio-filters li',
 				function (e) {
 					e.preventDefault()
-					portfolioFilters.forEach(function (el) {
+					portfolioFilters.forEach((el) => {
 						el.classList.remove('filter-active')
 					})
 					this.classList.add('filter-active')
@@ -30,7 +30,7 @@ export const PortfolioActions = () => {
 					portfolioIsotope.arrange({
 						filter: this.getAttribute('data-filter'),
 					})
-					portfolioIsotope.on('arrangeComplete', function () {
+					portfolioIsotope.on('arrangeComplete', () => {
 						AOS.refresh()
 					})
 				},

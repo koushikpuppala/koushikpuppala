@@ -5,6 +5,9 @@ import { Helmet } from 'react-helmet'
 import '../Stylesheets/NotFound.css'
 
 class NotFound extends React.Component {
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<div>

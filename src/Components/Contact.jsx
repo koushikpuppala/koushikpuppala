@@ -126,7 +126,9 @@ class Contact extends React.Component {
 			})
 		}
 	}
-
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		const { Error } = this.state
 		return (

@@ -9,7 +9,9 @@ class Navbar extends React.Component {
 	componentDidMount() {
 		NavActions()
 	}
-
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<div>

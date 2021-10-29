@@ -20,6 +20,9 @@ class Main extends React.Component {
 	componentDidMount() {
 		MainAction()
 	}
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<div>

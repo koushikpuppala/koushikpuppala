@@ -26,6 +26,9 @@ class Type extends React.Component {
 		// Please don't forget to cleanup animation layer
 		this.typed.destroy()
 	}
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<div>

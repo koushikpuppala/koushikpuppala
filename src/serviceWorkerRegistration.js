@@ -99,7 +99,9 @@ function checkValidServiceWorker(swUrl, config) {
 				registerValidSW(swUrl, config)
 			}
 		})
-		.catch(() => {})
+		.catch((error) => {
+			console.error(error)
+		})
 }
 
 export function unregister() {
@@ -134,7 +136,9 @@ export function register(config) {
 
 				// Add some additional logging to localhost, pointing developers to the
 				// service worker/PWA documentation.
-				navigator.serviceWorker.ready.then(() => {})
+				navigator.serviceWorker.ready.then((response) => {
+					console.log(response)
+				})
 			} else {
 				// Is not localhost. Just register service worker
 				registerValidSW(swUrl, config)

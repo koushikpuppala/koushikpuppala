@@ -16,6 +16,9 @@ class App extends React.Component {
 			toast.error('You are offline!', { autoClose: false })
 		}
 	}
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<div>

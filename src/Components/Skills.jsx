@@ -6,6 +6,9 @@ import { v4 as uuidv4 } from 'uuid'
 import '../Stylesheets/Skills.css'
 
 class Skills extends React.Component {
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<div>

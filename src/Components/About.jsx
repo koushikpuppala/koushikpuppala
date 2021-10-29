@@ -5,6 +5,9 @@ import { Icon } from '../Images'
 import '../Stylesheets/About.css'
 
 class About extends React.Component {
+	shouldComponentUpdate() {
+		return false
+	}
 	render() {
 		return (
 			<div>
