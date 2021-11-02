@@ -1,74 +1,88 @@
-<!-- @format -->
+<div align='center'>
 
-<div align="center">
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑲𝒐𝒖𝒔𝒉𝒊𝒌%20𝑷𝒖𝒑𝒑𝒂𝒍𝒂&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" />
-<h2>Hi 👋, I'm Koushik Puppala</h2>
-<h3>I am 18 years old developer making websites, Discord Bots and now collaborating with Indian Institute of Information Technology, Raichur Karnataka Official website.</h3>
+![Koushikpuppala](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑲𝒐𝒖𝒔𝒉𝒊𝒌%20𝑷𝒖𝒑𝒑𝒂𝒍𝒂&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient)
+
+# Hi 👋, I'm Koushik Puppala
+
+### I am a Student and Web Developer at [@iiitraichur](https://github.com/iiitraichur). I am working on the Full Stack and Discord bots Project and started learning Python. Contact me on Discord [@koushikpuppala#3800](https://discord.koushikpuppala.live)
+
 </div>
 
-<ul>
-<li>👨‍💻 My First project is <a target="_blank" href="https://koushikpuppala.live">Koushikpuppala</a></li>
+-   👨‍💻 My First project is **_[Koushikpuppala](https://koushikpuppala.live)_**.
+-   🔭 I’m currently working on **_[Avengers Assemble](https://avengers-assemble.tech)_**.
+-   👯 I’m collaborating on **_[Indian Institute of Information Technology Raichur, Karnataka](https://iiitr.ac.in)_** and **_[Discord Lists](https://discordlists100.xyz)_**.
+-   🤝 I’m looking for help with **_[Avengers Assemble Discord Bot Community and Dashboard](https://github.com/koushikpuppala/avengers-assemble)_**.
+-   🌱 I’m currently learning **Game Development, Python, Firebase and Material-UI**
+-   💬 Ask me about **MongoDB, Express, Nodejs, React, JavaScript, EJS(Embedded JavaScript), Discord.js, HTML, and CSS**
+-   📫 How to reach me **[@koushikpuppala#3800](https://discord.koushikpuppala.live)** or **[koushikpuppala203@gmail.com](mailto:koushikpuppala203@gmail.com)**
 
-<li>🔭 I’m currently working on <a target="_blank" href="https://avengers-assemble.tech"></a></li>
+## ✨ Details
 
-<li>👯 I’m collaborating on <a target="_blank" href="https://iiitr.ac.in/">Indian Institute of Information Technology, Raichur Karnataka</a> and <a target="_blank" href="https://copilot.github.com/">GitHub Copilots Preview</a></li>
-
-<li>🤝 I’m looking for help with <a target="_blank" href="https://github.com/koushikpuppala/Avengers">Avengers Assemble Discord Server and Discord Bot Website</a></li>
-
-<li>🌱 I’m currently learning <b><i>Game Development, Data Science, ReactJS, Electron JS</i></b></li>
-
-<li>💬 Ask me about <b><i>HTML, C, C++, JavaScript, CSS, EJS, Express.JS, MongoDB.</i></b></li>
-
-<li>📫 How to reach me <a target="_blank" href="mailto:koushikpuppala203@gmail.com">koushikpuppala203@gmail.com</a></li>
-</ul>
-
-<h3>Details</h3>
-<div align="center">
-<a href="http://koushikpuppala.live"><img alt="Website Status" src="https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.live" /></a>
-<img alt="Website Uptime" src="https://img.shields.io/uptimerobot/ratio/m787304452-a092fc16db28ac06a0c01825?style=social">
-<a href="https://github.com/koushikpuppala?tab=followers"><img alt="GitHub Followers" src="https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow" /></a>
-<img alt="GitHub License" src="https://img.shields.io/badge/License-MIT-blue.svg?style=social" />
-<a href="https://github.com/koushikpuppala?tab=stars"><img alt="GitHub Stars" src="https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social" /></a>
+<div align='center'>
+<a href='http://koushikpuppala.live'><img alt='Website Status' src='https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.live' /></a>
+<img alt='Website Uptime' src='https://img.shields.io/uptimerobot/ratio/m787304452-a092fc16db28ac06a0c01825?style=social'>
+<a href='https://github.com/koushikpuppala?tab=followers'><img alt='GitHub Followers' src='https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow' /></a>
+<img alt='GitHub License' src='https://img.shields.io/badge/License-MIT-blue.svg?style=social' />
+<a href='https://github.com/koushikpuppala?tab=stars'><img alt='GitHub Stars' src='https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social' /></a>
 <br />
-<img src="https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6&style=flat" alt="koushikpuppala" />
-<img src="https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github" alt="Open Source? Yes!">
+<img src='https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6&style=flat' alt='koushikpuppala' />
+<img src='https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github' alt='Open Source? Yes!'>
 </div>
 
-<h3>Connect with me:</h3>
-<div align="center">
-<a href="https://twitter.com/puppala_koushik" target="blank"><img align="center" src="https://img.icons8.com/nolan/64/twitter-circled.png" alt="puppala_koushik" width="40" /></a>
-<a href="https://linkedin.com/in/puppalakoushik" target="blank"><img align="center" src="https://img.icons8.com/nolan/64/linkedin-circled.png" alt="puppalakoushik" width="40" /></a>
-<a href="https://fb.com/puppalakoushik" target="blank"><img align="center" src="https://img.icons8.com/nolan/64/facebook-circled.png" alt="puppalakoushik" width="40" /></a>
-<a href="https://instagram.com/koushikpuppala" target="blank"><img align="center" src="https://img.icons8.com/nolan/64/instagram-new.png" alt="koushikpuppala" width="40" /></a>
-<a href="https://discord.gg/MsJ99j5Bcv" target="blank"><img align="center" src="https://img.icons8.com/nolan/64/discord-new-logo.png" alt="MsJ99j5Bcv" width="40" /></a>
-<a href="mailto:contact@koushikpuppala.live"><img align="center" src="https://img.icons8.com/nolan/64/secured-letter.png" alt="koushikpuppala" width="40" /></a>
+## ⚜️ Connect with me
+
+<div align='center'>
+<a href='https://discord.koushikpuppala.live' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/discord.png' alt='discord' /></a>
+<a href='https://koushikpuppala.live' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/domain.png' alt='domain' /></a>
+<a href='https://linkedin.koushikpuppala.live' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/linkedin.png' alt='linkedin' /></a>
+<a href='mailto:koushikpuppala203@gmail.com' target='_blank' ><img src='https://img.icons8.com/fluency/40/000000/gmail-new.png' alt='mail' /></a>
+<a href='https://fb.com/puppalakoushik' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/facebook-new.png' alt='facebook' /></a>
+<a href='https://instagram.com/koushikpuppala' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/instagram-new.png' alt='instagram' /></a>
+<a href='https://twitter.com/puppala_koushik' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/twitter.png' alt='twitter' /></a>
 </div>
 
-<h2 align="left">Languages and Tools:</h2>
-<div align="center">
-<code><img src="https://img.icons8.com/nolan/64/visual-studio-code-2019.png" alt="vscode" width="40" height="40"/></code>
-<code><img src="https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" alt="git" width="40" height="40"/></code>
-<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" alt="c" width="40" height="40"/></code>
-<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="c++" width="40" height="40"/></code>
-<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/></code>
-<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/></code>
-<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/></code>
-<code><img src="https://www.vectorlogo.zone/logos/jekyllrb/jekyllrb-icon.svg" alt="jekyll" width="40" height="40"/></code>
-<code><img src="https://img.icons8.com/windows/64/26e07f/nodejs.png" alt="nodejs" width="40" height="40"/></code>
-<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/></code>
-<code><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain-wordmark.svg" alt="bootstrap" width="40" height="40"/></code>
+## 🛠️ Languages and Tools:
+
+<div align='center'>
+<code><img src='https://img.icons8.com/fluency/40/000000/visual-studio-code-insides.png' alt='vscode' /></code>
+<code><img src='https://img.icons8.com/color/40/000000/git.png' alt='git' /></code>
+<code><img src='https://img.icons8.com/fluency/40/000000/github.png' alt='github' /></code>
+<code><img src='https://img.icons8.com/color/40/000000/javascript.png' alt='javascript' /></code>
+<code><img src='https://img.icons8.com/color/40/000000/html-5.png' alt='html5' /></code>
+<code><img src='https://img.icons8.com/color/40/000000/css3.png' alt='css3' /></code>
+<code><img src='https://img.icons8.com/fluency/40/000000/node-js.png' alt='nodejs' /></code>
+<code><img src='https://img.icons8.com/color/40/000000/mongodb.png' alt='mongodb' /></code>
+<code><img src='https://img.icons8.com/color/40/000000/bootstrap.png' alt='bootstrap' /></code>
+<code><img src='https://img.icons8.com/color/40/000000/react-native.png' alt='react' /></code>
+<code><img src='https://img.icons8.com/color/40/000000/google-firebase-console.png' alt='google-firebase' /></code>
+<code><img src='https://img.icons8.com/fluency/40/000000/docker.png' alt='docker' /></code>
+<code><img src='https://img.icons8.com/fluency/40/000000/figma.png' alt='figma' /></code>
+<code><img src='https://img.icons8.com/fluency/40/000000/azure.png' alt='azure' /></code>
+<code><img src='https://img.icons8.com/fluency/40/000000/discord.png' alt='discord' /></code>
+<code><img src='https://img.icons8.com/fluency/40/000000/windows-11.png' alt='windows-11' /></code>
 </div>
+
+## 🖥️ My Projects
+
+Here are my Projects on which I am working and I have contributed
+
+-   [Koushik Puppala](https://koushikpuppala.live) - My Personal Website.
+-   [Avengers Assemble](https://avengers-assemble.tech) - A website for Avengers Assemble Support Server and Bots.
+-   [Avenger](https://avenger.avengers-assemble.tech) - A Discord Bot for Multi-Purpose.
+-   [Musics_DJ](https://musics_dj.avengers-assemble.tech) - A Discord Bot for Music Streaming.
+-   [Indian Institute of Information Technology, Raichur](https://iiitr.ac.in) - My College Official Website.
+-   [Indian Institute of Information Technology, Raichur Students](https://students.iiitr.ac.in) - My College Official Student Website.
+-   [Discord Lists](https://discordlists100.xyz) - A Discord Lists where you can add your bots.
 
 <details>
-<summary>GitHub Statistics</summary>
-<br />
-<div align="center">
-<img src="https://github-profile-trophy.vercel.app/?username=koushikpuppala&row=1&theme=juicyfresh" alt="koushikpuppala" /><br />
-<img src="https://github-readme-stats.vercel.app/api/top-langs?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="koushikpuppala" /><br />
-<img src="https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green" alt="koushikpuppala" /><br />
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green" alt="koushikpuppala" />
-<img src="https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode" 
-alt="koushikpuppala" />
+<summary>📜 My Statistics</summary>
+<div align='center'>
+<img src='https://github-profile-trophy.vercel.app/?username=koushikpuppala&row=3&column=3&theme=juicyfresh&no-bg=true&no-frame=true&margin-w=15&margin-h=15' alt='koushikpuppala' />
+<img src='https://github-readme-stats.vercel.app/api/wakatime?username=koushikpuppala&layout=compact&theme=blue-green&range'/><br>
+<img src='https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green' alt='koushikpuppala' />
+<img src='https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green' alt='koushikpuppala' />
+<img src='https://github-readme-stats.vercel.app/api/top-langs?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green' alt='koushikpuppala' />
+<img src='https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode' 
+alt='koushikpuppala' />
 </div>
-
 </details>
