@@ -12,7 +12,7 @@
 -   🔭 I’m currently working on **_[Avengers Assemble](https://avengers-assemble.tech)_**.
 -   👯 I’m collaborating on **_[Indian Institute of Information Technology Raichur, Karnataka](https://iiitr.ac.in)_** and **_[Discord Lists](https://discordlists100.xyz)_**.
 -   🤝 I’m looking for help with **_[Avengers Assemble Discord Bot Community and Dashboard](https://github.com/koushikpuppala/avengers-assemble)_**.
--   🌱 I’m currently learning **Game Development, Python, Firebase and Material-UI**
+-   🌱 I’m currently learning **Game Development, Python, Firebase, and Material-UI**
 -   💬 Ask me about **MongoDB, Express, Nodejs, React, JavaScript, EJS(Embedded JavaScript), Discord.js, HTML, and CSS**
 -   📫 How to reach me **[@koushikpuppala#3800](https://discord.koushikpuppala.live)** or **[koushikpuppala203@gmail.com](mailto:koushikpuppala203@gmail.com)**
 
@@ -64,9 +64,9 @@
 
 ## 🖥️ My Projects
 
-Here are my Projects on which I am working and I have contributed
+Here are the Projects on which I am working and I have contributed
 
--   [Koushik Puppala](https://koushikpuppala.live) - My Personal Website.
+-   [Koushik Puppala](https://koushikpuppala.live) - My Website.
 -   [Avengers Assemble](https://avengers-assemble.tech) - A website for Avengers Assemble Support Server and Bots.
 -   [Avenger](https://avenger.avengers-assemble.tech) - A Discord Bot for Multi-Purpose.
 -   [Musics_DJ](https://musics_dj.avengers-assemble.tech) - A Discord Bot for Music Streaming.
