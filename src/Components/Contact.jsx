@@ -126,9 +126,6 @@ class Contact extends React.Component {
 			})
 		}
 	}
-	shouldComponentUpdate() {
-		return false
-	}
 	render() {
 		const { Error } = this.state
 		return (
@@ -167,7 +164,7 @@ class Contact extends React.Component {
 															id='Name'
 															placeholder='Name'
 															onChange={this.handleChange.bind(this)}
-															value={this.state.Name}
+															defaultValue={this.state.Name}
 															required
 														/>
 														<label htmlFor='floatingInputGrid'>
@@ -192,7 +189,7 @@ class Contact extends React.Component {
 															id='Email'
 															placeholder='Email'
 															onChange={this.handleChange.bind(this)}
-															value={this.state.Email}
+															defaultValue={this.state.Email}
 															required
 														/>
 														<label htmlFor='floatingInputGrid'>
@@ -216,7 +213,7 @@ class Contact extends React.Component {
 														id='Subject'
 														placeholder='Subject'
 														onChange={this.handleChange.bind(this)}
-														value={this.state.Subject}
+														defaultValue={this.state.Subject}
 														required
 													/>
 													<label htmlFor='floatingInputGrid'>
@@ -238,7 +235,7 @@ class Contact extends React.Component {
 														placeholder='Message'
 														id='Message'
 														onChange={this.handleChange.bind(this)}
-														value={this.state.Message}
+														defaultValue={this.state.Message}
 														required
 														style={{ height: '100px' }}></textarea>
 													<label htmlFor='floatingTextarea2'>
