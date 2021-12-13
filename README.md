@@ -2,19 +2,19 @@
 
 ![Koushikpuppala](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑲𝒐𝒖𝒔𝒉𝒊𝒌%20𝑷𝒖𝒑𝒑𝒂𝒍𝒂&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient)
 
-# Hi 👋, I'm Koushik Puppala
+# Hi, I'm Koushik Puppala 👋
 
 ### I am a Student and Web Developer at [@iiitraichur](https://github.com/iiitraichur). I am working on the Full Stack and Discord bots Project and started learning Python. Contact me on Discord [@koushikpuppala#3800](https://discord.koushikpuppala.live)
 
 </div>
 
--   👨‍💻 My First project is **_[Koushikpuppala](https://koushikpuppala.live)_**.
--   🔭 I’m currently working on **_[Avengers Assemble](https://avengers-assemble.tech)_**.
--   👯 I’m collaborating on **_[Indian Institute of Information Technology Raichur, Karnataka](https://iiitr.ac.in)_** and **_[Discord Lists](https://discordlists100.xyz)_**.
--   🤝 I’m looking for help with **_[Avengers Assemble Discord Bot Community and Dashboard](https://github.com/koushikpuppala/avengers-assemble)_**.
--   🌱 I’m currently learning **Game Development, Python, Firebase, and Material-UI**
--   💬 Ask me about **MongoDB, Express, Nodejs, React, JavaScript, EJS(Embedded JavaScript), Discord.js, HTML, and CSS**
--   📫 How to reach me **[@koushikpuppala#3800](https://discord.koushikpuppala.live)** or **[koushikpuppala203@gmail.com](mailto:koushikpuppala203@gmail.com)**
+- 👨‍💻 My First project is **_[Koushikpuppala](https://koushikpuppala.live)_**.
+- 🔭 I’m currently working on **_[Avengers Assemble](https://avengers-assemble.tech)_**.
+- 👯 I’m collaborating on **_[Indian Institute of Information Technology Raichur, Karnataka](https://iiitr.ac.in)_** and **_[Discord Lists](https://discordlists100.xyz)_**.
+- 🤝 I’m looking for help with **_[Avengers Assemble Discord Bot Community and Dashboard](https://github.com/koushikpuppala/avengers-assemble)_**.
+- 🌱 I’m currently learning **Game Development, Python, Firebase, and Material-UI**
+- 💬 Ask me about **MongoDB, Express, Nodejs, React, JavaScript, EJS(Embedded JavaScript), Discord.js, HTML, and CSS**
+- 📫 How to reach me: **[@koushikpuppala#3800](https://discord.koushikpuppala.live)** or **[koushikpuppala203@gmail.com](mailto:koushikpuppala203@gmail.com)**
 
 ## ✨ Details
 
@@ -41,7 +41,7 @@
 <a href='https://twitter.com/puppala_koushik' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/twitter.png' alt='twitter' /></a>
 </div>
 
-## 🛠️ Languages and Tools:
+## 🛠️ Languages and Tools
 
 <div align='center'>
 <code><img src='https://img.icons8.com/fluency/40/000000/visual-studio-code-insides.png' alt='vscode' /></code>
@@ -66,13 +66,13 @@
 
 Here are the Projects on which I am working and I have contributed
 
--   [Koushik Puppala](https://koushikpuppala.live) - My Website.
--   [Avengers Assemble](https://avengers-assemble.tech) - A website for Avengers Assemble Support Server and Bots.
--   [Avenger](https://avenger.avengers-assemble.tech) - A Discord Bot for Multi-Purpose.
--   [Musics_DJ](https://musics_dj.avengers-assemble.tech) - A Discord Bot for Music Streaming.
--   [Indian Institute of Information Technology, Raichur](https://iiitr.ac.in) - My College Official Website.
--   [Indian Institute of Information Technology, Raichur Students](https://students.iiitr.ac.in) - My College Official Student Website.
--   [Discord Lists](https://discordlists100.xyz) - A Discord Lists where you can add your bots.
+- [Koushik Puppala](https://koushikpuppala.live) - My Website.
+- [Avengers Assemble](https://avengers-assemble.tech) - A website for Avengers Assemble Support Server and Bots.
+- [Avenger](https://avenger.avengers-assemble.tech) - A Discord Bot for Multi-Purpose.
+- [Musics_DJ](https://musics_dj.avengers-assemble.tech) - A Discord Bot for Music Streaming.
+- [Indian Institute of Information Technology, Raichur](https://iiitr.ac.in) - My College Official Website.
+- [Indian Institute of Information Technology, Raichur Students](https://students.iiitr.ac.in) - My College Official Student Website.
+- [Discord Lists](https://discordlists100.xyz) - A Discord Lists where you can add your bots.
 
 <details>
 <summary>📜 My Statistics</summary>
