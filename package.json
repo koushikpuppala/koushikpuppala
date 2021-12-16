@@ -11,10 +11,9 @@
 		"npm": ">=6.x"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject",
+		"start": "next start",
+		"dev": "next dev",
+		"build": "next build",
 		"server": "node server/main.js",
 		"dev_server": "nodemon server/main.js",
 		"sitemap": "babel-node src/Sitemap.js"
@@ -49,6 +48,8 @@
 		"express": "^4.17.1",
 		"isotope-layout": "^3.0.6",
 		"mongoose": "^6.0.5",
+		"next": "^12.0.7",
+		"node-sass": "^6.0.1",
 		"particles-bg": "^2.5.5",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",

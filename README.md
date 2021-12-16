@@ -86,3 +86,8 @@ Here are the Projects on which I am working and I have contributed
 alt='koushikpuppala' />
 </div>
 </details>
+
+## ⚡Recent Activity
+
+<!--START_SECTION:activity-->
+<!--END_SECTION:activity-->
