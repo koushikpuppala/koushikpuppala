@@ -1,6 +1,6 @@
 import React from 'react'
 import Card from '../components/Card'
-
+import { Portfolio } from '../data/Portfolio'
 export default class Home extends React.Component {
 	render() {
 		return (
@@ -14,7 +14,9 @@ export default class Home extends React.Component {
 					marginLeft: '-15em',
 					position: 'fixed',
 				}}>
-				<Card />
+				{Portfolio.map((list) => {
+					return <Card {...list} />
+				})}
 			</div>
 		)
 	}
