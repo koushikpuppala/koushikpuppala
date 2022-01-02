@@ -1,23 +1,31 @@
 import React from 'react'
-import Card from '../components/Card'
-import { Portfolio } from '../data/Portfolio'
+import Contact from '../components/Contact'
+import About from '../components/About'
+import Navbar from '../components/Navbar'
+import Hero from '../components/Hero'
+import Footer from '../components/Footer'
+import Skills from '../components/Skills'
+import Header from '../components/Header'
+import Portfolio from '../components/Portfolio'
+import Technology from '../components/Technology'
 export default class Home extends React.Component {
 	render() {
 		return (
-			<div
-				style={{
-					top: '50%',
-					left: '50%',
-					width: '30em',
-					height: '18em',
-					marginTop: '-9em',
-					marginLeft: '-15em',
-					position: 'fixed',
-				}}>
-				{Portfolio.map((list) => {
-					return <Card {...list} />
-				})}
-			</div>
+			<>
+				<Header title='Home' />
+				<div>
+					<Navbar />
+					<Hero />
+					<main id='main'>
+						<About />
+						<Skills />
+						<Portfolio />
+						<Technology />
+						<Contact />
+					</main>
+					<Footer />
+				</div>
+			</>
 		)
 	}
 }

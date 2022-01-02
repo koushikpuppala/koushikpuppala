@@ -1,12 +1,11 @@
 import React from 'react'
 import Header from '../components/Header'
-import styles from '../stylesheets/NotFound.module.scss'
 export default class NotFound extends React.Component {
 	render() {
 		return (
 			<>
 				<Header title='Koushik Puppala | Page Not Found' />
-				<div className={styles.NotFound}>
+				<div className='NotFound'>
 					<div>
 						<svg
 							width='636px'
@@ -126,70 +125,70 @@ export default class NotFound extends React.Component {
 								<rect id='error-top' x='10' y='10' width='307' height='4'></rect>
 							</defs>
 							<g fillRule='evenodd'>
-								<g className={styles.glow} fill='black' fillOpacity='1'>
+								<g className='glow' fill='black' fillOpacity='1'>
 									<use
-										className={styles.error_3_4}
+										className='error-3-4'
 										filter='url(#stroke-glow)'
 										href='#error-3-4'></use>
 									<use
-										className={styles.error_2_0}
+										className='error-2-0'
 										filter='url(#stroke-glow)'
 										href='#error-2-0'></use>
 									<use
-										className={styles.error_1_4}
+										className='error-1-4'
 										filter='url(#stroke-glow)'
 										href='#error-1-4'></use>
 									<use
-										className={styles.error_1_e}
+										className='error-1-e'
 										filter='url(#stroke-glow)'
 										href='#error-1-e'></use>
 									<use
-										className={styles.error_2_r}
+										className='error-2-r'
 										filter='url(#stroke-glow)'
 										href='#error-2-r'></use>
 									<use
-										className={styles.error_3_r}
+										className='error-3-r'
 										filter='url(#stroke-glow)'
 										href='#error-3-r'></use>
 									<use
-										className={styles.error_4_o}
+										className='error-4-o'
 										filter='url(#stroke-glow)'
 										href='#error-4-o'></use>
 									<use
-										className={styles.error_5_r}
+										className='error-5-r'
 										filter='url(#stroke-glow)'
 										href='#error-5-r'></use>
 									<use
-										className={styles.error_right}
+										className='error-right'
 										filter='url(#stroke-glow)'
 										href='#error-right'></use>
 									<use
-										className={styles.error_left}
+										className='error-left'
 										filter='url(#stroke-glow)'
 										href='#error-left'></use>
 									<use
-										className={styles.error_top}
+										className='error-top'
 										filter='url(#stroke-glow)'
 										href='#error-top'></use>
 								</g>
 								<g
-									className={styles.top}
+									className='top'
 									fill='none'
 									stroke='#FF0000'
 									strokeWidth='2'
 									strokeLinecap='round'
 									strokeLinejoin='round'>
-									<use className={styles.error_3_4} href='#error-3-4'></use>
-									<use className={styles.error_2_0} href='#error-2-0'></use>
-									<use className={styles.error_1_4} href='#error-1-4'></use>
-									<use className={styles.error_1_e} href='#error-1-e'></use>
-									<use className={styles.error_2_r} href='#error-2-r'></use>
-									<use className={styles.error_3_r} href='#error-3-r'></use>
-									<use className={styles.error_4_o} href='#error-4-o'></use>
-									<use className={styles.error_5_r} href='#error-5-r'></use>
-									<use className={styles.error_right} href='#error-right'></use>
-									<use className={styles.error_left} href='#error-left'></use>
-									<use className={styles.error_top} href='#error-top'></use>
+									<use className='error-3-4' href='#error-3-4'></use>
+									<use className='error-2-0' href='#error-2-0'></use>
+									<use className='error-1-4' href='#error-1-4'></use>
+									<use className='error-1-e' href='#error-1-e'></use>
+									<use className='error-2-r' href='#error-2-r'></use>
+									<use className='error-3-r' href='#error-3-r'></use>
+									<use className='error-4-o' href='#error-4-o'></use>
+									<use className='error-5-r' href='#error-5-r'></use>
+									<use className='error-right' href='#error-right'></use>
+									<use className='error-left' href='#error-left'></use>
+									<use className='error-top' href='#error-top'></use>
 								</g>
 							</g>
 						</svg>
@@ -252,17 +251,17 @@ export default class NotFound extends React.Component {
 							<g fillRule='evenodd'>
 								<g className='glow' fill='black' fillOpacity='1'>
 									<use
-										className={styles.quote_top}
+										className='quote-top'
 										filter='url(#fill-glow)'
 										href='#quote-top'></use>
 									<use
-										className={styles.quote_bottom}
+										className='quote-bottom'
 										filter='url(#fill-glow)'
 										href='#quote-bottom'></use>
 								</g>
-								<g className={styles.top} fill='#FF0000'>
-									<use className={styles.quote_top} href='#quote-top'></use>
-									<use className={styles.quote_bottom} href='#quote-bottom'></use>
+								<g className='top' fill='#FF0000'>
+									<use className='quote-top' href='#quote-top'></use>
+									<use className='quote-bottom' href='#quote-bottom'></use>
 								</g>
 							</g>
 						</svg>
@@ -323,21 +322,19 @@ export default class NotFound extends React.Component {
 										id='link-mark'></path>
 								</defs>
 								<g fillRule='evenodd'>
-									<g className={styles.glow} fill='black' fillOpacity='1'>
+									<g className='glow' fill='black' fillOpacity='1'>
 										<use
-											className={styles.link_phrase}
+											className='link-phrase'
 											filter='url(#fill-glow)'
 											href='#link-phrase'></use>
 										<use
-											className={styles.link_mark}
+											className='link-mark'
 											filter='url(#fill-glow)'
 											href='#link-mark'></use>
 									</g>
-									<g className={styles.top} fill='#FF0000'>
-										<use
-											className={styles.link_phrase}
-											href='#link-phrase'></use>
-										<use className={styles.link_mark} href='#link-mark'></use>
+									<g className='top' fill='#FF0000'>
+										<use className='link-phrase' href='#link-phrase'></use>
+										<use className='link-mark' href='#link-mark'></use>
 									</g>
 								</g>
 							</svg>
