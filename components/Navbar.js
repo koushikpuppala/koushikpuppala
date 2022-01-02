@@ -1,26 +1,18 @@
-import Image from 'next/image'
 import React from 'react'
-import styles from '../stylesheets/components/Navbar.module.scss'
-// import { NavActions } from '../Actions/Navbar'
+import { NavActions } from '../actions/Navbar'
 
-class Navbar extends React.Component {
+export default class Navbar extends React.Component {
 	componentDidMount() {
-		// NavActions()
+		NavActions()
 	}
-
 	render() {
 		return (
 			<div>
-				<i
-					className={[
-						'bi bi-list d-xl-none bx-tada-hover',
-						styles['mobile-nav-toggle'],
-					].join(' ')}></i>
-
+				<i className='bi bi-list mobile-nav-toggle d-xl-none bx-tada-hover'></i>
 				<header id='header'>
 					<div className='d-flex flex-column'>
-						<div className={styles['profile']}>
-							<Image
+						<div className='profile'>
+							<img
 								src='/images/other/Koushik.webp'
 								alt='Koushik'
 								className='img-fluid rounded-circle'
@@ -116,14 +108,10 @@ class Navbar extends React.Component {
 							</div>
 						</div>
 
-						<nav id='navbar' className={[styles['nav-menu'], 'navbar'].join(' ')}>
+						<nav id='navbar' className='nav-menu navbar'>
 							<ul>
 								<li>
-									<a
-										href='#hero'
-										className={['nav-link', 'scrollto', styles['active']].join(
-											' '
-										)}>
+									<a href='#hero' className='nav-link scrollto active'>
 										<i className='bx bx-home'></i> <span>Home</span>
 									</a>
 								</li>
@@ -167,5 +155,3 @@ class Navbar extends React.Component {
 		)
 	}
 }
-
-export default Navbar

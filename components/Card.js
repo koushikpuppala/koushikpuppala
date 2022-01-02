@@ -1,11 +1,11 @@
 import React from 'react'
 import Typed from 'typed.js'
-import styles from '../stylesheets/components/Card.module.scss'
 
 export default class Card extends React.Component {
 	constructor(props) {
 		super(props)
 		this.props = props
+		this.aos = ['slide-left', 'slide-right']
 	}
 
 	componentDidMount() {
@@ -31,29 +31,31 @@ export default class Card extends React.Component {
 
 	LearnMore = (event) => {
 		event.preventDefault()
-		const url = '/koushikpuppala'
-		window.location.href = url
+		window.location.href = `/projects/${this.props.project}`
 	}
 
 	render() {
 		return (
-			<>
-				<div className={[styles.flip, styles.flip_vertical].join(' ')} key={this.props.id}>
+			<div
+				className={`col-lg-6 col-md-12 portfolio-item filter-${this.props.category}`}
+				data-aos={this.aos[this.props.aos % 2]}
+				key={this.props.id}>
+				<div className='flip flip_vertical'>
 					<div
-						className={styles.front}
+						className='front'
 						style={{
 							backgroundImage: `url(${this.props.image})`,
 						}}>
-						<h1 className={styles.text_shadow}>{this.props.project.toUpperCase()}</h1>
+						{/* <h1 className='text_shadow'>{this.props.project.toUpperCase()}</h1> */}
 					</div>
-					<div className={styles.back}>
+					<div className='back'>
 						<h2>{this.props.title}</h2>
 						<p
 							ref={(el) => {
 								this.el = el
 							}}></p>
-						<div className={styles.buttons}>
-							<button className={styles.cta} onClick={this.Website.bind(this)}>
+						<div className='buttons'>
+							<button className='cta' onClick={this.Website.bind(this)}>
 								<span>Website</span>
 								<svg width='15px' height='10px' viewBox='0 0 13 10'>
 									<path d='M1,5 L11,5'></path>
@@ -63,16 +65,16 @@ export default class Card extends React.Component {
 							&nbsp;&nbsp;
 							<button
 								onClick={this.LearnMore.bind(this)}
-								className={[styles.button_learn_more, styles.learn_more].join(' ')}>
-								<span aria-hidden='true' className={styles.circle}>
-									<span className={[styles.icon, styles.arrow].join(' ')}></span>
+								className='button_learn_more learn_more'>
+								<span aria-hidden='true' className='circle'>
+									<span className='icon arrow'></span>
 								</span>
-								<span className={styles.button_text}>Learn More</span>
+								<span className='button_text'>Learn More</span>
 							</button>
 						</div>
 					</div>
 				</div>
-			</>
+			</div>
 		)
 	}
 }

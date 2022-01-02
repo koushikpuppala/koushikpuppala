@@ -1,10 +1,9 @@
-/** @format */
-
 import React from 'react'
 import axios from 'axios'
-import '../Stylesheets/Contact.css'
 
-const regularExpression = RegExp(/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z.]+$/)
+const regularExpression = RegExp(
+	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+)
 
 export default class Contact extends React.Component {
 	constructor() {
@@ -126,9 +125,6 @@ export default class Contact extends React.Component {
 			})
 		}
 	}
-	shouldComponentUpdate() {
-		return false
-	}
 	render() {
 		const { Error } = this.state
 		return (
@@ -139,6 +135,7 @@ export default class Contact extends React.Component {
 					data-bs-backdrop='static'
 					data-bs-keyboard='false'
 					tabIndex='-1'
+					role='dialog'
 					aria-labelledby='staticBackdropLabel'>
 					<div>
 						<div className='modal-dialog'>
@@ -148,150 +145,125 @@ export default class Contact extends React.Component {
 										Contact Me
 									</h5>
 								</div>
-								{navigator.onLine ? (
-									<form
-										id='contact-form'
-										onSubmit={this.handleSubmit.bind(this)}
-										noValidate>
-										<div className='modal-body'>
-											<div className='row g-2'>
-												<div className='col-md'>
-													<div className='form-floating'>
-														<input
-															type='text'
-															className={
-																Error.Name.length > 0
-																	? 'is-invalid form-control'
-																	: 'form-control'
-															}
-															id='Name'
-															placeholder='Name'
-															onChange={this.handleChange.bind(this)}
-															value={this.state.Name}
-															required
-														/>
-														<label htmlFor='floatingInputGrid'>
-															Your Name
-														</label>
-														{Error.Name.length >= 0 && (
-															<span className='invalid-feedback'>
-																{Error.Name}
-															</span>
-														)}
-													</div>
-												</div>
-												<div className='col-md'>
-													<div className='form-floating'>
-														<input
-															type='text'
-															className={
-																Error.Email.length > 0
-																	? 'is-invalid form-control'
-																	: 'form-control'
-															}
-															id='Email'
-															placeholder='Email'
-															onChange={this.handleChange.bind(this)}
-															value={this.state.Email}
-															required
-														/>
-														<label htmlFor='floatingInputGrid'>
-															Your Email
-														</label>
-														{Error.Email.length >= 0 && (
-															<span className='invalid-feedback'>
-																{Error.Email}
-															</span>
-														)}
-													</div>
-												</div>
+								<form
+									id='contact-form'
+									onSubmit={this.handleSubmit.bind(this)}
+									noValidate>
+									<div className='modal-body'>
+										<div className='row g-2'>
+											<div className='col-md'>
 												<div className='form-floating'>
 													<input
 														type='text'
 														className={
-															Error.Subject.length > 0
+															Error.Name.length > 0
 																? 'is-invalid form-control'
 																: 'form-control'
 														}
-														id='Subject'
-														placeholder='Subject'
+														id='Name'
+														placeholder='Name'
 														onChange={this.handleChange.bind(this)}
-														value={this.state.Subject}
+														value={this.state.Name}
 														required
 													/>
 													<label htmlFor='floatingInputGrid'>
-														Enter Subject
+														Your Name
 													</label>
-													{Error.Subject.length >= 0 && (
+													{Error.Name.length >= 0 && (
 														<span className='invalid-feedback'>
-															{Error.Subject}
-														</span>
-													)}
-												</div>
-												<div className='form-floating'>
-													<textarea
-														className={
-															Error.Message.length > 0
-																? 'is-invalid form-control'
-																: 'form-control'
-														}
-														placeholder='Message'
-														id='Message'
-														onChange={this.handleChange.bind(this)}
-														value={this.state.Message}
-														required
-														style={{ height: '100px' }}></textarea>
-													<label htmlFor='floatingTextarea2'>
-														Enter Message
-													</label>
-													{Error.Message.length >= 0 && (
-														<span className='invalid-feedback'>
-															{Error.Message}
+															{Error.Name}
 														</span>
 													)}
 												</div>
 											</div>
+											<div className='col-md'>
+												<div className='form-floating'>
+													<input
+														type='text'
+														className={
+															Error.Email.length > 0
+																? 'is-invalid form-control'
+																: 'form-control'
+														}
+														id='Email'
+														placeholder='Email'
+														onChange={this.handleChange.bind(this)}
+														value={this.state.Email}
+														required
+													/>
+													<label htmlFor='floatingInputGrid'>
+														Your Email
+													</label>
+													{Error.Email.length >= 0 && (
+														<span className='invalid-feedback'>
+															{Error.Email}
+														</span>
+													)}
+												</div>
+											</div>
+											<div className='form-floating'>
+												<input
+													type='text'
+													className={
+														Error.Subject.length > 0
+															? 'is-invalid form-control'
+															: 'form-control'
+													}
+													id='Subject'
+													placeholder='Subject'
+													onChange={this.handleChange.bind(this)}
+													value={this.state.Subject}
+													required
+												/>
+												<label htmlFor='floatingInputGrid'>
+													Enter Subject
+												</label>
+												{Error.Subject.length >= 0 && (
+													<span className='invalid-feedback'>
+														{Error.Subject}
+													</span>
+												)}
+											</div>
+											<div className='form-floating'>
+												<textarea
+													className={
+														Error.Message.length > 0
+															? 'is-invalid form-control'
+															: 'form-control'
+													}
+													placeholder='Message'
+													id='Message'
+													onChange={this.handleChange.bind(this)}
+													value={this.state.Message}
+													required
+													style={{ height: '100px' }}></textarea>
+												<label htmlFor='floatingTextarea2'>
+													Enter Message
+												</label>
+												{Error.Message.length >= 0 && (
+													<span className='invalid-feedback'>
+														{Error.Message}
+													</span>
+												)}
+											</div>
 										</div>
-										<div className='modal-footer'>
-											<button
-												type='button'
-												className='hvr-float-shadow btn btn-outline-secondary'
-												data-bs-dismiss='modal'
-												onClick={this.handleClose.bind(this)}>
-												Close
-											</button>
-											<button
-												className='hvr-float-shadow btn btn-outline-info'
-												type='submit'
-												data-bs-dismiss='modal'>
-												Send Message
-											</button>
-										</div>
-									</form>
-								) : (
-									<>
-										<div className='modal-body'>
-											<h3
-												style={{
-													textAlign: 'center',
-													marginTop: '20px',
-													marginBottom: '20px',
-													color: 'red',
-												}}>
-												Check your Internet connection to Send Message
-											</h3>
-										</div>
-
-										<div className='modal-footer'>
-											<button
-												type='button'
-												className='hvr-float-shadow btn btn-outline-secondary'
-												data-bs-dismiss='modal'>
-												Close
-											</button>
-										</div>
-									</>
-								)}
+									</div>
+									<div className='modal-footer'>
+										<button
+											type='button'
+											className='hvr-float-shadow btn btn-outline-secondary'
+											data-bs-dismiss='modal'
+											onClick={this.handleClose.bind(this)}>
+											Close
+										</button>
+										<button
+											className='hvr-float-shadow btn btn-outline-info'
+											type='submit'
+											data-bs-dismiss='modal'>
+											Send Message
+										</button>
+									</div>
+								</form>
 							</div>
 						</div>
 					</div>

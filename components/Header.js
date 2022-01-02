@@ -1,15 +1,6 @@
 import Head from 'next/head'
 import React from 'react'
 
-/**
- * @extends {React.Component}
- * @input props - Details about the page
- * @title Title of the Page
- * @description Description of the Page
- * @canonical
- * @returns head tag for the page
- */
-
 export default class Header extends React.Component {
 	constructor(props) {
 		super(props)
@@ -82,6 +73,23 @@ export default class Header extends React.Component {
 				<meta name='twitter:title' content={this.state.title} />
 				<meta name='twitter:description' content={this.state.description} />
 				<meta name='twitter:image' content='/icons/android-icon-192x192.png' />
+				<script
+					src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js'
+					integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p'
+					crossOrigin='anonymous'></script>
+				{/* Global site tag (gtag.js) - Google Analytics  */}
+				{/* <script
+					async
+					src='https://www.googletagmanager.com/gtag/js?id=G-B63896E1RK'></script>
+				<script
+					async
+					dangerouslySetInnerHTML={{
+						__html: `window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', 'G-B63896E1RK');`,
+					}}
+				/> */}
 			</Head>
 		)
 	}

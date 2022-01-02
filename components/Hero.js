@@ -1,9 +1,7 @@
-// filename: Typing.js
-// React version: "^16.12.0"
 import React from 'react'
-// Import the desired words
 import Typed from 'typed.js'
-class Typing extends React.Component {
+
+export default class Hero extends React.Component {
 	componentDidMount() {
 		const options = {
 			strings: [
@@ -26,18 +24,25 @@ class Typing extends React.Component {
 		// Please don't forget to cleanup animation layer
 		this.typed.destroy()
 	}
-
 	render() {
 		return (
-			<>
-				<span
-					style={{ whiteSpace: 'pre' }}
-					ref={(el) => {
-						this.el = el
-					}}
-				/>
-			</>
+			<div>
+				<section
+					id='hero'
+					className='d-flex flex-column justify-content-center align-items-center'>
+					<div className='hero-container' data-aos='fade-in'>
+						<h1>Koushik Puppala</h1>
+						<p>
+							I'm&nbsp;
+							<span
+								ref={(el) => {
+									this.el = el
+								}}
+								className='typed'></span>
+						</p>
+					</div>
+				</section>
+			</div>
 		)
 	}
 }
-export default Typing
