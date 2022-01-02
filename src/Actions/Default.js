@@ -1,5 +1,3 @@
-/** @format */
-
 /**
  * Easy selector helper function
  */

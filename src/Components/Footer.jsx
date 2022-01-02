@@ -1,5 +1,3 @@
-/** @format */
-
 import React from 'react'
 import '../Stylesheets/Footer.css'
 import { FooterAction } from '../Actions/Footer'

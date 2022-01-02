@@ -1,5 +1,3 @@
-/** @format */
-
 import { select, on, onscroll, scrollto } from './Default'
 
 export const NavActions = () => {
