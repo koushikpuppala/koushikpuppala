@@ -82,12 +82,7 @@ Here are the Projects on which I am working and I have contributed
 <img src='https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green' alt='koushikpuppala' />
 <img src='https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green' alt='koushikpuppala' />
 <img src='https://github-readme-stats.vercel.app/api/top-langs?username=koushikpuppala&show_icons=true&locale=en&layout=compact&theme=blue-green' alt='koushikpuppala' />
-<img src='https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode' 
+<img src='https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode'
 alt='koushikpuppala' />
 </div>
 </details>
-
-## ⚡Recent Activity
-
-<!--START_SECTION:activity-->
-<!--END_SECTION:activity-->
