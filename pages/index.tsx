@@ -81,8 +81,8 @@ const Home: NextPage = () => {
 											<i className='bi bi-chevron-right'></i>{' '}
 											<strong>Email:</strong>{' '}
 											<span>
-												<a href='mailto:koushikpuppala203@gmail.com'>
-													koushikpuppala203@gmail.com
+												<a href='mailto:contact@koushikpuppala.com'>
+													contact@koushikpuppala.com
 												</a>
 											</span>
 										</li>
@@ -126,56 +126,54 @@ const Home: NextPage = () => {
 					<div className='row'>
 						<div className='col-lg-3 mt-4'>
 							<div className='icon-box'>
-								<i className='ri-store-line' style={{ color: ' #ffbb2c' }}></i>
-								<h3>Full Stack Development</h3>
-							</div>
-						</div>
-						<div className='col-lg-3 mt-4'>
-							<div className='icon-box'>
 								<i
-									className='ri-bar-chart-box-line'
-									style={{ color: '#5578ff' }}></i>
-								<h3>Android App Development</h3>
-							</div>
-						</div>
-						<div className='col-lg-3 mt-4'>
-							<div className='icon-box'>
-								<i
-									className='ri-calendar-todo-line'
-									style={{ color: ' #e80368' }}></i>
-								<h3>Game Development</h3>
-							</div>
-						</div>
-						<div className='col-lg-3 mt-4'>
-							<div className='icon-box'>
-								<i className='ri-paint-brush-line' style={{ color: '#e361ff' }}></i>
-								<h3>Artificial Intelligence</h3>
-							</div>
-						</div>
-						<div className='col-lg-3 mt-4'>
-							<div className='icon-box'>
-								<i className='ri-database-2-line' style={{ color: ' #47aeff' }}></i>
-								<h3>Machine Learning</h3>
-							</div>
-						</div>
-						<div className='col-lg-3 mt-4'>
-							<div className='icon-box'>
-								<i className='ri-gradienter-line' style={{ color: ' #ffa76e' }}></i>
-								<h3>Discord Bots</h3>
-							</div>
-						</div>
-						<div className='col-lg-3 mt-4'>
-							<div className='icon-box'>
-								<i
-									className='ri-file-list-3-line'
+									className='ri-open-source-line'
 									style={{ color: ' #11dbcf' }}></i>
 								<h3>Open Source</h3>
 							</div>
 						</div>
 						<div className='col-lg-3 mt-4'>
 							<div className='icon-box'>
-								<i className='ri-price-tag-2-line' style={{ color: '#4233ff' }}></i>
+								<i className='ri-stack-line' style={{ color: ' #ffbb2c' }}></i>
+								<h3>Full Stack Development</h3>
+							</div>
+						</div>
+						<div className='col-lg-3 mt-4'>
+							<div className='icon-box'>
+								<i
+									className='ri-code-s-slash-line'
+									style={{ color: '#4233ff' }}></i>
 								<h3>MERN Stack Development</h3>
+							</div>
+						</div>
+						<div className='col-lg-3 mt-4'>
+							<div className='icon-box'>
+								<i className='ri-discord-line' style={{ color: ' #ffa76e' }}></i>
+								<h3>Discord Bots</h3>
+							</div>
+						</div>
+						<div className='col-lg-3 mt-4'>
+							<div className='icon-box'>
+								<i className='ri-android-line' style={{ color: '#5578ff' }}></i>
+								<h3>Android App Development</h3>
+							</div>
+						</div>
+						<div className='col-lg-3 mt-4'>
+							<div className='icon-box'>
+								<i className='ri-gamepad-line' style={{ color: ' #e80368' }}></i>
+								<h3>Game Development</h3>
+							</div>
+						</div>
+						<div className='col-lg-3 mt-4'>
+							<div className='icon-box'>
+								<i className='ri-cpu-line' style={{ color: '#e361ff' }}></i>
+								<h3>Artificial Intelligence</h3>
+							</div>
+						</div>
+						<div className='col-lg-3 mt-4'>
+							<div className='icon-box'>
+								<i className='ri-settings-5-line' style={{ color: ' #47aeff' }}></i>
+								<h3>Machine Learning</h3>
 							</div>
 						</div>
 					</div>

@@ -179,14 +179,25 @@ const Contact: NextComponentType = () => {
 							<div className='info-box'>
 								<i className='bx bx-envelope'></i>
 								<h3>Email Me</h3>
-								<p>koushikpuppala203@gmail.com</p>
+								<p>
+									<a href='mailto:contact@koushikpuppala.com'>
+										contact@koushikpuppala.com
+									</a>
+								</p>
 							</div>
 						</div>
 						<div className='col-md-6 mt-4 d-flex align-items-stretch'>
 							<div className='info-box'>
 								<i className='bx bx-phone-call'></i>
 								<h3>Call Me</h3>
-								<p>+91 9492993737</p>
+								<p>
+									<a
+										href='https://join.skype.com/invite/vfWLRyA9iFQc'
+										target='_blank'
+										rel='noreferrer'>
+										https://join.skype.com/invite/vfWLRyA9iFQc
+									</a>
+								</p>
 							</div>
 						</div>
 					</div>

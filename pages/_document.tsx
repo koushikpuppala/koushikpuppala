@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-sync-scripts */
 import { Html, Head, Main, NextScript } from 'next/document'
+import Script from 'next/script'
 
 const Document = () => {
 	return (
@@ -9,6 +10,17 @@ const Document = () => {
 					href='https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i&display=optional'
 					rel='stylesheet'
 				/>
+
+				{/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
+				<Script async src='https://www.googletagmanager.com/gtag/js?id=G-VFZBVWQG74' />
+				<Script id='google-analytics' strategy='afterInteractive'>
+					{`
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', 'G-VFZBVWQG74');
+					`}
+				</Script>
 			</Head>
 			<body>
 				<Main />
