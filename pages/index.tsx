@@ -21,7 +21,7 @@ const Home: NextPage = () => {
 								width={100}
 								height={100}
 								layout='responsive'
-								src='/img/koushikpuppala.png'
+								src='/img/Koushikpuppala.png'
 								className='img-fluid'
 								alt='koushikpuppala'
 							/>
