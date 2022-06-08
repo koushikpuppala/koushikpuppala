@@ -1,0 +1,5 @@
+export { default as Contact } from './contact'
+export { default as Header } from './header'
+export { default as Navbar } from './navbar'
+export { default as Portfolio } from './portfolio'
+export { default as Skills } from './skills'
