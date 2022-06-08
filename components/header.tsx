@@ -1,8 +1,10 @@
-import type { NextComponentType } from 'next'
+import type { NextComponentType, NextPageContext } from 'next'
 import Head from 'next/head'
 import { HeaderProps } from '../types'
 
-const Header: NextComponentType = (props: HeaderProps) => {
+const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
+	props: HeaderProps
+) => {
 	const title = props.title || 'Koushik Puppala | Computer Science Engineer'
 	const description =
 		props.description ||
