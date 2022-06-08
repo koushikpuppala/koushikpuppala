@@ -1,5 +1,6 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect } from 'react'
 import { Contact, Header, Navbar, Portfolio, Skills } from '../components'
 
@@ -78,7 +79,12 @@ const Home: NextPage = () => {
 									<ul>
 										<li>
 											<i className='bi bi-chevron-right'></i>{' '}
-											<strong>Email:</strong> <span>email@example.com</span>
+											<strong>Email:</strong>{' '}
+											<span>
+												<a href='mailto:koushikpuppala203@gmail.com'>
+													koushikpuppala203@gmail.com
+												</a>
+											</span>
 										</li>
 									</ul>
 								</div>
@@ -87,7 +93,9 @@ const Home: NextPage = () => {
 										<li>
 											<i className='bi bi-chevron-right'></i>{' '}
 											<strong>Website:</strong>{' '}
-											<span>koushikpuppala.com</span>
+											<span>
+												<Link href='/'>koushikpuppala.com</Link>
+											</span>
 										</li>
 									</ul>
 								</div>

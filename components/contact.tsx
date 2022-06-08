@@ -179,7 +179,7 @@ const Contact: NextComponentType = () => {
 							<div className='info-box'>
 								<i className='bx bx-envelope'></i>
 								<h3>Email Me</h3>
-								<p>contact@koushikpuppala.com</p>
+								<p>koushikpuppala203@gmail.com</p>
 							</div>
 						</div>
 						<div className='col-md-6 mt-4 d-flex align-items-stretch'>
