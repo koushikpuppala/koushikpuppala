@@ -26,14 +26,13 @@ const Document = () => {
 						gtag('config', 'G-VFZBVWQG74');
 					`}
 				</Script>
-				<Script
+				<script
 					async
 					id='google-ca-pub-6510875727156988'
 					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6510875727156988'
 					crossOrigin='anonymous'
-					strategy='afterInteractive'
 				/>
-				<Script id='google-tag-manager' strategy='afterInteractive'>
+				<script id='google-tag-manager'>
 					{`
 						(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 						new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -41,7 +40,7 @@ const Document = () => {
 						'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 						})(window,document,'script','dataLayer','GTM-KM9WPPS');
 					`}
-				</Script>
+				</script>
 			</Head>
 			<body>
 				<noscript>
