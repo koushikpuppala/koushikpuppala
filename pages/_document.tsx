@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/next-script-for-ga */
 import { Html, Head, Main, NextScript } from 'next/document'
 import Script from 'next/script'
 
@@ -10,28 +11,33 @@ const Document = () => {
 					rel='stylesheet'
 				/>
 
-				{/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
-				<Script
-					async
-					id='google-analytics-G-VFZBVWQG74'
-					src='https://www.googletagmanager.com/gtag/js?id=G-VFZBVWQG74'
-					crossOrigin='anonymous'
-					strategy='afterInteractive'
-				/>
-				<Script id='google-analytics' strategy='afterInteractive'>
-					{`
-						window.dataLayer = window.dataLayer || [];
-						function gtag(){dataLayer.push(arguments);}
-						gtag('js', new Date());
-						gtag('config', 'G-VFZBVWQG74');
-					`}
-				</Script>
 				<script
 					async
 					id='google-ca-pub-6510875727156988'
 					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6510875727156988'
 					crossOrigin='anonymous'
 				/>
+				<script
+					async
+					id='google-analytics-G-VFZBVWQG74'
+					src='https://www.googletagmanager.com/gtag/js?id=G-VFZBVWQG74'
+					crossOrigin='anonymous'
+				/>
+				<script id='google-analytics'>
+					{`
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+						gtag('config', 'G-VFZBVWQG74');
+						(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+							(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+							m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+							})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+							ga('create', 'G-VFZBVWQG74', 'auto');
+							ga('send', 'pageview');
+					`}
+				</script>
 				<script id='google-tag-manager'>
 					{`
 						(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
