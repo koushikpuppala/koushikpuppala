@@ -36,6 +36,7 @@
 		"bootstrap-icons": "^1.8.3",
 		"boxicons": "^2.1.2",
 		"glightbox": "^3.2.0",
+		"globby": "^13.1.1",
 		"isotope-layout": "^3.0.6",
 		"mongoose": "^6.3.6",
 		"next": "12.1.6",
