@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/next-script-for-ga */
 import { Html, Head, Main, NextScript } from 'next/document'
 import Script from 'next/script'
 
@@ -11,27 +10,29 @@ const Document = () => {
 					rel='stylesheet'
 				/>
 
-				<script
-					async
-					id='google-ca-pub-6510875727156988'
-					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6510875727156988'
-					crossOrigin='anonymous'
-				/>
-				<script
+				<Script
 					async
 					id='google-analytics-G-VFZBVWQG74'
 					src='https://www.googletagmanager.com/gtag/js?id=G-VFZBVWQG74'
 					crossOrigin='anonymous'
+					strategy='afterInteractive'
 				/>
-				<script id='google-analytics'>
+				<Script id='google-analytics' strategy='afterInteractive'>
 					{`
 						window.dataLayer = window.dataLayer || [];
 						function gtag(){dataLayer.push(arguments);}
 						gtag('js', new Date());
 						gtag('config', 'G-VFZBVWQG74');
 					`}
-				</script>
-				<script id='google-tag-manager'>
+				</Script>
+				<Script
+					async
+					id='google-ca-pub-6510875727156988'
+					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6510875727156988'
+					crossOrigin='anonymous'
+					strategy='afterInteractive'
+				/>
+				<Script id='google-tag-manager' strategy='afterInteractive'>
 					{`
 						(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 						new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -39,7 +40,7 @@ const Document = () => {
 						'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 						})(window,document,'script','dataLayer','GTM-KM9WPPS');
 					`}
-				</script>
+				</Script>
 			</Head>
 			<body>
 				<noscript>
