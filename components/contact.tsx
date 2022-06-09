@@ -335,6 +335,11 @@ const Contact: NextComponentType = () => {
 						</div>
 						<div className='text-center'>
 							<button type='submit' disabled={isLoading || sendBtn}>
+								{/* <i
+									className='bi bi-send'
+									style={{
+										color: sendBtn ? '#18d26e' : '#18d26e',
+									}}></i>{' '} */}
 								Send Message
 							</button>
 						</div>

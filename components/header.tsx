@@ -43,7 +43,7 @@ const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 			<meta property='og:image:width' content='300' />
 			<meta property='og:image:height' content='300' />
 
-			<meta name='twitter:card' content='summary' />
+			<meta name='twitter:card' content='summary_large_image' />
 			<meta name='twitter:url' content='https://koushikpuppala.com/' />
 			<meta name='twitter:site' content='@puppala_koushik' />
 			<meta name='twitter:creator' content='@puppala_koushik' />
