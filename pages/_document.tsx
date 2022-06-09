@@ -12,15 +12,23 @@ const Document = () => {
 				/>
 
 				{/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
-				<Script async src='https://www.googletagmanager.com/gtag/js?id=G-VFZBVWQG74' />
-				<Script id='google-analytics' strategy='afterInteractive'>
+				<script
+					async
+					src='https://www.googletagmanager.com/gtag/js?id=G-VFZBVWQG74'
+					crossOrigin='anonymous'
+				/>
+				<script>
 					{`
 						window.dataLayer = window.dataLayer || [];
 						function gtag(){dataLayer.push(arguments);}
 						gtag('js', new Date());
 						gtag('config', 'G-VFZBVWQG74');
 					`}
-				</Script>
+				</script>
+				<script
+					async
+					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6510875727156988'
+					crossOrigin='anonymous'></script>
 			</Head>
 			<body>
 				<Main />
