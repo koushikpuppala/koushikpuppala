@@ -20,14 +20,14 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 			once: false,
 			mirror: true,
 		})
-		if (navigator.onLine) {
+		window.addEventListener('load', () => {
 			console.log(navigator.onLine)
-			toast.success('You are online!')
-		} else {
-			toast.error('You are offline!', {
-				autoClose: false,
-			})
-		}
+			navigator.onLine
+				? toast.success('You are online!')
+				: toast.error('You are offline!', {
+						autoClose: false,
+				  })
+		})
 	}, [])
 	return (
 		<>

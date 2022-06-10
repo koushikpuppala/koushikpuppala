@@ -1,6 +1,6 @@
 import axios from 'axios'
 import type { NextComponentType } from 'next'
-import { ChangeEvent, SyntheticEvent, useState } from 'react'
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
 
 const Contact: NextComponentType = () => {
 	const [form, SetForm] = useState({
@@ -18,6 +18,7 @@ const Contact: NextComponentType = () => {
 	})
 	const [isError, SetIsError] = useState('')
 	const [successMsg, SetSuccessMsg] = useState('')
+	const [isOnline, SetIsOnline] = useState(Boolean)
 	const RegularExpression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/
 	const sendBtn =
 		errorMsg.name.length !== 0 ||
@@ -28,6 +29,12 @@ const Contact: NextComponentType = () => {
 		form.email.length === 0 ||
 		form.subject.length === 0 ||
 		form.message.length === 0
+
+	useEffect(() => {
+		window.addEventListener('load', () => {
+			navigator.onLine ? SetIsOnline(true) : SetIsOnline(false)
+		})
+	}, [])
 
 	const handleSubmit = (event: SyntheticEvent) => {
 		event.preventDefault()
@@ -195,168 +202,162 @@ const Contact: NextComponentType = () => {
 										href='https://join.skype.com/invite/vfWLRyA9iFQc'
 										target='_blank'
 										rel='noreferrer'>
-										https://join.skype.com/invite/vfWLRyA9iFQc
+										Skype Call
 									</a>
 								</p>
 							</div>
 						</div>
 					</div>
-					{typeof window !== undefined ? (
-						navigator.onLine ? (
-							<form
-								onSubmit={handleSubmit}
-								method='post'
-								role='form'
-								className='contact-form mt-4'>
-								<div className='row'>
-									<div className='col-md-6 form-group'>
-										<div className='form-floating'>
-											<input
-												type='text'
-												name='name'
-												className={
-													errorMsg.name.length > 0
-														? 'is-invalid form-control'
-														: 'form-control'
-												}
-												id='name'
-												placeholder='Your Name'
-												value={form.name}
-												onChange={handleChange}
-												required={true}
-											/>
-											<label htmlFor='name'>
-												Your Name <span className='text-danger'>*</span>
-											</label>
-											{errorMsg.name.length > 0 && (
-												<span className='invalid-feedback'>
-													{errorMsg.name}
-												</span>
-											)}
-										</div>
-									</div>
-									<div className='col-md-6 form-group mt-3 mt-md-0'>
-										<div className='form-floating'>
-											<input
-												type='email'
-												name='email'
-												className={
-													errorMsg.email.length > 0
-														? 'is-invalid form-control'
-														: 'form-control'
-												}
-												id='email'
-												placeholder='Your Email'
-												value={form.email}
-												onChange={handleChange}
-												required={true}
-											/>
-											<label htmlFor='email'>
-												Your Email <span className='text-danger'>*</span>
-											</label>
-											{errorMsg.email.length > 0 && (
-												<span className='invalid-feedback'>
-													{errorMsg.email}
-												</span>
-											)}
-										</div>
-									</div>
-								</div>
-								<div className='form-group mt-3'>
+					{isOnline ? (
+						<form
+							onSubmit={handleSubmit}
+							method='post'
+							role='form'
+							className='contact-form mt-4'>
+							<div className='row'>
+								<div className='col-md-6 form-group'>
 									<div className='form-floating'>
 										<input
 											type='text'
-											name='subject'
+											name='name'
 											className={
-												errorMsg.subject.length > 0
+												errorMsg.name.length > 0
 													? 'is-invalid form-control'
 													: 'form-control'
 											}
-											id='subject'
-											placeholder='Subject'
-											value={form.subject}
+											id='name'
+											placeholder='Your Name'
+											value={form.name}
 											onChange={handleChange}
 											required={true}
 										/>
-										<label htmlFor='subject'>
-											Subject <span className='text-danger'>*</span>
+										<label htmlFor='name'>
+											Your Name <span className='text-danger'>*</span>
 										</label>
-										{errorMsg.subject.length > 0 && (
+										{errorMsg.name.length > 0 && (
 											<span className='invalid-feedback'>
-												{errorMsg.subject}
+												{errorMsg.name}
 											</span>
 										)}
 									</div>
 								</div>
-								<div className='form-group mt-3'>
+								<div className='col-md-6 form-group mt-3 mt-md-0'>
 									<div className='form-floating'>
-										<textarea
-											name='message'
+										<input
+											type='email'
+											name='email'
 											className={
-												errorMsg.message.length > 0
+												errorMsg.email.length > 0
 													? 'is-invalid form-control'
 													: 'form-control'
 											}
-											id='message'
-											placeholder='Message'
-											value={form.message}
+											id='email'
+											placeholder='Your Email'
+											value={form.email}
 											onChange={handleChange}
 											required={true}
-											style={{
-												height: '200px',
-											}}></textarea>
-										<label htmlFor='message'>
-											Message <span className='text-danger'>*</span>
+										/>
+										<label htmlFor='email'>
+											Your Email <span className='text-danger'>*</span>
 										</label>
-										{errorMsg.message.length > 0 && (
+										{errorMsg.email.length > 0 && (
 											<span className='invalid-feedback'>
-												{errorMsg.message}
+												{errorMsg.email}
 											</span>
 										)}
 									</div>
 								</div>
-								<div className='my-3'>
-									{isLoading && <div className='loading'>Loading</div>}
-									{isError.length > 0 && (
-										<div
-											className='alert error-message alert-dismissible fade show'
-											role='alert'>
-											{isError}
-											<button
-												type='button'
-												className='btn-close'
-												data-bs-dismiss='alert'
-												aria-label='Close'></button>
-										</div>
+							</div>
+							<div className='form-group mt-3'>
+								<div className='form-floating'>
+									<input
+										type='text'
+										name='subject'
+										className={
+											errorMsg.subject.length > 0
+												? 'is-invalid form-control'
+												: 'form-control'
+										}
+										id='subject'
+										placeholder='Subject'
+										value={form.subject}
+										onChange={handleChange}
+										required={true}
+									/>
+									<label htmlFor='subject'>
+										Subject <span className='text-danger'>*</span>
+									</label>
+									{errorMsg.subject.length > 0 && (
+										<span className='invalid-feedback'>{errorMsg.subject}</span>
 									)}
-									{successMsg.length > 0 && (
-										<div
-											className='alert success-message alert-dismissible fade show'
-											role='alert'>
-											{successMsg}
-											<button
-												type='button'
-												className='btn-close'
-												data-bs-dismiss='alert'
-												aria-label='Close'></button>
-										</div>
-									)}
-								</div>
-								<div className='text-center'>
-									<button type='submit' disabled={isLoading || sendBtn}>
-										<i className='bi bi-send'></i> Send Message
-									</button>
-								</div>
-							</form>
-						) : (
-							<div className='contact-form mt-3'>
-								<div className='text-center text-danger'>
-									<span className='fs-3 fw-bold'>You are Offline as of now.</span>
-									<p>Please Check your internet connection and try again.</p>
 								</div>
 							</div>
-						)
-					) : null}
+							<div className='form-group mt-3'>
+								<div className='form-floating'>
+									<textarea
+										name='message'
+										className={
+											errorMsg.message.length > 0
+												? 'is-invalid form-control'
+												: 'form-control'
+										}
+										id='message'
+										placeholder='Message'
+										value={form.message}
+										onChange={handleChange}
+										required={true}
+										style={{
+											height: '200px',
+										}}></textarea>
+									<label htmlFor='message'>
+										Message <span className='text-danger'>*</span>
+									</label>
+									{errorMsg.message.length > 0 && (
+										<span className='invalid-feedback'>{errorMsg.message}</span>
+									)}
+								</div>
+							</div>
+							<div className='my-3'>
+								{isLoading && <div className='loading'>Loading</div>}
+								{isError.length > 0 && (
+									<div
+										className='alert error-message alert-dismissible fade show'
+										role='alert'>
+										{isError}
+										<button
+											type='button'
+											className='btn-close'
+											data-bs-dismiss='alert'
+											aria-label='Close'></button>
+									</div>
+								)}
+								{successMsg.length > 0 && (
+									<div
+										className='alert success-message alert-dismissible fade show'
+										role='alert'>
+										{successMsg}
+										<button
+											type='button'
+											className='btn-close'
+											data-bs-dismiss='alert'
+											aria-label='Close'></button>
+									</div>
+								)}
+							</div>
+							<div className='text-center'>
+								<button type='submit' disabled={isLoading || sendBtn}>
+									<i className='bi bi-send'></i> Send Message
+								</button>
+							</div>
+						</form>
+					) : (
+						<div className='contact-form mt-3'>
+							<div className='text-center text-danger'>
+								<span className='fs-3 fw-bold'>You are Offline as of now.</span>
+								<p>Please Check your internet connection and try again.</p>
+							</div>
+						</div>
+					)}
 				</div>
 			</section>
 
