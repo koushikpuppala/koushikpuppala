@@ -13,7 +13,7 @@ const ContactAPI = async (req: NextApiRequest, res: NextApiResponse) => {
 	})
 	await contact.save()
 	res.status(200).json({
-		message: 'Contact saved successfully',
+		message: 'Message sent successfully to Koushikpuppala',
 	})
 }
 

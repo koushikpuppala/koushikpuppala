@@ -58,7 +58,7 @@ const Contact: NextComponentType = () => {
 		setTimeout(() => {
 			SetSuccessMsg('')
 			SetIsError('')
-		}, 3000)
+		}, 10000)
 	}
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -201,149 +201,162 @@ const Contact: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-
-					<form
-						onSubmit={handleSubmit}
-						method='post'
-						role='form'
-						className='contact-form mt-4'>
-						<div className='row'>
-							<div className='col-md-6 form-group'>
-								<div className='form-floating'>
-									<input
-										type='text'
-										name='name'
-										className={
-											errorMsg.name.length > 0
-												? 'is-invalid form-control'
-												: 'form-control'
-										}
-										id='name'
-										placeholder='Your Name'
-										value={form.name}
-										onChange={handleChange}
-										required={true}
-									/>
-									<label htmlFor='name'>
-										Your Name <span className='text-danger'>*</span>
-									</label>
-									{errorMsg.name.length > 0 && (
-										<span className='invalid-feedback'>{errorMsg.name}</span>
+					{typeof window !== undefined ? (
+						navigator.onLine ? (
+							<form
+								onSubmit={handleSubmit}
+								method='post'
+								role='form'
+								className='contact-form mt-4'>
+								<div className='row'>
+									<div className='col-md-6 form-group'>
+										<div className='form-floating'>
+											<input
+												type='text'
+												name='name'
+												className={
+													errorMsg.name.length > 0
+														? 'is-invalid form-control'
+														: 'form-control'
+												}
+												id='name'
+												placeholder='Your Name'
+												value={form.name}
+												onChange={handleChange}
+												required={true}
+											/>
+											<label htmlFor='name'>
+												Your Name <span className='text-danger'>*</span>
+											</label>
+											{errorMsg.name.length > 0 && (
+												<span className='invalid-feedback'>
+													{errorMsg.name}
+												</span>
+											)}
+										</div>
+									</div>
+									<div className='col-md-6 form-group mt-3 mt-md-0'>
+										<div className='form-floating'>
+											<input
+												type='email'
+												name='email'
+												className={
+													errorMsg.email.length > 0
+														? 'is-invalid form-control'
+														: 'form-control'
+												}
+												id='email'
+												placeholder='Your Email'
+												value={form.email}
+												onChange={handleChange}
+												required={true}
+											/>
+											<label htmlFor='email'>
+												Your Email <span className='text-danger'>*</span>
+											</label>
+											{errorMsg.email.length > 0 && (
+												<span className='invalid-feedback'>
+													{errorMsg.email}
+												</span>
+											)}
+										</div>
+									</div>
+								</div>
+								<div className='form-group mt-3'>
+									<div className='form-floating'>
+										<input
+											type='text'
+											name='subject'
+											className={
+												errorMsg.subject.length > 0
+													? 'is-invalid form-control'
+													: 'form-control'
+											}
+											id='subject'
+											placeholder='Subject'
+											value={form.subject}
+											onChange={handleChange}
+											required={true}
+										/>
+										<label htmlFor='subject'>
+											Subject <span className='text-danger'>*</span>
+										</label>
+										{errorMsg.subject.length > 0 && (
+											<span className='invalid-feedback'>
+												{errorMsg.subject}
+											</span>
+										)}
+									</div>
+								</div>
+								<div className='form-group mt-3'>
+									<div className='form-floating'>
+										<textarea
+											name='message'
+											className={
+												errorMsg.message.length > 0
+													? 'is-invalid form-control'
+													: 'form-control'
+											}
+											id='message'
+											placeholder='Message'
+											value={form.message}
+											onChange={handleChange}
+											required={true}
+											style={{
+												height: '200px',
+											}}></textarea>
+										<label htmlFor='message'>
+											Message <span className='text-danger'>*</span>
+										</label>
+										{errorMsg.message.length > 0 && (
+											<span className='invalid-feedback'>
+												{errorMsg.message}
+											</span>
+										)}
+									</div>
+								</div>
+								<div className='my-3'>
+									{isLoading && <div className='loading'>Loading</div>}
+									{isError.length > 0 && (
+										<div
+											className='alert error-message alert-dismissible fade show'
+											role='alert'>
+											{isError}
+											<button
+												type='button'
+												className='btn-close'
+												data-bs-dismiss='alert'
+												aria-label='Close'></button>
+										</div>
+									)}
+									{successMsg.length > 0 && (
+										<div
+											className='alert success-message alert-dismissible fade show'
+											role='alert'>
+											{successMsg}
+											<button
+												type='button'
+												className='btn-close'
+												data-bs-dismiss='alert'
+												aria-label='Close'></button>
+										</div>
 									)}
 								</div>
-							</div>
-							<div className='col-md-6 form-group mt-3 mt-md-0'>
-								<div className='form-floating'>
-									<input
-										type='email'
-										name='email'
-										className={
-											errorMsg.email.length > 0
-												? 'is-invalid form-control'
-												: 'form-control'
-										}
-										id='email'
-										placeholder='Your Email'
-										value={form.email}
-										onChange={handleChange}
-										required={true}
-									/>
-									<label htmlFor='email'>
-										Your Email <span className='text-danger'>*</span>
-									</label>
-									{errorMsg.email.length > 0 && (
-										<span className='invalid-feedback'>{errorMsg.email}</span>
-									)}
+								<div className='text-center'>
+									<button type='submit' disabled={isLoading || sendBtn}>
+										<i className='bi bi-send'></i> Send Message
+									</button>
+								</div>
+							</form>
+						) : (
+							<div className='contact-form mt-3'>
+								<div className='text-center text-danger'>
+									<span className='fs-3 fw-bold'>You are Offline as of now.</span>
+									<p>Please Check your internet connection and try again.</p>
 								</div>
 							</div>
-						</div>
-						<div className='form-group mt-3'>
-							<div className='form-floating'>
-								<input
-									type='text'
-									name='subject'
-									className={
-										errorMsg.subject.length > 0
-											? 'is-invalid form-control'
-											: 'form-control'
-									}
-									id='subject'
-									placeholder='Subject'
-									value={form.subject}
-									onChange={handleChange}
-									required={true}
-								/>
-								<label htmlFor='subject'>
-									Subject <span className='text-danger'>*</span>
-								</label>
-								{errorMsg.subject.length > 0 && (
-									<span className='invalid-feedback'>{errorMsg.subject}</span>
-								)}
-							</div>
-						</div>
-						<div className='form-group mt-3'>
-							<div className='form-floating'>
-								<textarea
-									name='message'
-									className={
-										errorMsg.message.length > 0
-											? 'is-invalid form-control'
-											: 'form-control'
-									}
-									id='message'
-									placeholder='Message'
-									value={form.message}
-									onChange={handleChange}
-									required={true}
-									style={{
-										height: '200px',
-									}}></textarea>
-								<label htmlFor='message'>
-									Message <span className='text-danger'>*</span>
-								</label>
-								{errorMsg.message.length > 0 && (
-									<span className='invalid-feedback'>{errorMsg.message}</span>
-								)}
-							</div>
-						</div>
-						<div className='my-3'>
-							{isLoading && <div className='loading'>Loading</div>}
-							{isError.length > 0 && (
-								<div
-									className='alert error-message alert-dismissible fade show'
-									role='alert'>
-									{isError}
-									<button
-										type='button'
-										className='btn-close'
-										data-bs-dismiss='alert'
-										aria-label='Close'></button>
-								</div>
-							)}
-							{successMsg.length > 0 && (
-								<div
-									className='alert success-message alert-dismissible fade show'
-									role='alert'>
-									{successMsg}
-									<button
-										type='button'
-										className='btn-close'
-										data-bs-dismiss='alert'
-										aria-label='Close'></button>
-								</div>
-							)}
-						</div>
-						<div className='text-center'>
-							<button type='submit' disabled={isLoading || sendBtn}>
-								{/* <i
-									className='bi bi-send'
-									style={{
-										color: sendBtn ? '#18d26e' : '#18d26e',
-									}}></i>{' '} */}
-								Send Message
-							</button>
-						</div>
-					</form>
+						)
+					) : null}
 				</div>
 			</section>
 

@@ -10,6 +10,8 @@ import '../styles/NotFound.css'
 import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
 import AOS from 'aos'
+import { ToastContainer, toast, Zoom } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
 	useEffect(() => {
@@ -18,8 +20,31 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 			once: false,
 			mirror: true,
 		})
+		if (navigator.onLine) {
+			console.log(navigator.onLine)
+			toast.success('You are online!')
+		} else {
+			toast.error('You are offline!', {
+				autoClose: false,
+			})
+		}
 	}, [])
-	return <Component {...pageProps} />
+	return (
+		<>
+			<ToastContainer
+				theme='dark'
+				position='top-center'
+				hideProgressBar={false}
+				transition={Zoom}
+				newestOnTop
+				closeOnClick
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
+			<Component {...pageProps} />
+		</>
+	)
 }
 
 export default MyApp
