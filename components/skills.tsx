@@ -1,22 +1,28 @@
 import type { NextComponentType } from 'next'
+import { useEffect } from 'react'
+import { SkillsAction } from '../actions'
 
 const Skills: NextComponentType = () => {
+	useEffect(() => {
+		SkillsAction()
+	}, [])
+
 	return (
 		<>
 			<div className='skills container'>
-				<div className='section-title'>
+				<div className='section-title' data-aos='fade-right'>
 					<h2>Skills</h2>
 				</div>
 
 				<div className='row skills-content'>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								NodeJs <i className='val'>100%</i>
+								NodeJs <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={100}
 									aria-valuemin={0}
@@ -24,14 +30,14 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								HTML <i className='val'>100%</i>
+								HTML <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={100}
 									aria-valuemin={0}
@@ -39,14 +45,14 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								Express <i className='val'>100%</i>
+								Express <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={100}
 									aria-valuemin={0}
@@ -54,14 +60,14 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								JavaScript <i className='val'>90%</i>
+								JavaScript <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={90}
 									aria-valuemin={0}
@@ -69,14 +75,14 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								EJS <i className='val'>90%</i>
+								EJS <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={90}
 									aria-valuemin={0}
@@ -84,14 +90,14 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								CSS <i className='val'>80%</i>
+								CSS <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={80}
 									aria-valuemin={0}
@@ -99,14 +105,14 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								React <i className='val'>80%</i>
+								React <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={80}
 									aria-valuemin={0}
@@ -114,14 +120,14 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								Nextjs <i className='val'>80%</i>
+								Nextjs <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={80}
 									aria-valuemin={0}
@@ -129,14 +135,14 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								MongoDB <i className='val'>75%</i>
+								MongoDB <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={75}
 									aria-valuemin={0}
@@ -144,14 +150,14 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6'>
-						<div className='progress'>
+					<div className='col-lg-6' data-aos='fade-up'>
+						<div className='progress' data-aos='flip-left'>
 							<span className='skill'>
-								TypeScript <i className='val'>40%</i>
+								TypeScript <i className='val'></i>
 							</span>
 							<div className='progress-bar-wrap'>
 								<div
-									className='progress-bar'
+									className='progress-bar progress-bar-striped progress-bar-animated'
 									role='progressbar'
 									aria-valuenow={40}
 									aria-valuemin={0}

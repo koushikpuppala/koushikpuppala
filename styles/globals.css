@@ -390,12 +390,14 @@ section .container {
 }
 .skills .progress-bar-wrap {
 	background: rgba(255, 255, 255, 0.2);
+	border-radius: 10px;
 }
 .skills .progress-bar {
 	width: 1px;
 	height: 10px;
 	transition: 0.9s;
 	background-color: #18d26e;
+	border-radius: 10px;
 }
 
 .interests .icon-box {

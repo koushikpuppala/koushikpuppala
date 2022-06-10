@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css'
 const MyApp = ({ Component, pageProps }: AppProps) => {
 	useEffect(() => {
 		AOS.init({
+			offset: 100,
 			duration: 1000,
 			once: false,
 			mirror: true,
