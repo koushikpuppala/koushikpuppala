@@ -31,7 +31,9 @@ const Portfolio: NextComponentType = () => {
 					</div>
 
 					<div className='row portfolio-container'>
-						<div className='col-lg-4 col-md-6 portfolio-item filter-web'>
+						<div
+							className='col-lg-4 col-md-6 portfolio-item filter-web'
+							data-aos='fade-up'>
 							<div className='portfolio-wrap'>
 								<Image
 									width={1920}
@@ -65,7 +67,9 @@ const Portfolio: NextComponentType = () => {
 							</div>
 						</div>
 
-						<div className='col-lg-4 col-md-6 portfolio-item filter-web'>
+						<div
+							className='col-lg-4 col-md-6 portfolio-item filter-web'
+							data-aos='fade-up'>
 							<div className='portfolio-wrap'>
 								<Image
 									width={1920}
@@ -99,7 +103,9 @@ const Portfolio: NextComponentType = () => {
 							</div>
 						</div>
 
-						<div className='col-lg-4 col-md-6 portfolio-item filter-web'>
+						<div
+							className='col-lg-4 col-md-6 portfolio-item filter-web'
+							data-aos='fade-up'>
 							<div className='portfolio-wrap'>
 								<Image
 									width={1920}
@@ -133,7 +139,9 @@ const Portfolio: NextComponentType = () => {
 							</div>
 						</div>
 
-						<div className='col-lg-4 col-md-6 portfolio-item filter-web'>
+						<div
+							className='col-lg-4 col-md-6 portfolio-item filter-web'
+							data-aos='fade-up'>
 							<div className='portfolio-wrap'>
 								<Image
 									width={1920}
@@ -166,7 +174,9 @@ const Portfolio: NextComponentType = () => {
 							</div>
 						</div>
 
-						<div className='col-lg-4 col-md-6 portfolio-item filter-web'>
+						<div
+							className='col-lg-4 col-md-6 portfolio-item filter-web'
+							data-aos='fade-up'>
 							<div className='portfolio-wrap'>
 								<Image
 									width={1920}
@@ -199,7 +209,9 @@ const Portfolio: NextComponentType = () => {
 							</div>
 						</div>
 
-						<div className='col-lg-4 col-md-6 portfolio-item filter-web'>
+						<div
+							className='col-lg-4 col-md-6 portfolio-item filter-web'
+							data-aos='fade-up'>
 							<div className='portfolio-wrap'>
 								<Image
 									width={1920}
@@ -232,7 +244,9 @@ const Portfolio: NextComponentType = () => {
 							</div>
 						</div>
 
-						<div className='col-lg-4 col-md-6 portfolio-item filter-app'>
+						<div
+							className='col-lg-4 col-md-6 portfolio-item filter-app'
+							data-aos='fade-up'>
 							<div className='portfolio-wrap'>
 								<Image
 									width={1920}
@@ -265,7 +279,9 @@ const Portfolio: NextComponentType = () => {
 							</div>
 						</div>
 
-						<div className='col-lg-4 col-md-6 portfolio-item filter-bot'>
+						<div
+							className='col-lg-4 col-md-6 portfolio-item filter-bot'
+							data-aos='fade-up'>
 							<div className='portfolio-wrap'>
 								<Image
 									width={1920}
@@ -298,7 +314,9 @@ const Portfolio: NextComponentType = () => {
 							</div>
 						</div>
 
-						<div className='col-lg-4 col-md-6 portfolio-item filter-bot'>
+						<div
+							className='col-lg-4 col-md-6 portfolio-item filter-bot'
+							data-aos='fade-up'>
 							<div className='portfolio-wrap'>
 								<Image
 									width={1920}

@@ -19,8 +19,8 @@
 ## ✨ Details
 
 <div align='center'>
-<a href='http://koushikpuppala.live'><img alt='Website Status' src='https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.live' /></a>
-<img alt='Website Uptime' src='https://img.shields.io/uptimerobot/ratio/m787304452-a092fc16db28ac06a0c01825?style=social'>
+<a href='http://koushikpuppala.live'><img alt='Website Status' src='https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.com' /></a>
+<img alt='Website Uptime' src='https://img.shields.io/uptimerobot/ratio/m791998307-456ba3ddfb31f7b23ce7a096?style=social' />
 <a href='https://github.com/koushikpuppala?tab=followers'><img alt='GitHub Followers' src='https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow' /></a>
 <img alt='GitHub License' src='https://img.shields.io/badge/License-MIT-blue.svg?style=social' />
 <a href='https://github.com/koushikpuppala?tab=stars'><img alt='GitHub Stars' src='https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social' /></a>
