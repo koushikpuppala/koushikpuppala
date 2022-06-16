@@ -75,6 +75,7 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 
 <details open>
 <summary>⏰ Development Time Stats</summary>
+<br />
 
 <!--START_SECTION:waka-->
 
