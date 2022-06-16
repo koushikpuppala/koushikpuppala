@@ -28,6 +28,7 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 <div align='center'>
 
 [![Website Status](https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.com&logo=Microsoft%20Edge&logoColor=%23000000)](https://koushikpuppala.com) ![Website Uptime](https://img.shields.io/uptimerobot/ratio/m791998307-456ba3ddfb31f7b23ce7a096?style=social&logo=Microsoft%20Edge&logoColor=%23000000) [![GitHub Followers](https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow)](https://github.com/koushikpuppala?tab=followers) ![GitHub License](https://img.shields.io/github/license/koushikpuppala/koushikpuppala?style=social&logo=github) ![GitHub Stars](https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social) [![Total time coded since Jan 7 2021](https://wakatime.com/badge/user/72e2ce29-83ee-4ab0-b7c6-aafe16410611.svg?style=social)](https://wakatime.com/@72e2ce29-83ee-4ab0-b7c6-aafe16410611)
+<br />
 ![Koushikpuppala](https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6) ![Open Source? Yes](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)
 
 </div>
@@ -62,7 +63,9 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 <div align="center">
 
 ![](https://github-profile-trophy.vercel.app/?username=koushikpuppala&theme=juicyfresh&no-frame=true&no-bg=false&margin-w=4&margin-h=4&column=3&row=3) ![](https://github-readme-stats.vercel.app/api/wakatime?username=koushikpuppala&layout=compact&theme=blue-green&range&hide_border=true)
+<br />
 ![](https://github-readme-stats.vercel.app/api?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false) ![](https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green&hide_border=true)
+<br />
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact) ![](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact)
 
 <!--START_SECTION:waka-->
