@@ -4,17 +4,19 @@
 
 # Hi 👋, I'm Koushik Puppala
 
-### I am a Student and Web Developer at [@iiitraichur](https://github.com/iiitraichur). I am working on the Full Stack and Discord bots Project and started learning Python. Contact me on Discord [@koushikpuppala#3800](https://discord.koushikpuppala.live)
+### I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[@iiitraichur](https://github.com/iiitraichur)_**. Currently working as a Full Stack Developer in a USA Company. Created Projects in Full Stack, and Discord Bots. I started Learning Python and Typescript. Contact me on Discord **_[koushikpuppala#0001](https://discord.com/channels/@me/735813371433058354)_**.
+
+### **_If you liked this repository, feel free to leave a star ⭐ to help promote Portfolio!_**
 
 </div>
 
--   👨‍💻 My First project is **_[Koushikpuppala](https://koushikpuppala.live)_**.
--   🔭 I’m currently working on **_[Avengers Assemble](https://avengers-assemble.tech)_**.
--   👯 I’m collaborating on **_[Indian Institute of Information Technology Raichur, Karnataka](https://iiitr.ac.in)_** and **_[Discord Lists](https://discordlists100.xyz)_**.
--   🤝 I’m looking for help with **_[Avengers Assemble Discord Bot Community and Dashboard](https://github.com/koushikpuppala/avengers-assemble)_**.
--   🌱 I’m currently learning **Game Development, Python, Firebase, and Material-UI**
--   💬 Ask me about **MongoDB, Express, Nodejs, React, JavaScript, EJS(Embedded JavaScript), Discord.js, HTML, and CSS**
--   📫 How to reach me **[@koushikpuppala#3800](https://discord.koushikpuppala.live)** or **[koushikpuppala203@gmail.com](mailto:koushikpuppala203@gmail.com)**
+-   👨‍💻 The first project is **_[Koushikpuppala](https://koushikpuppala.com)_**.
+-   🔭 Currently working on **_[Alexus]()_** discord bot.
+-   👯 Collaborating with the **_[Indian Institute of Information Technology Raichur, Karnataka](https://github.com/iiitraichur)_** and **_[Discord Developer Studios](https://github.com/dscdevstudios)_**.
+-   💬 Ask me about **_Next.Js, MongoDB, Express, Nodejs, React, JavaScript, EJS(Embedded JavaScript), Discord.js, HTML, and CSS_**.
+-   🌱 I started learning **_Python and TypeScript_**.
+-   📫 Reach me through discord **_[koushikpuppala#0001](https://discord.com/channels/@me/735813371433058354)_** or email me at **_[contact@koushikpuppala.com](mailto:contact@koushikpuppala.com)_**
+<!-- -   🤝 I’m looking for help with **_[Avengers Assemble Discord Bot Community and Dashboard](https://github.com/koushikpuppala/avengers-assemble)_**. -->
 
 ## ✨ Details
 
@@ -24,18 +26,19 @@
 <a href='https://github.com/koushikpuppala?tab=followers'><img alt='GitHub Followers' src='https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow' /></a>
 <img alt='GitHub License' src='https://img.shields.io/badge/License-MIT-blue.svg?style=social' />
 <a href='https://github.com/koushikpuppala?tab=stars'><img alt='GitHub Stars' src='https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social' /></a>
+<a href='https://wakatime.com/@72e2ce29-83ee-4ab0-b7c6-aafe16410611'><img src='https://wakatime.com/badge/user/72e2ce29-83ee-4ab0-b7c6-aafe16410611.svg?style=social' alt='Total time coded since Jan 7 2021' /></a>
 <br />
-<img src='https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6&style=flat' alt='koushikpuppala' />
+<img src='https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6' alt='koushikpuppala' />
 <img src='https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github' alt='Open Source? Yes!'>
 </div>
 
 ## ⚜️ Connect with me
 
 <div align='center'>
-<a href='https://discord.koushikpuppala.live' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/discord.png' alt='discord' /></a>
-<a href='https://koushikpuppala.live' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/domain.png' alt='domain' /></a>
-<a href='https://linkedin.koushikpuppala.live' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/linkedin.png' alt='linkedin' /></a>
-<a href='mailto:koushikpuppala203@gmail.com' target='_blank' ><img src='https://img.icons8.com/fluency/40/000000/gmail-new.png' alt='mail' /></a>
+<a href='https://discord.com/channels/@me/735813371433058354' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/discord.png' alt='discord' /></a>
+<a href='https://koushikpuppala.com' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/domain.png' alt='domain' /></a>
+<a href='https://linkedin.com/in/koushikpuppala' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/linkedin.png' alt='linkedin' /></a>
+<a href='mailto:contact@koushikpuppala.com' target='_blank' ><img src='https://img.icons8.com/fluency/40/000000/gmail-new.png' alt='mail' /></a>
 <a href='https://fb.com/puppalakoushik' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/facebook-new.png' alt='facebook' /></a>
 <a href='https://instagram.com/koushikpuppala' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/instagram-new.png' alt='instagram' /></a>
 <a href='https://twitter.com/puppala_koushik' target='_blank'><img src='https://img.icons8.com/fluency/40/000000/twitter.png' alt='twitter' /></a>
@@ -66,7 +69,7 @@
 
 Here are the Projects on which I am working and I have contributed
 
--   [Koushik Puppala](https://koushikpuppala.live) - My Website.
+-   [Koushik Puppala](https://koushikpuppala.com) - My Website.
 -   [Avengers Assemble](https://avengers-assemble.tech) - A website for Avengers Assemble Support Server and Bots.
 -   [Avenger](https://avenger.avengers-assemble.tech) - A Discord Bot for Multi-Purpose.
 -   [Musics_DJ](https://musics_dj.avengers-assemble.tech) - A Discord Bot for Music Streaming.
