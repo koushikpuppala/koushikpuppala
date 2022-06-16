@@ -2,6 +2,8 @@ name: Waka Readme
 
 on:
   workflow_dispatch:
+    branches:
+      - master
   schedule:
     # Runs at 12am UTC
     - cron: "0 0 * * *"
