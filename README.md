@@ -66,6 +66,18 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 ![](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact) ![](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact)
 
 <!--START_SECTION:waka-->
+
+```text
+From: 08 June 2022 - To: 15 June 2022
+
+TypeScript   23 hrs 59 mins  ██████████████▓░░░░░░░░░░   58.39 %
+JSON         6 hrs 46 mins   ████░░░░░░░░░░░░░░░░░░░░░   16.47 %
+JavaScript   4 hrs 30 mins   ██▓░░░░░░░░░░░░░░░░░░░░░░   10.96 %
+Markdown     1 hr 52 mins    █░░░░░░░░░░░░░░░░░░░░░░░░   04.55 %
+PowerShell   1 hr 11 mins    ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.90 %
+Bash         53 mins         ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.19 %
+```
+
 <!--END_SECTION:waka-->
 
 </div>
