@@ -59,14 +59,22 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 </div>
 
 <details>
-<summary>📊 GitHub Stats :</summary>
+<summary>📊 GitHub Stats</summary>
 <div align="center">
 
-![](https://github-profile-trophy.vercel.app/?username=koushikpuppala&theme=juicyfresh&no-frame=true&no-bg=false&margin-w=4&margin-h=4&column=3&row=3) ![](https://github-readme-stats.vercel.app/api/wakatime?username=koushikpuppala&layout=compact&theme=blue-green&range&hide_border=true)
+![](https://github-profile-trophy.vercel.app/?username=koushikpuppala&theme=juicyfresh&no-frame=true&no-bg=false&margin-w=4&margin-h=4&column=3&row=3) ![](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact)
 <br />
 ![](https://github-readme-stats.vercel.app/api?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false) ![](https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green&hide_border=true)
 <br />
-![](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact) ![](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact)
+![](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact)
+
+</div>
+</details>
+
+---
+
+<details open>
+<summary>⏰ Development Time Stats</summary>
 
 <!--START_SECTION:waka-->
 
@@ -83,7 +91,7 @@ Bash         53 mins         ▓░░░░░░░░░░░░░░░░
 
 <!--END_SECTION:waka-->
 
-</div>
+</summary>
 </details>
 
 ---
