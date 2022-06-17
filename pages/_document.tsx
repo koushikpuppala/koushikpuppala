@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/next-script-for-ga */
 /* eslint-disable @next/next/no-sync-scripts */
 import { Html, Head, Main, NextScript } from 'next/document'
-import Script from 'next/script'
 
 const Document = () => {
 	return (

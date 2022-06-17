@@ -1,8 +1,8 @@
-import type { NextComponentType } from 'next'
+import type { NextPage } from 'next'
 import Link from 'next/link'
 import { Header } from '../components'
 
-const NotFound: NextComponentType = () => {
+const Error: NextPage = () => {
 	return (
 		<>
 			<Header title='Koushik Puppala | Page Not Found' />
@@ -403,4 +403,4 @@ const NotFound: NextComponentType = () => {
 	)
 }
 
-export default NotFound
+export default Error

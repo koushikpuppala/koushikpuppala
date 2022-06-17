@@ -2,13 +2,10 @@ const Skills = () => {
 	const skillsContent = document.querySelector('.skills-content') as HTMLElement
 
 	if (skillsContent) {
-		const skillProcess = document.querySelectorAll(
-			'.progress .progress-bar'
-		) as NodeListOf<HTMLElement>
+		const skillProcess: NodeListOf<HTMLElement> =
+			document.querySelectorAll('.progress .progress-bar')
 
-		const skillPercentage = document.querySelectorAll(
-			'.progress .val'
-		) as NodeListOf<HTMLElement>
+		const skillPercentage: NodeListOf<HTMLElement> = document.querySelectorAll('.progress .val')
 
 		skillPercentage.forEach((percentage, per_index) => {
 			skillProcess.forEach((process, pro_index) => {

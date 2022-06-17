@@ -2,7 +2,7 @@ import connectMongo from '../../database'
 import { ContactSchema } from '../../database/models'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const ContactAPI = async (req: NextApiRequest, res: NextApiResponse) => {
+const Contact = async (req: NextApiRequest, res: NextApiResponse) => {
 	await connectMongo()
 	const { name, email, subject, message } = req.body
 	const contact = new ContactSchema({
@@ -17,4 +17,4 @@ const ContactAPI = async (req: NextApiRequest, res: NextApiResponse) => {
 	})
 }
 
-export default ContactAPI
+export default Contact

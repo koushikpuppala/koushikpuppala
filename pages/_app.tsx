@@ -13,7 +13,7 @@ import AOS from 'aos'
 import { ToastContainer, toast, Zoom } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps }: AppProps) => {
 	useEffect(() => {
 		AOS.init({
 			offset: 100,
@@ -48,4 +48,4 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 	)
 }
 
-export default MyApp
+export default App

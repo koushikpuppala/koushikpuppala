@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect } from 'react'
 import { Contact, Header, Navbar, Portfolio, Skills } from '../components'
 
 const Home: NextPage = () => {

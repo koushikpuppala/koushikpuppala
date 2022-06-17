@@ -19,7 +19,7 @@ const Contact: NextComponentType = () => {
 	const [isError, SetIsError] = useState('')
 	const [successMsg, SetSuccessMsg] = useState('')
 	const [isOnline, SetIsOnline] = useState(Boolean)
-	const RegularExpression = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/
+	const RegularExpression = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/)
 	const sendBtn =
 		errorMsg.name.length !== 0 ||
 		errorMsg.email.length !== 0 ||

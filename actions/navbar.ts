@@ -1,8 +1,8 @@
 import Typed from 'typed.js'
 
 const Navbar = () => {
-	const navLinks = document.querySelectorAll('#navbar .nav-link') as NodeListOf<HTMLElement>
-	const sections = document.querySelectorAll('section') as NodeListOf<HTMLElement>
+	const navLinks: NodeListOf<HTMLElement> = document.querySelectorAll('#navbar .nav-link')
+	const sections: NodeListOf<HTMLElement> = document.querySelectorAll('section')
 	const mobileNavToggle = document.getElementById('mobile-nav-toggle') as HTMLElement
 	const navbar = document.getElementById('navbar') as HTMLElement
 	const header = document.getElementById('header') as HTMLElement
@@ -39,8 +39,8 @@ const Navbar = () => {
 			const section = document.querySelector(href) as HTMLElement
 
 			if (section) {
-				navLinks.forEach(link => {
-					link.classList.remove('active')
+				navLinks.forEach(item => {
+					item.classList.remove('active')
 				})
 
 				link.classList.add('active')
@@ -53,8 +53,8 @@ const Navbar = () => {
 
 				if (href === '#header') {
 					header.classList.remove('header-top')
-					sections.forEach(section => {
-						section.classList.remove('section-show')
+					sections.forEach(item => {
+						item.classList.remove('section-show')
 					})
 					return
 				}
@@ -63,14 +63,14 @@ const Navbar = () => {
 					header.classList.add('header-top')
 
 					setTimeout(() => {
-						sections.forEach(section => {
-							section.classList.remove('section-show')
+						sections.forEach(item => {
+							item.classList.remove('section-show')
 						})
 						section.classList.add('section-show')
 					}, 350)
 				} else {
-					sections.forEach(section => {
-						section.classList.remove('section-show')
+					sections.forEach(item => {
+						item.classList.remove('section-show')
 					})
 					section.classList.add('section-show')
 				}

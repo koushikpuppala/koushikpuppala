@@ -8,9 +8,8 @@ const Portfolio = () => {
 
 		window.addEventListener('load', () => {
 			const portfolioContainer = document.querySelector('.portfolio-container') as HTMLElement
-			const portfolioFilters = document.querySelectorAll(
-				'#portfolio-flters li'
-			) as NodeListOf<HTMLElement>
+			const portfolioFilters: NodeListOf<HTMLElement> =
+				document.querySelectorAll('#portfolio-flters li')
 
 			if (portfolioContainer) {
 				const portfolioIsotope = new Isotope(portfolioContainer, {
@@ -21,7 +20,7 @@ const Portfolio = () => {
 				portfolioFilters.forEach(filter => {
 					filter.addEventListener('click', e => {
 						e.preventDefault()
-						portfolioFilters.forEach(filter => filter.classList.remove('filter-active'))
+						portfolioFilters.forEach(item => item.classList.remove('filter-active'))
 						filter.classList.add('filter-active')
 						portfolioIsotope.arrange({
 							filter: filter.getAttribute('data-filter') as string,
@@ -34,14 +33,14 @@ const Portfolio = () => {
 		/**
 		 * Initiate portfolio lightbox
 		 */
-		const portfolioLightbox = GLightbox({
+		GLightbox({
 			selector: '.portfolio-lightbox',
 		})
 
 		/**
 		 * Initiate portfolio details lightbox
 		 */
-		const portfolioDetailsLightbox = GLightbox({
+		GLightbox({
 			selector: '.portfolio-details-lightbox',
 			width: '90%',
 			height: '90vh',
