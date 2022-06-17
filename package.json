@@ -1,6 +1,6 @@
 {
     "name": "@koushikpuppala/koushikpuppala",
-    "version": "3.0.1",
+    "version": "3.0.0",
     "description": "This is my own website with my own domain",
     "main": "next.config.js",
     "engines": {
