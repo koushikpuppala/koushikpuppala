@@ -18,12 +18,10 @@ const Portfolio = () => {
 					layoutMode: 'fitRows',
 				})
 
-				portfolioFilters.forEach((filter) => {
-					filter.addEventListener('click', (e) => {
+				portfolioFilters.forEach(filter => {
+					filter.addEventListener('click', e => {
 						e.preventDefault()
-						portfolioFilters.forEach((filter) =>
-							filter.classList.remove('filter-active')
-						)
+						portfolioFilters.forEach(filter => filter.classList.remove('filter-active'))
 						filter.classList.add('filter-active')
 						portfolioIsotope.arrange({
 							filter: filter.getAttribute('data-filter') as string,

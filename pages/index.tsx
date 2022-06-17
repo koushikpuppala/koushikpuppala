@@ -9,15 +9,21 @@ const Home: NextPage = () => {
 		<>
 			<Header />
 			<Navbar />
-			<section id='about' className='about'>
+			<section
+				id='about'
+				className='about'>
 				<div className='about-me container'>
-					<div className='section-title' data-aos='fade-right'>
+					<div
+						className='section-title'
+						data-aos='fade-right'>
 						<h2>About</h2>
 						<p>Learn more about me</p>
 					</div>
 
 					<div className='row'>
-						<div className='col-lg-4' data-aos='fade-right'>
+						<div
+							className='col-lg-4'
+							data-aos='fade-right'>
 							<Image
 								width={100}
 								height={100}
@@ -27,7 +33,9 @@ const Home: NextPage = () => {
 								alt='koushikpuppala'
 							/>
 						</div>
-						<div className='col-lg-8 pt-4 pt-lg-0 content' data-aos='fade-left'>
+						<div
+							className='col-lg-8 pt-4 pt-lg-0 content'
+							data-aos='fade-left'>
 							<h3>Student &amp; Full Stack Developer</h3>
 							<p className='fst-italic'>
 								Hello Friends, I am Koushik Puppala student of Bachelor of
@@ -119,60 +127,106 @@ const Home: NextPage = () => {
 				</div>
 				<Skills />
 				<div className='interests container'>
-					<div className='section-title' data-aos='fade-right'>
+					<div
+						className='section-title'
+						data-aos='fade-right'>
 						<h2>Interests</h2>
 					</div>
 
 					<div className='row'>
-						<div className='col-lg-3 mt-4' data-aos='fade-up'>
-							<div className='icon-box' data-aos='flip-left'>
+						<div
+							className='col-lg-3 mt-4'
+							data-aos='fade-up'>
+							<div
+								className='icon-box'
+								data-aos='flip-left'>
 								<i
 									className='ri-open-source-line'
 									style={{ color: ' #11dbcf' }}></i>
 								<h3>Open Source</h3>
 							</div>
 						</div>
-						<div className='col-lg-3 mt-4' data-aos='fade-up'>
-							<div className='icon-box' data-aos='flip-left'>
-								<i className='ri-stack-line' style={{ color: ' #ffbb2c' }}></i>
+						<div
+							className='col-lg-3 mt-4'
+							data-aos='fade-up'>
+							<div
+								className='icon-box'
+								data-aos='flip-left'>
+								<i
+									className='ri-stack-line'
+									style={{ color: ' #ffbb2c' }}></i>
 								<h3>Full Stack Development</h3>
 							</div>
 						</div>
-						<div className='col-lg-3 mt-4' data-aos='fade-up'>
-							<div className='icon-box' data-aos='flip-left'>
+						<div
+							className='col-lg-3 mt-4'
+							data-aos='fade-up'>
+							<div
+								className='icon-box'
+								data-aos='flip-left'>
 								<i
 									className='ri-code-s-slash-line'
 									style={{ color: '#4233ff' }}></i>
 								<h3>MERN Stack Development</h3>
 							</div>
 						</div>
-						<div className='col-lg-3 mt-4' data-aos='fade-up'>
-							<div className='icon-box' data-aos='flip-left'>
-								<i className='ri-discord-line' style={{ color: ' #ffa76e' }}></i>
+						<div
+							className='col-lg-3 mt-4'
+							data-aos='fade-up'>
+							<div
+								className='icon-box'
+								data-aos='flip-left'>
+								<i
+									className='ri-discord-line'
+									style={{ color: ' #ffa76e' }}></i>
 								<h3>Discord Bots</h3>
 							</div>
 						</div>
-						<div className='col-lg-3 mt-4' data-aos='fade-up'>
-							<div className='icon-box' data-aos='flip-left'>
-								<i className='ri-android-line' style={{ color: '#5578ff' }}></i>
+						<div
+							className='col-lg-3 mt-4'
+							data-aos='fade-up'>
+							<div
+								className='icon-box'
+								data-aos='flip-left'>
+								<i
+									className='ri-android-line'
+									style={{ color: '#5578ff' }}></i>
 								<h3>Android App Development</h3>
 							</div>
 						</div>
-						<div className='col-lg-3 mt-4' data-aos='fade-up'>
-							<div className='icon-box' data-aos='flip-left'>
-								<i className='ri-gamepad-line' style={{ color: ' #e80368' }}></i>
+						<div
+							className='col-lg-3 mt-4'
+							data-aos='fade-up'>
+							<div
+								className='icon-box'
+								data-aos='flip-left'>
+								<i
+									className='ri-gamepad-line'
+									style={{ color: ' #e80368' }}></i>
 								<h3>Game Development</h3>
 							</div>
 						</div>
-						<div className='col-lg-3 mt-4' data-aos='fade-up'>
-							<div className='icon-box' data-aos='flip-left'>
-								<i className='ri-cpu-line' style={{ color: '#e361ff' }}></i>
+						<div
+							className='col-lg-3 mt-4'
+							data-aos='fade-up'>
+							<div
+								className='icon-box'
+								data-aos='flip-left'>
+								<i
+									className='ri-cpu-line'
+									style={{ color: '#e361ff' }}></i>
 								<h3>Artificial Intelligence</h3>
 							</div>
 						</div>
-						<div className='col-lg-3 mt-4' data-aos='fade-up'>
-							<div className='icon-box' data-aos='flip-left'>
-								<i className='ri-settings-5-line' style={{ color: ' #47aeff' }}></i>
+						<div
+							className='col-lg-3 mt-4'
+							data-aos='fade-up'>
+							<div
+								className='icon-box'
+								data-aos='flip-left'>
+								<i
+									className='ri-settings-5-line'
+									style={{ color: ' #47aeff' }}></i>
 								<h3>Machine Learning</h3>
 							</div>
 						</div>

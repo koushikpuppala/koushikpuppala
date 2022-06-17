@@ -8,7 +8,10 @@ const NotFound: NextComponentType = () => {
 			<Header title='Koushik Puppala | Page Not Found' />
 			<div className='NotFound'>
 				<div>
-					<svg width='636px' viewBox='-100 0 536 190' xmlns='http://www.w3.org/2000/svg'>
+					<svg
+						width='636px'
+						viewBox='-100 0 536 190'
+						xmlns='http://www.w3.org/2000/svg'>
 						<defs>
 							<filter
 								x='-50%'
@@ -117,12 +120,30 @@ const NotFound: NextComponentType = () => {
 								d='M252,24 L298.12987,24 C310.623377,24 316.87013,27.8187311 316.87013,36.1722054 C316.87013,43.929003 312.064935,49.6570997 302.214286,54.6691843 C311.103896,66.4833837 315.308442,80.0876133 320.233766,93.9305136 C320.954545,95.8398792 321.675325,97.152568 322.155844,97.8685801 C323.116883,99.0619335 324.318182,99.5392749 326,99.6586103 L326,103 L295.126623,103 L295.126623,99.6586103 C297.409091,99.5392749 298.49026,98.2265861 298.49026,95.7205438 C298.49026,91.7824773 295.126623,79.1329305 284.915584,62.3066465 C282.993506,63.141994 281.071429,63.6193353 278.788961,64.0966767 L278.788961,92.1404834 C278.788961,96.9138973 280.590909,99.4199396 284.314935,99.6586103 L284.314935,103 L252,103 L252,99.6586103 C255.724026,99.4199396 257.646104,96.7945619 257.646104,92.1404834 L257.646104,34.7401813 C257.646104,30.0861027 255.724026,27.5800604 252,27.3413897 L252,24 Z M278.788961,56.2205438 C289.600649,53.3564955 295.487013,47.1510574 295.487013,39.6329305 C295.487013,34.2628399 292.363636,31.2794562 286.717532,31.2794562 C280.831169,31.2794562 278.788961,33.4274924 278.788961,38.9169184 L278.788961,56.2205438 Z'
 								id='error-5-r'></path>
 
-							<rect id='error-right' x='252' y='113' width='74' height='4'></rect>
-							<rect id='error-left' x='10' y='113' width='63' height='4'></rect>
-							<rect id='error-top' x='10' y='10' width='307' height='4'></rect>
+							<rect
+								id='error-right'
+								x='252'
+								y='113'
+								width='74'
+								height='4'></rect>
+							<rect
+								id='error-left'
+								x='10'
+								y='113'
+								width='63'
+								height='4'></rect>
+							<rect
+								id='error-top'
+								x='10'
+								y='10'
+								width='307'
+								height='4'></rect>
 						</defs>
 						<g fillRule='evenodd'>
-							<g className='glow' fill='black' fillOpacity='1'>
+							<g
+								className='glow'
+								fill='black'
+								fillOpacity='1'>
 								<use
 									className='error-3-4'
 									filter='url(#stroke-glow)'
@@ -175,23 +196,48 @@ const NotFound: NextComponentType = () => {
 								strokeWidth='2'
 								strokeLinecap='round'
 								strokeLinejoin='round'>
-								<use className='error-3-4' href='#error-3-4'></use>
-								<use className='error-2-0' href='#error-2-0'></use>
-								<use className='error-1-4' href='#error-1-4'></use>
-								<use className='error-1-e' href='#error-1-e'></use>
-								<use className='error-2-r' href='#error-2-r'></use>
-								<use className='error-3-r' href='#error-3-r'></use>
-								<use className='error-4-o' href='#error-4-o'></use>
-								<use className='error-5-r' href='#error-5-r'></use>
-								<use className='error-right' href='#error-right'></use>
-								<use className='error-left' href='#error-left'></use>
-								<use className='error-top' href='#error-top'></use>
+								<use
+									className='error-3-4'
+									href='#error-3-4'></use>
+								<use
+									className='error-2-0'
+									href='#error-2-0'></use>
+								<use
+									className='error-1-4'
+									href='#error-1-4'></use>
+								<use
+									className='error-1-e'
+									href='#error-1-e'></use>
+								<use
+									className='error-2-r'
+									href='#error-2-r'></use>
+								<use
+									className='error-3-r'
+									href='#error-3-r'></use>
+								<use
+									className='error-4-o'
+									href='#error-4-o'></use>
+								<use
+									className='error-5-r'
+									href='#error-5-r'></use>
+								<use
+									className='error-right'
+									href='#error-right'></use>
+								<use
+									className='error-left'
+									href='#error-left'></use>
+								<use
+									className='error-top'
+									href='#error-top'></use>
 							</g>
 						</g>
 					</svg>
 				</div>
 				<div>
-					<svg width='293px' viewBox='0 0 293 63' xmlns='http://www.w3.org/2000/svg'>
+					<svg
+						width='293px'
+						viewBox='0 0 293 63'
+						xmlns='http://www.w3.org/2000/svg'>
 						<defs>
 							<filter
 								x='-50%'
@@ -242,7 +288,10 @@ const NotFound: NextComponentType = () => {
 								id='quote-bottom'></path>
 						</defs>
 						<g fillRule='evenodd'>
-							<g className='glow' fill='black' fillOpacity='1'>
+							<g
+								className='glow'
+								fill='black'
+								fillOpacity='1'>
 								<use
 									className='quote-top'
 									filter='url(#fill-glow)'
@@ -252,9 +301,15 @@ const NotFound: NextComponentType = () => {
 									filter='url(#fill-glow)'
 									href='#quote-bottom'></use>
 							</g>
-							<g className='top' fill='#FF0000'>
-								<use className='quote-top' href='#quote-top'></use>
-								<use className='quote-bottom' href='#quote-bottom'></use>
+							<g
+								className='top'
+								fill='#FF0000'>
+								<use
+									className='quote-top'
+									href='#quote-top'></use>
+								<use
+									className='quote-bottom'
+									href='#quote-bottom'></use>
 							</g>
 						</g>
 					</svg>
@@ -315,7 +370,10 @@ const NotFound: NextComponentType = () => {
 										id='link-mark'></path>
 								</defs>
 								<g fillRule='evenodd'>
-									<g className='glow' fill='black' fillOpacity='1'>
+									<g
+										className='glow'
+										fill='black'
+										fillOpacity='1'>
 										<use
 											className='link-phrase'
 											filter='url(#fill-glow)'
@@ -325,9 +383,15 @@ const NotFound: NextComponentType = () => {
 											filter='url(#fill-glow)'
 											href='#link-mark'></use>
 									</g>
-									<g className='top' fill='#FF0000'>
-										<use className='link-phrase' href='#link-phrase'></use>
-										<use className='link-mark' href='#link-mark'></use>
+									<g
+										className='top'
+										fill='#FF0000'>
+										<use
+											className='link-phrase'
+											href='#link-phrase'></use>
+										<use
+											className='link-mark'
+											href='#link-mark'></use>
 									</g>
 								</g>
 							</svg>

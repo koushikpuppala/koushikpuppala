@@ -18,30 +18,42 @@ const Navbar: NextComponentType = () => {
 						I&apos;m a <span id='typed'></span> from India
 					</h2>
 
-					<nav id='navbar' className='navbar'>
+					<nav
+						id='navbar'
+						className='navbar'>
 						<ul>
 							<li>
-								<a className='nav-link active' href='#header'>
+								<a
+									className='nav-link active'
+									href='#header'>
 									Home
 								</a>
 							</li>
 							<li>
-								<a className='nav-link' href='#about'>
+								<a
+									className='nav-link'
+									href='#about'>
 									About
 								</a>
 							</li>
 							<li>
-								<a className='nav-link' href='#portfolio'>
+								<a
+									className='nav-link'
+									href='#portfolio'>
 									Portfolio
 								</a>
 							</li>
 							<li>
-								<a className='nav-link' href='#contact'>
+								<a
+									className='nav-link'
+									href='#contact'>
 									Contact
 								</a>
 							</li>
 						</ul>
-						<i id='mobile-nav-toggle' className='bi bi-list'></i>
+						<i
+							id='mobile-nav-toggle'
+							className='bi bi-list'></i>
 					</nav>
 
 					<div className='social-links'>

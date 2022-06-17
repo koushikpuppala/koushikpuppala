@@ -31,15 +31,15 @@ const Navbar = () => {
 	/**
 	 * Scroll with offset on links with a class name .scrollto
 	 */
-	navLinks.forEach((link) => {
-		link.addEventListener('click', (e) => {
+	navLinks.forEach(link => {
+		link.addEventListener('click', e => {
 			e.preventDefault()
 			const href = link.getAttribute('href') as string
 
 			const section = document.querySelector(href) as HTMLElement
 
 			if (section) {
-				navLinks.forEach((link) => {
+				navLinks.forEach(link => {
 					link.classList.remove('active')
 				})
 
@@ -53,7 +53,7 @@ const Navbar = () => {
 
 				if (href === '#header') {
 					header.classList.remove('header-top')
-					sections.forEach((section) => {
+					sections.forEach(section => {
 						section.classList.remove('section-show')
 					})
 					return
@@ -63,13 +63,13 @@ const Navbar = () => {
 					header.classList.add('header-top')
 
 					setTimeout(() => {
-						sections.forEach((section) => {
+						sections.forEach(section => {
 							section.classList.remove('section-show')
 						})
 						section.classList.add('section-show')
 					}, 350)
 				} else {
-					sections.forEach((section) => {
+					sections.forEach(section => {
 						section.classList.remove('section-show')
 					})
 					section.classList.add('section-show')
@@ -93,7 +93,7 @@ const Navbar = () => {
 			if (initial_nav) {
 				header.classList.add('header-top')
 
-				navLinks.forEach((item) => {
+				navLinks.forEach(item => {
 					if (item.getAttribute('href') == window.location.hash) {
 						item.classList.add('active')
 					} else {

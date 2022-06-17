@@ -47,7 +47,7 @@ const Contact: NextComponentType = () => {
 		})
 		axios
 			.post('/api/contact', form)
-			.then((res) => {
+			.then(res => {
 				SetForm({
 					name: '',
 					email: '',
@@ -57,7 +57,7 @@ const Contact: NextComponentType = () => {
 				SetIsLoading(false)
 				SetSuccessMsg(res.data.message)
 			})
-			.catch((err) => {
+			.catch(err => {
 				SetIsLoading(false)
 				SetIsError(err.message)
 			})
@@ -115,7 +115,9 @@ const Contact: NextComponentType = () => {
 
 	return (
 		<>
-			<section id='contact' className='contact'>
+			<section
+				id='contact'
+				className='contact'>
 				<div className='container'>
 					<div className='section-title'>
 						<h2>Contact</h2>
@@ -345,7 +347,9 @@ const Contact: NextComponentType = () => {
 								)}
 							</div>
 							<div className='text-center'>
-								<button type='submit' disabled={isLoading || sendBtn}>
+								<button
+									type='submit'
+									disabled={isLoading || sendBtn}>
 									<i className='bi bi-send'></i> Send Message
 								</button>
 							</div>
@@ -362,7 +366,7 @@ const Contact: NextComponentType = () => {
 			</section>
 
 			<div className='credits'>
-				Github <a href='https://github.com/koushikpuppala/koushikpuppala'>Source Code</a>
+				Github ❤️ <a href='https://github.com/koushikpuppala/koushikpuppala'>Source Code</a>
 			</div>
 		</>
 	)

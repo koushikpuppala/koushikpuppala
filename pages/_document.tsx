@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/next-script-for-ga */
 /* eslint-disable @next/next/no-sync-scripts */
 import { Html, Head, Main, NextScript } from 'next/document'
 import Script from 'next/script'
@@ -6,8 +7,14 @@ const Document = () => {
 	return (
 		<Html>
 			<Head>
-				<meta name='theme-color' content='#18d26e' />
-				<link rel='manifest' href='/main.webmanifest' />
+				<meta
+					name='theme-color'
+					content='#18d26e'
+				/>
+				<link
+					rel='manifest'
+					href='/main.webmanifest'
+				/>
 				<link
 					href='https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i&display=optional'
 					rel='stylesheet'

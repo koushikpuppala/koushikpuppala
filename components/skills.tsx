@@ -10,13 +10,19 @@ const Skills: NextComponentType = () => {
 	return (
 		<>
 			<div className='skills container'>
-				<div className='section-title' data-aos='fade-right'>
+				<div
+					className='section-title'
+					data-aos='fade-right'>
 					<h2>Skills</h2>
 				</div>
 
 				<div className='row skills-content'>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								NodeJs <i className='val'></i>
 							</span>
@@ -30,8 +36,12 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								HTML <i className='val'></i>
 							</span>
@@ -45,8 +55,12 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								Express <i className='val'></i>
 							</span>
@@ -60,8 +74,12 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								JavaScript <i className='val'></i>
 							</span>
@@ -75,8 +93,12 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								EJS <i className='val'></i>
 							</span>
@@ -90,8 +112,12 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								CSS <i className='val'></i>
 							</span>
@@ -105,8 +131,12 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								React <i className='val'></i>
 							</span>
@@ -120,8 +150,12 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								Nextjs <i className='val'></i>
 							</span>
@@ -135,8 +169,12 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								MongoDB <i className='val'></i>
 							</span>
@@ -150,8 +188,12 @@ const Skills: NextComponentType = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-lg-6' data-aos='fade-up'>
-						<div className='progress' data-aos='flip-left'>
+					<div
+						className='col-lg-6'
+						data-aos='fade-up'>
+						<div
+							className='progress'
+							data-aos='flip-left'>
 							<span className='skill'>
 								TypeScript <i className='val'></i>
 							</span>
