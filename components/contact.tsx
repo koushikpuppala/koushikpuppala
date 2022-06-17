@@ -366,7 +366,13 @@ const Contact: NextComponentType = () => {
 			</section>
 
 			<div className='credits'>
-				Github ❤️ <a href='https://github.com/koushikpuppala/koushikpuppala'>Source Code</a>
+				Github ❤️{' '}
+				<a
+					href='https://github.com/koushikpuppala/koushikpuppala'
+					target='_blank'
+					rel='noopener noreferrer'>
+					Source Code
+				</a>
 			</div>
 		</>
 	)
