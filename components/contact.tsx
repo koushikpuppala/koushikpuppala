@@ -102,8 +102,8 @@ const Contact: NextComponentType = () => {
 				SetErrorMsg({
 					...errorMsg,
 					message:
-						value.length > 0 && value.length <= 75
-							? 'Message should be 75 characters long'
+						value.length > 0 && value.length <= 50
+							? 'Message should be 50 characters long'
 							: '',
 				})
 				break
