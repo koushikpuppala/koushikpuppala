@@ -1,6 +1,6 @@
 import type { NextComponentType, NextPageContext } from 'next'
 import Head from 'next/head'
-import { HeaderProps } from '../types'
+import { HeaderProps } from '../interface'
 
 const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 	props: HeaderProps
