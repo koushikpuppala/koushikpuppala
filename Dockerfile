@@ -1,7 +1,7 @@
 FROM node:18.3.0-buster-slim
 
 # Create app directory
-WORKDIR /puppalakoushik
+WORKDIR /koushikpuppala
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
