@@ -12,7 +12,6 @@ body {
     background-color: #040404;
     color: #fff;
     position: relative;
-    background: transparent;
 }
 
 body::before {
@@ -223,7 +222,6 @@ h6 {
 .navbar a:before {
     content: '';
     position: absolute;
-    width: 0;
     height: 2px;
     bottom: -4px;
     left: 0;
@@ -476,7 +474,6 @@ section .container {
 }
 
 .portfolio #portfolio-flters {
-    padding: 0;
     margin: 0 auto 15px auto;
     list-style: none;
     text-align: center;
@@ -814,7 +811,6 @@ section .container {
 
 .contact .contact-form button[type='submit'] {
     background: transparent;
-    border: 0;
     padding: 10px 30px;
     color: #18d26e;
     border: #18d26e 1px solid;

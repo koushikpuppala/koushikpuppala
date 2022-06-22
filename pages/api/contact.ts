@@ -27,7 +27,6 @@ const Contact = async (req: NextApiRequest, res: NextApiResponse) => {
 		to: 'message@koushikpuppala.com',
 		subject: subject,
 		text: message,
-		html: `<b>${message}</b>`,
 	})
 
 	await contact.save()
