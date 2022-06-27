@@ -127,7 +127,7 @@ const Contact: NextComponentType = () => {
 					<div className='row mt-2'>
 						<div className='col-md-6 d-flex align-items-stretch'>
 							<div className='info-box'>
-								<i className='bx bx-map'></i>
+								<i className='bx bxs-map'></i>
 								<h3>My Address</h3>
 								<p>Rajahmundry Andhra Pradesh, India</p>
 							</div>
@@ -135,7 +135,7 @@ const Contact: NextComponentType = () => {
 
 						<div className='col-md-6 mt-4 mt-md-0 d-flex align-items-stretch'>
 							<div className='info-box'>
-								<i className='bx bx-share-alt'></i>
+								<i className='bx bxs-share-alt'></i>
 								<h3>Social Profiles</h3>
 								<div className='social-links'>
 									<a
@@ -186,20 +186,38 @@ const Contact: NextComponentType = () => {
 
 						<div className='col-md-6 mt-4 d-flex align-items-stretch'>
 							<div className='info-box'>
-								<i className='bx bx-envelope'></i>
-								<h3>Email Me</h3>
+								<i className='bx bxs-file-pdf'></i>
+								<h3>Resume</h3>
 								<p>
-									<a href='mailto:contact@koushikpuppala.com'>
-										contact@koushikpuppala.com
+									<a
+										href='/resume.pdf'
+										target='_blank'
+										rel='noreferrer'>
+										View my resume
+									</a>
+									{' | '}
+									<a
+										href='/resume.pdf'
+										target='_blank'
+										rel='noreferrer'
+										download='Koushikpuppala_Resume.pdf'>
+										Download my resume
 									</a>
 								</p>
 							</div>
 						</div>
 						<div className='col-md-6 mt-4 d-flex align-items-stretch'>
 							<div className='info-box'>
-								<i className='bx bx-phone-call'></i>
-								<h3>Call Me</h3>
+								<i className='bx bxs-user'></i>
+								<h3>Reach Me</h3>
 								<p>
+									<a
+										href='mailto:contact@koushikpuppala.com'
+										target='_blank'
+										rel='noreferrer'>
+										Email Me
+									</a>
+									{' | '}
 									<a
 										href='https://join.skype.com/invite/vfWLRyA9iFQc'
 										target='_blank'

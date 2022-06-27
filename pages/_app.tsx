@@ -22,7 +22,6 @@ const App = ({ Component, pageProps }: AppProps) => {
 			mirror: true,
 		})
 		window.addEventListener('load', () => {
-			console.log(navigator.onLine)
 			navigator.onLine
 				? toast.success('You are online!')
 				: toast.error('You are offline!', {
