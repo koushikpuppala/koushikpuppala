@@ -75,14 +75,14 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 <!--START_SECTION:waka-->
 
 ```text
-From: 27 May 2022 - To: 26 June 2022
+From: 28 May 2022 - To: 27 June 2022
 
-TypeScript   98 hrs 6 mins   █████████████████░░░░░░░░   68.29 %
-JSON         11 hrs 59 mins  ██░░░░░░░░░░░░░░░░░░░░░░░   08.35 %
-JavaScript   9 hrs 38 mins   █▓░░░░░░░░░░░░░░░░░░░░░░░   06.71 %
-Markdown     8 hrs           █▒░░░░░░░░░░░░░░░░░░░░░░░   05.57 %
-SCSS         5 hrs 21 mins   █░░░░░░░░░░░░░░░░░░░░░░░░   03.73 %
-YAML         2 hrs 43 mins   ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.90 %
+TypeScript   96 hrs 16 mins  █████████████████░░░░░░░░   68.47 %
+JSON         11 hrs 59 mins  ██░░░░░░░░░░░░░░░░░░░░░░░   08.53 %
+JavaScript   9 hrs 32 mins   █▓░░░░░░░░░░░░░░░░░░░░░░░   06.79 %
+Markdown     8 hrs           █▒░░░░░░░░░░░░░░░░░░░░░░░   05.70 %
+SCSS         4 hrs 33 mins   ▓░░░░░░░░░░░░░░░░░░░░░░░░   03.25 %
+YAML         2 hrs 43 mins   ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.94 %
 ```
 
 <!--END_SECTION:waka-->
