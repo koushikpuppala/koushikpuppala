@@ -37,16 +37,15 @@
         "glightbox": "^3.2.0",
         "globby": "^13.1.2",
         "isotope-layout": "^3.0.6",
-        "mongoose": "^6.4.0",
-        "next": "12.1.6",
+        "mongoose": "^6.4.2",
+        "next": "12.2.0",
         "next-pwa": "^5.5.4",
-        "nodemailer": "^6.7.5",
+        "nodemailer": "^6.7.6",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-toastify": "^9.0.5",
         "remixicon": "^2.5.0",
-        "sharp": "^0.30.6",
-        "swiper": "^8.2.4",
+        "swiper": "^8.2.6",
         "typed.js": "^2.0.12"
     },
     "devDependencies": {
@@ -57,12 +56,9 @@
         "@types/nodemailer": "^6.4.4",
         "@types/react": "18.0.14",
         "@types/react-dom": "18.0.5",
-        "@typescript-eslint/eslint-plugin": "^5.29.0",
-        "@typescript-eslint/parser": "^5.29.0",
         "dotenv": "^16.0.1",
-        "eslint": "8.18.0",
-        "eslint-config-next": "12.1.6",
-        "eslint-plugin-react": "^7.30.0",
+        "eslint": "8.19.0",
+        "eslint-config-next": "12.2.0",
         "typescript": "^4.7.4"
     }
 }
