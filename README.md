@@ -12,13 +12,13 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 
 -   👨‍💻 The first project is **_[Koushikpuppala](https://koushikpuppala.com)_**.
 
--   🔭 Currently working on **_[Alexus]()_** discord bot.
+-   🔭 Currently working on **_Alexus_** discord bot and **_[Gymkhana iiitraichur](https://github.com/koushikpuppala/gymkhana-iiitraichur)_** Website.
 
 -   👯 Collaborating with the **_[Indian Institute of Information Technology Raichur, Karnataka](https://github.com/iiitraichur)_** and **_[Discord Developer Studios](https://github.com/dscdevstudios)_**.
 
 -   💬 Ask me about **_Next.Js, MongoDB, Express, Nodejs, React, JavaScript, EJS(Embedded JavaScript), Discord.js, HTML, and CSS_**.
 
--   🌱 I started learning **_Python and TypeScript_**.
+-   🌱 I started learning **_Firebase, Python, and TypeScript_**.
 
 -   📫 Reach me through discord **_[koushikpuppala#0001](https://discord.com/channels/@me/735813371433058354)_** or email me at **_[contact@koushikpuppala.com](mailto:contact@koushikpuppala.com)_**
 

@@ -10,12 +10,13 @@ package-lock.json
 /coverage
 
 # next.js
-/.next/
-/out/
+.next/
+out/
+.swc
 
 # production
-/build
-/public/sitemap.xml
+build
+public/sitemap.xml
 
 # misc
 .DS_Store

@@ -7,10 +7,10 @@ with security updates.
 
 | package | Version | Supported          |
 | ------- | ------- | ------------------ |
-| node    | >= 16.8 | :white_check_mark: |
+| node    | >=16.8  | :white_check_mark: |
 | node    | < 16.8  | :x:                |
-| npm     | >= 7.x  | :white_check_mark: |
-| npm     | < 7.x   | :x:                |
+| npm     | >=8.x   | :white_check_mark: |
+| npm     | < 8.x   | :x:                |
 
 ## Reporting a Vulnerability
 
