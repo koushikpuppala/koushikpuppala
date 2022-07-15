@@ -61,7 +61,7 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 <summary>📊 GitHub Stats</summary>
 <div align="center">
 
-![GitHub Profile Trophy](https://github-profile-trophy.vercel.app/?username=koushikpuppala&theme=juicyfresh&no-frame=true&no-bg=false&margin-w=4&margin-h=4&column=3&row=3) ![GitHub Readme Stats](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact) ![GitHub Readme Stats](https://github-readme-stats.vercel.app/api?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false) ![GitHub Readme Streak](https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green&hide_border=true) ![Activity Graph](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact)
+![GitHub Profile Trophy](https://github-profile-trophy.vercel.app/?username=koushikpuppala&theme=juicyfresh&no-frame=true&no-bg=false&margin-w=4&margin-h=4&column=3&row=3) ![GitHub Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact) ![GitHub Readme Stats](https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&theme=blue-green&hide_border=true&include_all_commits=true&count_private=true) ![GitHub Readme Streak](https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green&hide_border=true) ![Activity Graph](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact)
 
 </div>
 </details>
