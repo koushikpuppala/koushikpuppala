@@ -22,11 +22,11 @@ const Contact = async (req: NextApiRequest, res: NextApiResponse) => {
 	})
 
 	await mailer.sendMail({
-		from: '"Contact Form" <me@koushikpuppala.com>',
+		from: `Admin Contact From <me@koushikpuppala.com>`,
 		replyTo: `${name} <${email}>`,
 		to: 'message@koushikpuppala.com',
 		subject: subject,
-		text: message,
+		html: message,
 	})
 
 	await contact.save()
