@@ -44,6 +44,7 @@
 		"bootstrap": "^5.2.0",
 		"bootstrap-icons": "^1.9.1",
 		"boxicons": "^2.1.2",
+		"firebase": "^9.9.0",
 		"glightbox": "^3.2.0",
 		"globby": "^13.1.2",
 		"isotope-layout": "^3.0.6",

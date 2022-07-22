@@ -1,6 +1,5 @@
-/* eslint-disable @next/next/next-script-for-ga */
-/* eslint-disable @next/next/no-sync-scripts */
 import { Html, Head, Main, NextScript } from 'next/document'
+import Script from 'next/script'
 
 const Document = () => {
 	return (
@@ -19,30 +18,36 @@ const Document = () => {
 					rel='stylesheet'
 				/>
 
-				<script
-					async
+				<Script
 					id='google-ca-pub-9586492413519336'
+					strategy='afterInteractive'
 					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9586492413519336'
 					crossOrigin='anonymous'
 				/>
-				<script
-					async
-					src='https://www.googletagmanager.com/gtag/js?id=G-VFZBVWQG74'
-					crossOrigin='anonymous'
+				<Script
+					src='https://www.googletagmanager.com/gtag/js?id=G-L5QSNJJ323'
+					strategy='afterInteractive'
 				/>
-				<script id='google-analytics'>
-					{`
-						window.dataLayer = window.dataLayer || []
-						function gtag() {
-							dataLayer.push(arguments)
+
+				<Script
+					strategy='afterInteractive'
+					id='google-analytics'
+					type='text/javascript'
+					dangerouslySetInnerHTML={{
+						__html: `window.dataLayer = window.dataLayer || [];
+						function gtag(){
+							dataLayer.push(arguments);
 						}
-						gtag('js', new Date())
-						gtag('config', 'G-VFZBVWQG74')
-					`}
-				</script>
-				<script id='google-tag-manager'>
-					{`
-						;(function (w, d, s, l, i) {
+						gtag('js', new Date());
+						gtag('config', 'G-L5QSNJJ323');`,
+					}}
+				/>
+				<Script
+					strategy='afterInteractive'
+					id='Google Tag Manager'
+					type='text/javascript'
+					dangerouslySetInnerHTML={{
+						__html: `;(function (w, d, s, l, i) {
 							w[l] = w[l] || []
 							w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
 							var f = d.getElementsByTagName(s)[0],
@@ -51,21 +56,20 @@ const Document = () => {
 							j.async = true
 							j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
 							f.parentNode.insertBefore(j, f)
-						})(window, document, 'script', 'dataLayer', 'GTM-KM9WPPS')
-					`}
-				</script>
+						})(window, document, 'script', 'dataLayer', 'GTM-KM9WPPS')`,
+					}}
+				/>
 			</Head>
 			<body>
-				<noscript>
-					<iframe
-						src='https://www.googletagmanager.com/ns.html?id=GTM-KM9WPPS'
-						height='0'
-						width='0'
-						style={{ display: 'none', visibility: 'hidden' }}></iframe>
-				</noscript>
+				<noscript
+					dangerouslySetInnerHTML={{
+						__html: `<iframe src='https://www.googletagmanager.com/ns.html?id=GTM-KM9WPPS' height='0' width='0' style='display:none;visibility:hidden'></iframe>`,
+					}}
+				/>
 				<Main />
 
-				<script
+				<Script
+					strategy='beforeInteractive'
 					src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js'
 					integrity='sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa'
 					crossOrigin='anonymous'
