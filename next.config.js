@@ -16,7 +16,6 @@ const nextConfig = withPWA({
 		register: true,
 		skipWaiting: true,
 		disable: process.env.NODE_ENV === 'development',
-		importScripts: ['https://arc.io/arc-sw-core.js'],
 	},
 })
 

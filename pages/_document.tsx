@@ -21,10 +21,6 @@ const Document = () => {
 
 				<script
 					async
-					src='https://arc.io/widget.min.js#RdPYzCBC'
-				/>
-				<script
-					async
 					id='google-ca-pub-9586492413519336'
 					src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9586492413519336'
 					crossOrigin='anonymous'
