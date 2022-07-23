@@ -1,9 +1,11 @@
 /** @type {import('next').NextConfig} */
 
 const withPWA = require('next-pwa')
+const { withSentryConfig } = require('@sentry/nextjs')
 
 const nextConfig = withPWA({
 	reactStrictMode: true,
+	swcMinify: true,
 	webpack: (config, { isServer }) => {
 		if (!isServer) {
 			config.resolve.fallback.fs = false
@@ -19,4 +21,8 @@ const nextConfig = withPWA({
 	},
 })
 
-module.exports = nextConfig
+const sentryWebpackPluginOptions = {
+	silent: true,
+}
+
+module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions)

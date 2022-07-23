@@ -1,12 +1,15 @@
+import * as Sentry from '@sentry/nextjs'
 import type { NextPage } from 'next'
+import NextErrorComponent from 'next/error'
 import Link from 'next/link'
-import { Header } from '../components'
+import { Header } from 'components'
+import style from 'styles/_error.module.scss'
 
 const Error: NextPage = () => {
 	return (
 		<>
 			<Header title='Koushik Puppala | Page Not Found' />
-			<div className='NotFound'>
+			<div className={style._error}>
 				<div>
 					<svg
 						width='636px'
@@ -145,89 +148,89 @@ const Error: NextPage = () => {
 								fill='black'
 								fillOpacity='1'>
 								<use
-									className='error-3-4'
+									className={style.error_3_4}
 									filter='url(#stroke-glow)'
 									href='#error-3-4'></use>
 								<use
-									className='error-2-0'
+									className={style.error_2_0}
 									filter='url(#stroke-glow)'
 									href='#error-2-0'></use>
 								<use
-									className='error-1-4'
+									className={style.error_1_4}
 									filter='url(#stroke-glow)'
 									href='#error-1-4'></use>
 								<use
-									className='error-1-e'
+									className={style.error_1_e}
 									filter='url(#stroke-glow)'
 									href='#error-1-e'></use>
 								<use
-									className='error-2-r'
+									className={style.error_2_r}
 									filter='url(#stroke-glow)'
 									href='#error-2-r'></use>
 								<use
-									className='error-3-r'
+									className={style.error_3_r}
 									filter='url(#stroke-glow)'
 									href='#error-3-r'></use>
 								<use
-									className='error-4-o'
+									className={style.error_4_o}
 									filter='url(#stroke-glow)'
 									href='#error-4-o'></use>
 								<use
-									className='error-5-r'
+									className={style.error_5_r}
 									filter='url(#stroke-glow)'
 									href='#error-5-r'></use>
 								<use
-									className='error-right'
+									className={style.error_right}
 									filter='url(#stroke-glow)'
 									href='#error-right'></use>
 								<use
-									className='error-left'
+									className={style.error_left}
 									filter='url(#stroke-glow)'
 									href='#error-left'></use>
 								<use
-									className='error-top'
+									className={style.error_top}
 									filter='url(#stroke-glow)'
 									href='#error-top'></use>
 							</g>
 							<g
-								className='top'
+								className={style.top}
 								fill='none'
 								stroke='#FF0000'
 								strokeWidth='2'
 								strokeLinecap='round'
 								strokeLinejoin='round'>
 								<use
-									className='error-3-4'
+									className={style.error_3_4}
 									href='#error-3-4'></use>
 								<use
-									className='error-2-0'
+									className={style.error_2_0}
 									href='#error-2-0'></use>
 								<use
-									className='error-1-4'
+									className={style.error_1_4}
 									href='#error-1-4'></use>
 								<use
-									className='error-1-e'
+									className={style.error_1_e}
 									href='#error-1-e'></use>
 								<use
-									className='error-2-r'
+									className={style.error_2_r}
 									href='#error-2-r'></use>
 								<use
-									className='error-3-r'
+									className={style.error_3_r}
 									href='#error-3-r'></use>
 								<use
-									className='error-4-o'
+									className={style.error_4_o}
 									href='#error-4-o'></use>
 								<use
-									className='error-5-r'
+									className={style.error_5_r}
 									href='#error-5-r'></use>
 								<use
-									className='error-right'
+									className={style.error_right}
 									href='#error-right'></use>
 								<use
-									className='error-left'
+									className={style.error_left}
 									href='#error-left'></use>
 								<use
-									className='error-top'
+									className={style.error_top}
 									href='#error-top'></use>
 							</g>
 						</g>
@@ -293,22 +296,22 @@ const Error: NextPage = () => {
 								fill='black'
 								fillOpacity='1'>
 								<use
-									className='quote-top'
+									className={style.quote_top}
 									filter='url(#fill-glow)'
 									href='#quote-top'></use>
 								<use
-									className='quote-bottom'
+									className={style.quote_bottom}
 									filter='url(#fill-glow)'
 									href='#quote-bottom'></use>
 							</g>
 							<g
-								className='top'
+								className={style.top}
 								fill='#FF0000'>
 								<use
-									className='quote-top'
+									className={style.quote_top}
 									href='#quote-top'></use>
 								<use
-									className='quote-bottom'
+									className={style.quote_bottom}
 									href='#quote-bottom'></use>
 							</g>
 						</g>
@@ -375,22 +378,22 @@ const Error: NextPage = () => {
 										fill='black'
 										fillOpacity='1'>
 										<use
-											className='link-phrase'
+											className={style.link_phrase}
 											filter='url(#fill-glow)'
 											href='#link-phrase'></use>
 										<use
-											className='link-mark'
+											className={style.link_mark}
 											filter='url(#fill-glow)'
 											href='#link-mark'></use>
 									</g>
 									<g
-										className='top'
+										className={style.top}
 										fill='#FF0000'>
 										<use
-											className='link-phrase'
+											className={style.link_phrase}
 											href='#link-phrase'></use>
 										<use
-											className='link-mark'
+											className={style.link_mark}
 											href='#link-mark'></use>
 									</g>
 								</g>
@@ -401,6 +404,12 @@ const Error: NextPage = () => {
 			</div>
 		</>
 	)
+}
+
+Error.getInitialProps = async (contextData: any) => {
+	await Sentry.captureUnderscoreErrorException(contextData)
+
+	return NextErrorComponent.getInitialProps(contextData)
 }
 
 export default Error
