@@ -1,3 +1,5 @@
+@import './__variables.scss';
+
 ._error {
 	height: 100vh;
 	overflow: hidden;
@@ -9,67 +11,56 @@
 	width: 100%;
 	padding: 12px;
 	perspective: 1000px;
-
 	> div {
 		display: flex;
 		justify-content: center;
 		width: 100%;
-
 		svg {
 			height: 100%;
 		}
-
 		&:nth-child(1) {
 			opacity: 0;
 			transform: translateZ(1000px);
 			-webkit-animation: zoomFadeIn 5000ms cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
 			animation: zoomFadeIn 5000ms cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
 			transform-origin: center center;
-
 			.error_1_e {
 				transform: translateX(-50%);
 				-webkit-animation: slideRight 3000ms cubic-bezier(0.215, 0.61, 0.355, 1) -500ms forwards;
 				animation: slideRight 3000ms cubic-bezier(0.215, 0.61, 0.355, 1) -500ms forwards;
 			}
-
 			.error_2_r {
 				transform: translateY(-20%);
 				-webkit-animation: slideDown 5000ms cubic-bezier(0.215, 0.61, 0.355, 1) -500ms forwards;
 				animation: slideDown 5000ms cubic-bezier(0.215, 0.61, 0.355, 1) -500ms forwards;
 			}
-
 			.error_4_o {
 				transform: translateX(10%);
 				-webkit-animation: slideLeftSmall 3000ms cubic-bezier(0.215, 0.61, 0.355, 1) -300ms forwards;
 				animation: slideLeftSmall 3000ms cubic-bezier(0.215, 0.61, 0.355, 1) -300ms forwards;
 			}
-
 			.error_5_r {
 				transform: translateX(50%);
 				-webkit-animation: slideLeft 3000ms cubic-bezier(0.215, 0.61, 0.355, 1) -500ms forwards;
 				animation: slideLeft 3000ms cubic-bezier(0.215, 0.61, 0.355, 1) -500ms forwards;
 			}
-
 			.error_2_0 {
 				transform: translateY(20%);
 				-webkit-animation: slideUp 5000ms cubic-bezier(0.215, 0.61, 0.355, 1) -500ms forwards;
 				animation: slideUp 5000ms cubic-bezier(0.215, 0.61, 0.355, 1) -500ms forwards;
 			}
-
 			.error_top {
 				transform: scaleX(0);
 				transform-origin: 163px 3px;
 				-webkit-animation: scaleXIn 4500ms cubic-bezier(0.19, 1, 0.22, 1) 1500ms forwards;
 				animation: scaleXIn 4500ms cubic-bezier(0.19, 1, 0.22, 1) 1500ms forwards;
 			}
-
 			.error_left {
 				transform: scaleX(0);
 				transform-origin: 75px 3px;
 				-webkit-animation: scaleXIn 4500ms cubic-bezier(0.19, 1, 0.22, 1) 1500ms forwards;
 				animation: scaleXIn 4500ms cubic-bezier(0.19, 1, 0.22, 1) 1500ms forwards;
 			}
-
 			.error_right {
 				transform: scaleX(0);
 				transform-origin: 250px 3px;
@@ -77,7 +68,6 @@
 				animation: scaleXIn 4500ms cubic-bezier(0.19, 1, 0.22, 1) 1500ms forwards;
 			}
 		}
-
 		&:nth-child(2) {
 			.quote_top,
 			.quote_bottom {
@@ -86,13 +76,11 @@
 					forwards;
 				animation: slideUpFadeIn 1500ms cubic-bezier(0.215, 0.61, 0.355, 1) 4750ms forwards;
 			}
-
 			.quote_bottom {
 				-webkit-animation-delay: 5750ms;
 				animation-delay: 5750ms;
 			}
 		}
-
 		&:nth-child(3) {
 			.link_phrase,
 			.link_mark {
@@ -101,44 +89,53 @@
 					forwards;
 				animation: slideUpFadeIn 1000ms cubic-bezier(0.215, 0.61, 0.355, 1) 6250ms forwards;
 			}
-
 			.link_mark {
 				opacity: 0;
 				-webkit-animation: fadeIn 1000ms cubic-bezier(0.215, 0.61, 0.355, 1) 6750ms forwards;
 				animation: fadeIn 1000ms cubic-bezier(0.215, 0.61, 0.355, 1) 6750ms forwards;
 			}
-
 			a {
 				cursor: pointer;
 				transition: all 500ms ease-out;
-			}
-
-			a .top use {
-				transition: all 150ms ease-out;
-			}
-
-			a:hover,
-			a:focus {
-				-webkit-animation: jitter 225ms ease-in-out 2 forwards;
-				animation: jitter 225ms ease-in-out 2 forwards;
-			}
-
-			a:hover .top use,
-			a:focus .top use {
-				fill: white;
-			}
-
-			a:active .top use {
-				fill: #b30000;
+				.top {
+					use {
+						transition: all 150ms ease-out;
+					}
+				}
+				&:hover,
+				&:focus {
+					-webkit-animation: jitter 225ms ease-in-out 2 forwards;
+					animation: jitter 225ms ease-in-out 2 forwards;
+					.top {
+						use {
+							fill: $white;
+						}
+					}
+				}
+				&:active {
+					.top {
+						use {
+							fill: #b30000;
+						}
+					}
+				}
 			}
 		}
 	}
 }
 
 @-moz-document url-prefix() {
-	.NotFound > div:nth-child(3) a:hover,
-	.NotFound > div:nth-child(3) a:focus {
-		animation: none;
+	._error {
+		> div {
+			&:nth-child(3) {
+				a {
+					&:hover,
+					&:focus {
+						animation: none;
+					}
+				}
+			}
+		}
 	}
 }
 

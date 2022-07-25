@@ -23,9 +23,7 @@ const App = ({ Component, pageProps }: AppProps) => {
 		window.addEventListener('load', () => {
 			navigator.onLine
 				? toast.success('You are online!')
-				: toast.error('You are offline!', {
-						autoClose: false,
-				  })
+				: toast.error('You are offline!', { autoClose: false })
 		})
 	}, [])
 	return (
