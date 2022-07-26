@@ -25,29 +25,11 @@ const Document = () => {
 					crossOrigin='anonymous'
 				/>
 				<Script
-					id='google-analytics-universal'
-					src='https://www.googletagmanager.com/gtag/js?id=UA-231251006-1'
-					strategy='afterInteractive'
-				/>
-				<Script
 					id='google-analytics-g4'
 					src='https://www.googletagmanager.com/gtag/js?id=G-8NPR1DDE8Y'
 					strategy='afterInteractive'
 				/>
 
-				<Script
-					strategy='afterInteractive'
-					id='google-analytics-universal'
-					type='text/javascript'
-					dangerouslySetInnerHTML={{
-						__html: `window.dataLayer = window.dataLayer || [];
-						function gtag(){
-							dataLayer.push(arguments);
-						}
-						gtag('js', new Date());
-						gtag('config', 'UA-231251006-1');`,
-					}}
-				/>
 				<Script
 					strategy='afterInteractive'
 					id='google-analytics-g4'
