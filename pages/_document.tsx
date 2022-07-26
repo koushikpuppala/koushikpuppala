@@ -32,7 +32,7 @@ const Document = () => {
 
 				<Script
 					strategy='afterInteractive'
-					id='google-analytics-g4'
+					id='google-analytics-g4-js'
 					type='text/javascript'
 					dangerouslySetInnerHTML={{
 						__html: `window.dataLayer = window.dataLayer || [];
