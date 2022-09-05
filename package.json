@@ -57,7 +57,7 @@
 		"react-dom": "^18.2.0",
 		"react-toastify": "^9.0.7",
 		"remixicon": "^2.5.0",
-		"sharp": "^0.30.7",
+		"sharp": "^0.31.0",
 		"swiper": "^8.3.1",
 		"typed.js": "^2.0.12",
 		"uuid": "^8.3.2"
