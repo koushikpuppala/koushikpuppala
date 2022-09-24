@@ -1,9 +1,17 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { toast } from 'react-toastify'
+import { useEffect } from 'react'
 import { Contact, Header, Navbar, Portfolio, Skills } from '../components'
 
 const Home: NextPage = () => {
+	useEffect(() => {
+		navigator.onLine
+			? toast.success('You are online!')
+			: toast.error('You are offline!', { autoClose: false })
+	})
+
 	return (
 		<>
 			<Header />

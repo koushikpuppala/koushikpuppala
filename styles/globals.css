@@ -709,7 +709,7 @@ section .container {
 }
 
 .contact .info-box h3 {
-	font-size: 20px;
+	font-size: 22px;
 	color: rgba(255, 255, 255, 0.5);
 	font-weight: 700;
 	margin: 10px 0 8px 68px;
@@ -783,56 +783,6 @@ section .container {
 	border-top-color: #eee;
 	-webkit-animation: animate-loading 1s linear infinite;
 	animation: animate-loading 1s linear infinite;
-}
-
-.contact .contact-form input,
-.contact .contact-form textarea {
-	border-radius: 0;
-	box-shadow: none;
-	font-size: 14px;
-	background: rgba(255, 255, 255, 0.08);
-	border: 0;
-	transition: 0.3s;
-	color: #fff;
-}
-
-.contact .contact-form input:focus,
-.contact .contact-form textarea:focus {
-	background-color: rgba(255, 255, 255, 0.11);
-}
-
-.contact .contact-form input {
-	padding: 10px 15px;
-}
-
-.contact .contact-form textarea {
-	padding: 12px 15px;
-}
-
-.contact .contact-form button[type='submit'] {
-	background: transparent;
-	padding: 10px 30px;
-	color: #18d26e;
-	border: #18d26e 1px solid;
-	transition: 0.4s;
-	border-radius: 4px;
-	font-weight: 600;
-}
-
-.contact .contact-form button[type='submit']:hover {
-	background: #18d26e;
-	color: #fff;
-}
-
-.contact .contact-form button[type='submit']:disabled {
-	opacity: 0.5;
-}
-
-.contact .contact-form button[type='submit']:disabled:hover {
-	opacity: 0.5;
-	border: #999 1px solid;
-	background: #999;
-	color: #040404;
 }
 
 @-webkit-keyframes animate-loading {

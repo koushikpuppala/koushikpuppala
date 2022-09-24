@@ -1,116 +1,203 @@
+import { SendOutlined } from '@mui/icons-material'
+import { Alert, AlertTitle, Button, Link, TextField, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import axios from 'axios'
 import type { NextComponentType } from 'next'
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 const Contact: NextComponentType = () => {
-	const [form, SetForm] = useState({
-		name: '',
-		email: '',
-		subject: '',
-		message: '',
-	})
-	const [isLoading, SetIsLoading] = useState(false)
-	const [errorMsg, SetErrorMsg] = useState({
-		name: '',
-		email: '',
-		subject: '',
-		message: '',
-	})
-	const [isError, SetIsError] = useState('')
-	const [successMsg, SetSuccessMsg] = useState('')
-	const [isOnline, SetIsOnline] = useState(Boolean)
-	const RegularExpression = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/)
-	const sendBtn =
-		errorMsg.name.length !== 0 ||
-		errorMsg.email.length !== 0 ||
-		errorMsg.subject.length !== 0 ||
-		errorMsg.message.length !== 0 ||
-		form.name.length === 0 ||
-		form.email.length === 0 ||
-		form.subject.length === 0 ||
-		form.message.length === 0
-
-	useEffect(() => {
-		window.addEventListener('load', () => {
-			navigator.onLine ? SetIsOnline(true) : SetIsOnline(false)
-		})
-	}, [])
-
-	const handleSubmit = (event: SyntheticEvent) => {
-		event.preventDefault()
-		SetIsLoading(true)
-		SetErrorMsg({
+	const [values, setValues] = useState({
+		form: {
 			name: '',
 			email: '',
 			subject: '',
 			message: '',
+		},
+		errors: {
+			name: '',
+			email: '',
+			subject: '',
+			message: '',
+		},
+	})
+
+	const [isOnline, setIsOnline] = useState(false)
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [isError, setIsError] = useState(true)
+	const RegularExpression = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/)
+
+	useEffect(() => {
+		navigator.onLine ? setIsOnline(true) : setIsOnline(false)
+		setIsError(
+			values.errors.name.length !== 0 ||
+				values.errors.email.length !== 0 ||
+				values.errors.subject.length !== 0 ||
+				values.errors.message.length !== 0 ||
+				values.form.name.length === 0 ||
+				values.form.email.length === 0 ||
+				values.form.subject.length === 0 ||
+				values.form.message.length === 0
+		)
+	}, [values])
+
+	const inputStyle = {
+		width: '100%',
+		color: 'white',
+		'& .MuiOutlinedInput-root': {
+			color: 'white',
+			'& fieldset': {
+				borderColor: 'rgba(255, 255, 255, 0.11)',
+			},
+			'&:hover fieldset': {
+				borderColor: 'rgba(255, 255, 255, 0.11)',
+			},
+			'&.Mui-focused fieldset': {
+				borderColor: 'rgba(255, 255, 255, 0.11)',
+			},
+		},
+		'& .MuiFormLabel-root': {
+			color: 'white',
+			'&.Mui-focused': {
+				color: 'white',
+			},
+			'& .MuiFormLabel-asterisk': {
+				color: 'red',
+			},
+		},
+	}
+	const errorInputStyle = {
+		width: '100%',
+		color: 'white',
+		'& .MuiOutlinedInput-root': {
+			color: 'white',
+		},
+	}
+
+	const submitButtonStyle = {
+		background: 'transparent',
+		padding: '10px 30px',
+		color: '#18d26e',
+		border: '#18d26e 1px solid',
+		borderRadius: '4px',
+		fontWeight: '600',
+		'&:hover': {
+			background: 'transparent',
+			border: '#18d26e 1px solid',
+		},
+		'&:disabled': {
+			opacity: '0.5',
+			border: '#D5D5D5 1px solid',
+			color: '#D5D5D5',
+		},
+	}
+
+	const clearForm = () => {
+		setValues({
+			form: {
+				name: '',
+				email: '',
+				subject: '',
+				message: '',
+			},
+			errors: {
+				name: '',
+				email: '',
+				subject: '',
+				message: '',
+			},
 		})
+	}
+
+	const handleSubmit = (event: SyntheticEvent) => {
+		event.preventDefault()
+		setIsSubmitting(true)
 		axios
-			.post('/api/contact', form)
+			.post('/api/contact', values.form)
 			.then(res => {
-				SetForm({
-					name: '',
-					email: '',
-					subject: '',
-					message: '',
-				})
-				SetIsLoading(false)
-				SetSuccessMsg(res.data.message)
+				setIsSubmitting(false)
+				toast.success(res.data.message)
+				clearForm()
 			})
 			.catch(err => {
-				SetIsLoading(false)
-				SetIsError(err.message)
+				setIsSubmitting(false)
+				toast.error(err.response.data.message, {
+					autoClose: false,
+				})
 			})
-
-		setTimeout(() => {
-			SetSuccessMsg('')
-			SetIsError('')
-		}, 10000)
 	}
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		const { name, value } = event.target
-		switch (name) {
+		const { id, value } = event.target
+		console.log(values)
+		switch (id) {
 			case 'name':
-				SetErrorMsg({
-					...errorMsg,
-					name:
-						value.length > 0 && value.length <= 5
-							? 'Name should be 5 characters long'
-							: '',
+				setValues({
+					...values,
+					form: {
+						...values.form,
+						name: value,
+					},
+					errors: {
+						...values.errors,
+						name:
+							value.length > 0 && value.length < 5
+								? 'Name must be at least 5 characters'
+								: '',
+					},
 				})
 				break
 			case 'email':
-				SetErrorMsg({
-					...errorMsg,
-					email:
-						value.length === 0 || RegularExpression.test(value)
-							? ''
-							: 'Email is not valid',
+				setValues({
+					...values,
+					form: {
+						...values.form,
+						email: value,
+					},
+					errors: {
+						...values.errors,
+						email:
+							value.length !== 0 && !RegularExpression.test(value)
+								? 'Invalid email address'
+								: '',
+					},
 				})
 				break
 			case 'subject':
-				SetErrorMsg({
-					...errorMsg,
-					subject:
-						value.length > 0 && value.length <= 20
-							? 'Subject should be 20 characters long'
-							: '',
+				setValues({
+					...values,
+					form: {
+						...values.form,
+						subject: value,
+					},
+					errors: {
+						...values.errors,
+						subject:
+							value.length > 0 && value.length < 20
+								? 'Subject must be at least 20 characters'
+								: '',
+					},
 				})
 				break
 			case 'message':
-				SetErrorMsg({
-					...errorMsg,
-					message:
-						value.length > 0 && value.length <= 50
-							? 'Message should be 50 characters long'
-							: '',
+				setValues({
+					...values,
+					form: {
+						...values.form,
+						message: value,
+					},
+					errors: {
+						...values.errors,
+						message:
+							value.length > 0 && value.length < 50
+								? 'Message must be at least 50 characters'
+								: '',
+					},
 				})
 				break
 			default:
 				break
 		}
-		SetForm({ ...form, [name]: value })
 	}
 
 	return (
@@ -118,77 +205,65 @@ const Contact: NextComponentType = () => {
 			<section
 				id='contact'
 				className='contact'>
-				<div className='container'>
-					<div className='section-title'>
-						<h2>Contact</h2>
-						<p>Contact Me</p>
-					</div>
+				<Box className='container'>
+					<Box className='section-title'>
+						<Typography variant='h2'>Contact</Typography>
+						<Typography>Contact Me</Typography>
+					</Box>
 
-					<div className='row mt-2'>
-						<div className='col-md-6 d-flex align-items-stretch'>
-							<div className='info-box'>
+					<Box className='row mt-2'>
+						<Box className='col-md-6 d-flex align-items-stretch'>
+							<Box className='info-box'>
 								<i className='bx bxs-map'></i>
-								<h3>My Address</h3>
-								<p>Rajahmundry Andhra Pradesh, India</p>
-							</div>
-						</div>
+								<Typography variant='h3'>My Address</Typography>
+								<Typography>Rajahmundry Andhra Pradesh, India</Typography>
+							</Box>
+						</Box>
 
-						<div className='col-md-6 mt-4 mt-md-0 d-flex align-items-stretch'>
-							<div className='info-box'>
+						<Box className='col-md-6 mt-4 mt-md-0 d-flex align-items-stretch'>
+							<Box className='info-box'>
 								<i className='bx bxs-share-alt'></i>
-								<h3>Social Profiles</h3>
-								<div className='social-links'>
-									<a
-										href='https://www.linkedin.com/in/koushikpuppala'
+								<Typography variant='h3'>Social Profiles</Typography>
+								<Box className='social-links'>
+									<Link
+										href='/linkedin'
 										target='_blank'
 										rel='noreferrer'
-										className='linkedin'>
-										<i className='bi bi-linkedin'></i>
-									</a>
-									<a
-										href='https://github.com/koushikpuppala'
+										className='bi bi-linkedin'></Link>
+									<Link
+										href='/github'
 										target='_blank'
 										rel='noreferrer'
-										className='github'>
-										<i className='bi bi-github'></i>
-									</a>
-									<a
-										href='https://discord.com/channels/@me/735813371433058354'
+										className='bi bi-github'></Link>
+									<Link
+										href='/discord'
 										target='_blank'
 										rel='noreferrer'
-										className='discord'>
-										<i className='bi bi-discord'></i>
-									</a>
-									<a
-										href='https://www.instagram.com/koushikpuppala'
+										className='bi bi-discord'></Link>
+									<Link
+										href='/instagram'
 										target='_blank'
 										rel='noreferrer'
-										className='instagram'>
-										<i className='bi bi-instagram'></i>
-									</a>
-									<a
-										href='https://twitter.com/puppala_koushik'
+										className='bi bi-instagram'></Link>
+									<Link
+										href='/twitter'
 										target='_blank'
 										rel='noreferrer'
-										className='twitter'>
-										<i className='bi bi-twitter'></i>
-									</a>
-									<a
-										href='https://www.facebook.com/puppalakoushik'
+										className='bi bi-twitter'></Link>
+									<Link
+										href='/facebook'
 										target='_blank'
 										rel='noreferrer'
-										className='facebook'>
-										<i className='bi bi-facebook'></i>
-									</a>
-								</div>
-							</div>
-						</div>
+										className='bi bi-facebook'></Link>
+								</Box>
+							</Box>
+						</Box>
 
-						<div className='col-md-6 mt-4 d-flex align-items-stretch'>
-							<div className='info-box'>
+						<Box className='col-md-6 mt-4 d-flex align-items-center'>
+							<Box className='info-box'>
 								<i className='bx bxs-file-pdf'></i>
-								<h3>Resume</h3>
-								<p>
+								<Typography variant='h3'>Resume</Typography>
+								<Typography>
 									<a
 										href='/resume.pdf'
 										target='_blank'
@@ -203,14 +278,14 @@ const Contact: NextComponentType = () => {
 										download='Koushikpuppala_Resume.pdf'>
 										Download my resume
 									</a>
-								</p>
-							</div>
-						</div>
-						<div className='col-md-6 mt-4 d-flex align-items-stretch'>
-							<div className='info-box'>
+								</Typography>
+							</Box>
+						</Box>
+						<Box className='col-md-6 mt-4 d-flex align-items-stretch'>
+							<Box className='info-box'>
 								<i className='bx bxs-user'></i>
-								<h3>Reach Me</h3>
-								<p>
+								<Typography variant='h3'>Reach Me</Typography>
+								<Typography>
 									<a
 										href='mailto:contact@koushikpuppala.com'
 										target='_blank'
@@ -219,174 +294,135 @@ const Contact: NextComponentType = () => {
 									</a>
 									{' | '}
 									<a
-										href='https://join.skype.com/invite/vfWLRyA9iFQc'
+										href='/skype'
 										target='_blank'
 										rel='noreferrer'>
 										Skype Call
 									</a>
-								</p>
-							</div>
-						</div>
-					</div>
-					{isOnline ? (
-						<form
-							onSubmit={handleSubmit}
-							method='post'
-							role='form'
-							className='contact-form mt-4'>
-							<div className='row'>
-								<div className='col-md-6 form-group'>
-									<div className='form-floating'>
-										<input
-											type='text'
-											name='name'
-											className={
-												errorMsg.name.length > 0
-													? 'is-invalid form-control'
-													: 'form-control'
+								</Typography>
+							</Box>
+						</Box>
+					</Box>
+					<Box className='contact-form mt-4'>
+						{isOnline ? (
+							<>
+								<Box className='row'>
+									<Box className='col-md-6'>
+										<TextField
+											sx={
+												values.errors.name.length > 0
+													? errorInputStyle
+													: inputStyle
 											}
-											id='name'
+											variant='outlined'
 											placeholder='Your Name'
-											value={form.name}
+											label='Your Name'
+											id='name'
+											value={values.form.name}
 											onChange={handleChange}
+											error={values.errors.name.length > 0 ? true : false}
 											required={true}
+											helperText={values.errors.name}
 										/>
-										<label htmlFor='name'>
-											Your Name <span className='text-danger'>*</span>
-										</label>
-										{errorMsg.name.length > 0 && (
-											<span className='invalid-feedback'>
-												{errorMsg.name}
-											</span>
-										)}
-									</div>
-								</div>
-								<div className='col-md-6 form-group mt-3 mt-md-0'>
-									<div className='form-floating'>
-										<input
-											type='email'
-											name='email'
-											className={
-												errorMsg.email.length > 0
-													? 'is-invalid form-control'
-													: 'form-control'
+									</Box>
+									<Box className='col-md-6 mt-3 mt-md-0'>
+										<TextField
+											sx={
+												values.errors.email.length > 0
+													? errorInputStyle
+													: inputStyle
 											}
-											id='email'
+											variant='outlined'
 											placeholder='Your Email'
-											value={form.email}
+											label='Your Email'
+											id='email'
+											value={values.form.email}
 											onChange={handleChange}
+											error={values.errors.email.length > 0 ? true : false}
 											required={true}
+											helperText={values.errors.email}
 										/>
-										<label htmlFor='email'>
-											Your Email <span className='text-danger'>*</span>
-										</label>
-										{errorMsg.email.length > 0 && (
-											<span className='invalid-feedback'>
-												{errorMsg.email}
-											</span>
-										)}
-									</div>
-								</div>
-							</div>
-							<div className='form-group mt-3'>
-								<div className='form-floating'>
-									<input
-										type='text'
-										name='subject'
-										className={
-											errorMsg.subject.length > 0
-												? 'is-invalid form-control'
-												: 'form-control'
-										}
-										id='subject'
-										placeholder='Subject'
-										value={form.subject}
-										onChange={handleChange}
-										required={true}
-									/>
-									<label htmlFor='subject'>
-										Subject <span className='text-danger'>*</span>
-									</label>
-									{errorMsg.subject.length > 0 && (
-										<span className='invalid-feedback'>{errorMsg.subject}</span>
+									</Box>
+								</Box>
+								<TextField
+									sx={
+										values.errors.subject.length > 0
+											? errorInputStyle
+											: inputStyle
+									}
+									className='mt-3'
+									variant='outlined'
+									placeholder='Your Subject'
+									label='Your Subject'
+									id='subject'
+									value={values.form.subject}
+									onChange={handleChange}
+									error={values.errors.subject.length > 0 ? true : false}
+									required={true}
+									helperText={values.errors.subject}
+								/>
+								<TextField
+									sx={
+										values.errors.message.length > 0
+											? errorInputStyle
+											: inputStyle
+									}
+									className='mt-3'
+									variant='outlined'
+									placeholder='Message'
+									label='Message'
+									id='message'
+									value={values.form.message}
+									onChange={handleChange}
+									error={values.errors.message.length > 0 ? true : false}
+									required={true}
+									helperText={values.errors.message}
+									multiline={true}
+									rows={6}
+								/>
+								<Box className='mt-4'>
+									{isSubmitting ? (
+										<Box className='loading'>Loading</Box>
+									) : (
+										<Box className='text-center'>
+											<Button
+												sx={submitButtonStyle}
+												variant='outlined'
+												disabled={isError}
+												onClick={handleSubmit}
+												startIcon={<SendOutlined />}>
+												Send Message
+											</Button>
+										</Box>
 									)}
-								</div>
-							</div>
-							<div className='form-group mt-3'>
-								<div className='form-floating'>
-									<textarea
-										name='message'
-										className={
-											errorMsg.message.length > 0
-												? 'is-invalid form-control'
-												: 'form-control'
-										}
-										id='message'
-										placeholder='Message'
-										value={form.message}
-										onChange={handleChange}
-										required={true}
-										style={{
-											height: '200px',
-										}}></textarea>
-									<label htmlFor='message'>
-										Message <span className='text-danger'>*</span>
-									</label>
-									{errorMsg.message.length > 0 && (
-										<span className='invalid-feedback'>{errorMsg.message}</span>
-									)}
-								</div>
-							</div>
-							<div className='my-3'>
-								{isLoading && <div className='loading'>Loading</div>}
-								{isError.length > 0 && (
-									<div
-										className='alert error-message alert-dismissible fade show'
-										role='alert'>
-										{isError}
-										<button
-											type='button'
-											className='btn-close'
-											data-bs-dismiss='alert'
-											aria-label='Close'></button>
-									</div>
-								)}
-								{successMsg.length > 0 && (
-									<div
-										className='alert success-message alert-dismissible fade show'
-										role='alert'>
-										{successMsg}
-										<button
-											type='button'
-											className='btn-close'
-											data-bs-dismiss='alert'
-											aria-label='Close'></button>
-									</div>
-								)}
-							</div>
-							<div className='text-center'>
-								<button
-									type='submit'
-									disabled={isLoading || sendBtn}>
-									<i className='bi bi-send'></i> Send Message
-								</button>
-							</div>
-						</form>
-					) : (
-						<div className='contact-form mt-3'>
-							<div className='text-center text-danger'>
-								<span className='fs-3 fw-bold'>You are Offline as of now.</span>
-								<p>Please Check your internet connection and try again.</p>
-							</div>
-						</div>
-					)}
-				</div>
+								</Box>
+							</>
+						) : (
+							<Alert
+								sx={{
+									alignItems: 'center',
+								}}
+								className='text-danger'
+								variant='outlined'
+								severity='error'
+								color='error'>
+								<AlertTitle
+									sx={{
+										fontSize: '1.2rem',
+									}}>
+									You are Offline as of now.
+								</AlertTitle>
+								Please Check your internet connection and come back to send message.
+							</Alert>
+						)}
+					</Box>
+				</Box>
 			</section>
 
 			<div className='credits'>
 				Github ❤️{' '}
 				<a
-					href='https://github.com/koushikpuppala/koushikpuppala'
+					href='/github/koushikpuppala'
 					target='_blank'
 					rel='noopener noreferrer'>
 					Source Code

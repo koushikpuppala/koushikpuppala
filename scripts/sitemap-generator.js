@@ -1,10 +1,10 @@
 const fs = require('fs')
 
 const addPage = page => {
-        const path = page.replace('pages', '').replace('.tsx', '')
-        const route = path === '/index' ? '' : path
-        return `  <url>
-    <loc>${`${process.env.WEBSITE_URL}${route}`}</loc>
+	const path = page.replace('pages', '').replace('.tsx', '')
+	const route = path === '/index' ? '' : path
+	return `  <url>
+    <loc>${`${process.env.NEXT_PUBLIC_URL}${route}`}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>

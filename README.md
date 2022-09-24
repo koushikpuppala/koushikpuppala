@@ -12,7 +12,7 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 
 -   👨‍💻 The first project is **_[Koushikpuppala](https://koushikpuppala.com)_**.
 
--   🔭 Currently working on **_Alexus_** discord bot and **_[Gymkhana iiitraichur](https://github.com/koushikpuppala/gymkhana-iiitraichur)_** Website.
+-   🔭 Currently working on **_Alexus_** discord bot, **_CoSA iiitraichur_** Website, and **_Clubs iiitraichur_** Website.
 
 -   👯 Collaborating with the **_[Indian Institute of Information Technology Raichur, Karnataka](https://github.com/iiitraichur)_** and **_[Discord Developer Studios](https://github.com/dscdevstudios)_**.
 
@@ -24,7 +24,6 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 
 **_If you liked this repository, feel free to leave a star ⭐ to help promote Portfolio!_**
 
-<!-- -   🤝 I’m looking for help with **_[Avengers Assemble Discord Bot Community and Dashboard](https://github.com/koushikpuppala/avengers-assemble)_**. -->
 <div align='center'>
 
 [![Website Status](https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.com&logo=Microsoft%20Edge&logoColor=%23000000)](https://koushikpuppala.com) ![Website Uptime](https://img.shields.io/uptimerobot/ratio/m791998307-456ba3ddfb31f7b23ce7a096?style=social&logo=Microsoft%20Edge&logoColor=%23000000) [![GitHub Followers](https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow)](https://github.com/koushikpuppala?tab=followers) ![GitHub License](https://img.shields.io/github/license/koushikpuppala/koushikpuppala?style=social&logo=github) ![GitHub Stars](https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social) [![Total time coded since Jan 7 2021](https://wakatime.com/badge/user/72e2ce29-83ee-4ab0-b7c6-aafe16410611.svg?style=social)](https://wakatime.com/@72e2ce29-83ee-4ab0-b7c6-aafe16410611)
@@ -64,30 +63,6 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 ![GitHub Profile Trophy](https://github-profile-trophy.vercel.app/?username=koushikpuppala&theme=juicyfresh&no-frame=true&no-bg=false&margin-w=4&margin-h=4&column=3&row=3) ![GitHub Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact) ![GitHub Readme Stats](https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&theme=blue-green&hide_border=true&include_all_commits=true&count_private=true) ![GitHub Readme Streak](https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green&hide_border=true) ![Activity Graph](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact)
 
 </div>
-</details>
-
----
-
-<details open>
-<summary>⏰ Development Time Stats</summary>
-<br />
-
-<!--START_SECTION:waka-->
-
-```text
-From: 23 August 2022 - To: 22 September 2022
-
-JavaScript   52 hrs 40 mins  ███████████████████▓░░░░░   79.23 %
-HTML         7 hrs 4 mins    ██▓░░░░░░░░░░░░░░░░░░░░░░   10.64 %
-JSON         2 hrs 22 mins   █░░░░░░░░░░░░░░░░░░░░░░░░   03.58 %
-TypeScript   1 hr 43 mins    ▓░░░░░░░░░░░░░░░░░░░░░░░░   02.60 %
-Bash         58 mins         ▒░░░░░░░░░░░░░░░░░░░░░░░░   01.46 %
-CSS          36 mins         ▒░░░░░░░░░░░░░░░░░░░░░░░░   00.92 %
-```
-
-<!--END_SECTION:waka-->
-
-</summary>
 </details>
 
 ---
