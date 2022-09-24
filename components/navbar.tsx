@@ -1,4 +1,5 @@
 import { Link, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 import type { NextComponentType } from 'next'
 import { useEffect } from 'react'
 import { NavbarAction } from '../actions'
@@ -54,7 +55,7 @@ const Navbar: NextComponentType = () => {
 							className='bi bi-list'></i>
 					</nav>
 
-					<div className='social-links'>
+					<Box className='social-links'>
 						<Link
 							href='/linkedin'
 							target='_blank'
@@ -85,7 +86,7 @@ const Navbar: NextComponentType = () => {
 							target='_blank'
 							rel='noreferrer'
 							className='bi bi-facebook'></Link>
-					</div>
+					</Box>
 				</div>
 			</header>
 		</>

@@ -34,7 +34,6 @@ const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }: My
 		if (typeof window !== 'undefined') {
 			require('bootstrap/dist/js/bootstrap.bundle.min.js')
 		}
-		console.log(process.env.NEXT_PUBLIC_VERCEL_URL)
 	}, [])
 
 	return (
