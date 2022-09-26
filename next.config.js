@@ -10,6 +10,9 @@ const nextConfig = withPWA({
 })({
 	// reactStrictMode: true,
 	swcMinify: true,
+	sentry: {
+		hideSourceMaps: true,
+	},
 	webpack: (config, { isServer }) => {
 		if (!isServer) {
 			config.resolve.fallback.fs = false
@@ -20,8 +23,13 @@ const nextConfig = withPWA({
 	redirects: async () => {
 		return [
 			{
-				source: '/github/:name',
-				destination: 'https://github.com/koushikpuppala/:name',
+				source: '/github',
+				destination: 'https://github.com/koushikpuppala',
+				permanent: true,
+			},
+			{
+				source: '/github/:params',
+				destination: 'https://github.com/koushikpuppala/:params',
 				permanent: true,
 			},
 			{

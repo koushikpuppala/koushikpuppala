@@ -11,7 +11,7 @@ const Navbar: NextComponentType = () => {
 	return (
 		<>
 			<header id='header'>
-				<div className='container'>
+				<Box className='container'>
 					<Typography variant='h1'>Koushik Puppala</Typography>
 					<Typography variant='h2'>
 						I&apos;m a <span id='typed'></span> from India
@@ -87,7 +87,7 @@ const Navbar: NextComponentType = () => {
 							rel='noreferrer'
 							className='bi bi-facebook'></Link>
 					</Box>
-				</div>
+				</Box>
 			</header>
 		</>
 	)

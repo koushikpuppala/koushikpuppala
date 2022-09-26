@@ -1,6 +1,6 @@
 {
 	"name": "@koushikpuppala/koushikpuppala",
-	"version": "3.0.2",
+	"version": "3.1.0",
 	"description": "This is my own website with my own domain",
 	"main": "next.config.js",
 	"engines": {
@@ -72,7 +72,7 @@
 		"@types/aos": "^3.0.4",
 		"@types/isotope-layout": "^3.0.9",
 		"@types/mongoose": "^5.11.97",
-		"@types/node": "^18.7.19",
+		"@types/node": "^18.7.20",
 		"@types/nodemailer": "^6.4.6",
 		"@types/react": "^18.0.21",
 		"@types/react-dom": "^18.0.6",
