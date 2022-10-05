@@ -1,6 +1,6 @@
 import { v4 } from 'uuid'
 
-export default [
+const PortfolioData = [
 	{
 		id: v4(),
 		title: 'Koushikpuppala',
@@ -15,7 +15,7 @@ export default [
 			'This is an Open Source Code on GitHub, Check my Github Profile for this code.',
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/Koushikpuppala.webp',
 			desktop: '',
 			mobile: '',
 		},
@@ -32,7 +32,7 @@ export default [
 			'There are so many filter commands and playlist commands also.',
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/Musics_DJ.webp',
 			desktop: '',
 			mobile: '',
 		},
@@ -50,7 +50,7 @@ export default [
 			'In this, we have everything about our college Information, Activates etc.',
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/IIITR.webp',
 			desktop: '',
 			mobile: '',
 		},
@@ -68,7 +68,7 @@ export default [
 			'It also comes packed with a variety of features, such as Welcome messages and farewell messages, Extensive Logging for 37 events, Slash Commands, Advanced auto-moderation, Audio filters for music plugins, Custom playlist support, Giveaways, Reaction roles, And much more! There are over 40+ settings to tweak!',
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/Avenger.webp',
 			desktop: '',
 			mobile: '',
 		},
@@ -86,7 +86,7 @@ export default [
 			"The recorded video will be auto-uploaded to the User's google drive if the user logged in using google.",
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/Edith.webp',
 			desktop: '',
 			mobile: '',
 		},
@@ -107,7 +107,7 @@ export default [
 			'I am going to add bot hosting like pinging of websites which are hosted replit and glitch to make them 24/7 online.',
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/AvengersAssemble.webp',
 			desktop: '',
 			mobile: '',
 		},
@@ -126,7 +126,7 @@ export default [
 			'In this we have everything about Information, Activates, Clubs that Students what to know etc.',
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/StudentIIITR.webp',
 			desktop: '',
 			mobile: '',
 		},
@@ -134,9 +134,9 @@ export default [
 	},
 	{
 		id: v4(),
-		title: 'Living Rooms',
-		subTitle: 'The Living Rooms',
-		url: 'https://livingrooms.herokuapp.com',
+		title: 'Discord Developer Studios',
+		subTitle: 'Discord Lists Website',
+		url: 'https://github.com/dscdevstudios',
 		description: [
 			'This is where we can find the best discord bots and you can also add your bots, increasing the server count and it will help others to reach your discord bot.',
 			'The Frontend was built using a pug.',
@@ -144,7 +144,7 @@ export default [
 			'The Database was MongoDB.',
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/DiscordLists100.webp',
 			desktop: '',
 			mobile: '',
 		},
@@ -161,7 +161,7 @@ export default [
 			'It was built using basic HTML and CSS along with JavaScript. It was hosted using GitHub Pages',
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/Jai.webp',
 			desktop: '',
 			mobile: '',
 		},
@@ -179,10 +179,12 @@ export default [
 			'We are developing an application which will enable a user to locate the nearest Health and Wellness Centres and know verified details.',
 		],
 		image: {
-			main: '',
+			main: '/img/portfolio/Project2021.webp',
 			desktop: '',
 			mobile: '',
 		},
 		filter: 'filter-open',
 	},
 ]
+
+export default PortfolioData

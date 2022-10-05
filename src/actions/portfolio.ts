@@ -9,7 +9,7 @@ const Portfolio = () => {
 		window.addEventListener('load', () => {
 			const portfolioContainer = document.querySelector('.portfolio-container') as HTMLElement
 			const portfolioFilters: NodeListOf<HTMLElement> =
-				document.querySelectorAll('#portfolio-flters li')
+				document.querySelectorAll('#portfolio-filters li')
 
 			if (portfolioContainer) {
 				const portfolioIsotope = new Isotope(portfolioContainer, {
