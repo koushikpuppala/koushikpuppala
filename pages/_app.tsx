@@ -13,9 +13,12 @@ import AOS from 'aos'
 import { ThemeProvider } from '@mui/material/styles'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
-import theme from '../src/theme'
-import createEmotionCache from '../src/createEmotionCache'
+import theme from '@theme'
+import createEmotionCache from '@createEmotionCache'
 import { ToastContainer, Zoom } from 'react-toastify'
+import TagManager from 'react-gtm-module'
+import ReactGA from 'react-ga'
+import { config } from '@config'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -34,6 +37,8 @@ const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }: My
 		if (typeof window !== 'undefined') {
 			require('bootstrap/dist/js/bootstrap.bundle.min.js')
 		}
+		ReactGA.initialize(config.firebaseConfig.measurementId)
+		TagManager.initialize({ gtmId: config.firebaseConfig.tagManagerId })
 	}, [])
 
 	return (

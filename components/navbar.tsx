@@ -2,7 +2,7 @@ import { Link, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import type { NextComponentType } from 'next'
 import { useEffect } from 'react'
-import { NavbarAction } from '../actions'
+import { NavbarAction } from '@actions'
 
 const Navbar: NextComponentType = () => {
 	useEffect(() => {

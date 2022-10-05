@@ -474,7 +474,7 @@ section .container {
 	margin-bottom: 30px;
 }
 
-.portfolio #portfolio-flters {
+.portfolio #portfolio-filters {
 	margin: 0 auto 15px auto;
 	list-style: none;
 	text-align: center;
@@ -482,7 +482,7 @@ section .container {
 	padding: 2px 15px;
 }
 
-.portfolio #portfolio-flters li {
+.portfolio #portfolio-filters li {
 	cursor: pointer;
 	display: inline-block;
 	padding: 8px 16px 10px 16px;
@@ -497,12 +497,12 @@ section .container {
 	border-radius: 4px;
 }
 
-.portfolio #portfolio-flters li:hover,
-.portfolio #portfolio-flters li.filter-active {
+.portfolio #portfolio-filters li:hover,
+.portfolio #portfolio-filters li.filter-active {
 	background: #18d26e;
 }
 
-.portfolio #portfolio-flters li:last-child {
+.portfolio #portfolio-filters li:last-child {
 	margin-right: 0;
 }
 

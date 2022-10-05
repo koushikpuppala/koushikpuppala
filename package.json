@@ -1,6 +1,6 @@
 {
 	"name": "@koushikpuppala/koushikpuppala",
-	"version": "3.1.0",
+	"version": "3.2.0",
 	"description": "This is my own website with my own domain",
 	"main": "next.config.js",
 	"engines": {
@@ -44,26 +44,28 @@
 		"@emotion/server": "^11.10.0",
 		"@emotion/styled": "^11.10.4",
 		"@mui/icons-material": "^5.10.6",
-		"@mui/material": "^5.10.6",
-		"@sentry/nextjs": "^7.13.0",
+		"@mui/material": "^5.10.8",
+		"@sentry/nextjs": "^7.14.1",
 		"aos": "^2.3.4",
-		"axios": "^0.27.2",
-		"bootstrap": "^5.2.1",
+		"axios": "^1.0.0",
+		"bootstrap": "^5.2.2",
 		"bootstrap-icons": "^1.9.1",
 		"boxicons": "^2.1.4",
 		"firebase": "^9.10.0",
 		"glightbox": "^3.2.0",
 		"globby": "^13.1.2",
 		"isotope-layout": "^3.0.6",
-		"mongoose": "^6.6.1",
+		"mongoose": "^6.6.5",
 		"next": "^12.3.1",
 		"next-pwa": "^5.6.0",
-		"nodemailer": "^6.7.8",
+		"nodemailer": "^6.8.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-ga": "^3.3.1",
+		"react-gtm-module": "^2.0.11",
 		"react-toastify": "^9.0.8",
 		"remixicon": "^2.5.0",
-		"sharp": "^0.31.0",
+		"sharp": "^0.31.1",
 		"swiper": "^8.4.2",
 		"typed.js": "^2.0.12",
 		"uuid": "^9.0.0"
@@ -72,16 +74,18 @@
 		"@types/aos": "^3.0.4",
 		"@types/isotope-layout": "^3.0.9",
 		"@types/mongoose": "^5.11.97",
-		"@types/node": "^18.7.20",
+		"@types/node": "^18.8.2",
 		"@types/nodemailer": "^6.4.6",
 		"@types/react": "^18.0.21",
 		"@types/react-dom": "^18.0.6",
+		"@types/react-ga": "^2.3.0",
+		"@types/react-gtm-module": "^2.0.1",
 		"@types/uuid": "^8.3.4",
-		"dotenv": "^16.0.2",
+		"dotenv": "^16.0.3",
 		"eslint": "^8.24.0",
 		"eslint-config-next": "^12.3.1",
 		"sass": "^1.55.0",
-		"typescript": "^4.8.3"
+		"typescript": "^4.8.4"
 	},
 	"prettier": {
 		"tabWidth": 4,
@@ -101,6 +105,12 @@
 					"tabWidth": 2
 				}
 			}
+		]
+	},
+	"eslintConfig": {
+		"extends": [
+			"next",
+			"next/core-web-vitals"
 		]
 	}
 }

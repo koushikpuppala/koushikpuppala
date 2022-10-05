@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { ContactSchema } from 'database/models'
-import { Database } from 'database'
+import { ContactSchema } from '@database/models'
+import { Database } from '@database'
 import { createTransport } from 'nodemailer'
-import { config } from 'config'
+import { config } from '@config'
 
 const Contact = async (req: NextApiRequest, res: NextApiResponse) => {
 	Database.connect()

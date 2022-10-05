@@ -11,8 +11,8 @@ import {
 } from 'firebase/auth'
 import { initializeApp, getApps } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
-import { AuthServiceType } from 'types/authentication'
-import { config } from 'config'
+import { AuthServiceType } from 'src/types/authentication/index'
+import { config } from '@config'
 
 if (!getApps().length) {
 	initializeApp(config.firebaseConfig)

@@ -20,6 +20,7 @@ export const config = {
 		messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID as string,
 		appId: process.env.NEXT_PUBLIC_APP_ID as string,
 		measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID as string,
+		tagManagerId: process.env.NEXT_PUBLIC_TAG_MANAGER_ID as string,
 	},
 	sentryDSN: process.env.NEXT_PUBLIC_SENTRY_DSN as string,
 }

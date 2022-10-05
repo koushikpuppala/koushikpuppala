@@ -1,6 +1,6 @@
 import type { NextComponentType } from 'next'
 import { useEffect } from 'react'
-import { SkillsAction } from '../actions'
+import { SkillsAction } from '@actions'
 
 const Skills: NextComponentType = () => {
 	useEffect(() => {

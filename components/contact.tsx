@@ -129,7 +129,6 @@ const Contact: NextComponentType = () => {
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { id, value } = event.target
-		console.log(values)
 		switch (id) {
 			case 'name':
 				setValues({
