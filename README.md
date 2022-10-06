@@ -66,9 +66,3 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 </details>
 
 ---
-
-<div align='center'>
-
-![Discord Profile](https://lanyard-profile-readme.vercel.app/api/735813371433058354)
-
-</div>
