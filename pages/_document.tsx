@@ -1,15 +1,17 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import createEmotionServer from '@emotion/server/create-instance'
 import createEmotionCache from '@import/createEmotionCache'
+import { DocumentProps } from '@import/interface'
+import Script from 'next/script'
 
-export default class MyDocument extends Document {
+export default class MyDocument extends Document<DocumentProps> {
 	render() {
 		return (
 			<Html lang='en'>
 				<Head>
 					<meta
 						name='theme-color'
-						content='#18d26e'
+						content='#18d26e5a'
 					/>
 					<link
 						rel='manifest'
@@ -19,9 +21,15 @@ export default class MyDocument extends Document {
 						name='emotion-insertion-point'
 						content=''
 					/>
-					{(this.props as any).emotionStyleTags}
+					{this.props.emotionStyleTags}
+					<Script
+						id='google-ca-pub-9586492413519336'
+						strategy='lazyOnload'
+						src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9586492413519336'
+						crossOrigin='anonymous'
+					/>
 					<link
-						href='https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|family=Roboto:300,400,500,700&display=swap'
+						href='https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Roboto:300,400,500,700&display=swap'
 						rel='stylesheet'
 					/>
 					<link

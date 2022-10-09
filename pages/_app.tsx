@@ -6,11 +6,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import 'remixicon/fonts/remixicon.css'
 import 'aos/dist/aos.css'
 import '@styles/globals.css'
-import type { AppProps } from 'next/app'
 import { useEffect } from 'react'
 import AOS from 'aos'
 import { ThemeProvider } from '@mui/material/styles'
-import { CacheProvider, EmotionCache } from '@emotion/react'
+import { CacheProvider } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import theme from '@import/theme'
 import createEmotionCache from '@import/createEmotionCache'
@@ -18,14 +17,9 @@ import { ToastContainer, Zoom } from 'react-toastify'
 import TagManager from 'react-gtm-module'
 import ReactGA from 'react-ga'
 import { config } from '@import/config'
+import { AppProps } from '@import/interface'
 
-const clientSideEmotionCache = createEmotionCache()
-
-interface MyAppProps extends AppProps {
-	emotionCache?: EmotionCache
-}
-
-const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps) => {
+const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppProps) => {
 	useEffect(() => {
 		AOS.init({
 			offset: 100,
