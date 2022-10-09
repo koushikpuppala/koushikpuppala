@@ -1,10 +1,9 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import createEmotionServer from '@emotion/server/create-instance'
 import createEmotionCache from '@import/createEmotionCache'
-import { DocumentProps } from '@import/interface'
 import Script from 'next/script'
 
-export default class MyDocument extends Document<DocumentProps> {
+export default class MyDocument extends Document {
 	render() {
 		return (
 			<Html lang='en'>
@@ -21,7 +20,7 @@ export default class MyDocument extends Document<DocumentProps> {
 						name='emotion-insertion-point'
 						content=''
 					/>
-					{this.props.emotionStyleTags}
+					{(this.props as any).emotionStyleTags}
 					<Script
 						id='google-ca-pub-9586492413519336'
 						strategy='lazyOnload'
