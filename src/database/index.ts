@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
-import { config } from '@config'
-import { DatabaseType } from 'src/types/database/index'
+import { config } from '@import/config'
+import { DatabaseType } from '@import/types-database'
 
 export const Database: DatabaseType = {
 	connect: (): Promise<typeof mongoose> =>

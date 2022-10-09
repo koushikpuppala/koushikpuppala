@@ -1,1 +1,1 @@
-export type { default as HeaderProps } from './components/header'
+export type { default as HeaderProps } from '@import/interface/components/header'

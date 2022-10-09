@@ -2,8 +2,8 @@ import * as Sentry from '@sentry/nextjs'
 import type { NextPage } from 'next'
 import NextErrorComponent from 'next/error'
 import Link from 'next/link'
-import { Header } from 'components'
-import style from 'styles/_error.module.scss'
+import { Header } from '@components'
+import style from '@styles/_error.module.scss'
 
 const Error: NextPage = () => {
 	return (

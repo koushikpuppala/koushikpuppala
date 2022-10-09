@@ -4,19 +4,17 @@
 /node_modules
 /.pnp
 .pnp.js
-package-lock.json
+*-lock.json
 
 # testing
 /coverage
 
 # next.js
-.next/
-out/
-.swc
+/.next/
+/out/
 
 # production
-build
-public/sitemap.xml
+/build
 
 # misc
 .DS_Store
@@ -30,7 +28,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.env
 
 # vercel
 .vercel
@@ -40,12 +37,13 @@ yarn-error.log*
 next-env.d.ts
 
 # PWA files
-**/public/sw.js
-**/public/workbox-*.js
-**/public/worker-*.js
-**/public/sw.js.map
-**/public/workbox-*.js.map
-**/public/worker-*.js.map
+/public/sw.js
+/public/workbox-*.js
+/public/worker-*.js
+/public/sw.js.map
+/public/workbox-*.js.map
+/public/worker-*.js.map
+/public/sitemap.xml
 
 # Sentry
 .sentryclirc

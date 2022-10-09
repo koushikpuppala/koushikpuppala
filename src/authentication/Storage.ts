@@ -8,9 +8,9 @@ import {
 	StorageReference,
 	UploadResult,
 } from 'firebase/storage'
-import { StorageType } from 'src/types/authentication/index'
+import { StorageType } from '@import/types-authentication'
 import { initializeApp } from 'firebase/app'
-import { config } from '@config'
+import { config } from '@import/config'
 
 const storage: FirebaseStorage = getStorage(initializeApp(config.firebaseConfig))
 

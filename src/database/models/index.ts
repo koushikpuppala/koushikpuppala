@@ -1,1 +1,1 @@
-export { default as ContactSchema } from './contact'
+export { default as ContactSchema } from '@import/database/models/contact'
