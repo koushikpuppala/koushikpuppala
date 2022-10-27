@@ -45,15 +45,15 @@ const Home: NextPage = () => {
 							data-aos='fade-left'>
 							<h3>Student &amp; Full Stack Developer</h3>
 							<p className='fst-italic'>
-								I'm a B.Tech student studying computer science and engineering at
-								the Indian Institute of Information Technology, Raichur. I work as a
-								web developer and lead the Google Developer Student Clubs at the
-								Indian Institute of Information Technology, Raichur. I'm currently
-								working on a Discord bot and full-stack web development projects. I
-								began exploring Typescript and Python. I developed a few basic
-								websites, full-stack web development projects, a desktop screen
-								recorder program, and Discord Bots for server customization and
-								entertainment.
+								I&apos;m a B.Tech student studying computer science and engineering
+								at the Indian Institute of Information Technology, Raichur. I work
+								as a web developer and lead the Google Developer Student Clubs at
+								the Indian Institute of Information Technology, Raichur. I&apos;m
+								currently working on a Discord bot and full-stack web development
+								projects. I began exploring Typescript and Python. I developed a few
+								basic websites, full-stack web development projects, a desktop
+								screen recorder program, and Discord Bots for server customization
+								and entertainment.
 							</p>
 							<div className='row'>
 								<div className='col-lg-6 mt-2'>
