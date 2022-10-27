@@ -13,7 +13,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"update": "ncu -u && npm install"
+		"upgrade": "ncu -u && yarn install"
 	},
 	"repository": {
 		"type": "git",
@@ -48,7 +48,7 @@
 		"@mui/material": "^5.10.8",
 		"@sentry/nextjs": "^7.14.2",
 		"aos": "^2.3.4",
-		"axios": "^1.1.2",
+		"axios": "^0.27.2",
 		"bootstrap": "^5.2.2",
 		"bootstrap-icons": "^1.9.1",
 		"boxicons": "^2.1.4",

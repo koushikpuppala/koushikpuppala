@@ -213,14 +213,6 @@ const Contact: NextComponentType = () => {
 					<Box className='row mt-2'>
 						<Box className='col-md-6 d-flex align-items-stretch'>
 							<Box className='info-box'>
-								<i className='bx bxs-map'></i>
-								<Typography variant='h3'>My Address</Typography>
-								<Typography>Rajahmundry Andhra Pradesh, India</Typography>
-							</Box>
-						</Box>
-
-						<Box className='col-md-6 mt-4 mt-md-0 d-flex align-items-stretch'>
-							<Box className='info-box'>
 								<i className='bx bxs-share-alt'></i>
 								<Typography variant='h3'>Social Profiles</Typography>
 								<Box className='social-links'>
@@ -258,29 +250,7 @@ const Contact: NextComponentType = () => {
 							</Box>
 						</Box>
 
-						<Box className='col-md-6 mt-4 d-flex align-items-center'>
-							<Box className='info-box'>
-								<i className='bx bxs-file-pdf'></i>
-								<Typography variant='h3'>Resume</Typography>
-								<Typography>
-									<a
-										href='/resume.pdf'
-										target='_blank'
-										rel='noreferrer'>
-										View my resume
-									</a>
-									{' | '}
-									<a
-										href='/resume.pdf'
-										target='_blank'
-										rel='noreferrer'
-										download='Koushikpuppala_Resume.pdf'>
-										Download my resume
-									</a>
-								</Typography>
-							</Box>
-						</Box>
-						<Box className='col-md-6 mt-4 d-flex align-items-stretch'>
+						<Box className='col-md-6 mt-4 mt-md-0 d-flex align-items-stretch'>
 							<Box className='info-box'>
 								<i className='bx bxs-user'></i>
 								<Typography variant='h3'>Reach Me</Typography>

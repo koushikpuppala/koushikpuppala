@@ -45,48 +45,22 @@ const Home: NextPage = () => {
 							data-aos='fade-left'>
 							<h3>Student &amp; Full Stack Developer</h3>
 							<p className='fst-italic'>
-								Hello Friends, I am Koushik Puppala student of Bachelor of
-								Technology in Computer Science and Engineering at Indian Institute
-								of Information Technology Raichur.
+								I'm a B.Tech student studying computer science and engineering at
+								the Indian Institute of Information Technology, Raichur. I work as a
+								web developer and lead the Google Developer Student Clubs at the
+								Indian Institute of Information Technology, Raichur. I'm currently
+								working on a Discord bot and full-stack web development projects. I
+								began exploring Typescript and Python. I developed a few basic
+								websites, full-stack web development projects, a desktop screen
+								recorder program, and Discord Bots for server customization and
+								entertainment.
 							</p>
 							<div className='row'>
 								<div className='col-lg-6 mt-2'>
 									<ul>
 										<li>
 											<i className='bi bi-chevron-right'></i>{' '}
-											<strong>Birthday:</strong> <span>23 May 2003</span>
-										</li>
-									</ul>
-								</div>
-								<div className='col-lg-6 mt-2'>
-									<ul>
-										<li>
-											<i className='bi bi-chevron-right'></i>{' '}
-											<strong>City:</strong>{' '}
-											<span>Rajahmundry Andhra Pradesh, India</span>
-										</li>
-									</ul>
-								</div>
-								<div className='col-lg-6 mt-2'>
-									<ul>
-										<li>
-											<i className='bi bi-chevron-right'></i>{' '}
-											<strong>Degree:</strong>{' '}
-											<span>
-												Bachelor of Technology Computer Science Engineer
-											</span>
-										</li>
-									</ul>
-								</div>
-								<div className='col-lg-6 mt-2'>
-									<ul>
-										<li>
-											<i className='bi bi-chevron-right'></i>{' '}
-											<strong>College:</strong>{' '}
-											<span>
-												Indian Institute of Information Technology, Raichur
-												Karnataka.
-											</span>
+											<strong>Birthday:</strong> <span>23rd May 2003</span>
 										</li>
 									</ul>
 								</div>
@@ -107,9 +81,16 @@ const Home: NextPage = () => {
 									<ul>
 										<li>
 											<i className='bi bi-chevron-right'></i>{' '}
-											<strong>Website:</strong>{' '}
+											<strong>Freelance:</strong>{' '}
 											<span>
-												<Link href='/'>koushikpuppala.com</Link>
+												Available (
+												<a
+													href='/Koushikpuppala Resume.pdf'
+													target='_blank'
+													rel='noreferrer'>
+													View Resume
+												</a>
+												)
 											</span>
 										</li>
 									</ul>
@@ -118,17 +99,38 @@ const Home: NextPage = () => {
 									<ul>
 										<li>
 											<i className='bi bi-chevron-right'></i>{' '}
-											<strong>Freelance:</strong> <span>Available</span>
+											<strong>Website:</strong>{' '}
+											<span>
+												<Link href='/'>koushikpuppala.com</Link>
+											</span>
+										</li>
+									</ul>
+								</div>
+								<div className='col-lg-12 mt-2'>
+									<ul>
+										<li>
+											<i className='bi bi-chevron-right'></i>{' '}
+											<strong>Degree:</strong>{' '}
+											<span>
+												Bachelor of Technology in Computer Science and
+												Engineering
+											</span>
+										</li>
+									</ul>
+								</div>
+								<div className='col-lg-12 mt-2'>
+									<ul>
+										<li>
+											<i className='bi bi-chevron-right'></i>{' '}
+											<strong>College:</strong>{' '}
+											<span>
+												Indian Institute of Information Technology, Raichur
+												Karnataka.
+											</span>
 										</li>
 									</ul>
 								</div>
 							</div>
-							<p>
-								Working as a Full Stack Developer in USA Based Company. Created a
-								few Projects on Full Stack, a few basic HTML Websites, developed
-								Discord Bots for the Discord Server Customization and Fun in Discord
-								and made one Desktop Screen Recording App.
-							</p>
 						</div>
 					</div>
 				</div>
