@@ -62,6 +62,16 @@ const nextConfig = withPWA({
 				destination: 'https://join.skype.com/invite/vfWLRyA9iFQc',
 				permanent: true,
 			},
+			{
+				source: '/youtube',
+				destination: 'https://www.youtube.com/@koushikpuppala',
+				permanent: true,
+			},
+			{
+				source: '/server',
+				destination: 'https://discord.gg/MsJ99j5Bcv',
+				permanent: true,
+			},
 		]
 	},
 })

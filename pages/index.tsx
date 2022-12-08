@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { Contact, Header, Navbar, Portfolio, Skills } from '@components'
+import { ProfilePic } from '@import/image'
 
 const Home: NextPage = () => {
 	useEffect(() => {
@@ -32,10 +33,7 @@ const Home: NextPage = () => {
 							className='col-lg-4'
 							data-aos='fade-right'>
 							<Image
-								width={100}
-								height={100}
-								layout='responsive'
-								src='/img/Koushikpuppala.webp'
+								src={ProfilePic}
 								className='img-fluid'
 								alt='koushikpuppala'
 							/>

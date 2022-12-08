@@ -17,7 +17,7 @@ body {
 body::before {
 	content: '';
 	position: fixed;
-	background: #040404 url('/img/bg.jpg') top right no-repeat;
+	background: #040404 url('../src/image/Background.webp') top right no-repeat;
 	transform: rotate(180deg);
 	background-size: cover;
 	left: 0;

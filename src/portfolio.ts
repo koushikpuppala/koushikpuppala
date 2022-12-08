@@ -1,4 +1,16 @@
 import { v4 } from 'uuid'
+import {
+	Koushikpuppala,
+	Musics_DJ,
+	IIITR,
+	Avenger,
+	Edith,
+	AvengersAssemble,
+	StudentIIITR,
+	DiscordLists100,
+	Jai,
+	Project2021,
+} from '@import/image'
 
 const PortfolioData = [
 	{
@@ -15,7 +27,7 @@ const PortfolioData = [
 			'This is an Open Source Code on GitHub, Check my Github Profile for this code.',
 		],
 		image: {
-			main: '/img/portfolio/Koushikpuppala.webp',
+			main: Koushikpuppala,
 			desktop: '',
 			mobile: '',
 		},
@@ -32,7 +44,7 @@ const PortfolioData = [
 			'There are so many filter commands and playlist commands also.',
 		],
 		image: {
-			main: '/img/portfolio/Musics_DJ.webp',
+			main: Musics_DJ,
 			desktop: '',
 			mobile: '',
 		},
@@ -50,7 +62,7 @@ const PortfolioData = [
 			'In this, we have everything about our college Information, Activates etc.',
 		],
 		image: {
-			main: '/img/portfolio/IIITR.webp',
+			main: IIITR,
 			desktop: '',
 			mobile: '',
 		},
@@ -68,7 +80,7 @@ const PortfolioData = [
 			'It also comes packed with a variety of features, such as Welcome messages and farewell messages, Extensive Logging for 37 events, Slash Commands, Advanced auto-moderation, Audio filters for music plugins, Custom playlist support, Giveaways, Reaction roles, And much more! There are over 40+ settings to tweak!',
 		],
 		image: {
-			main: '/img/portfolio/Avenger.webp',
+			main: Avenger,
 			desktop: '',
 			mobile: '',
 		},
@@ -86,7 +98,7 @@ const PortfolioData = [
 			"The recorded video will be auto-uploaded to the User's google drive if the user logged in using google.",
 		],
 		image: {
-			main: '/img/portfolio/Edith.webp',
+			main: Edith,
 			desktop: '',
 			mobile: '',
 		},
@@ -107,7 +119,7 @@ const PortfolioData = [
 			'I am going to add bot hosting like pinging of websites which are hosted replit and glitch to make them 24/7 online.',
 		],
 		image: {
-			main: '/img/portfolio/AvengersAssemble.webp',
+			main: AvengersAssemble,
 			desktop: '',
 			mobile: '',
 		},
@@ -126,7 +138,7 @@ const PortfolioData = [
 			'In this we have everything about Information, Activates, Clubs that Students what to know etc.',
 		],
 		image: {
-			main: '/img/portfolio/StudentIIITR.webp',
+			main: StudentIIITR,
 			desktop: '',
 			mobile: '',
 		},
@@ -144,7 +156,7 @@ const PortfolioData = [
 			'The Database was MongoDB.',
 		],
 		image: {
-			main: '/img/portfolio/DiscordLists100.webp',
+			main: DiscordLists100,
 			desktop: '',
 			mobile: '',
 		},
@@ -161,7 +173,7 @@ const PortfolioData = [
 			'It was built using basic HTML and CSS along with JavaScript. It was hosted using GitHub Pages',
 		],
 		image: {
-			main: '/img/portfolio/Jai.webp',
+			main: Jai,
 			desktop: '',
 			mobile: '',
 		},
@@ -179,7 +191,7 @@ const PortfolioData = [
 			'We are developing an application which will enable a user to locate the nearest Health and Wellness Centres and know verified details.',
 		],
 		image: {
-			main: '/img/portfolio/Project2021.webp',
+			main: Project2021,
 			desktop: '',
 			mobile: '',
 		},

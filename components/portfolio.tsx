@@ -44,9 +44,6 @@ const Portfolio: NextComponentType = () => {
 									className={`col-lg-4 col-md-6 portfolio-item ${data.filter}`}>
 									<div className='portfolio-wrap'>
 										<Image
-											width={1920}
-											height={1080}
-											layout='responsive'
 											src={data.image.main}
 											className='img-fluid'
 											alt={data.title}
@@ -56,7 +53,7 @@ const Portfolio: NextComponentType = () => {
 											<p>{data.subTitle}</p>
 											<div className='portfolio-links'>
 												<a
-													href={data.image.main}
+													href={data.image.main.src}
 													data-gallery='portfolioGallery'
 													className='portfolio-lightbox'
 													title={`${data.title} - ${data.subTitle}`}>
@@ -65,12 +62,7 @@ const Portfolio: NextComponentType = () => {
 												<a
 													href={data.url}
 													target='_blank'
-													rel='noreferrer'
-													// data-gallery='portfolioDetailsGallery'
-													// data-glightbox='type: external'
-													// className='portfolio-details-lightbox'
-													// title='Koushikpuppala'
-												>
+													rel='noreferrer'>
 													<i className='bx bx-link'></i>
 												</a>
 											</div>

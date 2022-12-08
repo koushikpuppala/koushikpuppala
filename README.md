@@ -8,21 +8,21 @@
 
 ## 💫About Me
 
-I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[@iiitraichur](https://github.com/iiitraichur)_**. Currently working as a Full Stack Developer in a USA Company. Created Projects in Full Stack, and Discord Bots. I started Learning Python and Typescript. Contact me on Discord **_[koushikpuppala#0001](https://discord.com/channels/@me/735813371433058354)_**.
+I'm a B.Tech student studying computer science and engineering at the **_[Indian Institute of Information Technology, Raichur](https://iiitr.ac.in)_**. I work as a web developer and lead the Google Developer Student Clubs at the Indian Institute of Information Technology, Raichur. I'm currently working on a Discord bot and full-stack web development projects. I began exploring TypeScript and Python. I developed a few basic websites, full-stack web development projects, a desktop screen recorder program, and Discord bots for server customization and entertainment. For more information about my work, please visit the **_[Repositories Page](https://github.com/koushikpuppala?tab=repositories)_**. Contact me on Discord **_[koushikpuppala#1729](https://koushikpuppala.com/discord)_**.
 
 -   👨‍💻 The first project is **_[Koushikpuppala](https://koushikpuppala.com)_**.
 
--   🔭 Currently working on **_Alexus_** discord bot, **_CoSA iiitraichur_** Website, and **_Clubs iiitraichur_** Website.
+-   🔭 Currently working on **_Alexus_** discord bot, **_Official iiitraichur_**, **_CoSA iiitraichur_**, **_NSS iiitraichur_** and **_Clubs iiitraichur_** Websites.
 
--   👯 Collaborating with the **_[Indian Institute of Information Technology Raichur, Karnataka](https://github.com/iiitraichur)_** and **_[Discord Developer Studios](https://github.com/dscdevstudios)_**.
+-   👯 Collaborating with the **_[Indian Institute of Information Technology Raichur](https://iiitr.ac.in)_** and **_[Discord Developer Studios](https://github.com/dscdevstudios)_**.
 
 -   💬 Ask me about **_Next.Js, MongoDB, Express, Nodejs, React, JavaScript, EJS(Embedded JavaScript), Discord.js, HTML, and CSS_**.
 
 -   🌱 I started learning **_Firebase, Python, and TypeScript_**.
 
--   📫 Reach me through discord **_[koushikpuppala#0001](https://discord.com/channels/@me/735813371433058354)_** or email me at **_[contact@koushikpuppala.com](mailto:contact@koushikpuppala.com)_**
+-   📫 Reach me through discord **_[koushikpuppala#1729](https://koushikpuppala.com/discord)_** or email me at **_[contact@koushikpuppala.com](mailto:contact@koushikpuppala.com)_**
 
-**_If you liked this repository, feel free to leave a star ⭐ to help promote Portfolio!_**
+#### **If you like my profile, feel free to leave a star 🌟 which encourages me!**
 
 <div align='center'>
 
@@ -36,7 +36,7 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 
 <div align="center">
 
-[![Discord](https://img.shields.io/badge/Discord-%237289DA.svg?style=social&logo=discord)](htttps://discord.gg/ksjnd) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=social&logo=linkedin)](https://linkedin.com/in/koushikpuppala) [![G Mail](https://img.shields.io/badge/G%20Mail-%23EA4335.svg?style=social&logo=GMail)](mailto:contact@koushikpuppala.com) [![Website](https://img.shields.io/badge/Website-%231877F2.svg?style=social&logo=Microsoft%20Edge)](https://koushikpuppala.com) [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=social&logo=Instagram)](https://instagram.com/koushikpuppala) [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=social&logo=Twitter)](https://twitter.com/puppala_koushik) [![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?style=social&logo=Facebook)](https://facebook.com/puppalakoushik)
+[![Discord](https://img.shields.io/badge/Discord-%237289DA.svg?style=social&logo=discord)](https://koushikpuppala.com/server) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=social&logo=linkedin)](https://koushikpuppala.com/linkedin) [![G Mail](https://img.shields.io/badge/G%20Mail-%23EA4335.svg?style=social&logo=GMail)](mailto:contact@koushikpuppala.com) [![Website](https://img.shields.io/badge/Website-%231877F2.svg?style=social&logo=Microsoft%20Edge)](https://koushikpuppala.com) [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?style=social&logo=Instagram)](https://koushikpuppala.com/instagram) [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=social&logo=Twitter)](https://koushikpuppala.com/twitter) [![Facebook](https://img.shields.io/badge/Facebook-%231877F2.svg?style=social&logo=Facebook)](https://koushikpuppala.com/facebook)
 
 </div>
 
@@ -56,14 +56,15 @@ I am a Freelancer, a Computer Science Engineer Student and Web Developer at **_[
 
 </div>
 
-<details>
-<summary>📊 GitHub Stats</summary>
+## 📊 GitHub Stats
+
 <div align="center">
 
-![GitHub Profile Trophy](https://github-profile-trophy.vercel.app/?username=koushikpuppala&theme=juicyfresh&no-frame=true&no-bg=false&margin-w=4&margin-h=4&column=3&row=3) ![GitHub Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact) ![GitHub Readme Stats](https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&theme=blue-green&hide_border=true&include_all_commits=true&count_private=true) ![GitHub Readme Streak](https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green&hide_border=true) ![Activity Graph](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact)
+![GitHub Profile Trophy](https://github-profile-trophy.vercel.app/?username=koushikpuppala&theme=juicyfresh&no-frame=true&no-bg=false&margin-w=4&margin-h=4&column=3&row=3) ![GitHub Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact) ![GitHub Readme Stats](https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&theme=blue-green&hide_border=true&include_all_commits=true&count_private=true) ![GitHub Readme Streak](https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green&hide_border=true)
+
+<!-- - ![Activity Graph](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact) -->
 
 </div>
-</details>
 
 ---
 
