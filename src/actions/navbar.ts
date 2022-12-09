@@ -1,11 +1,18 @@
 import Typed from 'typed.js'
 
-const Navbar = () => {
+const Navbar = (
+	headerValue: string,
+	headerTop: string,
+	active: string,
+	nav: string,
+	mobileToggle: string,
+	mobileNav: string
+) => {
 	const navLinks: NodeListOf<HTMLElement> = document.querySelectorAll('#navbar .nav-link')
 	const sections: NodeListOf<HTMLElement> = document.querySelectorAll('section')
-	const mobileNavToggle = document.getElementById('mobile-nav-toggle') as HTMLElement
+	const mobileNavToggle = document.getElementById(mobileToggle) as HTMLElement
 	const navbar = document.getElementById('navbar') as HTMLElement
-	const header = document.getElementById('header') as HTMLElement
+	const header = document.getElementById(headerValue) as HTMLElement
 
 	/**
 	 * Word Typing Animation
@@ -23,7 +30,7 @@ const Navbar = () => {
 	 * Mobile nav toggle
 	 */
 	mobileNavToggle.addEventListener('click', () => {
-		navbar.classList.toggle('navbar-mobile')
+		navbar.classList.toggle(mobileNav)
 		mobileNavToggle.classList.toggle('bi-list')
 		mobileNavToggle.classList.toggle('bi-x')
 	})
@@ -40,27 +47,27 @@ const Navbar = () => {
 
 			if (section) {
 				navLinks.forEach(item => {
-					item.classList.remove('active')
+					item.classList.remove(active)
 				})
 
-				link.classList.add('active')
+				link.classList.add(active)
 
-				if (navbar.classList.contains('navbar-mobile')) {
-					navbar.classList.remove('navbar-mobile')
+				if (navbar.classList.contains(mobileNav)) {
+					navbar.classList.remove(mobileNav)
 					mobileNavToggle.classList.toggle('bi-list')
 					mobileNavToggle.classList.toggle('bi-x')
 				}
 
-				if (href === '#header') {
-					header.classList.remove('header-top')
+				if (href === `#${headerValue}`) {
+					header.classList.remove(headerTop)
 					sections.forEach(item => {
 						item.classList.remove('section-show')
 					})
 					return
 				}
 
-				if (!header.classList.contains('header-top')) {
-					header.classList.add('header-top')
+				if (!header.classList.contains(headerTop)) {
+					header.classList.add(headerTop)
 
 					setTimeout(() => {
 						sections.forEach(item => {
@@ -91,13 +98,13 @@ const Navbar = () => {
 			let initial_nav = document.querySelector(window.location.hash) as HTMLElement
 
 			if (initial_nav) {
-				header.classList.add('header-top')
+				header.classList.add(headerTop)
 
 				navLinks.forEach(item => {
 					if (item.getAttribute('href') == window.location.hash) {
-						item.classList.add('active')
+						item.classList.add(active)
 					} else {
-						item.classList.remove('active')
+						item.classList.remove(active)
 					}
 				})
 

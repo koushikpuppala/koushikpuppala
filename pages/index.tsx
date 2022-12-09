@@ -3,8 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
-import { Contact, Header, Navbar, Portfolio, Skills } from '@components'
+import { Contact, Header, Navbar, Portfolio, Skills } from '@import/components'
 import { ProfilePic } from '@import/image'
+import { HomeStyles as styles } from '@import/styles'
 
 const Home: NextPage = () => {
 	useEffect(() => {
@@ -20,7 +21,7 @@ const Home: NextPage = () => {
 			<section
 				id='about'
 				className='about'>
-				<div className='about-me container'>
+				<div className={`${styles['about-me']} container`}>
 					<div
 						className='section-title'
 						data-aos='fade-right'>
@@ -39,7 +40,7 @@ const Home: NextPage = () => {
 							/>
 						</div>
 						<div
-							className='col-lg-8 pt-4 pt-lg-0 content'
+							className={`col-lg-8 pt-4 pt-lg-0 ${styles['content']}`}
 							data-aos='fade-left'>
 							<h3>Student &amp; Full Stack Developer</h3>
 							<p className='fst-italic'>
@@ -133,7 +134,7 @@ const Home: NextPage = () => {
 					</div>
 				</div>
 				<Skills />
-				<div className='interests container'>
+				<div className={`${styles['interests']} container`}>
 					<div
 						className='section-title'
 						data-aos='fade-right'>
@@ -145,11 +146,11 @@ const Home: NextPage = () => {
 							className='col-lg-3 mt-4'
 							data-aos='fade-up'>
 							<div
-								className='icon-box'
+								className={styles['icon-box']}
 								data-aos='flip-left'>
 								<i
 									className='ri-open-source-line'
-									style={{ color: ' #11dbcf' }}></i>
+									style={{ color: '#11dbcf' }}></i>
 								<h3>Open Source</h3>
 							</div>
 						</div>
@@ -157,11 +158,11 @@ const Home: NextPage = () => {
 							className='col-lg-3 mt-4'
 							data-aos='fade-up'>
 							<div
-								className='icon-box'
+								className={styles['icon-box']}
 								data-aos='flip-left'>
 								<i
 									className='ri-stack-line'
-									style={{ color: ' #ffbb2c' }}></i>
+									style={{ color: '#ffbb2c' }}></i>
 								<h3>Full Stack Development</h3>
 							</div>
 						</div>
@@ -169,7 +170,7 @@ const Home: NextPage = () => {
 							className='col-lg-3 mt-4'
 							data-aos='fade-up'>
 							<div
-								className='icon-box'
+								className={styles['icon-box']}
 								data-aos='flip-left'>
 								<i
 									className='ri-code-s-slash-line'
@@ -181,11 +182,11 @@ const Home: NextPage = () => {
 							className='col-lg-3 mt-4'
 							data-aos='fade-up'>
 							<div
-								className='icon-box'
+								className={styles['icon-box']}
 								data-aos='flip-left'>
 								<i
 									className='ri-discord-line'
-									style={{ color: ' #ffa76e' }}></i>
+									style={{ color: '#ffa76e' }}></i>
 								<h3>Discord Bots</h3>
 							</div>
 						</div>
@@ -193,7 +194,7 @@ const Home: NextPage = () => {
 							className='col-lg-3 mt-4'
 							data-aos='fade-up'>
 							<div
-								className='icon-box'
+								className={styles['icon-box']}
 								data-aos='flip-left'>
 								<i
 									className='ri-android-line'
@@ -205,11 +206,11 @@ const Home: NextPage = () => {
 							className='col-lg-3 mt-4'
 							data-aos='fade-up'>
 							<div
-								className='icon-box'
+								className={styles['icon-box']}
 								data-aos='flip-left'>
 								<i
 									className='ri-gamepad-line'
-									style={{ color: ' #e80368' }}></i>
+									style={{ color: '#e80368' }}></i>
 								<h3>Game Development</h3>
 							</div>
 						</div>
@@ -217,7 +218,7 @@ const Home: NextPage = () => {
 							className='col-lg-3 mt-4'
 							data-aos='fade-up'>
 							<div
-								className='icon-box'
+								className={styles['icon-box']}
 								data-aos='flip-left'>
 								<i
 									className='ri-cpu-line'
@@ -229,11 +230,11 @@ const Home: NextPage = () => {
 							className='col-lg-3 mt-4'
 							data-aos='fade-up'>
 							<div
-								className='icon-box'
+								className={styles['icon-box']}
 								data-aos='flip-left'>
 								<i
 									className='ri-settings-5-line'
-									style={{ color: ' #47aeff' }}></i>
+									style={{ color: '#47aeff' }}></i>
 								<h3>Machine Learning</h3>
 							</div>
 						</div>

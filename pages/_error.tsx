@@ -2,14 +2,14 @@ import * as Sentry from '@sentry/nextjs'
 import type { NextPage } from 'next'
 import NextErrorComponent from 'next/error'
 import Link from 'next/link'
-import { Header } from '@components'
-import style from '@styles/_error.module.scss'
+import { Header } from '@import/components'
+import { ErrorStyles as styles } from '@import/styles'
 
 const Error: NextPage = () => {
 	return (
 		<>
 			<Header title='Koushik Puppala | Page Not Found' />
-			<div className={style._error}>
+			<div className={styles._error}>
 				<div>
 					<svg
 						width='636px'
@@ -148,89 +148,89 @@ const Error: NextPage = () => {
 								fill='black'
 								fillOpacity='1'>
 								<use
-									className={style.error_3_4}
+									className={styles.error_3_4}
 									filter='url(#stroke-glow)'
 									href='#error-3-4'></use>
 								<use
-									className={style.error_2_0}
+									className={styles.error_2_0}
 									filter='url(#stroke-glow)'
 									href='#error-2-0'></use>
 								<use
-									className={style.error_1_4}
+									className={styles.error_1_4}
 									filter='url(#stroke-glow)'
 									href='#error-1-4'></use>
 								<use
-									className={style.error_1_e}
+									className={styles.error_1_e}
 									filter='url(#stroke-glow)'
 									href='#error-1-e'></use>
 								<use
-									className={style.error_2_r}
+									className={styles.error_2_r}
 									filter='url(#stroke-glow)'
 									href='#error-2-r'></use>
 								<use
-									className={style.error_3_r}
+									className={styles.error_3_r}
 									filter='url(#stroke-glow)'
 									href='#error-3-r'></use>
 								<use
-									className={style.error_4_o}
+									className={styles.error_4_o}
 									filter='url(#stroke-glow)'
 									href='#error-4-o'></use>
 								<use
-									className={style.error_5_r}
+									className={styles.error_5_r}
 									filter='url(#stroke-glow)'
 									href='#error-5-r'></use>
 								<use
-									className={style.error_right}
+									className={styles.error_right}
 									filter='url(#stroke-glow)'
 									href='#error-right'></use>
 								<use
-									className={style.error_left}
+									className={styles.error_left}
 									filter='url(#stroke-glow)'
 									href='#error-left'></use>
 								<use
-									className={style.error_top}
+									className={styles.error_top}
 									filter='url(#stroke-glow)'
 									href='#error-top'></use>
 							</g>
 							<g
-								className={style.top}
+								className={styles.top}
 								fill='none'
 								stroke='#FF0000'
 								strokeWidth='2'
 								strokeLinecap='round'
 								strokeLinejoin='round'>
 								<use
-									className={style.error_3_4}
+									className={styles.error_3_4}
 									href='#error-3-4'></use>
 								<use
-									className={style.error_2_0}
+									className={styles.error_2_0}
 									href='#error-2-0'></use>
 								<use
-									className={style.error_1_4}
+									className={styles.error_1_4}
 									href='#error-1-4'></use>
 								<use
-									className={style.error_1_e}
+									className={styles.error_1_e}
 									href='#error-1-e'></use>
 								<use
-									className={style.error_2_r}
+									className={styles.error_2_r}
 									href='#error-2-r'></use>
 								<use
-									className={style.error_3_r}
+									className={styles.error_3_r}
 									href='#error-3-r'></use>
 								<use
-									className={style.error_4_o}
+									className={styles.error_4_o}
 									href='#error-4-o'></use>
 								<use
-									className={style.error_5_r}
+									className={styles.error_5_r}
 									href='#error-5-r'></use>
 								<use
-									className={style.error_right}
+									className={styles.error_right}
 									href='#error-right'></use>
 								<use
-									className={style.error_left}
+									className={styles.error_left}
 									href='#error-left'></use>
 								<use
-									className={style.error_top}
+									className={styles.error_top}
 									href='#error-top'></use>
 							</g>
 						</g>
@@ -296,22 +296,22 @@ const Error: NextPage = () => {
 								fill='black'
 								fillOpacity='1'>
 								<use
-									className={style.quote_top}
+									className={styles.quote_top}
 									filter='url(#fill-glow)'
 									href='#quote-top'></use>
 								<use
-									className={style.quote_bottom}
+									className={styles.quote_bottom}
 									filter='url(#fill-glow)'
 									href='#quote-bottom'></use>
 							</g>
 							<g
-								className={style.top}
+								className={styles.top}
 								fill='#FF0000'>
 								<use
-									className={style.quote_top}
+									className={styles.quote_top}
 									href='#quote-top'></use>
 								<use
-									className={style.quote_bottom}
+									className={styles.quote_bottom}
 									href='#quote-bottom'></use>
 							</g>
 						</g>
@@ -377,22 +377,22 @@ const Error: NextPage = () => {
 									fill='black'
 									fillOpacity='1'>
 									<use
-										className={style.link_phrase}
+										className={styles.link_phrase}
 										filter='url(#fill-glow)'
 										href='#link-phrase'></use>
 									<use
-										className={style.link_mark}
+										className={styles.link_mark}
 										filter='url(#fill-glow)'
 										href='#link-mark'></use>
 								</g>
 								<g
-									className={style.top}
+									className={styles.top}
 									fill='#FF0000'>
 									<use
-										className={style.link_phrase}
+										className={styles.link_phrase}
 										href='#link-phrase'></use>
 									<use
-										className={style.link_mark}
+										className={styles.link_mark}
 										href='#link-mark'></use>
 								</g>
 							</g>

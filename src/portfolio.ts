@@ -12,7 +12,7 @@ import {
 	Project2021,
 } from '@import/image'
 
-const PortfolioData = [
+export const PortfolioData = [
 	{
 		id: v4(),
 		title: 'Koushikpuppala',
@@ -198,5 +198,3 @@ const PortfolioData = [
 		filter: 'filter-open',
 	},
 ]
-
-export default PortfolioData

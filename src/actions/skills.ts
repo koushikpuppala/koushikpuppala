@@ -1,11 +1,14 @@
-const Skills = () => {
+const Skills = (progress: string, progressBar: string, val: string) => {
 	const skillsContent = document.querySelector('.skills-content') as HTMLElement
 
 	if (skillsContent) {
-		const skillProcess: NodeListOf<HTMLElement> =
-			document.querySelectorAll('.progress .progress-bar')
+		const skillProcess: NodeListOf<HTMLElement> = document.querySelectorAll(
+			`.${progress} .${progressBar}`
+		)
 
-		const skillPercentage: NodeListOf<HTMLElement> = document.querySelectorAll('.progress .val')
+		const skillPercentage: NodeListOf<HTMLElement> = document.querySelectorAll(
+			`.${progress} .${val}`
+		)
 
 		skillPercentage.forEach((percentage, per_index) => {
 			skillProcess.forEach((process, pro_index) => {

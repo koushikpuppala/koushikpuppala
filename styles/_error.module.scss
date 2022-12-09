@@ -1,5 +1,3 @@
-@import '@styles/__variables.scss';
-
 ._error {
 	height: 100vh;
 	overflow: hidden;
@@ -108,7 +106,7 @@
 					animation: jitter 225ms ease-in-out 2 forwards;
 					.top {
 						use {
-							fill: $white;
+							fill: #ffffff;
 						}
 					}
 				}

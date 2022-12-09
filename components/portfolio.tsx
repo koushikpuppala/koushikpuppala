@@ -2,7 +2,8 @@ import type { NextComponentType } from 'next'
 import Image from 'next/image'
 import { useEffect } from 'react'
 import { PortfolioAction } from '@import/actions'
-import PortfolioData from '@import/portfolio'
+import { PortfolioData } from '@import/portfolio'
+import { PortfolioStyles as styles } from '@import/styles/components'
 
 const Portfolio: NextComponentType = () => {
 	useEffect(() => {
@@ -13,7 +14,7 @@ const Portfolio: NextComponentType = () => {
 		<>
 			<section
 				id='portfolio'
-				className='portfolio'>
+				className={styles['portfolio']}>
 				<div className='container'>
 					<div className='section-title'>
 						<h2>Portfolio</h2>
@@ -22,7 +23,7 @@ const Portfolio: NextComponentType = () => {
 
 					<div className='row'>
 						<div className='col-lg-12 d-flex justify-content-center'>
-							<ul id='portfolio-filters'>
+							<ul id={styles['portfolio-filters']}>
 								<li
 									data-filter='*'
 									className='filter-active'>
@@ -41,17 +42,17 @@ const Portfolio: NextComponentType = () => {
 							return (
 								<div
 									key={data.id}
-									className={`col-lg-4 col-md-6 portfolio-item ${data.filter}`}>
-									<div className='portfolio-wrap'>
+									className={`col-lg-4 col-md-6 ${styles['portfolio-item']} ${data.filter}`}>
+									<div className={styles['portfolio-wrap']}>
 										<Image
 											src={data.image.main}
 											className='img-fluid'
 											alt={data.title}
 										/>
-										<div className='portfolio-info'>
+										<div className={styles['portfolio-info']}>
 											<h4>{data.title}</h4>
 											<p>{data.subTitle}</p>
-											<div className='portfolio-links'>
+											<div className={styles['portfolio-links']}>
 												<a
 													href={data.image.main.src}
 													data-gallery='portfolioGallery'

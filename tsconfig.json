@@ -16,9 +16,7 @@
 		"incremental": true,
 		"baseUrl": ".",
 		"paths": {
-			"@*": ["*"],
-			"@import/*": ["src/*"],
-			"@import/types-*": ["src/types/*"]
+			"@import/*": ["*", "src/*"]
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/sitemap-generator.js"],
