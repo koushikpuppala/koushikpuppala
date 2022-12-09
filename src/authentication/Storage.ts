@@ -8,7 +8,7 @@ import {
 	StorageReference,
 	UploadResult,
 } from 'firebase/storage'
-import { StorageType } from '@import/types-authentication'
+import { StorageType } from '@import/types/authentication'
 import { initializeApp } from 'firebase/app'
 import { config } from '@import/config'
 
