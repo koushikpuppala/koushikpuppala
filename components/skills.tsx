@@ -1,17 +1,16 @@
 import type { NextComponentType } from 'next'
 import { useEffect } from 'react'
 import { SkillsAction } from '@import/actions'
-import { SkillsStyles as styles } from '@import/styles/components'
-import { SkillsData } from '@import/skills'
+import { SkillsData } from '@import/data'
 
 const Skills: NextComponentType = () => {
 	useEffect(() => {
-		SkillsAction(styles['progress'], styles['progress-bar'], styles['val'])
+		SkillsAction()
 	}, [])
 
 	return (
 		<>
-			<div className={`${styles['skills']} container skills`}>
+			<div className='skills container'>
 				<div
 					className='section-title'
 					data-aos='fade-right'>
@@ -25,14 +24,14 @@ const Skills: NextComponentType = () => {
 							data-aos='fade-up'
 							key={skill.id}>
 							<div
-								className={`progress ${styles['progress']}`}
+								className='progress'
 								data-aos='flip-left'>
-								<span className={styles['skill']}>
-									{skill.name} <i className={styles['val']}></i>
+								<span className='skill'>
+									{skill.name} <i className='val'></i>
 								</span>
-								<div className={styles['progress-bar-wrap']}>
+								<div className='progress-bar-wrap'>
 									<div
-										className={`${styles['progress-bar']} progress-bar-striped progress-bar-animated`}
+										className='progress-bar progress-bar-striped progress-bar-animated'
 										role='progressbar'
 										aria-valuenow={skill.percentage}
 										aria-valuemin={0}

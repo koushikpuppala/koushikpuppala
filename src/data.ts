@@ -198,3 +198,107 @@ export const PortfolioData = [
 		filter: 'filter-open',
 	},
 ]
+
+export const SkillsData = [
+	{
+		id: v4(),
+		name: 'NodeJS',
+		percentage: 100,
+	},
+	{
+		id: v4(),
+		name: 'HTML',
+		percentage: 100,
+	},
+	{
+		id: v4(),
+		name: 'Express',
+		percentage: 100,
+	},
+	{
+		id: v4(),
+		name: 'JavaScript',
+		percentage: 90,
+	},
+	{
+		id: v4(),
+		name: 'EJS',
+		percentage: 90,
+	},
+	{
+		id: v4(),
+		name: 'CSS',
+		percentage: 80,
+	},
+	{
+		id: v4(),
+		name: 'React',
+		percentage: 80,
+	},
+	{
+		id: v4(),
+		name: 'NextJS',
+		percentage: 80,
+	},
+	{
+		id: v4(),
+		name: 'MongoDB',
+		percentage: 75,
+	},
+	{
+		id: v4(),
+		name: 'TypeScript',
+		percentage: 40,
+	},
+]
+
+export const InterestData = [
+	{
+		id: v4(),
+		name: 'Open Source',
+		icon: 'ri-open-source-line',
+		color: '#11DBCF',
+	},
+	{
+		id: v4(),
+		name: 'Full Stack Development',
+		icon: 'ri-stack-line',
+		color: '#FFBB2C',
+	},
+	{
+		id: v4(),
+		name: 'MERN Stack Development',
+		icon: 'ri-code-s-slash-line',
+		color: '#4233FF',
+	},
+	{
+		id: v4(),
+		name: 'Discord Bots Development',
+		icon: 'ri-discord-line',
+		color: '#FFA76E',
+	},
+	{
+		id: v4(),
+		name: 'Android Apps Development',
+		icon: 'ri-android-line',
+		color: '#5578FF',
+	},
+	{
+		id: v4(),
+		name: 'Game Development',
+		icon: 'ri-gamepad-line',
+		color: '#E80368',
+	},
+	{
+		id: v4(),
+		name: 'Artificial Intelligence',
+		icon: 'ri-cpu-line',
+		color: '#E361FF',
+	},
+	{
+		id: v4(),
+		name: 'Machine Learning',
+		icon: 'ri-settings-5-line',
+		color: '#47AEFF',
+	},
+]

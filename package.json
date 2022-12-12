@@ -1,12 +1,10 @@
 {
 	"name": "@koushikpuppala/koushikpuppala",
-	"version": "3.2.0",
-	"description": "This is my own website with my own domain",
+	"version": "3.2.5",
+	"description": "This is my own website with my own Custom Domain",
 	"main": "next.config.js",
-	"private": true,
 	"engines": {
-		"node": ">=16.x",
-		"npm": ">=8.x"
+		"node": ">=18.x"
 	},
 	"scripts": {
 		"dev": "next dev",
@@ -17,7 +15,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://koushikpuppala.com/github/koushikpuppala.git"
+		"url": "git+https://github.com/koushikpuppala/koushikpuppala.git"
 	},
 	"keywords": [
 		"Koushik Puppala",
@@ -36,7 +34,7 @@
 	"author": "Koushik Puppala <koushikpuppala203@gmail.com> (https://koushikpuppala.com)",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://koushikpuppala.com/github/koushikpuppala/issues"
+		"url": "https://github.com/koushikpuppala/koushikpuppala/issues"
 	},
 	"homepage": "https://koushikpuppala.com",
 	"dependencies": {

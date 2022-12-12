@@ -3,23 +3,15 @@ import { Box } from '@mui/system'
 import type { NextComponentType } from 'next'
 import { useEffect } from 'react'
 import { NavbarAction } from '@import/actions'
-import { NavbarStyles as styles } from '@import/styles/components'
 
 const Navbar: NextComponentType = () => {
 	useEffect(() => {
-		NavbarAction(
-			styles['header'],
-			styles['header-top'],
-			styles['active'],
-			styles['navbar'],
-			styles['mobile-nav-toggle'],
-			styles['navbar-mobile']
-		)
+		NavbarAction()
 	}, [])
 	return (
 		<>
-			<header id={styles['header']}>
-				<Box className={`${styles['container-header']} container`}>
+			<header id='header'>
+				<Box className='container'>
 					<Typography variant='h1'>Koushik Puppala</Typography>
 					<Typography variant='h2'>
 						I&apos;m a <span id='typed'></span> from India
@@ -27,43 +19,43 @@ const Navbar: NextComponentType = () => {
 
 					<nav
 						id='navbar'
-						className={styles['navbar']}>
+						className='navbar'>
 						<ul>
 							<li>
-								<a
-									className={`nav-link ${styles['active']}`}
-									href={`#${styles['header']}`}>
+								<Link
+									className='nav-link active'
+									href='#header'>
 									Home
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									className='nav-link'
 									href='#about'>
 									About
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									className='nav-link'
 									href='#portfolio'>
 									Portfolio
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									className='nav-link'
 									href='#contact'>
 									Contact
-								</a>
+								</Link>
 							</li>
 						</ul>
 						<i
-							id={styles['mobile-nav-toggle']}
+							id='mobile-nav-toggle'
 							className='bi bi-list'></i>
 					</nav>
 
-					<Box className={styles['social-links']}>
+					<Box className='social-links'>
 						<Link
 							href='/linkedin'
 							target='_blank'

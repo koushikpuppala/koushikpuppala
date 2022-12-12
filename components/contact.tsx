@@ -6,7 +6,6 @@ import axios from 'axios'
 import type { NextComponentType } from 'next'
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { ContactStyles as styles } from '@import/styles/components'
 
 const Contact: NextComponentType = () => {
 	const [values, setValues] = useState({
@@ -205,7 +204,7 @@ const Contact: NextComponentType = () => {
 		<>
 			<section
 				id='contact'
-				className={styles['contact']}>
+				className='contact'>
 				<Box className='container'>
 					<Box className='section-title'>
 						<Typography variant='h2'>Contact</Typography>
@@ -214,10 +213,10 @@ const Contact: NextComponentType = () => {
 
 					<Box className='row mt-2'>
 						<Box className='col-md-6 d-flex align-items-stretch'>
-							<Box className={styles['info-box']}>
-								<i className={`${styles['bx-i']} bx bxs-share-alt`}></i>
+							<Box className='info-box'>
+								<i className='bx bxs-share-alt'></i>
 								<Typography variant='h3'>Social Profiles</Typography>
-								<Box className={styles['social-links']}>
+								<Box className='social-links'>
 									<Link
 										href='/linkedin'
 										target='_blank'
@@ -253,8 +252,8 @@ const Contact: NextComponentType = () => {
 						</Box>
 
 						<Box className='col-md-6 mt-4 mt-md-0 d-flex align-items-stretch'>
-							<Box className={styles['info-box']}>
-								<i className={`${styles['bx-i']} bx bxs-user`}></i>
+							<Box className='info-box'>
+								<i className='bx bxs-user'></i>
 								<Typography variant='h3'>Reach Me</Typography>
 								<Typography>
 									<Link
@@ -274,7 +273,7 @@ const Contact: NextComponentType = () => {
 							</Box>
 						</Box>
 					</Box>
-					<Box className={`${styles['contact-form']} mt-4`}>
+					<Box className='contact-form mt-4'>
 						{isOnline ? (
 							<>
 								<Box className='row'>
@@ -390,7 +389,7 @@ const Contact: NextComponentType = () => {
 				</Box>
 			</section>
 
-			<div className={styles['credits']}>
+			<div className='credits'>
 				Github ❤️{' '}
 				<Link
 					href='/github/koushikpuppala'
