@@ -54,7 +54,7 @@ const nextConfig = withPWA({
 			},
 			{
 				source: '/discord',
-				destination: 'https://discordapp.com/users/735813371433058354',
+				destination: 'https://discord.com/users/735813371433058354',
 				permanent: true,
 			},
 			{
