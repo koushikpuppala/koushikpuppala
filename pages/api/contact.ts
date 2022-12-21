@@ -1,12 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { createTransport } from 'nodemailer'
-import { config } from '@import/config'
 
 const Contact = async (req: NextApiRequest, res: NextApiResponse) => {
 	switch (req.method) {
 		case 'POST': {
 			const { name, email, subject, message } = req.body
-			const mailer = createTransport(config.transport)
+			const mailer = createTransport({
+				service: 'gmail',
+				auth: {
+					user: process.env.USER!,
+					pass: process.env.PASS!,
+				},
+			})
 			try {
 				await mailer.sendMail({
 					from: `Admin Contact From <me@koushikpuppala.com>`,

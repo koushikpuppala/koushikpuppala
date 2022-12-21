@@ -14,9 +14,6 @@ import CssBaseline from '@mui/material/CssBaseline'
 import theme from '@import/theme'
 import createEmotionCache from '@import/createEmotionCache'
 import { ToastContainer, Zoom } from 'react-toastify'
-import TagManager from 'react-gtm-module'
-import ReactGA from 'react-ga'
-import { config } from '@import/config'
 import { AppProps } from '@import/interface'
 
 const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppProps) => {
@@ -30,8 +27,6 @@ const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppP
 		if (typeof window !== 'undefined') {
 			require('bootstrap/dist/js/bootstrap.bundle.min.js')
 		}
-		ReactGA.initialize(config.measurementId)
-		TagManager.initialize({ gtmId: config.tagManagerId })
 	}, [])
 
 	return (
