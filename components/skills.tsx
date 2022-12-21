@@ -33,6 +33,7 @@ const Skills: NextComponentType = () => {
 									<div
 										className='progress-bar progress-bar-striped progress-bar-animated'
 										role='progressbar'
+										aria-label={skill.name}
 										aria-valuenow={skill.percentage}
 										aria-valuemin={0}
 										aria-valuemax={100}></div>

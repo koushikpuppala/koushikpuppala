@@ -10,7 +10,7 @@ export default class MyDocument extends Document {
 				<Head>
 					<meta
 						name='theme-color'
-						content='#18d26e5a'
+						content='#18d26e'
 					/>
 					<link
 						rel='manifest'
@@ -21,6 +21,16 @@ export default class MyDocument extends Document {
 						content=''
 					/>
 					{(this.props as any).emotionStyleTags}
+					<link
+						rel='preconnect'
+						href='https://fonts.googleapis.com/'
+						crossOrigin='anonymous'
+					/>
+					<link
+						rel='preconnect'
+						href='https://www.googletagmanager.com'
+						crossOrigin='anonymous'
+					/>
 					<link
 						href='https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Roboto:300,400,500,700&display=swap'
 						rel='stylesheet'

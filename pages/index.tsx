@@ -69,9 +69,9 @@ const Home: NextPage = () => {
 											<i className='bi bi-chevron-right'></i>{' '}
 											<strong>Email:</strong>{' '}
 											<span>
-												<a href='mailto:contact@koushikpuppala.com'>
+												<Link href='mailto:contact@koushikpuppala.com'>
 													contact@koushikpuppala.com
-												</a>
+												</Link>
 											</span>
 										</li>
 									</ul>
@@ -83,12 +83,12 @@ const Home: NextPage = () => {
 											<strong>Freelance:</strong>{' '}
 											<span>
 												Available (
-												<a
+												<Link
 													href='/Koushikpuppala Resume.pdf'
 													target='_blank'
 													rel='noreferrer'>
 													View Resume
-												</a>
+												</Link>
 												)
 											</span>
 										</li>

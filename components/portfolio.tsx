@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useEffect } from 'react'
 import { PortfolioAction } from '@import/actions'
 import { PortfolioData } from '@import/data'
+import Link from 'next/link'
 
 const Portfolio: NextComponentType = () => {
 	useEffect(() => {
@@ -49,22 +50,24 @@ const Portfolio: NextComponentType = () => {
 											alt={data.title}
 										/>
 										<div className='portfolio-info'>
-											<h4>{data.title}</h4>
+											<h3>{data.title}</h3>
 											<p>{data.subTitle}</p>
 											<div className='portfolio-links'>
-												<a
+												<Link
 													href={data.image.main.src}
 													data-gallery='portfolioGallery'
 													className='portfolio-lightbox'
+													aria-label={data.title}
 													title={`${data.title} - ${data.subTitle}`}>
 													<i className='bx bx-plus'></i>
-												</a>
-												<a
+												</Link>
+												<Link
 													href={data.url}
 													target='_blank'
-													rel='noreferrer'>
+													rel='noreferrer'
+													aria-label={data.url}>
 													<i className='bx bx-link'></i>
-												</a>
+												</Link>
 											</div>
 										</div>
 									</div>

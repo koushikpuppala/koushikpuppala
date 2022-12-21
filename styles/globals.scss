@@ -571,7 +571,7 @@ section .container {
 	z-index: 9994;
 }
 
-.portfolio .portfolio-wrap .portfolio-info h4 {
+.portfolio .portfolio-wrap .portfolio-info h3 {
 	font-size: 20px;
 	color: #fff;
 	font-weight: 600;
@@ -622,75 +622,6 @@ section .container {
 .portfolio .portfolio-wrap:hover .portfolio-info::after {
 	bottom: 15px;
 	right: 15px;
-}
-
-.portfolio-details {
-	padding-top: 40px;
-	background: rgba(0, 0, 0, 0.8);
-	position: fixed;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	overflow-y: auto;
-}
-
-.portfolio-details .container {
-	padding-top: 20px;
-	padding-bottom: 40px;
-}
-
-.portfolio-details .portfolio-title {
-	font-size: 26px;
-	font-weight: 700;
-	margin-bottom: 20px;
-}
-
-.portfolio-details .portfolio-info {
-	padding-top: 45px;
-}
-
-.portfolio-details .portfolio-info h3 {
-	font-size: 22px;
-	font-weight: 400;
-	margin-bottom: 20px;
-}
-
-.portfolio-details .portfolio-info ul {
-	list-style: none;
-	padding: 0;
-	font-size: 15px;
-}
-
-.portfolio-details .portfolio-info ul li + li {
-	margin-top: 10px;
-}
-
-.portfolio-details .portfolio-info p {
-	font-size: 15px;
-	padding: 15px 0 0 0;
-}
-
-@media (max-width: 992px) {
-	.portfolio-details .portfolio-info {
-		padding-top: 20px;
-	}
-}
-
-.portfolio-details .swiper-pagination {
-	margin-top: 20px;
-	position: relative;
-}
-
-.portfolio-details .swiper-pagination .swiper-pagination-bullet {
-	width: 12px;
-	height: 12px;
-	opacity: 1;
-	background-color: rgba(255, 255, 255, 0.3);
-}
-
-.portfolio-details .swiper-pagination .swiper-pagination-bullet-active {
-	background-color: #18d26e;
 }
 
 .contact .info-box {
