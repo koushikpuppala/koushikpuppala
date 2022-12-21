@@ -30,8 +30,8 @@ const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppP
 		if (typeof window !== 'undefined') {
 			require('bootstrap/dist/js/bootstrap.bundle.min.js')
 		}
-		ReactGA.initialize(config.firebaseConfig.measurementId)
-		TagManager.initialize({ gtmId: config.firebaseConfig.tagManagerId })
+		ReactGA.initialize(config.measurementId)
+		TagManager.initialize({ gtmId: config.tagManagerId })
 	}, [])
 
 	return (

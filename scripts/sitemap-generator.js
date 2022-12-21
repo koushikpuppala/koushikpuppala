@@ -3,8 +3,8 @@ const fs = require('fs')
 const addPage = page => {
 	const path = page.replace('pages', '').replace('.tsx', '')
 	const route = path === '/index' ? '' : path
-	return `  <url>
-    <loc>${`${process.env.NEXT_PUBLIC_URL}${route}`}</loc>
+	return `<url>
+    <loc>${`https://koushikpuppala.com/${route}`}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
