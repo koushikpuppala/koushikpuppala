@@ -350,7 +350,7 @@ section .container {
 	font-weight: 500;
 	padding: 0;
 	line-height: 1px;
-	margin: 0 0 20px 0;
+	margin: 0 0 20px;
 	letter-spacing: 2px;
 	text-transform: uppercase;
 	color: #aaaaaa;
@@ -368,7 +368,7 @@ section .container {
 
 .section-title p {
 	margin: 0;
-	margin: -15px 0 15px 0;
+	margin: -15px 0 15px;
 	font-size: 36px;
 	font-weight: 700;
 	text-transform: uppercase;
@@ -475,7 +475,7 @@ section .container {
 }
 
 .portfolio #portfolio-filters {
-	margin: 0 auto 15px auto;
+	margin: 0 auto 15px;
 	list-style: none;
 	text-align: center;
 	border-radius: 50px;
@@ -485,14 +485,14 @@ section .container {
 .portfolio #portfolio-filters li {
 	cursor: pointer;
 	display: inline-block;
-	padding: 8px 16px 10px 16px;
+	padding: 8px 16px 10px;
 	font-size: 14px;
 	font-weight: 600;
 	line-height: 1;
 	text-transform: uppercase;
 	color: #fff;
 	background: rgba(255, 255, 255, 0.1);
-	margin: 0 3px 10px 3px;
+	margin: 0 3px 10px;
 	transition: all 0.3s ease-in-out;
 	border-radius: 4px;
 }
