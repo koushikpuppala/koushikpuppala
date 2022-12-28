@@ -32,12 +32,29 @@ export default class MyDocument extends Document {
 						crossOrigin='anonymous'
 					/>
 					<link
+						rel='preconnect'
+						href='https://cdn.jsdelivr.net'
+						crossOrigin='anonymous'
+					/>
+					<link
 						href='https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i|Roboto:300,400,500,700&display=swap'
 						rel='stylesheet'
 					/>
 					<link
 						rel='stylesheet'
 						href='https://fonts.googleapis.com/icon?family=Material+Icons'
+					/>
+					<Script
+						strategy='afterInteractive'
+						src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js'
+						integrity='sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3'
+						crossOrigin='anonymous'
+					/>
+					<Script
+						strategy='afterInteractive'
+						src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js'
+						integrity='sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V'
+						crossOrigin='anonymous'
 					/>
 					<Script
 						id='google-analytics-g4'
@@ -110,7 +127,7 @@ MyDocument.getInitialProps = async ctx => {
 
 	const initialProps = await Document.getInitialProps(ctx)
 	const emotionStyles = extractCriticalToChunks(initialProps.html)
-	const emotionStyleTags = emotionStyles.styles.map(style => (
+	const emotionStyleTags = emotionStyles.styles.map((style: any) => (
 		<style
 			data-emotion={`${style.key} ${style.ids.join(' ')}`}
 			key={style.key}

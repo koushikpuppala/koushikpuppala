@@ -24,9 +24,6 @@ const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppP
 			once: false,
 			mirror: true,
 		})
-		if (typeof window !== 'undefined') {
-			require('bootstrap/dist/js/bootstrap.bundle.min.js')
-		}
 	}, [])
 
 	return (
