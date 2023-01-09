@@ -72,6 +72,11 @@ const nextConfig = withPWA({
 				destination: 'https://discord.gg/MsJ99j5Bcv',
 				permanent: true,
 			},
+			{
+				source: '/resume',
+				destination: 'https://koushikpuppala.com/Koushikpuppala%20Resume.pdf',
+				permanent: true,
+			},
 		]
 	},
 })

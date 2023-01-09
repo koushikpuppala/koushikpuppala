@@ -10,7 +10,7 @@ import { useEffect } from 'react'
 import AOS from 'aos'
 import { ThemeProvider } from '@mui/material/styles'
 import { CacheProvider } from '@emotion/react'
-import CssBaseline from '@mui/material/CssBaseline'
+import { CssBaseline } from '@mui/material'
 import theme from '@import/theme'
 import createEmotionCache from '@import/createEmotionCache'
 import { ToastContainer, Zoom } from 'react-toastify'
@@ -30,13 +30,14 @@ const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppP
 		<>
 			<CacheProvider value={emotionCache}>
 				<ThemeProvider theme={theme}>
-					<CssBaseline />
-					<ToastContainer
-						theme='dark'
-						position='top-center'
-						transition={Zoom}
-					/>
-					<Component {...pageProps} />
+					<CssBaseline enableColorScheme={true}>
+						<ToastContainer
+							theme='dark'
+							position='top-center'
+							transition={Zoom}
+						/>
+						<Component {...pageProps} />
+					</CssBaseline>
 				</ThemeProvider>
 			</CacheProvider>
 		</>
