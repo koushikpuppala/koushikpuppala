@@ -84,9 +84,8 @@ const Home: NextPage = () => {
 											<span>
 												Available (
 												<Link
-													href='/Koushikpuppala Resume.pdf'
-													target='_blank'
-													rel='noreferrer'>
+													href='/resume'
+													className='resume-lightbox'>
 													View Resume
 												</Link>
 												)

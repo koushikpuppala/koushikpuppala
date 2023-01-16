@@ -36,6 +36,12 @@ const Portfolio = () => {
 		GLightbox({
 			selector: '.portfolio-lightbox',
 		})
+		GLightbox({
+			selector: '.resume-lightbox',
+			width: '90%',
+			height: '90vh',
+			closeOnOutsideClick: false,
+		})
 	}
 }
 

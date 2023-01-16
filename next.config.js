@@ -73,8 +73,8 @@ const nextConfig = withPWA({
 				permanent: true,
 			},
 			{
-				source: '/resume',
-				destination: 'https://koushikpuppala.com/Koushikpuppala%20Resume.pdf',
+				source: '/status',
+				destination: 'https://status.koushikpuppala.com/',
 				permanent: true,
 			},
 		]
