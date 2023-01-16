@@ -9,7 +9,7 @@ const Resume: NextPage = () => {
 				height: '100%',
 				minHeight: '100vh',
 			}}
-			src='https://koushikpuppala.com/Koushikpuppala%20Resume.pdf'></iframe>
+			src='/Koushikpuppala Resume.pdf'></iframe>
 	)
 }
 
