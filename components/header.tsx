@@ -5,14 +5,13 @@ import { HeaderProps } from '@import/interface'
 const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 	props: HeaderProps
 ) => {
-	const title = props.title || 'Koushik Puppala | Freelancer | Computer Science Engineer.'
+	const title = props.title || 'Koushik Puppala | Freelancer | Computer Science Engineer'
 	const description =
 		props.description ||
-		'Koushik Puppala is a Freelancer and a Computer Science Engineer. He is currently working as a Full Stack Developer in a USA Company. Created Projects in Full Stack, and Discord Bots.'
+		'Koushik Puppala is a Freelancer and a Computer Science Engineer. I am currently working as a Full Stack Developer. Created Projects in Full Stack, and Discord Bots.'
 	const keywords =
 		props.keywords ||
 		'Koushik Puppala, Puppala Koushik, Computer Science and Engineer, Freelancer, Full Stack Developer, Discord Bots, Koushikpuppala, Puppalakoushik, IIIT Raichur, IIT Hyderabad, IIITR, IITH'
-	const icon = props.icon || '/favicon.ico'
 	return (
 		<Head>
 			<meta charSet='utf-8' />
@@ -57,18 +56,27 @@ const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 			/>
 
 			<link
-				href={icon}
-				rel='icon'
-			/>
-			<link
-				href={icon}
+				href='/icons/favicon.ico'
 				rel='shortcut icon'
+				type='image/x-icon'
 			/>
 			<link
-				href={icon}
-				rel='apple-touch-icon'
+				rel='icon'
+				type='image/png'
+				sizes='32x32'
+				href='/icons/favicon-32x32.png'
 			/>
-
+			<link
+				rel='icon'
+				type='image/png'
+				sizes='16x16'
+				href='/icons/favicon-16x16.png'
+			/>
+			<link
+				href='/icons/apple-touch-icon.png'
+				rel='apple-touch-icon'
+				sizes='180x180'
+			/>
 			<meta
 				property='og:type'
 				content='website'

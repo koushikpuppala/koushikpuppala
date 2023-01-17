@@ -1,36 +1,33 @@
 {
-	"name": "Koushik Puppala | Freelancer | Computer Science Engineer.",
-	"short_name": "Koushik Puppala.",
+	"id": "/",
+	"name": "Koushik Puppala | Freelancer | Computer Science Engineer",
+	"short_name": "Koushik Puppala",
 	"description": "Koushik Puppala is a Freelancer and a Computer Science Engineer. He is currently working as a Full Stack Developer in a USA Company. Created Projects in Full Stack, and Discord Bots.",
 	"display": "fullscreen",
 	"icons": [
 		{
-			"src": "/logo512.png",
+			"src": "/icons/android-chrome-512x512.png",
 			"sizes": "512x512",
-			"type": "image/png",
-			"purpose": "any maskable"
+			"type": "image/png"
 		},
 		{
-			"src": "/logo384.png",
+			"src": "/icons/android-chrome-384x384.png",
 			"sizes": "384x384",
-			"type": "image/png",
-			"purpose": "any maskable"
+			"type": "image/png"
 		},
 		{
-			"src": "/logo256.png",
+			"src": "/icons/android-chrome-256x256.png",
 			"sizes": "256x256",
-			"type": "image/png",
-			"purpose": "any maskable"
+			"type": "image/png"
 		},
 		{
-			"src": "/logo192.png",
+			"src": "/icons/android-chrome-192x192.png",
 			"sizes": "192x192",
-			"type": "image/png",
-			"purpose": "any maskable"
+			"type": "image/png"
 		}
 	],
 	"scope": "/",
 	"start_url": "/",
-	"theme_color": "#18d26e",
-	"background_color": "#18d26e"
+	"theme_color": "#000000",
+	"background_color": "#000000"
 }

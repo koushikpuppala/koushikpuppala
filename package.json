@@ -60,7 +60,6 @@
 	},
 	"devDependencies": {
 		"@types/aos": "^3.0.4",
-		"@types/isotope-layout": "^3.0.9",
 		"@types/node": "^18.11.18",
 		"@types/nodemailer": "^6.4.7",
 		"@types/react": "^18.0.26",
