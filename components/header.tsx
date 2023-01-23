@@ -12,6 +12,7 @@ const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 	const keywords =
 		props.keywords ||
 		'Koushik Puppala, Puppala Koushik, Computer Science and Engineer, Freelancer, Full Stack Developer, Discord Bots, Koushikpuppala, Puppalakoushik, IIIT Raichur, IIT Hyderabad, IIITR, IITH'
+	const canonical = `https://koushikpuppala.com${props.canonical}`
 	return (
 		<Head>
 			<meta charSet='utf-8' />
@@ -83,7 +84,7 @@ const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 			/>
 			<meta
 				property='og:url'
-				content='https://koushikpuppala.com/'
+				content={canonical}
 			/>
 			<meta
 				property='og:locale'
@@ -120,7 +121,7 @@ const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 			/>
 			<meta
 				name='twitter:url'
-				content='https://koushikpuppala.com/'
+				content={canonical}
 			/>
 			<meta
 				name='twitter:site'
@@ -149,7 +150,7 @@ const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 
 			<link
 				rel='canonical'
-				href='https://koushikpuppala.com/'
+				href={canonical}
 			/>
 		</Head>
 	)

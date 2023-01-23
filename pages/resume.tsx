@@ -4,7 +4,10 @@ import type { NextPage } from 'next'
 const Resume: NextPage = () => {
 	return (
 		<>
-			<Header title='Koushik Puppala | Resume' />
+			<Header
+				title='Koushik Puppala | Resume'
+				canonical='/resume'
+			/>
 			<h1
 				style={{
 					display: 'none',

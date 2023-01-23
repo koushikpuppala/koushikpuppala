@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 
 	return (
 		<>
-			<Header />
+			<Header canonical='/' />
 			<Navbar />
 			<section
 				id='about'
