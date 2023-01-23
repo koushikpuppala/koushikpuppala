@@ -1,5 +1,6 @@
 import { Header } from '@import/components'
 import type { NextPage } from 'next'
+import Link from 'next/link'
 
 const Resume: NextPage = () => {
 	return (
@@ -13,6 +14,7 @@ const Resume: NextPage = () => {
 					display: 'none',
 				}}>
 				Resume
+				<Link href='/'>Koushikpuppala</Link>
 			</h1>
 			<iframe
 				style={{
@@ -21,7 +23,8 @@ const Resume: NextPage = () => {
 					height: '100%',
 					minHeight: '100vh',
 				}}
-				src='/Koushikpuppala Resume.pdf'></iframe>
+				src='/Koushikpuppala Resume.pdf'
+			/>
 		</>
 	)
 }

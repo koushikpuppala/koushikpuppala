@@ -8,10 +8,10 @@ const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 	const title = props.title || 'Koushik Puppala | Freelancer | Computer Science Engineer'
 	const description =
 		props.description ||
-		'Koushik Puppala is a Freelancer and a Computer Science Engineer. I am currently working as a Full Stack Developer. Created Projects in Full Stack, and Discord Bots.'
+		'I am a computer science engineer and full-stack developer. I am working on full stack and Discord bot projects.'
 	const keywords =
 		props.keywords ||
-		'Koushik Puppala, Puppala Koushik, Computer Science and Engineer, Freelancer, Full Stack Developer, Discord Bots, Koushikpuppala, Puppalakoushik, IIIT Raichur, IIT Hyderabad, IIITR, IITH'
+		'Koushik Puppala, Puppala Koushik, Computer Science and Engineer, Freelancer, Full Stack Developer, Discord Bots, Koushikpuppala, Puppalakoushik, IIIT Raichur, IIITR'
 	const canonical = `https://koushikpuppala.com${props.canonical}`
 	return (
 		<Head>
