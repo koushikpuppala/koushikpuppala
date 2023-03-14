@@ -15,6 +15,7 @@ import theme from '@import/theme'
 import createEmotionCache from '@import/createEmotionCache'
 import { ToastContainer, Zoom } from 'react-toastify'
 import { AppProps } from '@import/interface'
+import { Analytics } from '@vercel/analytics/react'
 
 const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppProps) => {
 	useEffect(() => {
@@ -37,6 +38,7 @@ const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppP
 							transition={Zoom}
 						/>
 						<Component {...pageProps} />
+						<Analytics />
 					</CssBaseline>
 				</ThemeProvider>
 			</CacheProvider>
