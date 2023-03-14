@@ -16,6 +16,7 @@ const Navbar = () => {
 		backSpeed: 50,
 		loop: true,
 		cursorChar: '|',
+		shuffle: true,
 	}
 	new Typed('#typed', options)
 
