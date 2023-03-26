@@ -1,24 +1,59 @@
 {
 	"compilerOptions": {
-		"target": "ESNext",
-		"lib": ["DOM", "DOM.Iterable", "ESNext"],
-		"allowJs": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"forceConsistentCasingInFileNames": true,
-		"noEmit": true,
-		"esModuleInterop": true,
-		"module": "ESNext",
-		"moduleResolution": "NodeNext",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"incremental": true,
-		"baseUrl": ".",
+		/* Projects */
+		"incremental": true /* Save .tsbuildinfo files to allow for incremental compilation of projects. */,
+
+		/* Language and Environment */
+		"target": "ESNext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+		"lib": [
+			"DOM",
+			"DOM.Iterable",
+			"ESNext"
+		] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+		"jsx": "preserve" /* Specify what JSX code is generated. */,
+		"experimentalDecorators": true /* Enable experimental support for TC39 stage 2 draft decorators. */,
+		"emitDecoratorMetadata": true /* Emit design-type metadata for decorated declarations in source files. */,
+
+		/* Modules */
+		"module": "ESNext" /* Specify what module code is generated. */,
+		"moduleResolution": "Node" /* Specify how TypeScript looks up a file from a given module specifier. */,
+		"resolveJsonModule": true /* Enable importing .json files. */,
+		"baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
 		"paths": {
 			"@import/*": ["*", "src/*"]
-		}
+		} /* Specify a set of entries that re-map imports to additional lookup locations. */,
+
+		/* JavaScript Support */
+		"allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
+
+		/* Emit */
+		"noEmit": true /* Disable emitting files from a compilation. */,
+
+		/* Interop Constraints */
+		"esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+		"isolatedModules": true /* Ensure that each file can be safely transpiled without relying on other imports. */,
+		"forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+
+		/* Type Checking */
+		"strict": true /* Enable all strict type-checking options. */,
+		"noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+
+		/* Completeness */
+		"skipLibCheck": true /* Skip type checking all .d.ts files. */,
+
+		/* Advanced */
+		"plugins": [
+			{
+				"name": "next"
+			}
+		] /* Specify a list of language service plugins to include. */
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/sitemap-generator.js"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+		"scripts/sitemap-generator.js"
+	],
 	"exclude": ["node_modules"]
 }
