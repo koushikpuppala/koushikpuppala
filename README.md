@@ -32,8 +32,6 @@ I'm a B.Tech student studying computer science and engineering at the **_[Indian
 
 ![Koushikpuppala](https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6) ![Open Source? Yes](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)
 
-![Profile View](https://hit.yhype.me/github/profile?user_id=70138027)
-
 </div>
 
 ## 🌐 Socials
@@ -77,3 +75,5 @@ I'm a B.Tech student studying computer science and engineering at the **_[Indian
 ![Discord Profile](https://lanyard-profile-readme.vercel.app/api/735813371433058354)
 
 </div> -->
+
+![](https://hit.yhype.me/github/profile?user_id=70138027)
