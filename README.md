@@ -29,8 +29,10 @@ I'm a B.Tech student studying computer science and engineering at the **_[Indian
 <div align='center'>
 
 [![Website Status](https://img.shields.io/website?style=social&url=https%3A%2F%2Fkoushikpuppala.com&logo=Microsoft%20Edge&logoColor=%23000000)](https://koushikpuppala.com) [![Website Uptime](https://img.shields.io/uptimerobot/ratio/m791998307-456ba3ddfb31f7b23ce7a096?style=social&logo=Microsoft%20Edge&logoColor=%23000000)](https://koushikpuppala.com/status) [![GitHub Followers](https://img.shields.io/github/followers/koushikpuppala.svg?style=social&label=Follow)](https://github.com/koushikpuppala?tab=followers) ![GitHub Stars](https://img.shields.io/github/stars/koushikpuppala?affiliations=OWNER%2CCOLLABORATOR%2CORGANIZATION_MEMBER&style=social) [![Total time coded since Jan 7 2021](https://wakatime.com/badge/user/72e2ce29-83ee-4ab0-b7c6-aafe16410611.svg?style=social)](https://wakatime.com/@koushikpuppala)
-<br />
+
 ![Koushikpuppala](https://komarev.com/ghpvc/?username=koushikpuppala&label=Profile%20views&color=0e75b6) ![Open Source? Yes](https://badgen.net/badge/Open%20Source%20%3F/Yes%21/blue?icon=github)
+
+![Profile View](https://hit.yhype.me/github/profile?user_id=70138027)
 
 </div>
 
