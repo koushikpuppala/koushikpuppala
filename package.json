@@ -3,9 +3,6 @@
 	"version": "3.5.0",
 	"description": "This is my own website with my own Custom Domain",
 	"main": "next.config.js",
-	"engines": {
-		"node": ">=18.x"
-	},
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",

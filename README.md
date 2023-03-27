@@ -1,8 +1,10 @@
 <div align='center'>
 
-![Koushikpuppala](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑲𝒐𝒖𝒔𝒉𝒊𝒌%20𝑷𝒖𝒑𝒑𝒂𝒍𝒂&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient)
+![Koushikpuppala](./.github/Koushikpuppala.gif)
 
-# Hi 👋, I'm Koushik Puppala
+<!-- ![Koushikpuppala](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑲𝒐𝒖𝒔𝒉𝒊𝒌%20𝑷𝒖𝒑𝒑𝒂𝒍𝒂&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient) -->
+
+<!-- # Hi 👋, I'm Koushik Puppala -->
 
 </div>
 
