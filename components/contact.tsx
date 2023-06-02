@@ -3,11 +3,10 @@ import { Alert, AlertTitle, Button, TextField, Typography } from '@mui/material'
 import Link from 'next/link'
 import { Box } from '@mui/system'
 import axios from 'axios'
-import type { NextComponentType } from 'next'
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
-const Contact: NextComponentType = () => {
+const Contact = () => {
 	const [values, setValues] = useState({
 		form: {
 			name: '',

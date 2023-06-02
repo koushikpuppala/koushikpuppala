@@ -1,10 +1,8 @@
-import { Link, Typography } from '@mui/material'
-import { Box } from '@mui/system'
-import type { NextComponentType } from 'next'
 import { useEffect } from 'react'
 import { NavbarAction } from '@import/actions'
+import { Box, Link, Typography } from '@mui/material'
 
-const Navbar: NextComponentType = () => {
+const Navbar = () => {
 	useEffect(() => {
 		NavbarAction()
 	}, [])

@@ -8,9 +8,8 @@ import 'aos/dist/aos.css'
 import '@import/styles/globals.scss'
 import { useEffect } from 'react'
 import AOS from 'aos'
-import { ThemeProvider } from '@mui/material/styles'
 import { CacheProvider } from '@emotion/react'
-import { CssBaseline } from '@mui/material'
+import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material'
 import theme from '@import/theme'
 import createEmotionCache from '@import/createEmotionCache'
 import { ToastContainer, Zoom } from 'react-toastify'
@@ -28,7 +27,7 @@ const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppP
 	}, [])
 
 	return (
-		<>
+		<StyledEngineProvider injectFirst>
 			<CacheProvider value={emotionCache}>
 				<ThemeProvider theme={theme}>
 					<CssBaseline enableColorScheme={true}>
@@ -42,7 +41,7 @@ const App = ({ Component, emotionCache = createEmotionCache(), pageProps }: AppP
 					</CssBaseline>
 				</ThemeProvider>
 			</CacheProvider>
-		</>
+		</StyledEngineProvider>
 	)
 }
 

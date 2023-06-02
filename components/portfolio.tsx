@@ -1,11 +1,10 @@
-import type { NextComponentType } from 'next'
-import Image from 'next/image'
 import { useEffect } from 'react'
 import { PortfolioAction } from '@import/actions'
 import { PortfolioData } from '@import/data'
+import Image from 'next/image'
 import Link from 'next/link'
 
-const Portfolio: NextComponentType = () => {
+const Portfolio = () => {
 	useEffect(() => {
 		PortfolioAction()
 	}, [])

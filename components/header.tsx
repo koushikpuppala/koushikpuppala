@@ -1,17 +1,11 @@
-import type { NextComponentType, NextPageContext } from 'next'
 import Head from 'next/head'
 import { HeaderProps } from '@import/interface'
 
-const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
-	props: HeaderProps
-) => {
+const Header = (props: HeaderProps) => {
 	const title = props.title || 'Koushik Puppala | Freelancer | Computer Science Engineer'
 	const description =
 		props.description ||
 		'I am a computer science engineer and full-stack developer. I am working on full stack and Discord bot projects.'
-	const keywords =
-		props.keywords ||
-		'Koushik Puppala, Puppala Koushik, Computer Science and Engineer, Freelancer, Full Stack Developer, Discord Bots, Koushikpuppala, Puppalakoushik, IIIT Raichur, IIITR'
 	const canonical = `https://koushikpuppala.com${props.canonical}`
 	return (
 		<Head>
@@ -35,7 +29,7 @@ const Header: NextComponentType<NextPageContext, HeaderProps, HeaderProps> = (
 				name='description'
 			/>
 			<meta
-				content={keywords}
+				content='Koushik Puppala, Puppala Koushik, Koushikpuppala, Puppalakoushik'
 				name='keywords'
 			/>
 
