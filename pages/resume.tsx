@@ -23,7 +23,7 @@ const Resume: NextPage = () => {
 					height: '100%',
 					minHeight: '100vh',
 				}}
-				src='/Koushikpuppala Resume.pdf'
+				src='/resume.pdf'
 			/>
 		</>
 	)
