@@ -8,81 +8,79 @@ const nextConfig = withPWA({
 	register: true,
 	disable: process.env.NODE_ENV === 'development',
 })({
-	// reactStrictMode: true,
-	swcMinify: true,
-	sentry: {
-		hideSourceMaps: true,
-	},
-	webpack: (config, { isServer }) => {
-		if (!isServer) {
-			config.resolve.fallback.fs = false
-			require('./scripts/sitemap-generator.js')
-		}
-		return config
-	},
 	redirects: async () => {
 		return [
 			{
 				source: '/github',
 				destination: 'https://github.com/koushikpuppala',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/github/:params',
 				destination: 'https://github.com/koushikpuppala/:params',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/linkedin',
 				destination: 'https://www.linkedin.com/in/koushikpuppala',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/twitter',
 				destination: 'https://twitter.com/puppala_koushik',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/instagram',
 				destination: 'https://www.instagram.com/koushikpuppala',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/facebook',
 				destination: 'https://www.facebook.com/puppalakoushik',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/discord',
-				destination: 'https://discord.com/users/735813371433058354',
-				permanent: true,
+				destination: 'https://discordapp.com/users/735813371433058354',
+				permanent: false,
 			},
 			{
 				source: '/skype',
 				destination: 'https://join.skype.com/invite/vfWLRyA9iFQc',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/youtube',
 				destination: 'https://www.youtube.com/@koushikpuppala',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/server',
 				destination: 'https://discord.gg/MsJ99j5Bcv',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/status',
 				destination: 'https://status.koushikpuppala.com/',
-				permanent: true,
+				permanent: false,
 			},
 		]
 	},
 })
 
-const sentryWebpackPluginOptions = {
+const userSentryWebpackPluginOptions = {
 	silent: true,
+	org: 'koushikpuppala',
+	project: 'koushikpuppala',
 }
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+const sentryOptions = {
+	widenClientFileUpload: true,
+	transpileClientSDK: true,
+	tunnelRoute: '/monitoring',
+	hideSourceMaps: true,
+	disableLogger: true,
+}
+
+module.exports = withSentryConfig(nextConfig, userSentryWebpackPluginOptions, sentryOptions)

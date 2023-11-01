@@ -39,8 +39,9 @@
 		"noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
 
 		/* Completeness */
-		"skipLibCheck": true /* Skip type checking all .d.ts files. */
+		"skipLibCheck": true /* Skip type checking all .d.ts files. */,
+		"plugins": [{ "name": "next" }] /* Enable next generation of modules and dynamic import() */
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/sitemap-generator.js"],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
 }
