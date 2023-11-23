@@ -1,4 +1,5 @@
-import { LayoutProps } from '@import/interface'
+import { RootLayoutProps } from '@import/interface'
+import { Sora } from 'next/font/google'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -35,7 +36,13 @@ export const metadata: Metadata = {
 	},
 }
 
-const RootLayout = ({ children }: LayoutProps) => {
+const font = Sora({
+	subsets: ['latin', 'latin-ext'],
+	variable: '--font-sora',
+	weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
+})
+
+const RootLayout = ({ children }: RootLayoutProps) => {
 	return (
 		<html lang='en'>
 			<head>
@@ -49,7 +56,7 @@ const RootLayout = ({ children }: LayoutProps) => {
 					name='viewport'
 				/>
 			</head>
-			<body>{children}</body>
+			<body className={font.className}>{children}</body>
 		</html>
 	)
 }
