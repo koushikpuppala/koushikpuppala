@@ -10,9 +10,28 @@ module.exports = {
 		'./src/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	theme: {
+		container: {
+			padding: {
+				DEFAULT: '15px',
+			},
+		},
+		screens: {
+			sm: '540px',
+			md: '768px',
+			lg: '960px',
+			xl: '1200px',
+		},
 		extend: {
-			fontFamily: {
-				sora: ['var(--font-sora)', 'san-serif'],
+			colors: {
+				primary: '#131424',
+				secondary: '#393A47',
+				accent: '#915EFF',
+			},
+			backgroundImage: {
+				site: 'url("/herobg.webp")',
+			},
+			animation: {
+				'spin-slow': 'spin 6s linear infinite',
 			},
 		},
 	},

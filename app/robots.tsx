@@ -10,7 +10,10 @@ const RobotsPage = (): MetadataRoute.Robots => {
 			disallow: '/api/',
 			crawlDelay: 5,
 		})),
-		sitemap: [`https://${process.env.DOMAIN}/sitemap.xml`, `https://www.${process.env.DOMAIN}/sitemap.xml`],
+		sitemap: [
+			`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/sitemap.xml`,
+			`https://www.${process.env.NEXT_PUBLIC_VERCEL_URL}/sitemap.xml`,
+		],
 	}
 }
 
