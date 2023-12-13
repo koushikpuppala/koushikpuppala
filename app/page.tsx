@@ -4,22 +4,26 @@ import { FaDiscord, FaFacebookF, FaGithub, FaInstagram, FaLinkedinIn, FaXTwitter
 import Typed, { TypedOptions } from 'typed.js'
 import { fadeIn } from '@import/actions'
 import { motion } from 'framer-motion'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 const HomePage = () => {
+	const typedRef = useRef(null)
+
 	useEffect(() => {
 		const options: TypedOptions = {
 			strings: ['Problem solver', 'Code Creator', 'Web Enthusiast', 'Freelancer'],
 			typeSpeed: 50,
-			backSpeed: 50,
+			backSpeed: 25,
 			loop: true,
-			cursorChar: '|',
-			shuffle: true,
-			backDelay: 1000,
+			showCursor: false,
+			backDelay: 2000,
 			loopCount: Infinity,
 		}
-		new Typed('#typed', options)
+		const typed = new Typed(typedRef.current, options)
+		return () => {
+			typed.destroy()
+		}
 	}, [])
 
 	return (
@@ -33,7 +37,7 @@ const HomePage = () => {
 						exit='hidden'
 						className='h1 mb-4 text-accent'>
 						Koushik Puppala <span className='font-light leading-relaxed text-white/60'>|</span>{' '}
-						<span id='typed'></span>
+						<span ref={typedRef}></span>
 					</motion.h1>
 					<motion.p
 						variants={fadeIn('down', 0.3)}
