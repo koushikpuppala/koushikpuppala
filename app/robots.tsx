@@ -11,8 +11,7 @@ const RobotsPage = (): MetadataRoute.Robots => {
 			crawlDelay: 5,
 		})),
 		sitemap: [
-			`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/sitemap.xml`,
-			`https://www.${process.env.NEXT_PUBLIC_VERCEL_URL}/sitemap.xml`,
+			`${process.env.NEXT_PUBLIC_VERCEL_URL}/sitemap.xml`,
 		],
 	}
 }
