@@ -1,37 +1,57 @@
 {
-	"id": "/",
+	"id": "v5.0.0",
 	"name": "Koushik Puppala | Freelancer | Computer Science Engineer",
 	"short_name": "Koushik Puppala",
-	"description": "Koushik Puppala is a Freelancer and a Computer Science Engineer. He is currently working as a Full Stack Developer in a USA Company. Created Projects in Full Stack, and Discord Bots.",
+	"description": "I am a computer science engineer and full-stack developer. I am working on full stack and Discord bot projects.",
+	"orientation": "any",
+	"display_override": ["fullscreen"],
 	"display": "fullscreen",
 	"icons": [
 		{
 			"src": "/icons/android-chrome-512x512.png",
 			"sizes": "512x512",
-			"type": "image/png",
-			"purpose": "any maskable"
+			"type": "image/png"
 		},
 		{
 			"src": "/icons/android-chrome-384x384.png",
 			"sizes": "384x384",
-			"type": "image/png",
-			"purpose": "any maskable"
+			"type": "image/png"
 		},
 		{
 			"src": "/icons/android-chrome-256x256.png",
 			"sizes": "256x256",
-			"type": "image/png",
-			"purpose": "any maskable"
+			"type": "image/png"
 		},
 		{
 			"src": "/icons/android-chrome-192x192.png",
 			"sizes": "192x192",
+			"type": "image/png"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "/screenshots/desktop.png",
+			"sizes": "1920x1080",
 			"type": "image/png",
-			"purpose": "any maskable"
+			"form_factor": "wide",
+			"label": "Desktop screenshot"
+		},
+		{
+			"src": "/screenshots/phone.png",
+			"sizes": "412x915",
+			"type": "image/png",
+			"form_factor": "narrow",
+			"label": "Phone screenshot"
+		},
+		{
+			"src": "/screenshots/tablet.png",
+			"sizes": "800x1280",
+			"type": "image/png",
+			"label": "Tablet screenshot"
 		}
 	],
 	"scope": "/",
 	"start_url": "/",
-	"theme_color": "#000000",
-	"background_color": "#000000"
+	"theme_color": "#915EFF5A",
+	"background_color": "#915EFF5A"
 }
