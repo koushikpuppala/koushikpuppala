@@ -1,0 +1,6 @@
+export { default as CollegeLogo } from './college.png'
+export { default as GDSCLogo } from './gdsc.png'
+export { default as IIITRLogo } from './iiitr_blue.png'
+export { default as WhiteLogo } from './iiitr_white.png'
+export { default as MaplemonkLogo } from './maplemonk.png'
+export { default as TGHLogo } from './tgh.png'

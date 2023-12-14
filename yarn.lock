@@ -2492,6 +2492,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-vertical-timeline-component@npm:^3":
+  version: 3.3.6
+  resolution: "@types/react-vertical-timeline-component@npm:3.3.6"
+  dependencies:
+    "@types/react": "npm:*"
+  checksum: 74dc49c5f729850f5fbf9816eb7ac8b48bb37aeb41f32c13da603362dd0f989c3722c373d06bbe7307f7a300b8c62fde5ff9fc80ea27b3cf5bac28092c494549
+  languageName: node
+  linkType: hard
+
 "@types/react@npm:*, @types/react@npm:^18.2.43":
   version: 18.2.45
   resolution: "@types/react@npm:18.2.45"
@@ -3041,6 +3050,13 @@ __metadata:
   version: 1.2.0
   resolution: "classlist-polyfill@npm:1.2.0"
   checksum: 97a6c6865daa1f74e6219f24bb5971c6b418aa9dcec0dcaab38283dbd9388af1c0057e9bd281b7236959059d971c55705bc055ee8382ee89f0c2d70749794cf3
+  languageName: node
+  linkType: hard
+
+"classnames@npm:^2.2.6":
+  version: 2.3.2
+  resolution: "classnames@npm:2.3.2"
+  checksum: cd50ead57b4f97436aaa9f9885c6926323efc7c2bea8e3d4eb10e4e972aa6a1cfca1c7a0e06f8a199ca7498d4339e30bb6002e589e61c9f21248cbf3e8b0b18d
   languageName: node
   linkType: hard
 
@@ -4560,6 +4576,7 @@ __metadata:
     "@types/nodemailer": "npm:^6.4.14"
     "@types/react": "npm:^18.2.43"
     "@types/react-dom": "npm:^18.2.17"
+    "@types/react-vertical-timeline-component": "npm:^3"
     "@types/uuid": "npm:^9.0.7"
     "@vercel/analytics": "npm:^1.1.1"
     aos: "npm:^2.3.4"
@@ -4578,6 +4595,7 @@ __metadata:
     react-icons: "npm:^4.12.0"
     react-tilt: "npm:^1.0.2"
     react-toastify: "npm:^9.1.3"
+    react-vertical-timeline-component: "npm:^3.6.0"
     sass: "npm:^1.69.5"
     sharp: "npm:^0.33.0"
     tailwindcss: "npm:^3.3.6"
@@ -5517,7 +5535,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -5579,6 +5597,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-intersection-observer@npm:^8.26.2":
+  version: 8.34.0
+  resolution: "react-intersection-observer@npm:8.34.0"
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0|| ^18.0.0
+  checksum: 471d81025ad0f24b58318f3ed2dd56f65ac5eecde6882a42b83ba3aa7bc555745c8a953c7a55a03073dc9197467d64eca768b92eec2bdf0208ffdc60bbc2498b
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -5629,6 +5656,17 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: 2ba754ba748faefa15f87c96dfa700d5525054a0141de8c75763aae6734af0740e77e11261a1e8f4ffc08fd9ab78510122e05c21c2d79066c38bb6861a886c82
+  languageName: node
+  linkType: hard
+
+"react-vertical-timeline-component@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "react-vertical-timeline-component@npm:3.6.0"
+  dependencies:
+    classnames: "npm:^2.2.6"
+    prop-types: "npm:^15.7.2"
+    react-intersection-observer: "npm:^8.26.2"
+  checksum: f6554f29d206675ac7218d21d435834ee88894e87ed77a93bb96ba32917e06b54c7e9e9fde643d1899a3909f1cc1d9b9046b871842779e6dda3c55c7adb7fcf2
   languageName: node
   linkType: hard
 
