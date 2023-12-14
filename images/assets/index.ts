@@ -1,4 +1,4 @@
-export { default as BackendImage } from './backend.png'
-export { default as FrontendImage } from './frontend.png'
-export { default as FullStackImage } from './fullstack.png'
-export { default as OpenSourceImage } from './opensource.png'
+export { default as BackendImage } from './backend.webp'
+export { default as FrontendImage } from './frontend.webp'
+export { default as FullStackImage } from './fullstack.webp'
+export { default as OpenSourceImage } from './opensource.webp'
