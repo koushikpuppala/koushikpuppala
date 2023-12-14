@@ -6,7 +6,7 @@ const RobotsPage = (): MetadataRoute.Robots => {
 	return {
 		rules: userAgents.map(userAgent => ({
 			userAgent,
-			allow: '/',
+			allow: '*',
 			disallow: '/api/',
 			crawlDelay: 5,
 		})),
