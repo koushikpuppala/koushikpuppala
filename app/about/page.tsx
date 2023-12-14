@@ -1,10 +1,18 @@
+import { AboutComponent } from '@import/components'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: 'About',
+	openGraph: {
+		title: 'About',
+	},
+	twitter: {
+		title: 'About',
+	},
+}
+
 const AboutPage = () => {
-	return (
-		<div>
-			<h1>About</h1>
-			<p>This is the about page.</p>
-		</div>
-	)
+	return <AboutComponent />
 }
 
 export default AboutPage

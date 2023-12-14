@@ -16,6 +16,7 @@ module.exports = {
 			},
 		},
 		screens: {
+			xs: '450px',
 			sm: '540px',
 			md: '768px',
 			lg: '960px',
@@ -24,7 +25,11 @@ module.exports = {
 		extend: {
 			colors: {
 				primary: '#131424',
-				secondary: '#393A47',
+				secondary: '#aaa6c3',
+				tertiary: '#151030',
+				'black-100': '#100d25',
+				'black-200': '#090325',
+				'white-100': '#f3f3f3',
 				accent: '#915EFF',
 			},
 			backgroundImage: {

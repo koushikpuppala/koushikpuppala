@@ -1,34 +1,10 @@
 'use client'
 
-import {
-	HiHome,
-	HiUser,
-	HiViewColumns,
-	HiRectangleGroup,
-	HiChatBubbleBottomCenterText,
-	HiEnvelope,
-} from 'react-icons/hi2'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import { fadeIn } from '@import/actions'
-
-export const data = [
-	{ name: 'home', path: '/', icon: HiHome },
-	{ name: 'about', path: '/about', icon: HiUser },
-	{ name: 'services', path: '/services', icon: HiRectangleGroup },
-	{ name: 'work', path: '/work', icon: HiViewColumns },
-	{
-		name: 'testimonials',
-		path: '/testimonials',
-		icon: HiChatBubbleBottomCenterText,
-	},
-	{
-		name: 'contact',
-		path: '/contact',
-		icon: HiEnvelope,
-	},
-]
+import { NavbarData } from '@import/constant'
 
 const NavbarComponent = () => {
 	const pathname = usePathname()
@@ -51,6 +27,21 @@ const NavbarComponent = () => {
 				className='fixed bottom-0 right-8 top-0 z-10 mt-auto hidden h-screen w-14 max-w-md flex-col items-center justify-center gap-y-4 lg:flex'>
 				<LinkComponent pathname={pathname} />
 			</motion.nav>
+			<motion.div
+				variants={fadeIn('up', 0.1)}
+				initial='hidden'
+				animate='show'
+				exit='hidden'
+				className='fixed bottom-14 left-0 right-0 z-10 p-2 text-center text-xs backdrop-blur-md lg:bottom-0 lg:p-4 lg:text-right'>
+				Github ❤️{' '}
+				<Link
+					href='/github/koushikpuppala'
+					target='_blank'
+					rel='noopener noreferrer'
+					className='text-accent transition-all delay-100 ease-in-out hover:text-white/60'>
+					Source Code
+				</Link>
+			</motion.div>
 		</>
 	)
 }
@@ -58,13 +49,13 @@ const NavbarComponent = () => {
 const LinkComponent = ({ pathname }: { pathname: string }) => {
 	return (
 		<div className='flex h-14 w-full items-center justify-between gap-y-10 bg-white/10 px-4 py-6 text-3xl backdrop-blur-sm sm:px-24 md:px-48 lg:h-max lg:flex-col lg:justify-center lg:rounded-full lg:px-0 lg:py-8 lg:text-xl'>
-			{data.map((link, index) => {
+			{NavbarData.map((link, index) => {
 				return (
 					<Link
 						className={`${
-							link.path === pathname && 'text-accent'
+							link.href === pathname && 'text-accent'
 						} group relative flex items-center transition-all duration-300 hover:text-accent`}
-						href={link.path}
+						href={link.href}
 						key={index}>
 						<span className='sr-only'>{link.name}</span>
 						<div className='absolute right-0 hidden pr-12 lg:group-hover:flex'>
