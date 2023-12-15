@@ -7,10 +7,10 @@ import {
 	MaplemonkLogo,
 	OpenSourceImage,
 	CollegeLogo,
-	WhiteLogo,
 	TGHLogo,
+	SchoolLogo,
 } from '@import/images'
-import { FaLinkedinIn, FaGithub, FaDiscord, FaInstagram, FaXTwitter, FaFacebookF, FaSkype } from 'react-icons/fa6'
+import { FaLinkedinIn, FaGithub, FaDiscord, FaSkype } from 'react-icons/fa6'
 import { HiHome, HiUser, HiDocument, HiEnvelopeOpen, HiBriefcase, HiFolder } from 'react-icons/hi2'
 
 export const SocialMedia = [
@@ -18,9 +18,6 @@ export const SocialMedia = [
 	{ name: 'GitHub', href: '/github', icon: FaGithub },
 	{ name: 'Discord', href: '/discord', icon: FaDiscord },
 	{ name: 'Skype', href: '/skype', icon: FaSkype },
-	{ name: 'Instagram', href: '/instagram', icon: FaInstagram },
-	{ name: 'Twitter', href: '/twitter', icon: FaXTwitter },
-	{ name: 'Facebook', href: '/facebook', icon: FaFacebookF },
 ]
 
 export const NavbarData = [
@@ -134,8 +131,8 @@ export const EducationData = [
 	{
 		title: 'Computer Science and Engineer (B.Tech)',
 		college_name: 'Indian Institute of Information Technology, Raichur',
-		icon: WhiteLogo,
-		iconBg: '#383E56',
+		icon: IIITRLogo,
+		iconBg: '#E6DEDD',
 		date: 'Dec 2020 - Present (Until May 2024)',
 		link: 'https://iiitr.ac.in/',
 	},
@@ -145,6 +142,14 @@ export const EducationData = [
 		icon: CollegeLogo,
 		iconBg: '#E6DEDD',
 		date: 'Jun 2018 - Mar 2020',
+		link: 'https://tirumalaedu.com/',
+	},
+	{
+		title: 'S.S.C',
+		college_name: 'Tirumala Educational Institutes',
+		icon: SchoolLogo,
+		iconBg: '#E6DEDD',
+		date: 'Jun 2017 - Mar 2018',
 		link: 'https://tirumalaedu.com/',
 	},
 ]

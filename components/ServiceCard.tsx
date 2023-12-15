@@ -27,7 +27,8 @@ const ServiceCardComponent = () => {
 						<div className='flex min-h-[280px] flex-col items-center justify-evenly rounded-2xl bg-tertiary px-12 py-5'>
 							<Image
 								src={icon}
-								alt='web-development'
+								alt={title}
+								priority={true}
 								className='h-16 w-16 object-contain'
 							/>
 

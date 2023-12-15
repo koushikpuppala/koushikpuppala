@@ -46,6 +46,7 @@ const EducationComponent = () => {
 									<Image
 										src={education.icon}
 										alt={education.college_name}
+										priority={true}
 										className='h-3/5 w-3/5 object-contain bg-blend-color-dodge'
 									/>
 									<span className='sr-only'>{education.college_name} Logo</span>

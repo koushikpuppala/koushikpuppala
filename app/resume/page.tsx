@@ -12,13 +12,15 @@ export const metadata: Metadata = {
 
 const ResumePage = () => {
 	return (
-		<iframe
-			className='h-full w-full'
-			src='/resume.pdf'
-			title='Resume'
-			allowTransparency={true}>
+		<>
 			<span className='sr-only'>My Resume</span>
-		</iframe>
+			<iframe
+				className='h-full w-full'
+				src='/resume.pdf'
+				title='Resume'
+				allowTransparency={true}
+			/>
+		</>
 	)
 }
 

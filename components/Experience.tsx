@@ -51,6 +51,7 @@ const ExperienceComponent = () => {
 									<Image
 										src={experience.icon}
 										alt={experience.company_name}
+										priority={true}
 										className='h-3/5 w-3/5 object-contain'
 									/>
 									<span className='sr-only'>{experience.company_name} Logo</span>
