@@ -1,4 +1,4 @@
-export const fadeIn = (direction: 'up' | 'down' | 'left' | 'right', delay: number) => {
+export const transition = (direction: 'up' | 'down' | 'left' | 'right', delay: number) => {
 	return {
 		hidden: {
 			y: direction === 'up' ? 80 : direction === 'down' ? -80 : 0,

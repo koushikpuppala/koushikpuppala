@@ -26,13 +26,8 @@
 		"Discord Bots"
 	],
 	"dependencies": {
-		"@emotion/react": "^11.11.1",
-		"@emotion/styled": "^11.11.0",
-		"@mui/icons-material": "^5.15.0",
-		"@mui/material": "^5.15.0",
 		"@sentry/nextjs": "^7.86.0",
 		"@vercel/analytics": "^1.1.1",
-		"aos": "^2.3.4",
 		"framer-motion": "^10.16.16",
 		"globby": "^14.0.0",
 		"next": "^14.0.4",
@@ -42,20 +37,16 @@
 		"react-dom": "^18.2.0",
 		"react-icons": "^4.12.0",
 		"react-tilt": "^1.0.2",
-		"react-toastify": "^9.1.3",
 		"react-vertical-timeline-component": "^3.6.0",
 		"sharp": "^0.33.0",
-		"typed.js": "^2.1.0",
-		"uuid": "^9.0.1"
+		"typed.js": "^2.1.0"
 	},
 	"devDependencies": {
-		"@types/aos": "^3.0.7",
 		"@types/node": "^20.10.4",
 		"@types/nodemailer": "^6.4.14",
 		"@types/react": "^18.2.43",
 		"@types/react-dom": "^18.2.17",
 		"@types/react-vertical-timeline-component": "^3",
-		"@types/uuid": "^9.0.7",
 		"autoprefixer": "^10.4.16",
 		"postcss": "^8.4.32",
 		"postcss-import": "^15.1.0",

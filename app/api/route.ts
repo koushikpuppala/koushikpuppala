@@ -28,7 +28,7 @@ export const POST = async (request: NextRequest) => {
 			},
 			{
 				status: 200,
-			}
+			},
 		)
 	} catch (error) {
 		throw (
@@ -41,7 +41,7 @@ export const POST = async (request: NextRequest) => {
 				},
 				{
 					status: 500,
-				}
+				},
 			)
 		)
 	}

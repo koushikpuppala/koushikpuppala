@@ -38,15 +38,15 @@ export const ServicesData = [
 
 export const ExperienceData = [
 	{
-		title: 'Full Stack Web Developer (Task Lead)',
+		title: 'Full Stack Web Developer (Team Lead & Mentor)',
 		company_name: 'Indian Institute of Information Technology, Raichur',
 		icon: IIITRLogo,
 		iconBg: '#E6DEDD',
 		date: 'Aug 2022 - Present',
 		link: 'http://iiitr.ac.in/',
 		points: [
+			'Led a team of developers in the achievement of project goals. Fostered collaboration, oversaw allocating responsibilities, and provided guidance and support to team members, resulting in increased productivity and a cohesive work environment.',
 			'Collaborated with faculty, staff, and student organizations to gather requirements and ensure the website met their needs.',
-			'Led a team of developers in the development of the website, fostered collaboration, achieved project objectives, and oversaw allocating responsibilities and providing guidance and support to team members, resulting in increased productivity and a cohesive work environment.',
 		],
 	},
 	{
@@ -57,9 +57,9 @@ export const ExperienceData = [
 		date: 'Jun 2023 - Jul 2023',
 		link: 'https://www.maplemonk.com/',
 		points: [
-			'Angular for the front end and React for Apache Superset, an open-source project, as dashboards.',
-			'There are a few features on the front end, such as a support system for both the client and admin versions and theme customization for the dashboard.',
-			'Added a few features to the Superset as well, such as a custom date picker and theme customization at the dashboard level and chart level in the dashboard.',
+			'Used Angular for the front end and React for Apache Superset, an open-source project.',
+			'Added features to the front end, such as a support system for both the client and admin versions and theme customization for the dashboard.',
+			'Added features to Superset, such as a custom date picker and theme customization at the dashboard and chart level.',
 		],
 	},
 	{
@@ -70,8 +70,7 @@ export const ExperienceData = [
 		date: 'Aug 2022 - Sep 2022',
 		link: 'https://www.tghtech.com/',
 		points: [
-			'React, Figma for the front end, Node.js for the backend, MongoDB for the database, and Firebase for push notifications.',
-			'There are a few features, such as the approval of leave requests by the requested reg: admin and respective manager, and a few push notifications in both the front and back end.',
+			'A leave management system with React, Figma, Node.js, MongoDB, and Firebase. Features include approval of leave requests by admins and managers and push notifications.',
 		],
 	},
 	{
@@ -82,9 +81,9 @@ export const ExperienceData = [
 		date: 'Jul 2022 - Jun 2023',
 		link: 'https://www.linkedin.com/company/developerstudentclubs/',
 		points: [
-			'Coordinated and supervised club activities, ensuring successful execution and impactful outcomes.',
-			'Led and managed the GDSC Club, a community about technology focused on fostering innovation and collaboration.',
-			"Coordinated with other student clubs and organizations on campus to collaborate on joint events, expanding the club's reach and promoting interdisciplinary collaboration.",
+			'Led and managed the GDSC Club, a technology community focused on innovation and collaboration.',
+			'Coordinated and supervised club activities to ensure successful execution and impactful outcomes.',
+			"Collaborated with other student clubs and organizations to expand the club's reach and promote interdisciplinary collaboration.",
 		],
 	},
 	{
@@ -107,9 +106,9 @@ export const ExperienceData = [
 		date: 'Sep 2021 - May 2022',
 		link: 'https://gdsc.community.dev/indian-institute-of-information-technology-raichur/',
 		points: [
-			'I am also a facilitator of the Android app development study jam by GDSC India.',
 			'Led the front-end development initiatives of the GDSC Club, overseeing a team and driving the successful execution of various projects.',
-			'Regularly stay updated with the latest trends and advancements in front-end development, sharing knowledge with the team, and organizing workshops or training sessions.',
+			'Stayed updated with the latest trends and advancements in front-end development, sharing knowledge with the team, and organizing workshops or training sessions.',
+			'Served as a facilitator for the Android app development study jam by GDSC India.',
 		],
 	},
 	{
@@ -120,9 +119,9 @@ export const ExperienceData = [
 		date: 'Dec 2020 - Aug 2022',
 		link: 'https://iiitr.ac.in/',
 		points: [
-			'Collaborated closely with a dedicated team to develop and maintain our college website, contributing to its success and functionality.',
-			"Adapted quickly to new technologies and tools in web development, continuously expanding my skill set and contributing to the team's technical proficiency.",
-			"Actively participated in team meetings, offering valuable insights and ideas for improving the website's design, functionality, and overall user engagement.",
+			'Collaborated closely with a dedicated team to develop and maintain the website, contributing to its success and functionality.',
+			'Provided valuable insights and ideas for improving website design, functionality, and user engagement.',
+			'Quickly learned new technologies and tools, expanded my skill set, and contributed to the team.',
 		],
 	},
 ]
@@ -146,10 +145,83 @@ export const EducationData = [
 	},
 	{
 		title: 'S.S.C',
-		college_name: 'Tirumala Educational Institutes',
+		college_name: 'Tirumala Proactive (EM) High School',
 		icon: SchoolLogo,
 		iconBg: '#E6DEDD',
 		date: 'Jun 2017 - Mar 2018',
 		link: 'https://tirumalaedu.com/',
+	},
+]
+
+export const ProjectsData = [
+	{
+		name: 'Car Rent',
+		description: [
+			'Web-based platform that allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.',
+		],
+		tags: [
+			{
+				name: 'react',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'mongodb',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
+	},
+	{
+		name: 'Car Rent',
+		description: [
+			'Web-based platform that allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.',
+		],
+		tags: [
+			{
+				name: 'react',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'mongodb',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
+	},
+	{
+		name: 'Car Rent',
+		description: [
+			'Web-based platform that &',
+			'allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.',
+		],
+		tags: [
+			{
+				name: 'react',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'mongodb',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
 	},
 ]

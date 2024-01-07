@@ -15,10 +15,9 @@ const ResumePage = () => {
 		<>
 			<span className='sr-only'>My Resume</span>
 			<iframe
-				className='h-full w-full'
+				className='h-screen w-screen'
 				src='/resume.pdf'
 				title='Resume'
-				allowTransparency={true}
 			/>
 		</>
 	)

@@ -1,37 +1,30 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
-import { fadeIn } from '@import/actions'
 import { NavbarData } from '@import/constant'
+import { MotionDiv, MotionNav } from '@import/components'
 
 const NavbarComponent = () => {
 	const pathname = usePathname()
 
 	return (
 		<>
-			<motion.nav
-				variants={fadeIn('up', 0.1)}
-				initial='hidden'
-				animate='show'
-				exit='hidden'
+			<MotionNav
+				direction='up'
+				delay={0.1}
 				className='fixed bottom-0 top-0 z-10 mt-auto flex h-max w-full flex-col items-center gap-y-4 lg:hidden'>
 				<LinkComponent pathname={pathname} />
-			</motion.nav>
-			<motion.nav
-				variants={fadeIn('left', 0.1)}
-				initial='hidden'
-				animate='show'
-				exit='hidden'
+			</MotionNav>
+			<MotionNav
+				direction='left'
+				delay={0.1}
 				className='fixed bottom-0 right-8 top-0 z-10 mt-auto hidden h-screen w-14 max-w-md flex-col items-center justify-center gap-y-4 lg:flex'>
 				<LinkComponent pathname={pathname} />
-			</motion.nav>
-			<motion.div
-				variants={fadeIn('up', 0.1)}
-				initial='hidden'
-				animate='show'
-				exit='hidden'
+			</MotionNav>
+			<MotionDiv
+				direction='up'
+				delay={0.1}
 				className='fixed bottom-14 left-0 right-0 z-10 p-2 text-center text-xs backdrop-blur-md lg:bottom-0 lg:p-4 lg:text-right lg:backdrop-blur-none'>
 				Github ❤️{' '}
 				<Link
@@ -41,7 +34,7 @@ const NavbarComponent = () => {
 					className='text-accent transition-all delay-100 ease-in-out hover:text-white/60'>
 					Source Code
 				</Link>
-			</motion.div>
+			</MotionDiv>
 		</>
 	)
 }

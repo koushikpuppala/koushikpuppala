@@ -2,15 +2,15 @@
 
 module.exports = {
 	tabWidth: 4,
-	printWidth: 120,
 	semi: false,
 	useTabs: true,
+	printWidth: 120,
 	singleQuote: true,
+	endOfLine: 'crlf',
+	arrowParens: 'avoid',
 	jsxSingleQuote: true,
 	bracketSameLine: true,
-	jsxBracketSameLine: true,
 	singleAttributePerLine: true,
-	arrowParens: 'avoid',
 	plugins: ['prettier-plugin-tailwindcss'],
 	overrides: [
 		{

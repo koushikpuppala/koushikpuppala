@@ -27,13 +27,16 @@ module.exports = {
 				primary: '#131424',
 				secondary: '#aaa6c3',
 				tertiary: '#151030',
+				accent: '#915EFF',
 				'black-100': '#100d25',
 				'black-200': '#090325',
 				'white-100': '#f3f3f3',
-				accent: '#915EFF',
 			},
 			backgroundImage: {
-				site: 'url("/herobg.webp")',
+				site: 'url("/site-bg.webp")',
+				'black-gradient': 'linear-gradient(to right, #434343, #000000)',
+				'violet-gradient': 'linear-gradient(-90deg, #804dee 0%, rgba(60, 51, 80, 0) 100%)',
+				'green-pink-gradient': 'linear-gradient(90.13deg, #00cea8 1.9%, #bf61ff 97.5%)',
 			},
 			animation: {
 				'spin-slow': 'spin 6s linear infinite',

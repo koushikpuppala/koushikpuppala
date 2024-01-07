@@ -11,21 +11,6 @@
 	}
 }
 
-.translate-z-0 {
-	transform: translateZ(0px);
-}
-.swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
-.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
-	background-color: #f13024;
-}
-
-.swiper-button-next:after,
-.swiper-button-prev:after,
-.swiper-button-next:after,
-.swiper-rtl .swiper-button-prev:after {
-	color: #f13024;
-}
-
 @layer base {
 	body {
 		@apply overflow-hidden leading-relaxed;
@@ -56,4 +41,38 @@
 	.textarea {
 		@apply h-[180px] w-full resize-none rounded-lg p-6 capitalize;
 	}
+}
+
+.hash-span {
+	margin-top: -100px;
+	padding-bottom: 100px;
+	display: block;
+}
+
+.orange-text-gradient {
+	background: linear-gradient(to top, #f12711, #f5af19);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.green-text-gradient {
+	background: linear-gradient(to top, #11998e, #38ef7d);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.blue-text-gradient {
+	background: linear-gradient(to top, #2f80ed, #56ccf2);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.pink-text-gradient {
+	background: linear-gradient(to top, #ec008c, #fc6767);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
