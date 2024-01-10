@@ -33,6 +33,7 @@ const PortfolioPage = () => {
 						reflects my ability to solve complex problems, work with different technologies, and manage
 						projects effectively.
 					</MotionP>
+
 					<ProjectCardComponent />
 				</div>
 			</div>

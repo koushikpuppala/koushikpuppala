@@ -37,6 +37,7 @@ const AboutPage = () => {
 						do. As I progress, I am excited to professionally apply my abilities and expertise as a
 						full-stack developer.
 					</MotionP>
+
 					<ServiceCardComponent />
 
 					<MotionDiv

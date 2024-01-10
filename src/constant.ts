@@ -155,9 +155,34 @@ export const EducationData = [
 
 export const ProjectsData = [
 	{
-		name: 'Car Rent',
+		title: 'Portfolio',
+		subtitle: 'Personal Website | First Project',
 		description: [
-			'Web-based platform that allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.',
+			'This was my first web development project. It started with basic HTML and progressed to advanced Nextjs code with Typescript. The project is open-source and available on GitHub.',
+		],
+		tags: [
+			{
+				name: 'nextjs',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'typescript',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
+	},
+	{
+		title: 'Musics_DJ',
+		subtitle: 'Discord Bot | Music Player',
+		description: [
+			'This is an open-source Discord bot using JavaScript and Discord JS. It has numerous music controls, including volume, play, pauses, and skip.',
 		],
 		tags: [
 			{
@@ -178,9 +203,10 @@ export const ProjectsData = [
 		website: 'https://github.com/',
 	},
 	{
-		name: 'Car Rent',
+		title: 'E.D.I.T.H Screen Recorder',
+		subtitle: 'Windows App | Electron',
 		description: [
-			'Web-based platform that allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.',
+			"Screen recording app built with JavaScript, HTML, and Electron. It can authenticate with Google Drive and automatically post the recorded video to the user's Google Drive.",
 		],
 		tags: [
 			{
@@ -201,10 +227,156 @@ export const ProjectsData = [
 		website: 'https://github.com/',
 	},
 	{
-		name: 'Car Rent',
+		title: 'Avenger Bot',
+		subtitle: 'Discord Bot | Multi-purpose',
 		description: [
-			'Web-based platform that &',
-			'allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.',
+			'Open-source Discord bot with 250 commands, 40 customizable options, extensive logging, advanced auto-moderation, custom playlist support, giveaways, reaction roles, and more.',
+		],
+		tags: [
+			{
+				name: 'react',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'mongodb',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
+	},
+	{
+		title: 'Avengers Assemble',
+		subtitle: 'Discord Bots website | Dashboard',
+		description: [
+			'The Discord bot website is built with EJS, Node.js, Express, and MongoDB. The dashboard allows for easy parameter changes. More than 250 commands are accessible with Discord Login.',
+		],
+		tags: [
+			{
+				name: 'react',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'mongodb',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
+	},
+	{
+		title: 'Official Website',
+		subtitle: 'Indian Institute of Information Technology, Raichur',
+		description: [
+			'This website contains all the information about admission, careers, faculty, research, facilities, etc.',
+		],
+		tags: [
+			{
+				name: 'react',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'mongodb',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
+	},
+	{
+		title: 'Council of Students Affairs Official Website',
+		subtitle: 'Indian Institute of Information Technology, Raichur',
+		description: [
+			'The website includes information on events, clubs, and other opportunities for students. It uses Jekyll as a frontend.',
+		],
+		tags: [
+			{
+				name: 'react',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'mongodb',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
+	},
+	{
+		title: 'SafeRideX',
+		subtitle: 'Blockchain-based Cab Booking System | Mini Project',
+		description: [
+			'The app was built with Next.js, Tailwind CSS, and MUI for the front end, and Node.js, Express, MongoDB, Third Web, and Firebase for the backend.',
+		],
+		tags: [
+			{
+				name: 'react',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'mongodb',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
+	},
+	{
+		title: 'Deep Learning Based Real-Time Traffic Sign Detection & Classification for Self-Driving Vehicles in Smart City',
+		subtitle: 'Research Project | Mini Project',
+		description: [
+			'Deep learning models using TensorFlow for detection and recognition achieve high accuracy and low latency.',
+			'Implemented using RCNN, CNN, and Point++ Network written in Python',
+		],
+		tags: [
+			{
+				name: 'react',
+				color: 'blue-text-gradient',
+			},
+			{
+				name: 'mongodb',
+				color: 'green-text-gradient',
+			},
+			{
+				name: 'tailwind',
+				color: 'pink-text-gradient',
+			},
+		],
+		image: CollegeLogo,
+		source_code_link: 'https://github.com/',
+		website: 'https://github.com/',
+	},
+	{
+		title: 'IIITR Chatbot',
+		subtitle: 'Natural Language Processing | Course Project',
+		description: [
+			'A chatbot based on the Feed Forward Neural Network was implemented using Python.',
+			'Designed to assist new students, faculty, and staff in navigating various aspects of college life.',
 		],
 		tags: [
 			{

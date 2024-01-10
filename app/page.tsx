@@ -19,7 +19,7 @@ const HomePage = () => {
 						delay={0.3}
 						className='mx-auto mb-2 max-w-sm lg:mx-0 lg:max-w-xl lg:text-justify'>
 						Full-stack developer by day, dreamer by night. I believe that technology has the power to make
-						the world a better place, and I'm committed to using my skills to make that happen.
+						the <TypesComponent once={true} />
 						{/* I'm always thinking about the next big thing. */}
 					</MotionP>
 					<MotionDiv
