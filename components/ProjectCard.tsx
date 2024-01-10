@@ -65,7 +65,7 @@ const ProjectCardComponent = () => {
 							<div className='mt-4 flex flex-wrap gap-2'>
 								{tags.map(tag => (
 									<p
-										key={`${name}-${tag.name}`}
+										key={`${title}-${tag.name}`}
 										className={`text-sm ${tag.color}`}>
 										#{tag.name}
 									</p>
