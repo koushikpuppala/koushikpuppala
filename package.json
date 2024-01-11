@@ -10,7 +10,7 @@
 		"start": "next start",
 		"watch": "tsc --watch",
 		"update": "ncu -u && yarn install",
-		"check:format": "prettier --write .",
+		"check:format": "prettier --check .",
 		"check:types": "tsc"
 	},
 	"repository": "https://github.com/koushikpuppala/koushikpuppala.git",
