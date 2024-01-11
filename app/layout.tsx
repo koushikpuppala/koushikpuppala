@@ -1,6 +1,6 @@
 import { RootLayoutProps } from '@import/interface'
 import { Sora } from 'next/font/google'
-import { Metadata } from 'next'
+import { Metadata, Viewport } from 'next'
 import { NavbarComponent, TransitionComponent } from '@import/components'
 import Script from 'next/script'
 
@@ -84,11 +84,11 @@ export const metadata: Metadata = {
 	manifest: '/main.webmanifest',
 	metadataBase: new URL(process.env.NEXT_PUBLIC_VERCEL_URL!),
 	robots: {
-		index: true,
+		index: false,
 		follow: true,
 		nocache: false,
 		googleBot: {
-			index: true,
+			index: false,
 			follow: true,
 			noimageindex: false,
 			'max-video-preview': -1,
@@ -98,7 +98,7 @@ export const metadata: Metadata = {
 	},
 }
 
-export const viewport = {
+export const viewport: Viewport = {
 	width: 'device-width',
 	initialScale: 1,
 	themeColor: '#915EFF5A',
