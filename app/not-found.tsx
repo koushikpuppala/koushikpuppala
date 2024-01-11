@@ -26,7 +26,7 @@ const NotFoundPage = () => {
 				<MotionP
 					direction='down'
 					delay={0.2}
-					className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl'>
+					className='text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white'>
 					Page not found
 				</MotionP>
 
