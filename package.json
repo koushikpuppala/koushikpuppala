@@ -9,7 +9,9 @@
 		"build": "next build",
 		"start": "next start",
 		"watch": "tsc --watch",
-		"update": "ncu -u && yarn install"
+		"update": "ncu -u && yarn install",
+		"check:format": "prettier --check .",
+		"check:types": "tsc"
 	},
 	"repository": "https://github.com/koushikpuppala/koushikpuppala.git",
 	"bugs": "https://github.com/koushikpuppala/koushikpuppala/issues",
