@@ -84,11 +84,11 @@ export const metadata: Metadata = {
 	manifest: '/main.webmanifest',
 	metadataBase: new URL(process.env.NEXT_PUBLIC_VERCEL_URL!),
 	robots: {
-		index: false,
+		index: true,
 		follow: true,
 		nocache: false,
 		googleBot: {
-			index: false,
+			index: true,
 			follow: true,
 			noimageindex: false,
 			'max-video-preview': -1,
