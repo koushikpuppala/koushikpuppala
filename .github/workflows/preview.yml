@@ -36,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build
-          path: .
+          path: .vercel
 
   deploy:
     runs-on: ubuntu-latest
@@ -65,10 +65,3 @@ jobs:
         id: deployment_url
       - name: Cleanup
         run: rm domain.txt
-      - name: Set Deployment URL
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            core.setOutput('deployment_url', '${{ steps.deployment_url.outputs.deployment_url }}')
-            core.setOutput('deployment_id', '${{ steps.deployment_id.outputs.deployment_id }}')
