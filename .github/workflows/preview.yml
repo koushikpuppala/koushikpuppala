@@ -30,10 +30,8 @@ jobs:
         run: npm install --global vercel@latest
       - name: Pull the environment variables
         run: vercel pull --yes ./ --environment=${{ env.NODE_ENV }} --git-branch=${{ github.ref_name }} --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Build Project Artifacts
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > domain.txt
+        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }} > domain.txt
       - name: Assign Deployment URL
         run: vercel alias --token=${{ secrets.VERCEL_TOKEN }} set `cat domain.txt` ${{ env.NODE_ENV }}.koushikpuppala.com
       - name: Save Deployment URL
