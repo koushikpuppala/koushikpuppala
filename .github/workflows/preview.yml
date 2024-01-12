@@ -26,10 +26,12 @@ jobs:
           node-version: '20.x'
       - name: Install dependencies
         run: yarn install
+      - name: Install Vercel Globally
+        run: npm install --global vercel@latest
       - name: Pull the environment variables
-        run: npx vercel pull --yes ./ --environment=${{ env.NODE_ENV }} --git-branch=${{ github.ref_name }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes ./ --environment=${{ env.NODE_ENV }} --git-branch=${{ github.ref_name }} --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
-        run: npx vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Upload Project Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -40,26 +42,21 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     permissions:
-      contents: read
+      contents: none
     environment:
       name: Preview
       url: ${{ steps.deployment_url.outputs.deployment_url }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Enable Corepack before setting Node
-        run: corepack enable
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
       - name: Download Project Artifacts
         uses: actions/download-artifact@v4
         with:
           name: build
+      - name: List Project Artifacts
+        run: ls -la
       - name: Deploy Project Artifacts to Vercel
-        run: npx vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > domain.txt
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > domain.txt
       - name: Assign Deployment URL
-        run: npx vercel alias --token=${{ secrets.VERCEL_TOKEN }} set `cat domain.txt` ${{ env.NODE_ENV }}.koushikpuppala.com
+        run: vercel alias --token=${{ secrets.VERCEL_TOKEN }} set `cat domain.txt` ${{ env.NODE_ENV }}.koushikpuppala.com
       - name: Save Deployment ID
         run: echo ::set-output name=deployment_id::`cat .vercel/project.json | jq -r '.id'`
         id: deployment_id
