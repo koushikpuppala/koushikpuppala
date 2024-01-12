@@ -36,32 +36,47 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build
-          path: .vercel
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
     needs: [build]
     permissions:
       contents: none
-    environment:
-      name: Preview
-      url: ${{ steps.deployment_url.outputs.deployment_url }}
     steps:
       - name: Download Project Artifacts
         uses: actions/download-artifact@v4
         with:
           name: build
-      - name: List Project Artifacts
-        run: ls -la && cd ../
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > domain.txt
       - name: Assign Deployment URL
         run: vercel alias --token=${{ secrets.VERCEL_TOKEN }} set `cat domain.txt` ${{ env.NODE_ENV }}.koushikpuppala.com
       - name: Save Deployment ID
-        run: echo ::set-output name=deployment_id::`cat .vercel/project.json | jq -r '.id'`
         id: deployment_id
+        run: echo "deployment_id=`cat .vercel/project.json | jq -r '.id'`" >> $GITHUB_OUTPUT
       - name: Save Deployment URL
-        run: echo ::set-output name=deployment_url::https://${{ env.NODE_ENV }}.koushikpuppala.com
         id: deployment_url
-      - name: Cleanup
+        run: echo "deployment_url=https://${{env.NODE_ENV}}.koushikpuppala.com" >> $GITHUB_OUTPUT
+      - name: Cleanup Domain File
         run: rm domain.txt
+    outputs:
+      deployment_id: ${{ steps.deployment_id.outputs.deployment_id }}
+      deployment_url: ${{ steps.deployment_url.outputs.deployment_url }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    permissions:
+      contents: none
+    environment:
+      name: Preview
+      url: ${{ needs.deploy.outputs.deployment_url }}
+    steps:
+      - name: Script for Deployment URL and ID
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            core.setOutput('deployment_url', '${{ needs.deploy.outputs.deployment_url }}')
+            core.setOutput('deployment_id', '${{ needs.deploy.outputs.deployment_id }}')
