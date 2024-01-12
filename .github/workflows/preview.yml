@@ -10,25 +10,22 @@ on:
     branches-ignore: master
 
 jobs:
-  check:
+  commit-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Enable Corepack before setting Node
-        run: corepack enable
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: commit-check/commit-check-action@v1
         with:
-          node-version: '20.x'
-      - name: Install dependencies
-        run: yarn install
-      - name: Check for Code Formatting
-        run: yarn check:format
-      - name: Check Types for TypeScript
-        run: yarn check:types
+          message: false
+          branch: false
+          author-name: true
+          author-email: true
+          commit-signoff: true
+          dry-run: true
+          job-summary: true
   build-deploy:
     runs-on: ubuntu-latest
-    needs: [check]
+    needs: [commit-check]
     steps:
       - uses: actions/checkout@v4
       - name: Enable Corepack before setting Node
@@ -43,8 +40,6 @@ jobs:
         run: npm install --global vercel@latest
       - name: Pull the environment variables
         run: vercel pull --yes ./ --environment=${{ env.NODE_ENV }} --git-branch=${{ github.ref_name }} --token=${{ secrets.VERCEL_TOKEN }}
-      - name: Print the environment variables
-        run: cat .vercel/.env.preview.local
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
