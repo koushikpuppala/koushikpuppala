@@ -32,7 +32,7 @@ export const POST = async (request: NextRequest) => {
 		)
 	} catch (error) {
 		throw (
-			new Error(error as any) &&
+			new Error('Error in sending the message. Please Try again Later.') &&
 			NextResponse.json(
 				{
 					message: 'Error in sending the message. Please Try again Later.',
