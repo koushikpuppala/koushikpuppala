@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,11 +29,11 @@ jobs:
       - name: Check for linting errors
         run: yarn lint
       - name: Check for type errors
-        run: yarn type
+        run: yarn types
 
   build:
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [check]
     steps:
       - uses: actions/checkout@v4
       - name: Enable Corepack before setting Node
