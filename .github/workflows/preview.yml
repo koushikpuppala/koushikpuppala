@@ -69,10 +69,10 @@ jobs:
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} > domain.txt
       - name: Assign Deployment URL
-        run: vercel alias --token=${{ secrets.VERCEL_TOKEN }} set `cat domain.txt` ${{ env.NODE_ENV }}.koushikpuppala.com
+        run: vercel alias --token=${{ secrets.VERCEL_TOKEN }} set `cat domain.txt` dev.koushikpuppala.com
       - name: Save Deployment URL
         id: deployment_url
-        run: echo "deployment_url=https://${{env.NODE_ENV}}.koushikpuppala.com" >> $GITHUB_OUTPUT
+        run: echo "deployment_url=https://dev.koushikpuppala.com" >> $GITHUB_OUTPUT
       - name: Cleanup Domain File
         run: rm domain.txt
     outputs:
