@@ -14,6 +14,22 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable Corepack before setting Node
+        run: corepack enable
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: Install dependencies
+        run: yarn install
+      - name: Check for linting errors
+        run: yarn lint
+      - name: Check for type errors
+        run: yarn type
   build:
     runs-on: ubuntu-latest
     steps:

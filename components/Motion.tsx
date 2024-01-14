@@ -1,6 +1,6 @@
 'use client'
 
-import { transition } from '@import/actions'
+import { transition } from '@import/constant'
 import { MotionComponentProps } from '@import/interface'
 import { motion } from 'framer-motion'
 
