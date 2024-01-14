@@ -9,7 +9,7 @@ import {
 	CollegeLogo,
 	TGHLogo,
 	SchoolLogo,
-} from '@import/images'
+} from '@import'
 import { FaLinkedinIn, FaGithub, FaDiscord, FaSkype } from 'react-icons/fa6'
 import { HiHome, HiUser, HiDocument, HiEnvelopeOpen, HiBriefcase, HiFolder } from 'react-icons/hi2'
 
