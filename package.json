@@ -8,7 +8,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "prettier .",
+		"lint": "prettier --check .",
 		"types": "tsc",
 		"update": "ncu -u && yarn install"
 	},
