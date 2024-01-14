@@ -10,7 +10,7 @@
 		"start": "next start",
 		"types": "tsc",
 		"lint": "prettier --check .",
-		"commit": "commitlint -E HUSKY_GIT_PARAMS"
+		"commit": "commitlint --edit"
 	},
 	"repository": "https://github.com/koushikpuppala/koushikpuppala.git",
 	"bugs": "https://github.com/koushikpuppala/koushikpuppala/issues",
@@ -60,12 +60,5 @@
 		"sass": "^1.69.7",
 		"tailwindcss": "^3.4.1",
 		"typescript": "^5.3.3"
-	},
-	"husky": {
-		"hooks": {
-			"pre-push": "yarn types",
-			"pre-commit": "yarn lint",
-			"commit-msg": "yarn commit"
-		}
 	}
 }
