@@ -1,3 +1,4 @@
+export { default as ContactComponent } from './Contact'
 export { default as EducationComponent } from './Education'
 export { default as ExperienceComponent } from './Experience'
 export { default as NavbarComponent } from './Navbar'

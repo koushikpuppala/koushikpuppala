@@ -9,7 +9,7 @@ import { MotionDiv } from '@import/components'
 
 const ProjectCardComponent = () => {
 	return (
-		<div className='mt-10 flex flex-wrap justify-center gap-10 px-4 pb-16 lg:justify-normal lg:px-6'>
+		<div className='mt-10 flex flex-wrap justify-center gap-10 px-4 pb-24 lg:justify-normal lg:px-6 lg:pb-12'>
 			{ProjectsData.map(({ title, subtitle, description, tags, image, source_code_link, website }, index) => (
 				<Tilt
 					key={index}
@@ -33,18 +33,20 @@ const ProjectCardComponent = () => {
 								<div className='card-img_hover absolute inset-0 m-3 flex justify-end gap-1'>
 									{source_code_link && (
 										<Link
-											href={source_code_link}
+											href={`https://koushikpuppala.com/github/${source_code_link}`}
 											target='_blank'
-											className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black-gradient'>
-											<FaGithub className='text-lg text-white' />
+											className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient'>
+											<span className='sr-only'>Source Code</span>
+											<FaGithub size={16} />
 										</Link>
 									)}
 									{website && (
 										<Link
 											href={website}
 											target='_blank'
-											className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-black-gradient'>
-											<FaGlobe className='text-lg text-white' />
+											className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient'>
+											<span className='sr-only'>Website</span>
+											<FaGlobe size={16} />
 										</Link>
 									)}
 								</div>

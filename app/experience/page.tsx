@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 const ExperiencePage = () => {
 	return (
 		<div className='h-full bg-primary/30'>
-			<div className='h-full w-full bg-gradient-to-r from-primary/10 via-black/30 to-black/10'>
-				<div className='container mx-auto h-full items-center overflow-y-auto py-6 text-left md:py-12 lg:py-24'>
+			<div className='h-full w-full overflow-y-auto bg-gradient-to-r from-primary/10 via-black/30 to-black/10'>
+				<div className='container mx-auto h-full items-center py-6 text-left md:py-12 lg:py-24'>
 					<MotionDiv
 						direction='right'
 						delay={0.2}
@@ -29,7 +29,7 @@ const ExperiencePage = () => {
 					<MotionDiv
 						direction='up'
 						delay={0.2}
-						className='mt-10 flex flex-col pb-16 lg:pb-0'>
+						className='mt-10 flex flex-col pb-24 lg:pb-12'>
 						<ExperienceComponent />
 					</MotionDiv>
 				</div>

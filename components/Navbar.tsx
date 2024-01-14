@@ -25,7 +25,7 @@ const NavbarComponent = () => {
 			<MotionDiv
 				direction='up'
 				delay={0.1}
-				className='fixed bottom-14 left-0 right-0 z-10 p-2 text-center text-xs backdrop-blur-md lg:bottom-0 lg:p-4 lg:text-right lg:backdrop-blur-none'>
+				className='sticky left-0 right-0 z-10 p-2 text-center text-xs backdrop-blur-md lg:fixed lg:bottom-0 lg:p-4 lg:text-right lg:backdrop-blur-none'>
 				Github ❤️{' '}
 				<Link
 					href='/github/koushikpuppala'

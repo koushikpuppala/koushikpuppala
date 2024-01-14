@@ -1,15 +1,4 @@
-import {
-	BackendImage,
-	IIITRLogo,
-	FrontendImage,
-	FullStackImage,
-	GDSCLogo,
-	MaplemonkLogo,
-	OpenSourceImage,
-	CollegeLogo,
-	TGHLogo,
-	SchoolLogo,
-} from '@import/images'
+import * as images from '@import/images'
 import { FaLinkedinIn, FaGithub, FaDiscord, FaSkype } from 'react-icons/fa6'
 import { HiHome, HiUser, HiDocument, HiEnvelopeOpen, HiBriefcase, HiFolder } from 'react-icons/hi2'
 
@@ -30,17 +19,17 @@ export const NavbarData = [
 ]
 
 export const ServicesData = [
-	{ title: 'Full Stack Developer', icon: FullStackImage },
-	{ title: 'Open Source Contributor', icon: OpenSourceImage },
-	{ title: 'Frontend Developer', icon: FrontendImage },
-	{ title: 'Backend Developer', icon: BackendImage },
+	{ title: 'Full Stack Developer', icon: images.FullStackImage },
+	{ title: 'Open Source Contributor', icon: images.OpenSourceImage },
+	{ title: 'Frontend Developer', icon: images.FrontendImage },
+	{ title: 'Backend Developer', icon: images.BackendImage },
 ]
 
 export const ExperienceData = [
 	{
 		title: 'Full Stack Web Developer (Team Lead & Mentor)',
 		company_name: 'Indian Institute of Information Technology, Raichur',
-		icon: IIITRLogo,
+		icon: images.IIITRLogo,
 		iconBg: '#E6DEDD',
 		date: 'Aug 2022 - Present',
 		link: 'http://iiitr.ac.in/',
@@ -52,7 +41,7 @@ export const ExperienceData = [
 	{
 		title: 'Frontend Developer Internship',
 		company_name: 'MapleMonk',
-		icon: MaplemonkLogo,
+		icon: images.MaplemonkLogo,
 		iconBg: '#383E56',
 		date: 'Jun 2023 - Jul 2023',
 		link: 'https://www.maplemonk.com/',
@@ -65,7 +54,7 @@ export const ExperienceData = [
 	{
 		title: 'Full Stack Developer Internship',
 		company_name: 'TGH Technologies',
-		icon: TGHLogo,
+		icon: images.TGHLogo,
 		iconBg: '#E6DEDD',
 		date: 'Aug 2022 - Sep 2022',
 		link: 'https://www.tghtech.com/',
@@ -76,7 +65,7 @@ export const ExperienceData = [
 	{
 		title: 'Google Developer Student Clubs Lead',
 		company_name: 'Google Developer Student Clubs',
-		icon: GDSCLogo,
+		icon: images.GDSCLogo,
 		iconBg: '#383E56',
 		date: 'Jul 2022 - Jun 2023',
 		link: 'https://www.linkedin.com/company/developerstudentclubs/',
@@ -89,7 +78,7 @@ export const ExperienceData = [
 	{
 		title: 'CodeSoc Club Coordinator',
 		company_name: 'Indian Institute of Information Technology, Raichur',
-		icon: IIITRLogo,
+		icon: images.IIITRLogo,
 		iconBg: '#E6DEDD',
 		date: 'Sep 2021 - Aug 2022',
 		link: 'https://iiitr.ac.in/',
@@ -101,7 +90,7 @@ export const ExperienceData = [
 	{
 		title: 'Frontend Lead (GDSC Core Team)',
 		company_name: 'Google Developer Student Clubs IIIT Raichur',
-		icon: GDSCLogo,
+		icon: images.GDSCLogo,
 		iconBg: '#383E56',
 		date: 'Sep 2021 - May 2022',
 		link: 'https://gdsc.community.dev/indian-institute-of-information-technology-raichur/',
@@ -114,7 +103,7 @@ export const ExperienceData = [
 	{
 		title: 'Full Stack Web Developer (Task Master)',
 		company_name: 'Indian Institute of Information Technology, Raichur',
-		icon: IIITRLogo,
+		icon: images.IIITRLogo,
 		iconBg: '#E6DEDD',
 		date: 'Dec 2020 - Aug 2022',
 		link: 'https://iiitr.ac.in/',
@@ -130,7 +119,7 @@ export const EducationData = [
 	{
 		title: 'Computer Science and Engineer (B.Tech)',
 		college_name: 'Indian Institute of Information Technology, Raichur',
-		icon: IIITRLogo,
+		icon: images.IIITRLogo,
 		iconBg: '#E6DEDD',
 		date: 'Dec 2020 - Present (Until May 2024)',
 		link: 'https://iiitr.ac.in/',
@@ -138,7 +127,7 @@ export const EducationData = [
 	{
 		title: 'M.P.C Intermediate',
 		college_name: 'Tirumala IIT & Medical Academy',
-		icon: CollegeLogo,
+		icon: images.CollegeLogo,
 		iconBg: '#E6DEDD',
 		date: 'Jun 2018 - Mar 2020',
 		link: 'https://tirumalaedu.com/',
@@ -146,7 +135,7 @@ export const EducationData = [
 	{
 		title: 'S.S.C',
 		college_name: 'Tirumala Proactive (EM) High School',
-		icon: SchoolLogo,
+		icon: images.SchoolLogo,
 		iconBg: '#E6DEDD',
 		date: 'Jun 2017 - Mar 2018',
 		link: 'https://tirumalaedu.com/',
@@ -174,9 +163,9 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.KoushikpuppalaProjectImage,
+		source_code_link: 'koushikpuppala',
+		website: 'https://koushikpuppala.com/',
 	},
 	{
 		title: 'Musics_DJ',
@@ -198,9 +187,8 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.MusicsDJProjectImage,
+		source_code_link: 'musics_dj',
 	},
 	{
 		title: 'E.D.I.T.H Screen Recorder',
@@ -222,9 +210,8 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.EdithProjectImage,
+		source_code_link: 'E.D.I.T.H-Screen-Recorder',
 	},
 	{
 		title: 'Avenger Bot',
@@ -246,9 +233,8 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.AvengerProjectImage,
+		source_code_link: 'avenger',
 	},
 	{
 		title: 'Avengers Assemble',
@@ -270,9 +256,8 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.AvengersAssembleProjectImage,
+		source_code_link: 'avenger',
 	},
 	{
 		title: 'Official Website',
@@ -294,9 +279,8 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.IIITRaichurProjectImage,
+		website: 'https://iiitr.ac.in',
 	},
 	{
 		title: 'Council of Students Affairs Official Website',
@@ -318,9 +302,8 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.StudentsIIITRProjectImage,
+		website: 'https://students.iiitr.ac.in',
 	},
 	{
 		title: 'SafeRideX',
@@ -342,9 +325,8 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.SafeRideXProjectImage,
+		source_code_link: 'SelfDrivingProject',
 	},
 	{
 		title: 'Deep Learning Based Real-Time Traffic Sign Detection & Classification for Self-Driving Vehicles in Smart City',
@@ -367,7 +349,7 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
+		image: images.CollegeLogo,
 		source_code_link: 'https://github.com/',
 		website: 'https://github.com/',
 	},
@@ -392,7 +374,7 @@ export const ProjectsData = [
 				color: 'pink-text-gradient',
 			},
 		],
-		image: CollegeLogo,
+		image: images.CollegeLogo,
 		source_code_link: 'https://github.com/',
 		website: 'https://github.com/',
 	},
