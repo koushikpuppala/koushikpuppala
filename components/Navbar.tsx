@@ -47,7 +47,7 @@ const LinkComponent = ({ pathname }: { pathname: string }) => {
 					<Link
 						className={`${
 							link.href === pathname && 'text-accent'
-						} group relative flex items-center transition-all duration-300 hover:text-accent`}
+						} group relative flex items-center transition-all duration-300 ease-in-out hover:text-accent ${pathname === '/resume' ? (link.href === pathname ? 'text-accent' : 'text-black dark:text-white') : ''}`}
 						href={link.href}
 						key={index}>
 						<span className='sr-only'>{link.name}</span>

@@ -29,7 +29,7 @@ const ExperiencePage = () => {
 					<MotionDiv
 						direction='up'
 						delay={0.2}
-						className='mt-10 flex flex-col pb-24 lg:pb-12'>
+						className='mt-10 flex flex-col pb-40 lg:pb-12'>
 						<ExperienceComponent />
 					</MotionDiv>
 				</div>

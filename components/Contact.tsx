@@ -167,10 +167,10 @@ const SubmitButton = ({ isDisabled, statusCode }: { isDisabled: boolean; statusC
 			type='submit'
 			disabled={isDisabled}
 			className={classNames(
-				'rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none placeholder:text-secondary',
+				'rounded-lg border-none bg-opacity-50 px-6 py-4 font-medium text-white outline-none placeholder:text-secondary',
 				{
-					'cursor-not-allowed bg-secondary bg-opacity-50': isDisabled,
-					'hover:bg-opacity-50': !isDisabled,
+					'cursor-not-allowed bg-secondary': isDisabled,
+					'bg-accent hover:bg-opacity-100': !isDisabled,
 				},
 			)}>
 			{pending ? 'Submitting...' : statusCode === 200 ? 'Submitted' : 'Submit'}

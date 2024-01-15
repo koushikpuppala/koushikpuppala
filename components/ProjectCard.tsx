@@ -9,7 +9,7 @@ import { MotionDiv } from '@import/components'
 
 const ProjectCardComponent = () => {
 	return (
-		<div className='mt-10 flex flex-wrap justify-center gap-10 px-4 pb-24 lg:justify-normal lg:px-6 lg:pb-12'>
+		<div className='mt-10 flex flex-wrap justify-center gap-10 px-4 pb-40 lg:justify-normal lg:px-6 lg:pb-12'>
 			{ProjectsData.map(({ title, subtitle, description, tags, image, source_code_link, website }, index) => (
 				<Tilt
 					key={index}
