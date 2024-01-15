@@ -6,6 +6,7 @@ import Script from 'next/script'
 
 import '@import/styles/globals.scss'
 import 'react-vertical-timeline-component/style.min.css'
+import classNames from 'classnames'
 
 export const metadata: Metadata = {
 	title: {
@@ -157,7 +158,11 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					})(window, document, 'script', 'dataLayer', 'GTM-KM9WPPS')`,
 				}}
 			/>
-			<body className={`page relative bg-site bg-cover bg-center bg-no-repeat text-white ${sora.className}`}>
+			<body
+				className={classNames(
+					sora.className,
+					'relative h-screen w-full overflow-hidden bg-site bg-cover bg-center bg-no-repeat text-white',
+				)}>
 				<noscript
 					dangerouslySetInnerHTML={{
 						__html: `<iframe src='https://www.googletagmanager.com/ns.html?id=GTM-KM9WPPS' height='0' width='0' style='display:none;visibility:hidden'></iframe>`,

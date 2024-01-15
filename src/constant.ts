@@ -142,10 +142,13 @@ export const EducationData = [
 	},
 ]
 
+export const ProjectTagsData = ['All', 'Web Development', 'Discord Bot', 'Windows App', 'Neural Network']
+
 export const ProjectsData = [
 	{
 		title: 'Portfolio',
 		subtitle: 'Personal Website | First Project',
+		tag: 'Web Development',
 		description: [
 			'This was my first web development project. It started with basic HTML and progressed to advanced Nextjs code with Typescript. The project is open-source and available on GitHub.',
 		],
@@ -170,20 +173,21 @@ export const ProjectsData = [
 	{
 		title: 'Musics_DJ',
 		subtitle: 'Discord Bot | Music Player',
+		tag: 'Discord Bot',
 		description: [
 			'This is an open-source Discord bot using JavaScript and Discord JS. It has numerous music controls, including volume, play, pauses, and skip.',
 		],
 		tags: [
 			{
-				name: 'react',
+				name: 'javascript',
 				color: 'blue-text-gradient',
 			},
 			{
-				name: 'mongodb',
+				name: 'express',
 				color: 'green-text-gradient',
 			},
 			{
-				name: 'tailwind',
+				name: 'discordjs',
 				color: 'pink-text-gradient',
 			},
 		],
@@ -193,20 +197,21 @@ export const ProjectsData = [
 	{
 		title: 'E.D.I.T.H Screen Recorder',
 		subtitle: 'Windows App | Electron',
+		tag: 'Windows App',
 		description: [
 			"Screen recording app built with JavaScript, HTML, and Electron. It can authenticate with Google Drive and automatically post the recorded video to the user's Google Drive.",
 		],
 		tags: [
 			{
-				name: 'react',
+				name: 'electron',
 				color: 'blue-text-gradient',
 			},
 			{
-				name: 'mongodb',
+				name: 'HTML',
 				color: 'green-text-gradient',
 			},
 			{
-				name: 'tailwind',
+				name: 'google-drive',
 				color: 'pink-text-gradient',
 			},
 		],
@@ -216,20 +221,21 @@ export const ProjectsData = [
 	{
 		title: 'Avenger Bot',
 		subtitle: 'Discord Bot | Multi-purpose',
+		tag: 'Discord Bot',
 		description: [
 			'Open-source Discord bot with 250 commands, 40 customizable options, extensive logging, advanced auto-moderation, custom playlist support, giveaways, reaction roles, and more.',
 		],
 		tags: [
 			{
-				name: 'react',
+				name: 'javascript',
 				color: 'blue-text-gradient',
 			},
 			{
-				name: 'mongodb',
+				name: 'express',
 				color: 'green-text-gradient',
 			},
 			{
-				name: 'tailwind',
+				name: 'discordjs',
 				color: 'pink-text-gradient',
 			},
 		],
@@ -239,12 +245,13 @@ export const ProjectsData = [
 	{
 		title: 'Avengers Assemble',
 		subtitle: 'Discord Bots website | Dashboard',
+		tag: 'Web Development',
 		description: [
 			'The Discord bot website is built with EJS, Node.js, Express, and MongoDB. The dashboard allows for easy parameter changes. More than 250 commands are accessible with Discord Login.',
 		],
 		tags: [
 			{
-				name: 'react',
+				name: 'EJS',
 				color: 'blue-text-gradient',
 			},
 			{
@@ -252,7 +259,7 @@ export const ProjectsData = [
 				color: 'green-text-gradient',
 			},
 			{
-				name: 'tailwind',
+				name: 'express',
 				color: 'pink-text-gradient',
 			},
 		],
@@ -262,20 +269,21 @@ export const ProjectsData = [
 	{
 		title: 'Official Website',
 		subtitle: 'Indian Institute of Information Technology, Raichur',
+		tag: 'Web Development',
 		description: [
 			'This website contains all the information about admission, careers, faculty, research, facilities, etc.',
 		],
 		tags: [
 			{
-				name: 'react',
+				name: 'jekyll',
 				color: 'blue-text-gradient',
 			},
 			{
-				name: 'mongodb',
+				name: 'github',
 				color: 'green-text-gradient',
 			},
 			{
-				name: 'tailwind',
+				name: 'vercel',
 				color: 'pink-text-gradient',
 			},
 		],
@@ -285,20 +293,21 @@ export const ProjectsData = [
 	{
 		title: 'Council of Students Affairs Official Website',
 		subtitle: 'Indian Institute of Information Technology, Raichur',
+		tag: 'Web Development',
 		description: [
 			'The website includes information on events, clubs, and other opportunities for students. It uses Jekyll as a frontend.',
 		],
 		tags: [
 			{
-				name: 'react',
+				name: 'jekyll',
 				color: 'blue-text-gradient',
 			},
 			{
-				name: 'mongodb',
+				name: 'github',
 				color: 'green-text-gradient',
 			},
 			{
-				name: 'tailwind',
+				name: 'vercel',
 				color: 'pink-text-gradient',
 			},
 		],
@@ -308,12 +317,13 @@ export const ProjectsData = [
 	{
 		title: 'SafeRideX',
 		subtitle: 'Blockchain-based Cab Booking System | Mini Project',
+		tag: 'Web Development',
 		description: [
 			'The app was built with Next.js, Tailwind CSS, and MUI for the front end, and Node.js, Express, MongoDB, Third Web, and Firebase for the backend.',
 		],
 		tags: [
 			{
-				name: 'react',
+				name: 'nextjs',
 				color: 'blue-text-gradient',
 			},
 			{
@@ -321,62 +331,59 @@ export const ProjectsData = [
 				color: 'green-text-gradient',
 			},
 			{
-				name: 'tailwind',
+				name: 'third web',
 				color: 'pink-text-gradient',
 			},
 		],
 		image: images.SafeRideXProjectImage,
-		source_code_link: 'SelfDrivingProject',
 	},
 	{
 		title: 'Deep Learning Based Real-Time Traffic Sign Detection & Classification for Self-Driving Vehicles in Smart City',
 		subtitle: 'Research Project | Mini Project',
+		tag: 'Neural Network',
 		description: [
 			'Deep learning models using TensorFlow for detection and recognition achieve high accuracy and low latency.',
 			'Implemented using RCNN, CNN, and Point++ Network written in Python',
 		],
 		tags: [
 			{
-				name: 'react',
+				name: 'convolutional neural network',
 				color: 'blue-text-gradient',
 			},
 			{
-				name: 'mongodb',
-				color: 'green-text-gradient',
+				name: 'python',
+				color: 'green-text-gradient hidden',
 			},
 			{
-				name: 'tailwind',
-				color: 'pink-text-gradient',
+				name: 'tensorflow',
+				color: 'pink-text-gradient hidden',
 			},
 		],
-		image: images.CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.NeuralNetworkProjectImage,
 	},
 	{
 		title: 'IIITR Chatbot',
 		subtitle: 'Natural Language Processing | Course Project',
+		tag: 'Neural Network',
 		description: [
 			'A chatbot based on the Feed Forward Neural Network was implemented using Python.',
 			'Designed to assist new students, faculty, and staff in navigating various aspects of college life.',
 		],
 		tags: [
 			{
-				name: 'react',
+				name: 'feed forward neural network',
 				color: 'blue-text-gradient',
 			},
 			{
-				name: 'mongodb',
-				color: 'green-text-gradient',
+				name: 'python',
+				color: 'green-text-gradient hidden',
 			},
 			{
-				name: 'tailwind',
-				color: 'pink-text-gradient',
+				name: 'tensorflow',
+				color: 'pink-text-gradient hidden',
 			},
 		],
-		image: images.CollegeLogo,
-		source_code_link: 'https://github.com/',
-		website: 'https://github.com/',
+		image: images.NeuralNetworkProjectImage,
 	},
 ]
 

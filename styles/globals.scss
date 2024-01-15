@@ -15,64 +15,43 @@
 	body {
 		@apply overflow-hidden leading-relaxed;
 	}
-	.page {
-		@apply h-screen w-full overflow-hidden;
-	}
-	.h1 {
+	h1 {
 		@apply text-3xl font-semibold leading-tight md:text-5xl;
 	}
-	.h2 {
+	h2 {
 		@apply text-2xl font-semibold leading-tight md:text-4xl;
 	}
 	p {
 		@apply font-light leading-relaxed text-white/60;
 	}
-	.btn,
-	.input {
-		@apply h-[52px];
+}
+
+@layer utilities {
+	.orange-text-gradient {
+		background: linear-gradient(to top, #f12711, #f5af19);
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
-	.input {
-		@apply h-[52px] w-full rounded-lg pl-6 capitalize;
+
+	.green-text-gradient {
+		background: linear-gradient(to top, #11998e, #38ef7d);
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
-	.input,
-	.textarea {
-		@apply border border-white/20 bg-transparent outline-none placeholder:font-light placeholder:text-white/30 focus:ring-1 focus:ring-accent;
+
+	.blue-text-gradient {
+		background: linear-gradient(to top, #2f80ed, #56ccf2);
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
-	.textarea {
-		@apply h-[180px] w-full resize-none rounded-lg p-6 capitalize;
+
+	.pink-text-gradient {
+		background: linear-gradient(to top, #ec008c, #fc6767);
+		background-clip: text;
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
-}
-
-.hash-span {
-	margin-top: -100px;
-	padding-bottom: 100px;
-	display: block;
-}
-
-.orange-text-gradient {
-	background: linear-gradient(to top, #f12711, #f5af19);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.green-text-gradient {
-	background: linear-gradient(to top, #11998e, #38ef7d);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.blue-text-gradient {
-	background: linear-gradient(to top, #2f80ed, #56ccf2);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.pink-text-gradient {
-	background: linear-gradient(to top, #ec008c, #fc6767);
-	background-clip: text;
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
 }

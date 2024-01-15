@@ -27,10 +27,10 @@
 		"Discord Bots"
 	],
 	"dependencies": {
+		"@headlessui/react": "^1.7.18",
 		"@sentry/nextjs": "^7.93.0",
 		"@vercel/analytics": "^1.1.1",
 		"classnames": "^2.5.1",
-		"formik": "^2.4.5",
 		"framer-motion": "^10.18.0",
 		"globby": "^14.0.0",
 		"next": "^14.0.4",
@@ -48,9 +48,9 @@
 	"devDependencies": {
 		"@commitlint/cli": "^18.4.4",
 		"@commitlint/config-conventional": "^18.4.4",
-		"@types/node": "^20.11.0",
+		"@types/node": "^20.11.2",
 		"@types/nodemailer": "^6.4.14",
-		"@types/react": "^18.2.47",
+		"@types/react": "^18.2.48",
 		"@types/react-dom": "^18.2.18",
 		"@types/react-vertical-timeline-component": "^3",
 		"autoprefixer": "^10.4.16",

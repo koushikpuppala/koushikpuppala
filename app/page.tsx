@@ -10,7 +10,7 @@ const HomePage = () => {
 					<MotionH1
 						direction='down'
 						delay={0.2}
-						className='h1 mb-4 text-accent'>
+						className='mb-4 text-accent'>
 						Koushik Puppala <span className='font-light leading-relaxed text-white/60'>|</span>{' '}
 						<TypesComponent />
 					</MotionH1>

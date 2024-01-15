@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { NavbarData } from '@import/constant'
 import { MotionDiv, MotionNav } from '@import/components'
+import classNames from 'classnames'
 
 const NavbarComponent = () => {
 	const pathname = usePathname()
@@ -45,9 +46,13 @@ const LinkComponent = ({ pathname }: { pathname: string }) => {
 			{NavbarData.map((link, index) => {
 				return (
 					<Link
-						className={`${
-							link.href === pathname && 'text-accent'
-						} group relative flex items-center transition-all duration-300 ease-in-out hover:text-accent ${pathname === '/resume' ? (link.href === pathname ? 'text-accent' : 'text-black dark:text-white') : ''}`}
+						className={classNames(
+							{
+								'text-accent': link.href === pathname,
+								'text-black dark:text-white': link.href !== pathname && pathname === '/resume',
+							},
+							'group relative flex items-center transition-all duration-300 ease-in-out hover:text-accent',
+						)}
 						href={link.href}
 						key={index}>
 						<span className='sr-only'>{link.name}</span>

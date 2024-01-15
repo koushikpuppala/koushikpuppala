@@ -18,7 +18,7 @@ const ResumePage = () => {
 			allowTransparency={true}
 			loading='lazy'
 			title='Resume'>
-			Loading…
+			<span className='sr-only'>Koushikpuppala Resume</span>
 		</iframe>
 	)
 }

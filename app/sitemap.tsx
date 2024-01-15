@@ -23,6 +23,7 @@ const SitemapPage = async (): Promise<MetadataRoute.Sitemap> => {
 								: priority === 0
 									? 'yearly'
 									: 'never'
+
 		const lastModified =
 			priority === 1
 				? new Date().toLocaleString()

@@ -25,17 +25,10 @@ export const handleSubmit = async (
 		},
 	})
 
-	if (!name || !email || !subject || !message) {
+	if (prevState.statusCode === 200 || prevState.statusCode === 400) {
 		return {
 			statusCode: 400,
-			statusMessage: 'Please fill out all the fields.',
-		}
-	}
-
-	if (prevState.statusCode === 200 || prevState.statusMessage === 'You have already submitted a message.') {
-		return {
-			statusCode: 400,
-			statusMessage: 'You have already submitted a message.',
+			statusMessage: 'You have already submitted a message. Please wait for a response. Thank you!',
 		}
 	}
 
