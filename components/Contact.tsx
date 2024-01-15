@@ -4,7 +4,6 @@ import { handleSubmit } from '@import/actions'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
-import { object, string } from 'yup'
 
 const ContactComponent = () => {
 	const [isDisabled, setIsDisabled] = useState(true)
@@ -37,7 +36,7 @@ const ContactComponent = () => {
 	}, [form])
 
 	useEffect(() => {
-		if (state.statusCode === 200) {
+		if (state.statusCode === 200 || state.statusCode === 400) {
 			setForm({
 				value: {
 					name: '',
@@ -55,22 +54,49 @@ const ContactComponent = () => {
 		}
 	}, [state])
 
-	const validationSchema = object().shape({
-		name: string().required('Name is required').min(3, 'Name must be at least 3 characters'),
-		email: string()
-			.required('Email is required')
-			.matches(new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/), 'Email is invalid'),
-		subject: string().required('Subject is required').min(20, 'Subject must be at least 20 characters'),
-		message: string().required('Message is required').min(50, 'Message must be at least 50 characters'),
-	})
-
 	const handleChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target
 
-		const error = await validationSchema
-			.validateAt(name, { [name]: value })
-			.then(() => '')
-			.catch(err => err.message as string)
+		let error = ''
+
+		switch (name) {
+			case 'name':
+				if (value.length > 0) {
+					if (value.length < 3) {
+						error = 'Name must be at least 3 characters'
+					}
+				} else {
+					error = 'Name is required'
+				}
+				break
+			case 'email':
+				if (value.length > 0) {
+					if (!value.match(new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/))) {
+						error = 'Email is invalid'
+					}
+				} else {
+					error = 'Email is required'
+				}
+				break
+			case 'subject':
+				if (value.length > 0) {
+					if (value.length < 20) {
+						error = 'Subject must be at least 20 characters'
+					}
+				} else {
+					error = 'Subject is required'
+				}
+				break
+			case 'message':
+				if (value.length > 0) {
+					if (value.length < 50) {
+						error = 'Message must be at least 50 characters'
+					}
+				} else {
+					error = 'Message is required'
+				}
+				break
+		}
 
 		setForm({
 			value: { ...form.value, [name]: value },

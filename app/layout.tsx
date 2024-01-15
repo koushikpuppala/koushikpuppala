@@ -1,12 +1,12 @@
-import { RootLayoutProps } from '@import/interface'
+import Script from 'next/script'
+import classNames from 'classnames'
 import { Sora } from 'next/font/google'
 import { Metadata, Viewport } from 'next'
+import { RootLayoutProps } from '@import/interface'
 import { NavbarComponent, TransitionComponent } from '@import/components'
-import Script from 'next/script'
 
 import '@import/styles/globals.scss'
 import 'react-vertical-timeline-component/style.min.css'
-import classNames from 'classnames'
 
 export const metadata: Metadata = {
 	title: {
