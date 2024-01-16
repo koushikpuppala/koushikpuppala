@@ -117,7 +117,7 @@ const ProjectCardComponent = () => {
 					project =>
 						// selectedTag === 'All' ? true : project.tags.map(tag => tag.name).includes(selectedTag),
 						selectedTag === project.tag || selectedTag === 'All',
-				).map(({ title, subtitle, description, tags, image, source_code_link, website }, index) => (
+				).map(({ title, subtitle, description, tags, image, source_code_link, website, external }, index) => (
 					<Tilt
 						key={index}
 						options={{
@@ -140,7 +140,11 @@ const ProjectCardComponent = () => {
 									<div className='card-img_hover absolute inset-0 m-3 flex justify-end gap-1'>
 										{source_code_link && (
 											<Link
-												href={`https://koushikpuppala.com/github/${source_code_link}`}
+												href={
+													external
+														? source_code_link
+														: `https://koushikpuppala.com/github/${source_code_link}`
+												}
 												target='_blank'
 												className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient'>
 												<span className='sr-only'>Source Code</span>

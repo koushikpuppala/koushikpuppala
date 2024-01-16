@@ -142,7 +142,14 @@ export const EducationData = [
 	},
 ]
 
-export const ProjectTagsData = ['All', 'Web Development', 'Discord Bot', 'Windows App', 'Neural Network']
+export const ProjectTagsData = [
+	'All',
+	'Web Development',
+	'Discord Bot',
+	'Windows App',
+	'Neural Network',
+	'Open Source Project',
+]
 
 export const ProjectsData = [
 	{
@@ -384,6 +391,24 @@ export const ProjectsData = [
 			},
 		],
 		image: images.NeuralNetworkProjectImage,
+	},
+	{
+		title: 'Project India 2021',
+		subtitle: 'Project India 2021 Official GitHub Organization',
+		tag: 'Open Source Project',
+		description: [
+			'India has 50k operational HWCs, and by 2022, 155k SHC, PHC, and UPHC will be converted into HWCs.',
+			'A new technology is being developed to connect HWCs, and an app is being developed to let users find the closest HWCs and get verified information.',
+		],
+		tags: [
+			{
+				name: 'open source project',
+				color: 'blue-text-gradient',
+			},
+		],
+		source_code_link: 'https://github.com/Project-India-21',
+		external: true,
+		image: images.Project2021ProjectImage,
 	},
 ]
 
