@@ -20,14 +20,9 @@ const ServiceCardComponent = () => {
 					<MotionDiv
 						direction='right'
 						delay={index * 0.4}
-						className='shadow-card w-full rounded-2xl bg-green-pink-gradient p-px'>
+						className='w-full rounded-2xl bg-green-pink-gradient p-px'>
 						<div className='flex min-h-[280px] flex-col items-center justify-evenly rounded-2xl bg-tertiary px-12 py-5'>
-							<Image
-								src={icon}
-								alt={title}
-								priority={true}
-								className='h-16 w-16 object-contain'
-							/>
+							<Image src={icon} alt={title} priority={true} className='h-16 w-16 object-contain' />
 
 							<h3 className='text-center text-lg font-bold text-white'>{title}</h3>
 						</div>

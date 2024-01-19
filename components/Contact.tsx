@@ -106,9 +106,7 @@ const ContactComponent = () => {
 
 	return (
 		<div className='h-full w-full rounded-2xl bg-black-100/60 p-8'>
-			<form
-				action={formActions}
-				className='flex flex-col gap-8'>
+			<form action={formActions} className='flex flex-col gap-8'>
 				<label className='flex flex-col'>
 					<span className='mb-4 font-medium text-white'>
 						Your Name <span className='text-red-500'>*</span>
@@ -165,10 +163,7 @@ const ContactComponent = () => {
 					/>
 					{form.error.message && <span className='mt-2 px-6 text-red-500'>{form.error.message}</span>}
 				</label>
-				<SubmitButton
-					isDisabled={isDisabled}
-					statusCode={state.statusCode}
-				/>
+				<SubmitButton isDisabled={isDisabled} statusCode={state.statusCode} />
 				{state.statusCode === 500 && <span className='mt-2 px-6 text-red-500'>{state.statusMessage}</span>}
 				{state.statusCode === 400 && <span className='mt-2 px-6 text-yellow-500'>{state.statusMessage}</span>}
 				{state.statusCode === 200 && <span className='mt-2 px-6 text-green-500'>{state.statusMessage}</span>}

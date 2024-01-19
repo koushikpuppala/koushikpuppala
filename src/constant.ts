@@ -1,4 +1,5 @@
 import * as images from '@import/images'
+import { EducationDataProps, ExperienceDataProps, ProjectDataProps } from '@import/interface'
 import { FaLinkedinIn, FaGithub, FaDiscord, FaSkype } from 'react-icons/fa6'
 import { HiHome, HiUser, HiDocument, HiEnvelopeOpen, HiBriefcase, HiFolder } from 'react-icons/hi2'
 
@@ -25,120 +26,130 @@ export const ServicesData = [
 	{ title: 'Backend Developer', icon: images.BackendImage },
 ]
 
-export const ExperienceData = [
+export const EducationData: EducationDataProps[] = [
 	{
-		title: 'Full Stack Web Developer (Team Lead & Mentor)',
-		company_name: 'Indian Institute of Information Technology, Raichur',
-		icon: images.IIITRLogo,
-		iconBg: '#E6DEDD',
-		date: 'Aug 2022 - Present',
-		link: 'http://iiitr.ac.in/',
-		points: [
+		degree: 'Computer Science Engineer (B.Tech)',
+		college: 'Indian Institute of Information Technology, Raichur',
+		startDate: 'December 2020',
+		endDate: 'Present (Until May 2024)',
+		image: images.IIITRLogo,
+		imageBackground: '#E6DEDD',
+		website: 'https://iiitr.ac.in/',
+	},
+	{
+		degree: 'M.P.C Intermediate',
+		college: 'Tirumala IIT & Medical Academy',
+		startDate: 'June 2018',
+		endDate: 'March 2020',
+		image: images.CollegeLogo,
+		imageBackground: '#E6DEDD',
+		website: 'https://tirumalaedu.com/',
+	},
+	{
+		degree: 'S.S.C',
+		college: 'Tirumala Proactive (EM) High School',
+		startDate: 'June 2017',
+		endDate: 'March 2018',
+		image: images.SchoolLogo,
+		imageBackground: '#E6DEDD',
+		website: 'https://tirumalaedu.com/',
+	},
+]
+
+export const ExperienceData: ExperienceDataProps[] = [
+	{
+		role: 'Full Stack Web Developer (Team Lead & Mentor)',
+		company: 'Indian Institute of Information Technology, Raichur',
+		startDate: 'August 2022',
+		endDate: 'Present',
+		descriptions: [
 			'Led a team of developers in the achievement of project goals. Fostered collaboration, oversaw allocating responsibilities, and provided guidance and support to team members, resulting in increased productivity and a cohesive work environment.',
 			'Collaborated with faculty, staff, and student organizations to gather requirements and ensure the website met their needs.',
 		],
+		image: images.IIITRLogo,
+		imageBackground: '#E6DEDD',
+		website: 'http://iiitr.ac.in/',
 	},
 	{
-		title: 'Frontend Developer Internship',
-		company_name: 'MapleMonk',
-		icon: images.MaplemonkLogo,
-		iconBg: '#383E56',
-		date: 'Jun 2023 - Jul 2023',
-		link: 'https://www.maplemonk.com/',
-		points: [
+		role: 'Frontend Developer Internship',
+		company: 'MapleMonk',
+		startDate: 'June 2023',
+		endDate: 'July 2023',
+		descriptions: [
 			'Used Angular for the front end and React for Apache Superset, an open-source project.',
 			'Added features to the front end, such as a support system for both the client and admin versions and theme customization for the dashboard.',
 			'Added features to Superset, such as a custom date picker and theme customization at the dashboard and chart level.',
 		],
+		image: images.MaplemonkLogo,
+		imageBackground: '#383E56',
+		website: 'https://www.maplemonk.com/',
 	},
 	{
-		title: 'Full Stack Developer Internship',
-		company_name: 'TGH Technologies',
-		icon: images.TGHLogo,
-		iconBg: '#E6DEDD',
-		date: 'Aug 2022 - Sep 2022',
-		link: 'https://www.tghtech.com/',
-		points: [
+		role: 'Full Stack Developer Internship',
+		company: 'TGH Technologies',
+		startDate: 'August 2022',
+		endDate: 'September 2022',
+		descriptions: [
 			'A leave management system with React, Figma, Node.js, MongoDB, and Firebase. Features include approval of leave requests by admins and managers and push notifications.',
 		],
+		image: images.TGHLogo,
+		imageBackground: '#E6DEDD',
+		website: 'https://www.tghtech.com/',
 	},
 	{
-		title: 'Google Developer Student Clubs Lead',
-		company_name: 'Google Developer Student Clubs',
-		icon: images.GDSCLogo,
-		iconBg: '#383E56',
-		date: 'Jul 2022 - Jun 2023',
-		link: 'https://www.linkedin.com/company/developerstudentclubs/',
-		points: [
+		role: 'Google Developer Student Clubs Lead',
+		company: 'Google Developer Student Clubs',
+		startDate: 'July 2022',
+		endDate: 'June 2023',
+		descriptions: [
 			'Led and managed the GDSC Club, a technology community focused on innovation and collaboration.',
 			'Coordinated and supervised club activities to ensure successful execution and impactful outcomes.',
 			"Collaborated with other student clubs and organizations to expand the club's reach and promote interdisciplinary collaboration.",
 		],
+		image: images.GDSCLogo,
+		imageBackground: '#383E56',
+		website: 'https://developers.google.com/community/gdsc',
 	},
 	{
-		title: 'CodeSoc Club Coordinator',
-		company_name: 'Indian Institute of Information Technology, Raichur',
-		icon: images.IIITRLogo,
-		iconBg: '#E6DEDD',
-		date: 'Sep 2021 - Aug 2022',
-		link: 'https://iiitr.ac.in/',
-		points: [
+		role: 'CodeSoc Club Coordinator',
+		company: 'Indian Institute of Information Technology, Raichur',
+		startDate: 'September 2021',
+		endDate: 'August 2022',
+		descriptions: [
 			'Coordinated and managed the activities of the Codesoc Club, a vibrant community dedicated to promoting coding culture.',
 			"Organized regular coding workshops and coding competitions, providing valuable learning opportunities for club members. In addition, I managed the club's budget, allocating resources effectively to support club initiatives and events.",
 		],
+		image: images.IIITRLogo,
+		imageBackground: '#E6DEDD',
+		website: 'https://iiitr.ac.in/',
 	},
 	{
-		title: 'Frontend Lead (GDSC Core Team)',
-		company_name: 'Google Developer Student Clubs IIIT Raichur',
-		icon: images.GDSCLogo,
-		iconBg: '#383E56',
-		date: 'Sep 2021 - May 2022',
-		link: 'https://gdsc.community.dev/indian-institute-of-information-technology-raichur/',
-		points: [
+		role: 'Frontend Lead (GDSC Core Team)',
+		company: 'Google Developer Student Clubs IIIT Raichur',
+		startDate: 'September 2021',
+		endDate: 'May 2022',
+		descriptions: [
 			'Led the front-end development initiatives of the GDSC Club, overseeing a team and driving the successful execution of various projects.',
 			'Stayed updated with the latest trends and advancements in front-end development, sharing knowledge with the team, and organizing workshops or training sessions.',
 			'Served as a facilitator for the Android app development study jam by GDSC India.',
 		],
+		image: images.GDSCLogo,
+		imageBackground: '#383E56',
+		website: 'https://gdsc.community.dev/indian-institute-of-information-technology-raichur/',
 	},
 	{
-		title: 'Full Stack Web Developer (Task Master)',
-		company_name: 'Indian Institute of Information Technology, Raichur',
-		icon: images.IIITRLogo,
-		iconBg: '#E6DEDD',
-		date: 'Dec 2020 - Aug 2022',
-		link: 'https://iiitr.ac.in/',
-		points: [
+		role: 'Full Stack Web Developer (Task Master)',
+		company: 'Indian Institute of Information Technology, Raichur',
+		startDate: 'December 2020',
+		endDate: 'August 2022',
+		descriptions: [
 			'Collaborated closely with a dedicated team to develop and maintain the website, contributing to its success and functionality.',
 			'Provided valuable insights and ideas for improving website design, functionality, and user engagement.',
 			'Quickly learned new technologies and tools, expanded my skill set, and contributed to the team.',
 		],
-	},
-]
-
-export const EducationData = [
-	{
-		title: 'Computer Science and Engineer (B.Tech)',
-		college_name: 'Indian Institute of Information Technology, Raichur',
-		icon: images.IIITRLogo,
-		iconBg: '#E6DEDD',
-		date: 'Dec 2020 - Present (Until May 2024)',
-		link: 'https://iiitr.ac.in/',
-	},
-	{
-		title: 'M.P.C Intermediate',
-		college_name: 'Tirumala IIT & Medical Academy',
-		icon: images.CollegeLogo,
-		iconBg: '#E6DEDD',
-		date: 'Jun 2018 - Mar 2020',
-		link: 'https://tirumalaedu.com/',
-	},
-	{
-		title: 'S.S.C',
-		college_name: 'Tirumala Proactive (EM) High School',
-		icon: images.SchoolLogo,
-		iconBg: '#E6DEDD',
-		date: 'Jun 2017 - Mar 2018',
-		link: 'https://tirumalaedu.com/',
+		image: images.IIITRLogo,
+		imageBackground: '#E6DEDD',
+		website: 'https://iiitr.ac.in/',
 	},
 ]
 
@@ -151,12 +162,12 @@ export const ProjectTagsData = [
 	'Open Source Project',
 ]
 
-export const ProjectsData = [
+export const ProjectsData: ProjectDataProps[] = [
 	{
 		title: 'Portfolio',
 		subtitle: 'Personal Website | First Project',
 		tag: 'Web Development',
-		description: [
+		descriptions: [
 			'This was my first web development project. It started with basic HTML and progressed to advanced Nextjs code with Typescript. The project is open-source and available on GitHub.',
 		],
 		tags: [
@@ -174,14 +185,14 @@ export const ProjectsData = [
 			},
 		],
 		image: images.KoushikpuppalaProjectImage,
-		source_code_link: 'koushikpuppala',
+		github: 'koushikpuppala',
 		website: 'https://koushikpuppala.com/',
 	},
 	{
 		title: 'Musics_DJ',
 		subtitle: 'Discord Bot | Music Player',
 		tag: 'Discord Bot',
-		description: [
+		descriptions: [
 			'This is an open-source Discord bot using JavaScript and Discord JS. It has numerous music controls, including volume, play, pauses, and skip.',
 		],
 		tags: [
@@ -199,13 +210,13 @@ export const ProjectsData = [
 			},
 		],
 		image: images.MusicsDJProjectImage,
-		source_code_link: 'musics_dj',
+		github: 'musics_dj',
 	},
 	{
 		title: 'E.D.I.T.H Screen Recorder',
 		subtitle: 'Windows App | Electron',
 		tag: 'Windows App',
-		description: [
+		descriptions: [
 			"Screen recording app built with JavaScript, HTML, and Electron. It can authenticate with Google Drive and automatically post the recorded video to the user's Google Drive.",
 		],
 		tags: [
@@ -223,13 +234,13 @@ export const ProjectsData = [
 			},
 		],
 		image: images.EdithProjectImage,
-		source_code_link: 'E.D.I.T.H-Screen-Recorder',
+		github: 'E.D.I.T.H-Screen-Recorder',
 	},
 	{
 		title: 'Avenger Bot',
 		subtitle: 'Discord Bot | Multi-purpose',
 		tag: 'Discord Bot',
-		description: [
+		descriptions: [
 			'Open-source Discord bot with 250 commands, 40 customizable options, extensive logging, advanced auto-moderation, custom playlist support, giveaways, reaction roles, and more.',
 		],
 		tags: [
@@ -247,13 +258,13 @@ export const ProjectsData = [
 			},
 		],
 		image: images.AvengerProjectImage,
-		source_code_link: 'avenger',
+		github: 'avenger',
 	},
 	{
 		title: 'Avengers Assemble',
 		subtitle: 'Discord Bots website | Dashboard',
 		tag: 'Web Development',
-		description: [
+		descriptions: [
 			'The Discord bot website is built with EJS, Node.js, Express, and MongoDB. The dashboard allows for easy parameter changes. More than 250 commands are accessible with Discord Login.',
 		],
 		tags: [
@@ -271,13 +282,13 @@ export const ProjectsData = [
 			},
 		],
 		image: images.AvengersAssembleProjectImage,
-		source_code_link: 'avenger',
+		github: 'avenger',
 	},
 	{
 		title: 'Official Website',
 		subtitle: 'Indian Institute of Information Technology, Raichur',
 		tag: 'Web Development',
-		description: [
+		descriptions: [
 			'This website contains all the information about admission, careers, faculty, research, facilities, etc.',
 		],
 		tags: [
@@ -301,7 +312,7 @@ export const ProjectsData = [
 		title: 'Council of Students Affairs Official Website',
 		subtitle: 'Indian Institute of Information Technology, Raichur',
 		tag: 'Web Development',
-		description: [
+		descriptions: [
 			'The website includes information on events, clubs, and other opportunities for students. It uses Jekyll as a frontend.',
 		],
 		tags: [
@@ -325,7 +336,7 @@ export const ProjectsData = [
 		title: 'SafeRideX',
 		subtitle: 'Blockchain-based Cab Booking System | Mini Project',
 		tag: 'Web Development',
-		description: [
+		descriptions: [
 			'The app was built with Next.js, Tailwind CSS, and MUI for the front end, and Node.js, Express, MongoDB, Third Web, and Firebase for the backend.',
 		],
 		tags: [
@@ -348,7 +359,7 @@ export const ProjectsData = [
 		title: 'Deep Learning Based Real-Time Traffic Sign Detection & Classification for Self-Driving Vehicles in Smart City',
 		subtitle: 'Research Project | Mini Project',
 		tag: 'Neural Network',
-		description: [
+		descriptions: [
 			'Deep learning models using TensorFlow for detection and recognition achieve high accuracy and low latency.',
 			'Implemented using RCNN, CNN, and Point++ Network written in Python',
 		],
@@ -372,7 +383,7 @@ export const ProjectsData = [
 		title: 'IIITR Chatbot',
 		subtitle: 'Natural Language Processing | Course Project',
 		tag: 'Neural Network',
-		description: [
+		descriptions: [
 			'A chatbot based on the Feed Forward Neural Network was implemented using Python.',
 			'Designed to assist new students, faculty, and staff in navigating various aspects of college life.',
 		],
@@ -396,7 +407,7 @@ export const ProjectsData = [
 		title: 'Project India 2021',
 		subtitle: 'Project India 2021 Official GitHub Organization',
 		tag: 'Open Source Project',
-		description: [
+		descriptions: [
 			'India has 50k operational HWCs, and by 2022, 155k SHC, PHC, and UPHC will be converted into HWCs.',
 			'A new technology is being developed to connect HWCs, and an app is being developed to let users find the closest HWCs and get verified information.',
 		],
@@ -406,9 +417,9 @@ export const ProjectsData = [
 				color: 'blue-text-gradient',
 			},
 		],
-		source_code_link: 'https://github.com/Project-India-21',
-		external: true,
 		image: images.Project2021ProjectImage,
+		github: 'https://github.com/Project-India-21',
+		external: true,
 	},
 ]
 

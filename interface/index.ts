@@ -9,3 +9,11 @@ export interface MotionComponentProps extends RootLayoutProps {
 	delay: number
 	className?: string
 }
+
+export interface DialogComponentProps extends RootLayoutProps {
+	open: boolean
+	setOpen: (open: boolean) => void
+	cancelButtonRef: React.MutableRefObject<HTMLButtonElement | null>
+}
+
+export * from './constant'

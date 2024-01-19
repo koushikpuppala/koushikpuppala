@@ -7,10 +7,7 @@ const HomePage = () => {
 		<div className='h-full bg-primary/60'>
 			<div className='h-full w-full bg-gradient-to-r from-primary/10 via-black/30 to-black/10'>
 				<div className='container mx-auto flex h-full flex-col justify-center text-center lg:text-left'>
-					<MotionH1
-						direction='down'
-						delay={0.2}
-						className='mb-4 text-accent'>
+					<MotionH1 direction='down' delay={0.2} className='mb-4 text-accent'>
 						Koushik Puppala <span className='font-light leading-relaxed text-white/60'>|</span>{' '}
 						<TypesComponent />
 					</MotionH1>
@@ -22,10 +19,7 @@ const HomePage = () => {
 						the <TypesComponent once={true} />
 						{/* I'm always thinking about the next big thing. */}
 					</MotionP>
-					<MotionDiv
-						direction='down'
-						delay={0.4}
-						className='mt-2 flex justify-center lg:justify-normal'>
+					<MotionDiv direction='down' delay={0.4} className='mt-2 flex justify-center lg:justify-normal'>
 						{SocialMedia.map((item, index) => (
 							<Link
 								key={index}

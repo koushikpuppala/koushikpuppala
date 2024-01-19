@@ -24,9 +24,7 @@ const TransitionComponent = ({ children }: TransitionComponentProps) => {
 	const pathname = usePathname()
 	return (
 		<AnimatePresence mode='sync'>
-			<motion.div
-				key={pathname}
-				className='h-full'>
+			<motion.div key={pathname} className='h-full'>
 				<motion.div
 					className='fixed bottom-0 right-full top-0 z-30 h-screen w-screen bg-[#2e2257]'
 					variants={transitionVariants}

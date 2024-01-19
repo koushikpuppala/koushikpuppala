@@ -9,7 +9,6 @@ module.exports = {
 	arrowParens: 'avoid',
 	jsxSingleQuote: true,
 	bracketSameLine: true,
-	singleAttributePerLine: true,
 	plugins: ['prettier-plugin-tailwindcss'],
 	overrides: [
 		{

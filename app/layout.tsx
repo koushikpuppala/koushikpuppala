@@ -113,16 +113,8 @@ const sora = Sora({
 const RootLayout = ({ children }: RootLayoutProps) => {
 	return (
 		<html lang='en'>
-			<link
-				rel='preconnect'
-				href='https://www.googletagmanager.com'
-				crossOrigin='anonymous'
-			/>
-			<link
-				rel='preconnect'
-				href='https://analytics.google.com'
-				crossOrigin='anonymous'
-			/>
+			<link rel='preconnect' href='https://www.googletagmanager.com' crossOrigin='anonymous' />
+			<link rel='preconnect' href='https://analytics.google.com' crossOrigin='anonymous' />
 			<Script
 				id='google-analytics-g4'
 				src='https://www.googletagmanager.com/gtag/js?id=G-8NPR1DDE8Y'

@@ -8,7 +8,7 @@ import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeli
 const EducationComponent = () => {
 	return (
 		<VerticalTimeline>
-			{EducationData.map((education, index) => (
+			{EducationData.map(({ degree, college, startDate, endDate, image, imageBackground, website }, index) => (
 				<VerticalTimelineElement
 					key={index}
 					contentStyle={{
@@ -16,29 +16,24 @@ const EducationComponent = () => {
 						color: '#fff',
 					}}
 					contentArrowStyle={{ borderRight: '10px solid #1d1836' }}
-					date={education.date}
+					date={`${startDate} - ${endDate}`}
 					visible={true}
-					iconStyle={{ background: education.iconBg }}
+					iconStyle={{ background: imageBackground }}
 					icon={
-						<Link
-							href={education.link}
-							target='_blank'
-							className='flex h-full w-full items-center justify-center'>
+						<Link href={website} target='_blank' className='flex h-full w-full items-center justify-center'>
 							<Image
-								src={education.icon}
-								alt={education.college_name}
+								src={image}
+								alt={college}
 								priority={true}
 								className='h-3/5 w-3/5 object-contain bg-blend-color-dodge'
 							/>
-							<span className='sr-only'>{education.college_name} Logo</span>
+							<span className='sr-only'>{college} Logo</span>
 						</Link>
 					}>
 					<div>
-						<h3 className='text-[24px] font-bold text-white'>{education.title}</h3>
-						<p
-							className='text-[16px] font-semibold text-secondary'
-							style={{ margin: 0 }}>
-							{education.college_name}
+						<h3 className='text-[24px] font-bold text-white'>{degree}</h3>
+						<p className='text-[16px] font-semibold text-secondary' style={{ margin: 0 }}>
+							{college}
 						</p>
 					</div>
 				</VerticalTimelineElement>
