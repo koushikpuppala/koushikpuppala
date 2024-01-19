@@ -29,7 +29,7 @@ jobs:
       - name: Check for linting errors
         run: yarn lint
       - name: Check for type errors
-        run: yarn types
+        run: yarn build
 
   build:
     runs-on: ubuntu-latest
