@@ -142,9 +142,9 @@ const ProjectCardComponent = () => {
 								<div className='relative h-44 w-full'>
 									<Image
 										src={image}
-										alt='project_image'
+										alt={title}
+										priority={true}
 										className='h-full w-full rounded-2xl object-cover'
-										loading='lazy'
 									/>
 
 									<div className='card-img_hover absolute inset-0 m-3 flex justify-end gap-1'>
@@ -196,9 +196,9 @@ const ProjectCardComponent = () => {
 							<div className='relative h-auto w-full'>
 								<Image
 									src={project.image}
-									alt='project_image'
+									alt={project.title}
+									priority={true}
 									className='h-full w-full rounded-2xl object-cover'
-									loading='lazy'
 								/>
 
 								<div className='card-img_hover absolute inset-0 m-3 flex justify-end gap-1'>
