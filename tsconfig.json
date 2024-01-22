@@ -8,7 +8,7 @@
 		"lib": [
 			"DOM",
 			"DOM.Iterable",
-			"ESNext"
+			"ESNext",
 		] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
 		"jsx": "preserve" /* Specify what JSX code is generated. */,
 		"experimentalDecorators": true /* Enable experimental support for TC39 stage 2 draft decorators. */,
@@ -20,7 +20,7 @@
 		"resolveJsonModule": true /* Enable importing .json files. */,
 		"baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
 		"paths": {
-			"@import/*": ["src/*", "*"]
+			"@import/*": ["src/*", "*"],
 		} /* Specify a set of entries that re-map imports to additional lookup locations. */,
 
 		/* JavaScript Support */
@@ -46,10 +46,10 @@
 		"noUnusedParameters": true /* Raise an error when a function parameter isn't read */,
 		"plugins": [
 			{
-				"name": "next"
-			}
-		] /* Use TypeScript-specific functionality in Next.js pages and API routes. */
+				"name": "next",
+			},
+		] /* Use TypeScript-specific functionality in Next.js pages and API routes. */,
 	},
 	"include": ["next-env.d.ts", "declaration.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-	"exclude": ["node_modules"]
+	"exclude": ["node_modules"],
 }

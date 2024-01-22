@@ -147,7 +147,7 @@ const ProjectCardComponent = () => {
 										className='h-full w-full rounded-2xl object-cover'
 									/>
 
-									<div className='card-img_hover absolute inset-0 m-3 flex justify-end gap-1'>
+									<div className='absolute inset-0 m-3 flex justify-end gap-1'>
 										{github && (
 											<span className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient'>
 												<span className='sr-only'>Source Code</span>
@@ -178,12 +178,6 @@ const ProjectCardComponent = () => {
 										</p>
 									))}
 								</div>
-
-								{/* <Link
-										href={`/${id}`}
-										className='mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2'>
-										<span>View Project</span>
-									</Link> */}
 							</div>
 						</MotionDiv>
 					</Tilt>
@@ -201,13 +195,13 @@ const ProjectCardComponent = () => {
 									className='h-full w-full rounded-2xl object-cover'
 								/>
 
-								<div className='card-img_hover absolute inset-0 m-3 flex justify-end gap-1'>
+								<div className='absolute inset-0 m-3 flex justify-end gap-1'>
 									{project.github && (
 										<Link
 											href={project.external ? project.github : `/github/${project.github}`}
 											target='_blank'
 											className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient outline-none'>
-											<span className='sr-only'>Source Code</span>
+											<span className='sr-only'>Github</span>
 											<FaGithub size={16} />
 										</Link>
 									)}

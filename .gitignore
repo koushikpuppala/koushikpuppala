@@ -42,7 +42,7 @@ out
 # Next.js PWA files
 public/sw.js*
 public/workbox-*.js*
-public/worker-*.js*
+public/*-worker-*.js*
 
 # Sentry Auth Token
 .sentryclirc

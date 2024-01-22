@@ -14,10 +14,9 @@ export const metadata: Metadata = {
 		template: '%s | Koushik Puppala | Freelancer | Computer Science Engineer',
 	},
 	description:
-		'I am a computer science engineer and full-stack developer. I am working on full stack and Discord bot projects.',
-	applicationName: 'Koushik Puppala',
-	keywords: ['Koushik Puppala', 'Puppala Koushik', 'Koushikpuppala', 'Puppalakoushik'],
-	referrer: 'origin-when-cross-origin',
+		"Full-stack developer by day, dreamer by night. I believe that technology has the power to make the world a better place, and I'm committed to using my skills to make that happen.",
+	applicationName: 'Personal Website',
+	keywords: ['Koushik', 'Koushik Puppala', 'Puppala Koushik', 'Koushikpuppala', 'Puppalakoushik'],
 	authors: [
 		{
 			name: 'Koushikpuppala',
@@ -41,7 +40,7 @@ export const metadata: Metadata = {
 			default: 'Koushik Puppala | Freelancer | Computer Science Engineer',
 		},
 		description:
-			'I am a computer science engineer and full-stack developer. I am working on full stack and Discord bot projects.',
+			"Full-stack developer by day, dreamer by night. I believe that technology has the power to make the world a better place, and I'm committed to using my skills to make that happen.",
 		url: 'http://koushikpuppala.com',
 		type: 'website',
 		locale: 'en_IN',
@@ -60,7 +59,7 @@ export const metadata: Metadata = {
 			default: 'Koushik Puppala | Freelancer | Computer Science Engineer',
 		},
 		description:
-			'I am a computer science engineer and full-stack developer. I am working on full stack and Discord bot projects.',
+			"Full-stack developer by day, dreamer by night. I believe that technology has the power to make the world a better place, and I'm committed to using my skills to make that happen.",
 		creator: '@puppala_koushik',
 		site: '@puppala_koushik',
 		images: {
@@ -68,12 +67,7 @@ export const metadata: Metadata = {
 			alt: 'Koushik Puppala | Freelancer | Computer Science Engineer',
 		},
 	},
-	category: 'Education',
-	verification: {
-		google: 'google',
-		yandex: 'yandex',
-		yahoo: 'yahoo',
-	},
+	category: 'Software Engineer',
 	icons: {
 		icon: { url: '/icons/favicon.ico', type: 'image/x-icon' },
 		shortcut: [

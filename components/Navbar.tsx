@@ -5,12 +5,50 @@ import { usePathname } from 'next/navigation'
 import { NavbarData } from '@import/constant'
 import { MotionDiv, MotionNav } from '@import/components'
 import classNames from 'classnames'
+import { useEffect, useState } from 'react'
+import { HiExclamationCircle, HiXMark } from 'react-icons/hi2'
 
 const NavbarComponent = () => {
 	const pathname = usePathname()
+	const [online, setOnline] = useState(true)
+
+	useEffect(() => {
+		setOnline(navigator.onLine)
+	}, [pathname])
 
 	return (
 		<>
+			<MotionDiv
+				direction='down'
+				delay={0.05}
+				className={classNames(
+					online ? 'hidden' : 'flex',
+					'fixed z-50 w-full justify-center p-8 md:justify-end',
+				)}>
+				<div
+					role='alert'
+					className='rounded-xl border border-red-600 bg-primary bg-opacity-75 px-4 py-2 backdrop-blur-md'>
+					<div className='flex items-center gap-4'>
+						<span className='text-red-500'>
+							<HiExclamationCircle size={32} />
+						</span>
+
+						<div className='flex-1'>
+							<strong className='block font-medium text-red-500'>
+								You are offline. Some features may not work.
+							</strong>
+						</div>
+
+						<button
+							className='text-gray-500 transition hover:text-gray-600'
+							onClick={() => setOnline(false)}>
+							<span className='sr-only'>Dismiss popup</span>
+							<HiXMark />
+						</button>
+					</div>
+				</div>
+			</MotionDiv>
+
 			<MotionNav
 				direction='up'
 				delay={0.1}
@@ -24,7 +62,7 @@ const NavbarComponent = () => {
 				<LinkComponent pathname={pathname} />
 			</MotionNav>
 			<MotionDiv
-				direction='up'
+				direction='down'
 				delay={0.1}
 				className='sticky left-0 right-0 z-10 p-2 text-center text-xs backdrop-blur-md lg:fixed lg:bottom-0 lg:p-4 lg:text-right lg:backdrop-blur-none'>
 				Github ❤️{' '}

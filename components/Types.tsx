@@ -1,12 +1,12 @@
 'use client'
 
 import Typed, { TypedOptions } from 'typed.js'
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 
 const TypesComponent = ({ once = false }) => {
 	const typedRef = useRef(null)
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const options: TypedOptions = {
 			strings: once
 				? ["world a better place, and I'm committed to using my skills to make that happen."]
