@@ -8,6 +8,7 @@ const nextConfig = withPWA.default({
 	register: true,
 	disable: process.env.NODE_ENV === 'development',
 	cacheOnFrontEndNav: true,
+	aggressiveFrontEndNavCaching: true,
 })({
 	redirects: async () => {
 		return [

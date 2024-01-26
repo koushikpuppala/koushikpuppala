@@ -36,7 +36,7 @@ const ContactComponent = () => {
 	}, [form])
 
 	useEffect(() => {
-		if (state.statusCode === 200 || state.statusCode === 400) {
+		if (state.statusCode === 200)
 			setForm({
 				value: {
 					name: '',
@@ -51,50 +51,30 @@ const ContactComponent = () => {
 					message: '',
 				},
 			})
-		}
 	}, [state])
 
 	const handleChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target
 
 		let error = ''
+		const regex = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/)
 
 		switch (name) {
 			case 'name':
-				if (value.length > 0) {
-					if (value.length < 3) {
-						error = 'Name must be at least 3 characters'
-					}
-				} else {
-					error = 'Name is required'
-				}
+				if (value.length == 0) error = 'Name is required'
+				else if (value.length < 3) error = 'Name must be at least 3 characters'
 				break
 			case 'email':
-				if (value.length > 0) {
-					if (!value.match(new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/))) {
-						error = 'Email is invalid'
-					}
-				} else {
-					error = 'Email is required'
-				}
+				if (value.length == 0) error = 'Email is required'
+				else if (!value.match(regex)) error = 'Email is invalid'
 				break
 			case 'subject':
-				if (value.length > 0) {
-					if (value.length < 20) {
-						error = 'Subject must be at least 20 characters'
-					}
-				} else {
-					error = 'Subject is required'
-				}
+				if (value.length == 0) error = 'Subject is required'
+				else if (value.length < 20) error = 'Subject must be at least 20 characters'
 				break
 			case 'message':
-				if (value.length > 0) {
-					if (value.length < 50) {
-						error = 'Message must be at least 50 characters'
-					}
-				} else {
-					error = 'Message is required'
-				}
+				if (value.length == 0) error = 'Message is required'
+				else if (value.length < 50) error = 'Message must be at least 50 characters'
 				break
 		}
 
@@ -163,16 +143,22 @@ const ContactComponent = () => {
 					/>
 					{form.error.message && <span className='mt-2 px-6 text-red-500'>{form.error.message}</span>}
 				</label>
-				<SubmitButton isDisabled={isDisabled} statusCode={state.statusCode} />
-				{state.statusCode === 500 && <span className='mt-2 px-6 text-red-500'>{state.statusMessage}</span>}
-				{state.statusCode === 400 && <span className='mt-2 px-6 text-yellow-500'>{state.statusMessage}</span>}
-				{state.statusCode === 200 && <span className='mt-2 px-6 text-green-500'>{state.statusMessage}</span>}
+				<div
+					className={classNames({
+						hidden: state.statusCode === 0,
+						'flex items-center justify-center': state.statusCode !== 0,
+					})}>
+					{state.statusCode === 500 && <span className='text-red-500'>{state.statusMessage}</span>}
+					{state.statusCode === 400 && <span className='text-yellow-500'>{state.statusMessage}</span>}
+					{state.statusCode === 200 && <span className='text-green-500'>{state.statusMessage}</span>}
+				</div>
+				<SubmitButton isDisabled={isDisabled} />
 			</form>
 		</div>
 	)
 }
 
-const SubmitButton = ({ isDisabled, statusCode }: { isDisabled: boolean; statusCode: number }) => {
+const SubmitButton = ({ isDisabled }: { isDisabled: boolean }) => {
 	const { pending } = useFormStatus()
 
 	return (
@@ -186,7 +172,14 @@ const SubmitButton = ({ isDisabled, statusCode }: { isDisabled: boolean; statusC
 				},
 				'rounded-lg border-none bg-opacity-50 px-6 py-4 font-medium text-white outline-none placeholder:text-secondary',
 			)}>
-			{pending ? 'Submitting...' : statusCode === 200 ? 'Submitted' : 'Submit'}
+			{pending ? (
+				<div className='flex flex-row items-center justify-center gap-4 align-middle'>
+					<div className='h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-l-transparent border-r-transparent' />
+					Submitting...
+				</div>
+			) : (
+				'Submit'
+			)}
 		</button>
 	)
 }

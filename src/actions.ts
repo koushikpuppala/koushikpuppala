@@ -1,5 +1,6 @@
 'use server'
 
+import { ContactModel, Database } from '@import/database'
 import { captureException } from '@sentry/nextjs'
 import { createTransport } from 'nodemailer'
 
@@ -11,6 +12,8 @@ export const handleSubmit = async (
 	form: FormData,
 ) => {
 	'use server'
+
+	Database.instance
 
 	const name = form.get('name')!.toString()
 	const email = form.get('email')!.toString()
@@ -33,6 +36,13 @@ export const handleSubmit = async (
 	}
 
 	try {
+		await ContactModel.create({
+			name,
+			email,
+			subject,
+			message,
+		})
+
 		await mailer.sendMail({
 			from: `Admin Contact Form <me@koushikpuppala.com>`,
 			replyTo: email,
@@ -47,6 +57,7 @@ export const handleSubmit = async (
 			statusMessage: 'Submitted successfully, I will get back to you as soon as possible!',
 		}
 	} catch (error) {
+		process.env.NODE_ENV === 'development' && console.log(error)
 		captureException(error)
 		return {
 			statusCode: 500,
