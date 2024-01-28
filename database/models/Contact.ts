@@ -22,6 +22,10 @@ export default (models.Contact as Model<ContactModalProps>) ||
 					type: String,
 					required: true,
 				},
+				url: {
+					type: String,
+					required: true,
+				},
 			},
 			{
 				timestamps: true,

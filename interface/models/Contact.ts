@@ -5,6 +5,7 @@ export interface ContactModalProps extends Document {
 	email: string
 	subject: string
 	message: string
+	url: string
 	createdAt: Date
 	updatedAt: Date
 }

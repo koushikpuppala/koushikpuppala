@@ -13,6 +13,7 @@ const ContactComponent = () => {
 			email: '',
 			subject: '',
 			message: '',
+			url: '',
 		},
 		error: {
 			name: '',
@@ -21,6 +22,10 @@ const ContactComponent = () => {
 			message: '',
 		},
 	})
+
+	useEffect(() => {
+		typeof window !== undefined && setForm({ ...form, value: { ...form.value, url: window.location.href } })
+	}, [])
 
 	const initialState = {
 		statusCode: 0,
@@ -43,6 +48,7 @@ const ContactComponent = () => {
 					email: '',
 					subject: '',
 					message: '',
+					url: form.value.url,
 				},
 				error: {
 					name: '',
@@ -87,6 +93,7 @@ const ContactComponent = () => {
 	return (
 		<div className='h-full w-full rounded-2xl bg-black-100/60 p-8'>
 			<form action={formActions} className='flex flex-col gap-8'>
+				<input name='url' defaultValue={form.value.url} className='hidden' />
 				<label className='flex flex-col'>
 					<span className='mb-4 font-medium text-white'>
 						Your Name <span className='text-red-500'>*</span>
@@ -96,8 +103,8 @@ const ContactComponent = () => {
 						name='name'
 						value={form.value.name}
 						onChange={handleChange}
-						placeholder="What's your good name?"
-						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						placeholder="What's your name?"
+						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{form.error.name && <span className='mt-2 px-6 text-red-500'>{form.error.name}</span>}
 				</label>
@@ -110,8 +117,8 @@ const ContactComponent = () => {
 						name='email'
 						value={form.value.email}
 						onChange={handleChange}
-						placeholder="What's your email address?"
-						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						placeholder="What's Your Email Address?"
+						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{form.error.email && <span className='mt-2 px-6 text-red-500'>{form.error.email}</span>}
 				</label>
@@ -125,7 +132,7 @@ const ContactComponent = () => {
 						value={form.value.subject}
 						onChange={handleChange}
 						placeholder='What is it about?'
-						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{form.error.subject && <span className='mt-2 px-6 text-red-500'>{form.error.subject}</span>}
 				</label>
@@ -139,7 +146,7 @@ const ContactComponent = () => {
 						value={form.value.message}
 						onChange={handleChange}
 						placeholder='What you want to say?'
-						className='resize-none rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						className='resize-none rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{form.error.message && <span className='mt-2 px-6 text-red-500'>{form.error.message}</span>}
 				</label>
