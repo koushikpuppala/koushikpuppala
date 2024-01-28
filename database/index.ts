@@ -30,7 +30,6 @@ export class Database {
 			dbName: process.env.NODE_ENV!,
 		})
 		this._client = connection
-		console.log(process.env.NODE_ENV)
 		this._client.on('error', console.error.bind(console, 'connection error:'))
 		this._client.once('open', () => {
 			process.env.NODE_ENV === 'development' && console.log('Connected to MongoDB')
