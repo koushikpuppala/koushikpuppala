@@ -1,9 +1,10 @@
-import { model, models, Schema } from 'mongoose'
+import { ContactModalProps } from '@import/interface'
+import { Model, model, models, Schema } from 'mongoose'
 
-export default models.ContactMessage ||
+export default (models.Contact as Model<ContactModalProps>) ||
 	model(
-		'ContactMessage',
-		new Schema(
+		'Contact',
+		new Schema<ContactModalProps>(
 			{
 				name: {
 					type: String,

@@ -17,3 +17,4 @@ export interface DialogComponentProps extends RootLayoutProps {
 }
 
 export * from './constant'
+export * from './models'

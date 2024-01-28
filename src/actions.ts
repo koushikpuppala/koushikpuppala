@@ -13,7 +13,7 @@ export const handleSubmit = async (
 ) => {
 	'use server'
 
-	Database.instance
+	const database = Database.instance
 
 	const name = form.get('name')!.toString()
 	const email = form.get('email')!.toString()
@@ -36,6 +36,8 @@ export const handleSubmit = async (
 	}
 
 	try {
+		await database.connect()
+
 		await ContactModel.create({
 			name,
 			email,
@@ -63,5 +65,8 @@ export const handleSubmit = async (
 			statusCode: 500,
 			statusMessage: 'Something went wrong, please try again later.',
 		}
+	} finally {
+		await database.disconnect()
+		mailer.close()
 	}
 }
