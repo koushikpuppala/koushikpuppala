@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 	},
 	description:
 		"Full-stack developer by day, dreamer by night. I believe that technology has the power to make the world a better place, and I'm committed to using my skills to make that happen.",
-	applicationName: 'Personal Website',
+	applicationName: 'Personal Website | Koushik Puppala | Freelancer | Computer Science Engineer',
 	keywords: ['Koushik', 'Koushik Puppala', 'Puppala Koushik', 'Koushikpuppala', 'Puppalakoushik'],
 	authors: [
 		{
@@ -111,6 +111,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 			<link rel='preconnect' href='https://analytics.google.com' crossOrigin='anonymous' />
 			<Script
 				id='google-analytics-g4'
+				async={true}
 				src='https://www.googletagmanager.com/gtag/js?id=G-8NPR1DDE8Y'
 				strategy='afterInteractive'
 			/>

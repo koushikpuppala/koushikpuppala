@@ -2,7 +2,7 @@
 
 import { handleSubmit } from '@import/actions'
 import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 
 const ContactComponent = () => {
@@ -23,8 +23,9 @@ const ContactComponent = () => {
 		},
 	})
 
-	useEffect(() => {
-		typeof window !== undefined && setForm({ ...form, value: { ...form.value, url: window.location.href } })
+	useLayoutEffect(() => {
+		typeof window !== undefined &&
+			setForm({ ...form, value: { ...form.value, url: window.location.href.split('/contact')[0] } })
 	}, [])
 
 	const initialState = {
