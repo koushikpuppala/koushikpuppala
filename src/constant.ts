@@ -17,6 +17,7 @@ export const NavbarData = [
 	{ name: 'Portfolio', href: '/portfolio', icon: HiFolder },
 	{ name: 'Resume', href: '/resume', icon: HiDocument },
 	{ name: 'Contact', href: '/contact', icon: HiEnvelopeOpen },
+	{ name: 'Contact', href: '/contact', icon: HiEnvelopeOpen },
 ]
 
 export const ServicesData = [

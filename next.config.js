@@ -9,6 +9,9 @@ const nextConfig = withPWA.default({
 	disable: process.env.NODE_ENV === 'development',
 	cacheOnFrontEndNav: true,
 	aggressiveFrontEndNavCaching: true,
+	workboxOptions: {
+		disableDevLogs: true,
+	},
 })({
 	redirects: async () => {
 		return [
