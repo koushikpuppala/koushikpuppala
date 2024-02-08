@@ -64,7 +64,7 @@ const ContactComponent = () => {
 		const { name, value } = e.target
 
 		let error = ''
-		const regex = new RegExp(/^\w++(?:[\.-]?\w+)*+@\w++(?:[\.-]?\w+)*+(\.\w{2,})++$/)
+		const regex = new RegExp(/^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*(\.\w{2,})+$/)
 
 		switch (name) {
 			case 'name':
