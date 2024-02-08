@@ -82,6 +82,7 @@ const userSentryWebpackPluginOptions = {
 }
 
 const sentryOptions = {
+	automaticVercelMonitors: true,
 	widenClientFileUpload: true,
 	transpileClientSDK: true,
 	tunnelRoute: '/monitoring',
