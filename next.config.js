@@ -11,6 +11,7 @@ const nextConfig = withPWA.default({
 	aggressiveFrontEndNavCaching: true,
 	workboxOptions: {
 		disableDevLogs: true,
+		cleanupOutdatedCaches: true,
 	},
 })({
 	redirects: async () => {

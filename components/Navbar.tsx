@@ -22,7 +22,10 @@ const NavbarComponent = () => {
 				direction='down'
 				delay={0.05}
 				className={classNames(
-					online ? 'hidden' : 'flex',
+					{
+						hidden: online,
+						flex: !online,
+					},
 					'fixed z-50 w-full justify-center p-8 md:justify-end',
 				)}>
 				<div
