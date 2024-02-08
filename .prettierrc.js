@@ -9,6 +9,7 @@ module.exports = {
 	arrowParens: 'avoid',
 	jsxSingleQuote: true,
 	bracketSameLine: true,
+	endOfLine: 'crlf',
 	plugins: ['prettier-plugin-tailwindcss'],
 	overrides: [
 		{

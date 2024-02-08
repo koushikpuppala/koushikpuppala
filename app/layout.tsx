@@ -76,7 +76,7 @@ export const metadata: Metadata = {
 		],
 		apple: { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
 	},
-	manifest: '/main.webmanifest',
+	manifest: '/manifest.webmanifest',
 	metadataBase: new URL(process.env.NEXT_PUBLIC_VERCEL_URL!),
 	robots: {
 		index: true,
