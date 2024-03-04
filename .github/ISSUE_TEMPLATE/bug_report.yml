@@ -1,6 +1,6 @@
 name: 🐞 Bug Report
 description: File a bug/issue report for a problem with the project.
-title: '[BUG] <title>'
+title: 'BUG: '
 labels: ['Bug']
 body:
   - type: checkboxes

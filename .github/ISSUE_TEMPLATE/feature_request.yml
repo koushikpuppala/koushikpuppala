@@ -1,0 +1,147 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for the project.
+title: 'FEATURE: '
+labels: ['Enhancement']
+body:
+  - type: textarea
+    attributes:
+      label: Feature Description
+      description: A concise description of the feature you're proposing.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Solution Description
+      description: A concise description of the solution you'd like to see.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Use Case
+      description: Please provide a use case for this feature.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Add any other context or screenshots about the feature request here.
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      multiple: false
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Device Information
+      description: What device are you using?
+      multiple: false
+      options:
+        - Desktop
+        - Mobile
+        - Tablet
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Browser Information
+      description: What browser are you using?
+      multiple: false
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Operating System
+      description: What operating system are you using?
+      multiple: false
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Feature Type
+      description: What type of feature are you requesting?
+      multiple: false
+      options:
+        - New Feature
+        - Enhancement
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Feature Status
+      description: What is the status of this feature request?
+      multiple: false
+      options:
+        - Proposed
+        - Planned
+        - In Progress
+        - Completed
+        - Deferred
+        - Rejected
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Feature Impact
+      description: What is the impact of this feature request?
+      multiple: false
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Feature Complexity
+      description: What is the complexity of this feature request?
+      multiple: false
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Feature Effort
+      description: What is the effort required for this feature request?
+      multiple: false
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Feature Risk
+      description: What is the risk of this feature request?
+      multiple: false
+      options:
+        - Low
+        - Medium
+        - High
+    validations:
+      required: true
