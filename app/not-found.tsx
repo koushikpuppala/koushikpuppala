@@ -28,7 +28,7 @@ const NotFoundPage = () => {
 				</MotionP>
 
 				<MotionP direction='down' delay={0.3} className='mt-4 text-gray-500 dark:text-gray-400'>
-					Sorry, we couldn't find the page you're looking for.
+					Sorry, we couldn&apos;t find the page you&apos;re looking for.
 				</MotionP>
 
 				<MotionDiv direction='down' delay={0.4}>

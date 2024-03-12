@@ -22,7 +22,7 @@ const TypesComponent = ({ once = false }) => {
 		return () => {
 			typed.destroy()
 		}
-	}, [])
+	}, [once])
 
 	return <span ref={typedRef}></span>
 }

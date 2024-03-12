@@ -27,7 +27,7 @@ const AboutPage = () => {
 						className='mx-auto mb-2 mt-4 max-w-3xl text-justify text-sm leading-6 text-secondary md:px-6 lg:mx-0 lg:text-lg xl:max-w-5xl'>
 						I am pursuing my B.Tech in Computer Science and Engineering at the Indian Institute of
 						Information Technology, Raichur. As a passionate full-stack web developer, I regularly work in
-						that capacity and lead my institute's website team. Currently, I am working on fascinating
+						that capacity and lead my institute&apos;s website team. Currently, I am working on fascinating
 						projects that include the creation of a Discord bot and many full-stack web apps. My expertise
 						has given me a good understanding of front-end and back-end technologies, allowing me to design
 						unique, user-friendly software solutions. I am careful and strive for perfection in whatever I

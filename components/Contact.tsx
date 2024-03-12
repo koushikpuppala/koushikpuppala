@@ -5,28 +5,30 @@ import classNames from 'classnames'
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 
+const initialValue = {
+	value: {
+		name: '',
+		email: '',
+		subject: '',
+		message: '',
+		url: '',
+	},
+	error: {
+		name: '',
+		email: '',
+		subject: '',
+		message: '',
+	},
+}
+
 const ContactComponent = () => {
 	const [isDisabled, setIsDisabled] = useState(true)
-	const [form, setForm] = useState({
-		value: {
-			name: '',
-			email: '',
-			subject: '',
-			message: '',
-			url: '',
-		},
-		error: {
-			name: '',
-			email: '',
-			subject: '',
-			message: '',
-		},
-	})
+	const [form, setForm] = useState(initialValue)
 
 	useLayoutEffect(() => {
 		typeof window !== undefined &&
 			setForm({ ...form, value: { ...form.value, url: window.location.href.split('/contact')[0] } })
-	}, [])
+	}, [form])
 
 	const initialState = {
 		statusCode: 0,
@@ -42,22 +44,7 @@ const ContactComponent = () => {
 	}, [form])
 
 	useEffect(() => {
-		if (state.statusCode === 200)
-			setForm({
-				value: {
-					name: '',
-					email: '',
-					subject: '',
-					message: '',
-					url: form.value.url,
-				},
-				error: {
-					name: '',
-					email: '',
-					subject: '',
-					message: '',
-				},
-			})
+		if (state.statusCode === 200) setForm(initialValue)
 	}, [state])
 
 	const handleChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
