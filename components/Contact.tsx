@@ -2,7 +2,7 @@
 
 import { handleSubmit } from '@import/actions'
 import classNames from 'classnames'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 
 const initialValue = {
@@ -11,7 +11,6 @@ const initialValue = {
 		email: '',
 		subject: '',
 		message: '',
-		url: '',
 	},
 	error: {
 		name: '',
@@ -24,11 +23,6 @@ const initialValue = {
 const ContactComponent = () => {
 	const [isDisabled, setIsDisabled] = useState(true)
 	const [form, setForm] = useState(initialValue)
-
-	useLayoutEffect(() => {
-		typeof window !== undefined &&
-			setForm({ ...form, value: { ...form.value, url: window.location.href.split('/contact')[0] } })
-	}, [form])
 
 	const initialState = {
 		statusCode: 0,
@@ -81,7 +75,6 @@ const ContactComponent = () => {
 	return (
 		<div className='h-full w-full rounded-2xl bg-black-100/60 p-8'>
 			<form action={formActions} className='flex flex-col gap-8'>
-				<input name='url' defaultValue={form.value.url} className='hidden' />
 				<label className='flex flex-col'>
 					<span className='mb-4 font-medium text-white'>
 						Your Name <span className='text-red-500'>*</span>

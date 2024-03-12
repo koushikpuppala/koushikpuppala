@@ -19,7 +19,6 @@ export const handleSubmit = async (
 	const email = form.get('email')!.toString()
 	const subject = form.get('subject')!.toString()
 	const message = form.get('message')!.toString()
-	const url = form.get('url')!.toString()
 
 	const mailer = createTransport({
 		service: 'gmail',
@@ -44,7 +43,6 @@ export const handleSubmit = async (
 			email,
 			subject,
 			message,
-			url,
 		})
 
 		await mailer.sendMail({
