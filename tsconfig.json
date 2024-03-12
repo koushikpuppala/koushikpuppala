@@ -18,9 +18,9 @@
 		"module": "ESNext" /* Specify what module code is generated. */,
 		"moduleResolution": "Node" /* Specify how TypeScript looks up a file from a given module specifier. */,
 		"resolveJsonModule": true /* Enable importing .json files. */,
-		"baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
+		"baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
 		"paths": {
-			"@import/*": ["*", "src/*"]
+			"@import/*": ["src/*", "*"]
 		} /* Specify a set of entries that re-map imports to additional lookup locations. */,
 
 		/* JavaScript Support */
@@ -39,8 +39,17 @@
 		"noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
 
 		/* Completeness */
-		"skipLibCheck": true /* Skip type checking all .d.ts files. */
+		"skipLibCheck": true /* Skip type checking all .d.ts files. */,
+
+		/* Additional Checks */
+		"noUnusedLocals": true /* Enable error reporting when a local variables aren't read. */,
+		"noUnusedParameters": true /* Raise an error when a function parameter isn't read */,
+		"plugins": [
+			{
+				"name": "next"
+			}
+		] /* Use TypeScript-specific functionality in Next.js pages and API routes. */
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "scripts/sitemap-generator.js"],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
 }

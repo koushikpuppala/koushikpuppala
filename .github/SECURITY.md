@@ -5,12 +5,12 @@
 Use this section to tell people about which versions of your project are currently being supported
 with security updates.
 
-| package | Version | Supported          |
-| ------- | ------- | ------------------ |
-| node    | >=16.8  | :white_check_mark: |
-| node    | < 16.8  | :x:                |
-| npm     | >=8.x   | :white_check_mark: |
-| npm     | < 8.x   | :x:                |
+| package | Version |     Supported      |
+| :-----: | :-----: | :----------------: |
+|  node   | >=20.x  | :white_check_mark: |
+|  node   | < 20.x  |        :x:         |
+|  yarn   | >= 4.x  | :white_check_mark: |
+|  yarn   |  < 4.x  |        :x:         |
 
 ## Reporting a Vulnerability
 

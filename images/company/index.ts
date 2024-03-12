@@ -1,0 +1,7 @@
+export { default as CollegeLogo } from './college.webp'
+export { default as GDSCLogo } from './gdsc.webp'
+export { default as IIITRLogo } from './iiitr_blue.webp'
+export { default as WhiteLogo } from './iiitr_white.webp'
+export { default as MaplemonkLogo } from './maplemonk.webp'
+export { default as SchoolLogo } from './school.webp'
+export { default as TGHLogo } from './tgh.webp'

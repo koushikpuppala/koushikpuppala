@@ -1,6 +1,6 @@
 <div align='center'>
 
-![Koushikpuppala](./.github/Koushikpuppala.gif)
+![Koushikpuppala](./.github/intro.gif)
 
 <!-- ![Koushikpuppala](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑲𝒐𝒖𝒔𝒉𝒊𝒌%20𝑷𝒖𝒑𝒑𝒂𝒍𝒂&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient) -->
 
@@ -10,7 +10,7 @@
 
 ## 💫About Me
 
-I'm a B.Tech student studying computer science and engineering at the **_[Indian Institute of Information Technology, Raichur](https://iiitr.ac.in)_**. I work as a web developer and lead the Google Developer Student Clubs at the Indian Institute of Information Technology, Raichur. I'm currently working on a Discord bot and full-stack web development projects. I began exploring TypeScript and Python. I developed a few basic websites, full-stack web development projects, a desktop screen recorder program, and Discord bots for server customization and entertainment. For more information about my work, please visit the **_[Repositories Page](https://github.com/koushikpuppala?tab=repositories)_**. Contact me on Discord **_[koushikpuppala#1729](https://koushikpuppala.com/discord)_**.
+I'm a B.Tech student studying computer science and engineering at the **_[Indian Institute of Information Technology, Raichur](https://iiitr.ac.in)_**. I work as a web developer and lead the Google Developer Student Clubs at the Indian Institute of Information Technology, Raichur. I'm currently working on a Discord bot and full-stack web development projects. I began exploring TypeScript and Python. I developed a few basic websites, full-stack web development projects, a desktop screen recorder program, and Discord bots for server customization and entertainment. For more information about my work, please visit the **_[Repositories Page](https://github.com/koushikpuppala?tab=repositories)_**. Contact me on Discord **_[@koushikpuppala](https://koushikpuppala.com/discord)_**.
 
 -   👨‍💻 My first project is **_[Koushikpuppala](https://koushikpuppala.com)_**.
 
@@ -22,7 +22,7 @@ I'm a B.Tech student studying computer science and engineering at the **_[Indian
 
 -   🌱 I started learning **_Firebase, Python, and TypeScript_**.
 
--   📫 Reach me through discord **_[koushikpuppala](https://koushikpuppala.com/discord)_** or email me at **_[contact@koushikpuppala.com](mailto:contact@koushikpuppala.com)_**
+-   📫 Reach me through discord **_[@koushikpuppala](https://koushikpuppala.com/discord)_** or email me at **_[contact@koushikpuppala.com](mailto:contact@koushikpuppala.com)_**
 
 #### **If you like my profile, feel free to leave a star 🌟 which encourages me!**
 
