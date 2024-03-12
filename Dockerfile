@@ -16,12 +16,11 @@ USER app
 
 RUN yarn set version stable
 
-RUN yarn install --frozen-lockfile
+RUN yarn install \
+    yarn cache clean
 
 COPY . .
 
 EXPOSE 3000
-
-RUN yarn cache clean
 
 CMD ["yarn", "dev"]
