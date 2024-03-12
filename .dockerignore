@@ -6,6 +6,15 @@ node_modules
 .pnp
 .pnp.*
 
+# Coverage directory used by testing tools
+coverage
+
+# Build Outputs
+.next
+out
+build
+dist
+
 # Debug Logs
 logs
 *.log
@@ -18,35 +27,28 @@ lerna-debug.log*
 # Yarn Integrity file
 .yarn-integrity
 
-# Coverage directory used by tools
-coverage
-
-# dotenv environment variable files
+# Local dotenv environment variable files
 .env
+.env.local
 .env.development.local
 .env.test.local
 .env.production.local
-.env.local
-
-# vercel
-.vercel
 
 # TypeScript cache
 *.tsbuildinfo
 next-env.d.ts
-
-# Next.js build output
-.next
-out
 
 # Next.js PWA files
 public/sw.js*
 public/workbox-*.js*
 public/*-worker-*.js*
 
-# Sentry Auth Token
+# Sentry Auth Token & Config File
 .sentryclirc
 
-# misc
+# Vercel
+.vercel
+
+# Misc
 .DS_Store
 *.pem

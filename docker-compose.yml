@@ -1,4 +1,5 @@
-version: '3.8'
+version: '3.9'
+
 services:
   app:
     container_name: koushikpuppala
@@ -6,10 +7,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '3000:3000'
+      - 3000:3000
     volumes:
-      - '.:/app'
-      - '/app/node_modules'
+      - .:/app
+      - /app/node_modules
 
 volumes:
   node_modules:
+    name: koushikpuppala-node_modules
