@@ -135,10 +135,8 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					sora.className,
 					'relative h-screen w-full overflow-hidden bg-site bg-cover bg-center bg-no-repeat text-white',
 				)}>
-				<TransitionComponent>
-					<NavbarComponent />
-					{children}
-				</TransitionComponent>
+				<NavbarComponent />
+				<TransitionComponent>{children}</TransitionComponent>
 			</body>
 		</html>
 	)
