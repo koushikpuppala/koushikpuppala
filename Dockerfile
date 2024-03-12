@@ -18,6 +18,8 @@ RUN yarn set version stable
 
 RUN yarn install
 
+RUN yarn cache clean
+
 COPY . .
 
 # RUN yarn build
