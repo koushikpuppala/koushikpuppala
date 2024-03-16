@@ -14,7 +14,7 @@ const ResumePage = () => {
 	return (
 		<iframe
 			className='h-screen w-full rounded-2xl'
-			src='/resume.pdf'
+			src='/koushikpuppala_resume.pdf'
 			allowTransparency={true}
 			loading='lazy'
 			title='Resume'>
