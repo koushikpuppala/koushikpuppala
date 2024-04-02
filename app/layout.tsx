@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 		template: '%s | Koushik Puppala | Freelancer | Computer Science Engineer',
 	},
 	description:
-		"Full-stack developer by day, dreamer by night. I believe that technology has the power to make the world a better place, and I'm committed to using my skills to make that happen.",
+		"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
 	applicationName: 'Personal Website | Koushik Puppala | Freelancer | Computer Science Engineer',
 	keywords: ['Koushik', 'Koushik Puppala', 'Puppala Koushik', 'Koushikpuppala', 'Puppalakoushik'],
 	authors: [
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 			default: 'Koushik Puppala | Freelancer | Computer Science Engineer',
 		},
 		description:
-			"Full-stack developer by day, dreamer by night. I believe that technology has the power to make the world a better place, and I'm committed to using my skills to make that happen.",
+			"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
 		url: 'http://koushikpuppala.com',
 		type: 'website',
 		locale: 'en_IN',
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 			default: 'Koushik Puppala | Freelancer | Computer Science Engineer',
 		},
 		description:
-			"Full-stack developer by day, dreamer by night. I believe that technology has the power to make the world a better place, and I'm committed to using my skills to make that happen.",
+			"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
 		creator: '@puppala_koushik',
 		site: '@puppala_koushik',
 		images: {
