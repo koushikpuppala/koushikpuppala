@@ -80,7 +80,8 @@ const userSentryWebpackPluginOptions = {
 	// https://github.com/getsentry/sentry-webpack-plugin#options
 
 	// Suppresses source map uploading logs during build
-	silent: true,
+	// Only print logs for uploading source maps in CI
+	silent: !process.env.CI,
 	org: 'koushikpuppala',
 	project: 'koushikpuppala',
 }

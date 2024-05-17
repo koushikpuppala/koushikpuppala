@@ -15,4 +15,7 @@ Sentry.init({
 
 	// Set Environment and release version
 	environment: process.env.NODE_ENV,
+
+	// Uncomment the line below to enable Spotlight (https://spotlightjs.com)
+	spotlight: process.env.NODE_ENV === 'development',
 })
