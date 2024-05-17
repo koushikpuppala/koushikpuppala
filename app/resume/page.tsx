@@ -17,7 +17,7 @@ const ResumePage = () => {
 			src='/koushikpuppala_resume.pdf'
 			allowTransparency={true}
 			loading='lazy'
-			title='Resume'>
+			title='Koushikpuppala Resume'>
 			<span className='sr-only'>Koushikpuppala Resume</span>
 		</iframe>
 	)
