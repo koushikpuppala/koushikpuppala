@@ -33,7 +33,7 @@
 		"@headlessui/react": "^2.0.3",
 		"@sentry/nextjs": "^8.1.0",
 		"classnames": "^2.5.1",
-		"framer-motion": "^11.2.3",
+		"framer-motion": "^11.2.4",
 		"globby": "^14.0.1",
 		"mongoose": "^8.3.5",
 		"next": "^14.2.3",
