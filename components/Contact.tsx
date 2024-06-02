@@ -85,6 +85,7 @@ const ContactComponent = () => {
 						value={form.value.name}
 						onChange={handleChange}
 						placeholder="What's your name?"
+						autoComplete='off'
 						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{form.error.name && <span className='mt-2 px-6 text-red-500'>{form.error.name}</span>}
@@ -99,6 +100,7 @@ const ContactComponent = () => {
 						value={form.value.email}
 						onChange={handleChange}
 						placeholder="What's Your Email Address?"
+						autoComplete='off'
 						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{form.error.email && <span className='mt-2 px-6 text-red-500'>{form.error.email}</span>}
@@ -113,6 +115,7 @@ const ContactComponent = () => {
 						value={form.value.subject}
 						onChange={handleChange}
 						placeholder='What is it about?'
+						autoComplete='off'
 						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{form.error.subject && <span className='mt-2 px-6 text-red-500'>{form.error.subject}</span>}
@@ -127,6 +130,7 @@ const ContactComponent = () => {
 						value={form.value.message}
 						onChange={handleChange}
 						placeholder='What you want to say?'
+						autoComplete='off'
 						className='resize-none rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{form.error.message && <span className='mt-2 px-6 text-red-500'>{form.error.message}</span>}
@@ -140,7 +144,7 @@ const ContactComponent = () => {
 					{state.statusCode === 400 && <span className='text-yellow-500'>{state.statusMessage}</span>}
 					{state.statusCode === 200 && <span className='text-green-500'>{state.statusMessage}</span>}
 				</div>
-				<SubmitButton isDisabled={isDisabled} />
+				<SubmitButton isDisabled={isDisabled || state.statusCode === 200} />
 			</form>
 		</div>
 	)

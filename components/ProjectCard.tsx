@@ -1,21 +1,32 @@
 'use client'
 
-import { ProjectsData as data, ProjectTagsData as tags } from '@import/constant'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaGithub, FaGlobe } from 'react-icons/fa6'
-import { Tilt } from 'react-tilt'
-import { DialogComponent, MotionDiv } from '@import/components'
+import { CardBody, CardContainer, CardItem, DialogComponent, MotionDiv } from '@import/components'
 import classNames from 'classnames'
-import { Fragment, useEffect, useRef, useState } from 'react'
-import { Listbox, Tab, Transition } from '@headlessui/react'
+import { useEffect, useRef, useState } from 'react'
+import {
+	Listbox,
+	ListboxButton,
+	ListboxOption,
+	ListboxOptions,
+	Tab,
+	TabGroup,
+	TabList,
+	Transition,
+} from '@headlessui/react'
 import { HiCheck, HiChevronUpDown } from 'react-icons/hi2'
-import { ProjectDataProps } from '@import/interface'
+import { ProjectSchemaProps } from '@import/types'
+import { urlForImage } from '@import/sanity'
 
-const ProjectCardComponent = () => {
+const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
+	const tagsSet = new Set(data.map(project => project.tag))
+	const tags = ['All', ...Array.from(tagsSet)]
 	const [tag, setTag] = useState('All')
+	const [random, setRandom] = useState(Math.random() * 1000)
 	const [projects, setProjects] = useState(data)
-	const [project, setProject] = useState<ProjectDataProps>()
+	const [project, setProject] = useState<ProjectSchemaProps>()
 	const [open, setOpen] = useState(false)
 
 	const cancelButtonRef = useRef(null)
@@ -28,11 +39,13 @@ const ProjectCardComponent = () => {
 	useEffect(() => {
 		tag !== 'All' && setProjects(data.filter(project => project.tag === tag))
 
+		setRandom(Math.random() * 1000)
+
 		return () => {
 			setOpen(false)
 			setProjects(data)
 		}
-	}, [tag])
+	}, [tag, data])
 
 	return (
 		<>
@@ -40,111 +53,71 @@ const ProjectCardComponent = () => {
 				direction='right'
 				delay={0.2}
 				className='mx-auto mb-2 mt-4 max-w-3xl px-4 text-justify text-sm leading-6 text-secondary md:px-6 lg:mx-0 lg:px-6 lg:text-lg xl:max-w-5xl'>
-				<div className='sm:hidden'>
+				<div className='md:hidden'>
 					<label htmlFor='Tab' className='sr-only'>
 						Tab
 					</label>
 					<Listbox value={tag} onChange={setTag}>
-						<div className='relative mt-1'>
-							<Listbox.Button className='relative w-full cursor-default rounded-lg border-none bg-tertiary px-6 py-4 text-left capitalize text-white outline-none ring-1 ring-accent'>
-								<span className='block truncate'>{tag}</span>
-								<span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>
-									<HiChevronUpDown className='h-5 w-5 text-gray-400' aria-hidden='true' />
-								</span>
-							</Listbox.Button>
-							<Transition
-								as={Fragment}
-								leave='transition ease-in duration-100'
-								leaveFrom='opacity-100'
-								leaveTo='opacity-0'>
-								<Listbox.Options className='absolute z-50 mt-2 max-h-60 w-full overflow-auto rounded-lg bg-tertiary py-1 text-base ring-1 ring-accent'>
-									{tags.map((tag, index) => (
-										<Listbox.Option
-											key={index}
-											className={({ active }) =>
-												classNames(
-													{
-														'text-accent': active,
-														'text-white': !active,
-													},
-													'relative cursor-default select-none py-2 pl-10 pr-4',
-												)
-											}
-											value={tag}>
-											{({ selected }) => (
-												<>
-													<span
-														className={classNames(
-															{
-																'font-medium': selected,
-																'font-normal': !selected,
-															},
-															'block truncate',
-														)}>
-														{tag}
-													</span>
-													{selected ? (
-														<span className='absolute inset-y-0 left-0 flex items-center pl-3 text-accent'>
-															<HiCheck className='h-5 w-5' aria-hidden='true' />
-														</span>
-													) : null}
-												</>
-											)}
-										</Listbox.Option>
-									))}
-								</Listbox.Options>
-							</Transition>
-						</div>
+						<ListboxButton
+							className={classNames(
+								'relative block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 text-white',
+								'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25',
+							)}>
+							{tag}
+							<HiChevronUpDown
+								className='group pointer-events-none absolute right-2.5 top-2.5 size-4 fill-white/60'
+								aria-hidden='true'
+							/>
+						</ListboxButton>
+						<Transition leave='transition ease-in duration-100' leaveFrom='opacity-100' leaveTo='opacity-0'>
+							<ListboxOptions
+								anchor='bottom'
+								className='mt-2 w-[var(--button-width)] rounded-xl border border-white/5 bg-black/10 p-1 backdrop-blur [--anchor-gap:var(--spacing-1)] focus:outline-none'>
+								{tags.map(person => (
+									<ListboxOption
+										key={person}
+										value={person}
+										className='group flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10'>
+										<HiCheck className='invisible size-4 fill-white group-data-[selected]:visible' />
+										<div className='text-sm/6 text-white'>{person}</div>
+									</ListboxOption>
+								))}
+							</ListboxOptions>
+						</Transition>
 					</Listbox>
 				</div>
-				<div className='hidden sm:block'>
-					<Tab.Group
+				<div className='hidden md:block'>
+					<TabGroup
 						defaultIndex={0}
 						selectedIndex={tags.indexOf(tag)}
 						onChange={index => setTag(tags[index])}>
-						<Tab.List className='flex w-full space-x-2 rounded-lg bg-tertiary/20'>
-							{tags.map((tag, index) => (
+						<TabList className='flex gap-4'>
+							{tags.map(name => (
 								<Tab
-									key={index}
-									className={({ selected }) =>
-										classNames(
-											{
-												'bg-tertiary text-white ring-1 ring-accent': selected,
-												'text-secondary hover:bg-tertiary/40 hover:text-white': !selected,
-											},
-											'w-full rounded-lg px-4 py-2.5 text-sm font-medium leading-5 outline-none transition-colors duration-200 ease-in-out focus:outline-none',
-										)
-									}>
-									{tag}
+									key={name}
+									className='w-full rounded-full px-3 py-1 text-sm/6 font-medium leading-5 text-secondary outline-none transition-all duration-200 ease-in-out focus:outline-none data-[hover]:bg-white/5 data-[selected]:bg-white/10 data-[selected]:data-[hover]:bg-white/10 data-[selected]:text-white data-[selected]:ring-1 data-[selected]:ring-zinc-500'>
+									{name}
 								</Tab>
 							))}
-						</Tab.List>
-					</Tab.Group>
+						</TabList>
+					</TabGroup>
 				</div>
 			</MotionDiv>
 			<div className='mt-6 flex flex-wrap justify-center gap-10 px-4 pb-40 lg:justify-normal lg:px-6 lg:pb-12'>
 				{projects.map(({ title, subtitle, descriptions, tags, image, github, website }, index) => (
-					<Tilt
-						key={index}
-						options={{
-							max: 45,
-							scale: 1,
-							speed: 1000,
-						}}>
-						<MotionDiv
-							direction='right'
-							delay={index * 0.2}
-							key={title}
-							className='w-full rounded-2xl bg-green-pink-gradient p-px shadow-xl'>
-							<div
-								className='w-full cursor-pointer rounded-2xl bg-tertiary p-5 sm:w-80'
+					<MotionDiv direction='right' delay={index * 0.2} key={random + index}>
+						<CardContainer key={index} className='w-full rounded-2xl bg-green-pink-gradient p-px shadow-xl'>
+							<CardBody
+								className='group/card w-full cursor-pointer rounded-2xl bg-quaternary p-5 sm:w-80'
 								onClick={() => handleClick(index)}>
-								<div className='relative h-44 w-full'>
+								<CardItem translateZ={125} className='relative h-44 w-full'>
 									<Image
-										src={image}
+										src={urlForImage(image[0])}
 										alt={title}
 										priority={true}
-										className='h-full w-full rounded-2xl object-cover'
+										width={1920}
+										height={1080}
+										className='w-full rounded-2xl object-cover group-hover/card:border group-hover/card:border-accent/50'
 									/>
 
 									<div className='absolute inset-0 m-3 flex justify-end gap-1'>
@@ -161,37 +134,54 @@ const ProjectCardComponent = () => {
 											</span>
 										)}
 									</div>
-								</div>
+								</CardItem>
 
 								<div className='mt-5'>
-									<h3 className='line-clamp-1 text-2xl font-bold text-white'>{title}</h3>
-									<p className='mt-2 line-clamp-1 text-sm text-secondary'>{subtitle}</p>
-									<p className='mt-2 line-clamp-3 text-sm text-secondary'>{descriptions.join(' ')}</p>
+									<CardItem translateZ={100}>
+										<h3 className='line-clamp-1 text-2xl font-bold text-white'>{title}</h3>
+									</CardItem>
+									<CardItem translateZ={85}>
+										<p className='mt-2 line-clamp-1 text-sm text-secondary'>{subtitle}</p>
+									</CardItem>
+									<CardItem translateZ={75}>
+										<p className='mt-2 line-clamp-3 text-sm text-secondary'>
+											{descriptions.join(' ')}
+										</p>
+									</CardItem>
 								</div>
 
-								<div className='mt-4 flex flex-wrap gap-2'>
-									{tags.map(tag => (
+								<CardItem translateZ={85} className='mt-4 flex flex-wrap gap-2'>
+									{tags.map((tag, index) => (
 										<p
-											key={`${title}-${tag.name}`}
-											className={classNames(tag.color, 'text-sm capitalize')}>
-											#{tag.name}
+											key={`${title}-${tag}`}
+											className={classNames(
+												{
+													'blue-text-gradient': index === 0,
+													'green-text-gradient': index === 1,
+													'pink-text-gradient': index === 2,
+												},
+												'whitespace-nowrap text-sm capitalize',
+											)}>
+											#{tag}
 										</p>
 									))}
-								</div>
-							</div>
-						</MotionDiv>
-					</Tilt>
+								</CardItem>
+							</CardBody>
+						</CardContainer>
+					</MotionDiv>
 				))}
 			</div>
 			{project && (
 				<DialogComponent open={open} setOpen={setOpen} cancelButtonRef={cancelButtonRef}>
 					<div className='flex w-full rounded-2xl bg-violet-gradient p-px'>
-						<div className='w-full rounded-2xl bg-tertiary p-5 sm:w-[30rem]'>
+						<div className='w-full rounded-2xl bg-quaternary p-5 sm:w-[30rem]'>
 							<div className='relative h-auto w-full'>
 								<Image
-									src={project.image}
+									src={urlForImage(project.image[0])}
 									alt={project.title}
 									priority={true}
+									width={1920}
+									height={1080}
 									className='h-full w-full rounded-2xl object-cover'
 								/>
 
@@ -224,11 +214,18 @@ const ProjectCardComponent = () => {
 							</div>
 
 							<div className='mt-4 flex flex-wrap gap-2'>
-								{project.tags.map(tag => (
+								{project.tags.map((tag, index) => (
 									<p
-										key={`${project.title}-${tag.name}`}
-										className={classNames(tag.color.replace(' hidden', ''), 'text-sm capitalize')}>
-										#{tag.name}
+										key={`${project.title}-${tag}`}
+										className={classNames(
+											{
+												'blue-text-gradient': index === 0,
+												'green-text-gradient': index === 1,
+												'pink-text-gradient': index === 2,
+											},
+											'text-sm capitalize',
+										)}>
+										#{tag}
 									</p>
 								))}
 							</div>

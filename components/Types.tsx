@@ -3,26 +3,24 @@
 import Typed, { TypedOptions } from 'typed.js'
 import { useLayoutEffect, useRef } from 'react'
 
-const TypesComponent = ({ once = false }) => {
+const TypesComponent = ({ strings, loop }: { strings: string[]; loop: boolean }) => {
 	const typedRef = useRef(null)
 
 	useLayoutEffect(() => {
 		const options: TypedOptions = {
-			strings: once
-				? ["world a better place, and I'm committed to using my skills to make that happen."]
-				: ['Problem solver', 'Code Creator', 'Web Enthusiast', 'Freelancer'],
-			loop: !once,
+			strings: strings,
+			loop: loop,
 			backSpeed: 25,
 			backDelay: 2000,
 			showCursor: false,
 			loopCount: Infinity,
-			typeSpeed: once ? 20 : 50,
+			typeSpeed: loop ? 50 : 20,
 		}
 		const typed = new Typed(typedRef.current, options)
 		return () => {
 			typed.destroy()
 		}
-	}, [once])
+	}, [strings, loop])
 
 	return <span ref={typedRef}></span>
 }

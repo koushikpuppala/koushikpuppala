@@ -1,4 +1,4 @@
-import { ContactModalProps } from '@import/interface'
+import { ContactModalProps } from '@import/types'
 import { Model, model, models, Schema } from 'mongoose'
 
 export default (models.Contact as Model<ContactModalProps>) ||

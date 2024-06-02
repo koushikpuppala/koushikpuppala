@@ -5,15 +5,16 @@ const withPWA = require('@ducanh2912/next-pwa')
 
 const nextConfig = withPWA.default({
 	dest: 'public',
-	register: true,
+	register: process.env.NODE_ENV !== 'development',
 	disable: process.env.NODE_ENV === 'development',
-	cacheOnFrontEndNav: true,
-	aggressiveFrontEndNavCaching: true,
+	cacheOnFrontEndNav: process.env.NODE_ENV !== 'development',
+	aggressiveFrontEndNavCaching: process.env.NODE_ENV !== 'development',
 	workboxOptions: {
-		disableDevLogs: true,
-		cleanupOutdatedCaches: true,
+		disableDevLogs: process.env.NODE_ENV !== 'development',
+		cleanupOutdatedCaches: process.env.NODE_ENV !== 'development',
 	},
 })({
+	images: { remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }] },
 	redirects: async () => {
 		return [
 			{

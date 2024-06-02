@@ -2,8 +2,8 @@ import Script from 'next/script'
 import classNames from 'classnames'
 import { Sora } from 'next/font/google'
 import { Metadata, Viewport } from 'next'
-import { RootLayoutProps } from '@import/interface'
-import { NavbarComponent, TransitionComponent } from '@import/components'
+import { RootLayoutProps } from '@import/types'
+import { BackgroundBeamsComponent, NavbarComponent } from '@import/components'
 
 import '@import/styles/globals.scss'
 import 'react-vertical-timeline-component/style.min.css'
@@ -93,6 +93,8 @@ export const metadata: Metadata = {
 	},
 }
 
+export const revalidate = 300
+
 export const viewport: Viewport = {
 	width: 'device-width',
 	initialScale: 1,
@@ -133,10 +135,12 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 			<body
 				className={classNames(
 					sora.className,
-					'relative h-screen w-full overflow-hidden bg-site bg-cover bg-center bg-no-repeat text-white',
+					'relative h-screen w-full overflow-hidden bg-black/95 bg-cover bg-center bg-no-repeat text-white',
 				)}>
 				<NavbarComponent />
-				<TransitionComponent>{children}</TransitionComponent>
+				{/* <TransitionComponent></TransitionComponent> */}
+				{children}
+				<BackgroundBeamsComponent />
 			</body>
 		</html>
 	)

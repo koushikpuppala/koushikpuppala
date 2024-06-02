@@ -16,6 +16,8 @@ const NavbarComponent = () => {
 		setOnline(navigator.onLine)
 	}, [pathname])
 
+	if (pathname.includes('/studio')) return null
+
 	return (
 		<>
 			<MotionDiv

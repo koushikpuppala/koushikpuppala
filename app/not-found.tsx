@@ -16,18 +16,18 @@ const NotFoundPage = () => {
 	return (
 		<main className='grid h-screen place-content-center place-items-center px-6 pb-12 pt-24 text-center sm:pb-16 sm:pt-32 lg:px-8'>
 			<div className='text-center'>
-				<MotionH1 direction='down' delay={0.1} className='text-9xl font-black text-gray-200 dark:text-gray-700'>
+				<MotionH1 direction='down' delay={0.1} className='text-9xl font-black text-gray-700'>
 					404
 				</MotionH1>
 
 				<MotionP
 					direction='down'
 					delay={0.2}
-					className='text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white'>
+					className='text-2xl font-bold tracking-tight text-white sm:text-4xl'>
 					Page not found
 				</MotionP>
 
-				<MotionP direction='down' delay={0.3} className='mt-4 text-gray-500 dark:text-gray-400'>
+				<MotionP direction='down' delay={0.3} className='mt-4 text-gray-400'>
 					Sorry, we couldn&apos;t find the page you&apos;re looking for.
 				</MotionP>
 

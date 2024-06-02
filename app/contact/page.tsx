@@ -3,12 +3,8 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Contact',
-	openGraph: {
-		title: 'Contact',
-	},
-	twitter: {
-		title: 'Contact',
-	},
+	openGraph: { title: 'Contact' },
+	twitter: { title: 'Contact' },
 }
 
 const ContactPage = () => {

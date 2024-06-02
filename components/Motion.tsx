@@ -1,7 +1,7 @@
 'use client'
 
 import { transition } from '@import/constant'
-import { MotionComponentProps } from '@import/interface'
+import { MotionComponentProps } from '@import/types'
 import { motion } from 'framer-motion'
 
 const MotionNav = ({ children, direction, delay, className }: MotionComponentProps) => {

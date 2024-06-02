@@ -7,7 +7,7 @@ const RobotsPage = (): MetadataRoute.Robots => {
 		rules: userAgents.map(userAgent => ({
 			userAgent,
 			allow: '*',
-			disallow: '/api/*',
+			disallow: ['/studio/**/*', '/api/**/*'],
 			crawlDelay: 5,
 		})),
 		sitemap: [`${process.env.NEXT_PUBLIC_VERCEL_URL}/sitemap.xml`],

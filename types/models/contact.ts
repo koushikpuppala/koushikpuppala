@@ -1,10 +1,10 @@
 import { Document } from 'mongoose'
 
-export interface ContactModalProps extends Document {
+export type ContactModalProps = Document<string> & {
+	_id: string
 	name: string
 	email: string
 	subject: string
 	message: string
 	createdAt: Date
-	updatedAt: Date
 }

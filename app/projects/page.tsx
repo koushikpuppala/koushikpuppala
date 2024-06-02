@@ -1,17 +1,22 @@
 import { MotionDiv, MotionP, ProjectCardComponent } from '@import/components'
+import { projectsType, sanityQuery } from '@import/sanity'
+import { ProjectSchemaProps } from '@import/types'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 export const metadata: Metadata = {
-	title: 'Portfolio',
-	openGraph: {
-		title: 'Portfolio',
-	},
-	twitter: {
-		title: 'Portfolio',
-	},
+	title: 'Projects',
+	openGraph: { title: 'Projects' },
+	twitter: { title: 'Projects' },
 }
 
-const PortfolioPage = () => {
+export const revalidate = 300
+
+const ProjectsPage = async () => {
+	const data: ProjectSchemaProps[] | null = await sanityQuery(projectsType)
+
+	if (!data) return notFound()
+
 	return (
 		<div className='h-full bg-primary/30'>
 			<div className='h-full w-full overflow-y-auto bg-gradient-to-r from-primary/10 via-black/30 to-black/10'>
@@ -31,11 +36,11 @@ const PortfolioPage = () => {
 						projects effectively.
 					</MotionP>
 
-					<ProjectCardComponent />
+					<ProjectCardComponent data={data} />
 				</div>
 			</div>
 		</div>
 	)
 }
 
-export default PortfolioPage
+export default ProjectsPage

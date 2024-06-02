@@ -1,17 +1,6 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require('tailwindcss/colors')
-const { default: flattenColorPalette } = require('tailwindcss/lib/util/flattenColorPalette')
+import type { Config } from 'tailwindcss'
 
-const addVariablesForColors = ({ addBase, theme }: any) => {
-	let allColors = flattenColorPalette(theme('colors'))
-	let newVars = Object.fromEntries(Object.entries(allColors).map(([key, val]) => [`--${key}`, val]))
-
-	addBase({ ':root': newVars })
-}
-
-/** @type {import('tailwindcss').Config} */
-
-module.exports = {
+const config: Config = {
 	content: [
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
 		'./pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -38,6 +27,7 @@ module.exports = {
 				primary: '#131424',
 				secondary: '#aaa6c3',
 				tertiary: '#151030',
+				quaternary: '#0a081a',
 				accent: '#915EFF',
 				'black-100': '#100d25',
 				'black-200': '#090325',
@@ -54,5 +44,7 @@ module.exports = {
 			},
 		},
 	},
-	plugins: [addVariablesForColors],
+	plugins: [],
 }
+
+export default config
