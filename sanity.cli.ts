@@ -8,6 +8,6 @@ import { config } from '@import/config'
 export default defineCliConfig({
 	api: {
 		projectId: config.projectId,
-		dataset: config.database,
+		dataset: config.dataset,
 	},
 })

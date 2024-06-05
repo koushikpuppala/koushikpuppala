@@ -5,14 +5,14 @@ import type { Image } from 'sanity'
 
 export const sanityClient = createClient({
 	apiVersion: config.apiVersion,
-	dataset: config.database,
+	dataset: config.dataset,
 	projectId: config.projectId,
 	useCdn: config.useCdn,
 })
 
 const imageBuilder = createImageUrlBuilder({
 	projectId: config.projectId,
-	dataset: config.database,
+	dataset: config.dataset,
 })
 
 export const urlForImage = (source: Image) => {

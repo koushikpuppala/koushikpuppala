@@ -14,7 +14,7 @@ export default defineConfig({
 	title: 'Sanity Studio | Koushik Puppala',
 	basePath: '/studio',
 	projectId: config.projectId,
-	dataset: config.database,
+	dataset: config.dataset,
 	// Add and edit the content schema in the './sanity/schema' folder
 	schema,
 	plugins: [

@@ -10,17 +10,10 @@ const ServiceCardComponent = ({ data }: { data: ServicesSchemaProps[] }) => {
 	return (
 		<div className='mt-10 flex flex-wrap justify-center gap-10 px-4 pb-16 lg:justify-normal lg:px-6'>
 			{data.map(({ _id, title, image }, index) => (
-				<Tilt
-					key={_id}
-					options={{
-						max: 45,
-						scale: 1,
-						speed: 450,
-					}}
-					className='w-full xs:w-60'>
+				<Tilt key={_id} options={{ max: 45, scale: 1, speed: 450 }} className='w-full xs:w-60'>
 					<MotionDiv direction='right' delay={index * 0.4} className='w-full rounded-2xl'>
-						<BackgroundGradientComponent>
-							<div className='flex min-h-[280px] flex-col items-center justify-evenly rounded-2xl bg-tertiary px-12 py-5'>
+						<div className='flex min-h-[280px] flex-col items-center justify-evenly rounded-2xl bg-tertiary px-12 py-5'>
+							<BackgroundGradientComponent>
 								<Image
 									src={urlForImage(image)}
 									alt={title}
@@ -31,8 +24,8 @@ const ServiceCardComponent = ({ data }: { data: ServicesSchemaProps[] }) => {
 								/>
 
 								<h3 className='text-center text-lg font-bold text-white'>{title}</h3>
-							</div>
-						</BackgroundGradientComponent>
+							</BackgroundGradientComponent>
+						</div>
 					</MotionDiv>
 				</Tilt>
 			))}
