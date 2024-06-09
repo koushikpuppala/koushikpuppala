@@ -46,7 +46,7 @@ const SitemapPage = async (): Promise<MetadataRoute.Sitemap> => {
 		}
 
 		routes.push({
-			url: `${process.env.NEXT_PUBLIC_VERCEL_URL}${path}`,
+			url: `${process.env.NEXT_PUBLIC_DEPLOY_URL}${path}`,
 			lastModified: lastModified,
 			changeFrequency: changeFrequency,
 			priority: priority > 0 ? priority : undefined,

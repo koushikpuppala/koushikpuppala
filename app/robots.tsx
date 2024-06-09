@@ -10,7 +10,7 @@ const RobotsPage = (): MetadataRoute.Robots => {
 			disallow: ['/studio/**/*', '/api/**/*'],
 			crawlDelay: 5,
 		})),
-		sitemap: [`${process.env.NEXT_PUBLIC_VERCEL_URL}/sitemap.xml`],
+		sitemap: [`${process.env.NEXT_PUBLIC_DEPLOY_URL}/sitemap.xml`],
 	}
 }
 
