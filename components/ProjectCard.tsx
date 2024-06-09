@@ -95,7 +95,7 @@ const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
 							{tags.map(name => (
 								<Tab
 									key={name}
-									className='w-full rounded-full px-3 py-1 text-sm/6 font-medium leading-5 text-secondary outline-none transition-all duration-200 ease-in-out focus:outline-none data-[hover]:bg-white/5 data-[selected]:bg-white/10 data-[selected]:data-[hover]:bg-white/10 data-[selected]:text-white data-[selected]:ring-1 data-[selected]:ring-zinc-500'>
+									className='w-full rounded-lg px-3 py-1 text-sm/6 font-medium leading-5 text-secondary outline-none transition-all duration-200 ease-in-out focus:outline-none data-[hover]:bg-white/5 data-[selected]:bg-white/10 data-[selected]:data-[hover]:bg-white/10 data-[selected]:text-white data-[selected]:ring-1 data-[selected]:ring-zinc-500'>
 									{name}
 								</Tab>
 							))}
@@ -117,7 +117,7 @@ const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
 										priority={true}
 										width={1920}
 										height={1080}
-										className='w-full rounded-2xl object-cover group-hover/card:border group-hover/card:border-accent/50'
+										className='w-full rounded-2xl object-cover group-hover/card:border group-hover/card:border-accent/5'
 									/>
 
 									<div className='absolute inset-0 m-3 flex justify-end gap-1'>
@@ -157,8 +157,8 @@ const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
 											className={classNames(
 												{
 													'blue-text-gradient': index === 0,
-													'green-text-gradient': index === 1,
-													'pink-text-gradient': index === 2,
+													'green-text-gradient hidden': index === 1,
+													'pink-text-gradient hidden': index === 2,
 												},
 												'whitespace-nowrap text-sm capitalize',
 											)}>
@@ -173,7 +173,7 @@ const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
 			</div>
 			{project && (
 				<DialogComponent open={open} setOpen={setOpen} cancelButtonRef={cancelButtonRef}>
-					<div className='flex w-full rounded-2xl bg-violet-gradient p-px'>
+					<div className='bg-accent-gradient flex w-full rounded-2xl p-px'>
 						<div className='w-full rounded-2xl bg-quaternary p-5 sm:w-[30rem]'>
 							<div className='relative h-auto w-full'>
 								<Image
@@ -191,7 +191,7 @@ const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
 											href={project.external ? project.github : `/github/${project.github}`}
 											target='_blank'
 											className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient outline-none'>
-											<span className='sr-only'>Github</span>
+											<span className='sr-only'>Source Code</span>
 											<FaGithub size={16} />
 										</Link>
 									)}

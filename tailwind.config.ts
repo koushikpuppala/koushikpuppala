@@ -36,7 +36,8 @@ const config: Config = {
 			backgroundImage: {
 				site: 'url("/site-bg.webp")',
 				'black-gradient': 'linear-gradient(to right, #434343, #000000)',
-				'violet-gradient': 'linear-gradient(-90deg, #804dee 0%, rgba(60, 51, 80, 0) 100%)',
+				'accent-gradient': 'linear-gradient(-90deg, #915EFF 0%, rgba(60, 51, 80, 0) 100%)',
+				'violet-gradient': 'linear-gradient(to left, rgba(60, 51, 80, 0) 0%, #804dee 100%)',
 				'green-pink-gradient': 'linear-gradient(90.13deg, #00cea8 1.9%, #bf61ff 97.5%)',
 			},
 			animation: {
