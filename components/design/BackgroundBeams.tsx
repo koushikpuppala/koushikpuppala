@@ -63,7 +63,7 @@ export const BackgroundBeamsComponent = React.memo(({ className }: { className?:
 				className,
 			)}>
 			<svg
-				className=' pointer-events-none absolute z-0 h-full w-full '
+				className='pointer-events-none absolute z-0 h-full w-full'
 				width='100%'
 				height='100%'
 				viewBox='0 0 696 316'

@@ -173,7 +173,7 @@ const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
 			</div>
 			{project && (
 				<DialogComponent open={open} setOpen={setOpen} cancelButtonRef={cancelButtonRef}>
-					<div className='bg-accent-gradient flex w-full rounded-2xl p-px'>
+					<div className='flex w-full rounded-2xl bg-accent-gradient p-px'>
 						<div className='w-full rounded-2xl bg-quaternary p-5 sm:w-[30rem]'>
 							<div className='relative h-auto w-full'>
 								<Image
