@@ -32,6 +32,7 @@ jobs:
       # Create .env file from secrets for Docker build and print all files in the repository
       - name: Create .env file
         run: |
+          touch .env
           echo "DATABASE=${{ secrets.DATABASE }}" >> .env
           echo "USERNAME=${{ secrets.USERNAME }}" >> .env
           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
@@ -45,6 +46,7 @@ jobs:
           echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
           ls -al
+          cat .env
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
