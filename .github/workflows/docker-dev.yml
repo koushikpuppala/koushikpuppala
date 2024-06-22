@@ -32,7 +32,7 @@ jobs:
       # Create a .env file with the secrets
       - name: Create .env file
         run: |
-          echo "ENVIRONMENT=${{ secrets.ENVIRONMENT }}" >> .env
+          echo "DEPLOYMENT=${{ secrets.DEPLOYMENT }}" >> .env
           echo "DATABASE=${{ secrets.DATABASE }}" >> .env
           echo "USERNAME=${{ secrets.USERNAME }}" >> .env
           echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
