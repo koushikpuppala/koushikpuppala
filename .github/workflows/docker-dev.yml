@@ -29,22 +29,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.4
 
-      # Create a .env file with the secrets
-      - name: Create .env file
-        run: |
-          echo "DEPLOYMENT=${{ secrets.DEPLOYMENT }}" >> .env
-          echo "DATABASE=${{ secrets.DATABASE }}" >> .env
-          echo "USERNAME=${{ secrets.USERNAME }}" >> .env
-          echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
-          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
-          echo "MONGO_API=${{ secrets.MONGO_API }}" >> .env
-          echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
-          echo "NEXT_PUBLIC_DATASET=${{ secrets.NEXT_PUBLIC_DATASET }}" >> .env
-          echo "NEXT_PUBLIC_SANITY_ID=${{ secrets.NEXT_PUBLIC_SANITY_ID }}" >> .env
-          echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
-          echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
-          echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
-
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
       # https://github.com/docker/setup-buildx-action
@@ -77,6 +61,19 @@ jobs:
         uses: docker/build-push-action@v5.3.0
         with:
           context: .
+          secret-envs: |
+            DATABASE=${{ secrets.DATABASE }},
+            USERNAME=${{ secrets.USERNAME }},
+            PASSWORD=${{ secrets.PASSWORD }},
+            MONGO_URI=${{ secrets.MONGO_URI }},
+            MONGO_API=${{ secrets.MONGO_API }},
+            DEPLOYMENT=${{ secrets.DEPLOYMENT }},
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }},
+            NEXT_PUBLIC_DATASET=${{ secrets.NEXT_PUBLIC_DATASET }},
+            NEXT_PUBLIC_SANITY_ID=${{ secrets.NEXT_PUBLIC_SANITY_ID }},
+            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }},
+            NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }},
+            NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }},
           file: ${{ env.DOCKERFILE_PATH }}
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
