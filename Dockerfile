@@ -32,8 +32,6 @@ ENV DEPLOYMENT=docker
 
 RUN ls -la
 
-RUN cat .env
-
 RUN yarn build
 
 FROM base AS runner
