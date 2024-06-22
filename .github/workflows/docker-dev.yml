@@ -29,24 +29,24 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.4
 
-      # # Create .env file from secrets for Docker build and print all files in the repository
-      # - name: Create .env file
-      #   run: |
-      #     touch .env
-      #     echo "DATABASE=${{ secrets.DATABASE }}" >> .env
-      #     echo "USERNAME=${{ secrets.USERNAME }}" >> .env
-      #     echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
-      #     echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
-      #     echo "MONGO_API=${{ secrets.MONGO_API }}" >> .env
-      #     echo "DEPLOYMENT=${{ secrets.DEPLOYMENT }}" >> .env
-      #     echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
-      #     echo "NEXT_PUBLIC_DATASET=${{ secrets.NEXT_PUBLIC_DATASET }}" >> .env
-      #     echo "NEXT_PUBLIC_SANITY_ID=${{ secrets.NEXT_PUBLIC_SANITY_ID }}" >> .env
-      #     echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
-      #     echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
-      #     echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
-      #     ls -al
-      #     cat .env
+      # Create .env file from secrets for Docker build and print all files in the repository
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "DATABASE=${{ secrets.DATABASE }}" >> .env
+          echo "USERNAME=${{ secrets.USERNAME }}" >> .env
+          echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
+          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
+          echo "MONGO_API=${{ secrets.MONGO_API }}" >> .env
+          echo "DEPLOYMENT=${{ secrets.DEPLOYMENT }}" >> .env
+          echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
+          echo "NEXT_PUBLIC_DATASET=${{ secrets.NEXT_PUBLIC_DATASET }}" >> .env
+          echo "NEXT_PUBLIC_SANITY_ID=${{ secrets.NEXT_PUBLIC_SANITY_ID }}" >> .env
+          echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
+          echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
+          echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
+          ls -al
+          cat .env
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
