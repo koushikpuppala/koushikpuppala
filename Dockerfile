@@ -28,7 +28,11 @@ COPY --from=dependencies /app/node_modules ./node_modules
 
 COPY . .
 
-ENV ENVIRONMENT=production
+ENV DEPLOYMENT=docker
+
+RUN ls -la
+
+RUN cat .env
 
 RUN yarn build
 
