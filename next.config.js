@@ -14,6 +14,8 @@ const nextConfig = withPWA.default({
 		cleanupOutdatedCaches: process.env.NODE_ENV !== 'development',
 	},
 })({
+	experimental: { instrumentationHook: true },
+	output: process.env.DEPLOYMENT === 'docker' ? 'standalone' : undefined,
 	images: { remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }] },
 	redirects: async () => {
 		return [
