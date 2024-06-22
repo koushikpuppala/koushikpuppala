@@ -7,7 +7,6 @@ export { default as ProjectCardComponent } from './ProjectCard'
 export { default as ServiceCardComponent } from './ServiceCard'
 export { default as SocialMediaLogoComponent } from './SocialMediaLogo'
 export { default as TransitionComponent } from './Transition'
-export { default as TypesComponent } from './Types'
 
 export * from './Motion'
 export {
