@@ -15,7 +15,7 @@ const nextConfig = withPWA.default({
 	},
 })({
 	experimental: { instrumentationHook: true },
-	output: process.env.DEPLOYMENT === 'docker' ? 'standalone' : undefined,
+	output: process.env.ENVIRONMENT === 'production' ? 'standalone' : undefined,
 	images: { remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }] },
 	redirects: async () => {
 		return [

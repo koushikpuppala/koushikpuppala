@@ -115,7 +115,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 				<Script
 					id='google-analytics-g4'
 					async={true}
-					src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_MEASUREMENT_ID}`}
+					src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
 					strategy='afterInteractive'
 				/>
 				<Script
@@ -128,14 +128,14 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 								dataLayer.push(arguments);
 							}
 							gtag('js', new Date());
-							gtag('config', '${process.env.NEXT_PUBLIC_MEASUREMENT_ID}');`,
+							gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');`,
 					}}
 				/>
 			</head>
 			<body
 				className={classNames(
 					sora.className,
-					'relative h-screen w-full overflow-hidden bg-black/95 bg-cover bg-center bg-no-repeat text-white',
+					'relative h-screen w-full overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white',
 				)}>
 				<NavbarComponent />
 				{/* <TransitionComponent></TransitionComponent> */}

@@ -1,4 +1,4 @@
-import { SanityDocument } from 'sanity'
+import { SanityDocument } from '@sanity/types'
 
 export type HomeSchemaProps = SanityDocument & {
 	_id: string

@@ -1,4 +1,4 @@
-import { Image, SanityDocument } from 'sanity'
+import { Image, SanityDocument } from '@sanity/types'
 
 export type EducationSchemaProps = SanityDocument & {
 	_id: string
