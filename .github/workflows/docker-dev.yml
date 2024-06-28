@@ -9,8 +9,9 @@ on:
       - dev
 
 env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
+  # Use docker.io for Docker Hub
+  # Use ghcr.io for GitHub Container Registry
+  REGISTRY: docker.io
   IMAGE_NAME: ${{ github.repository }}
   DOCKERFILE_PATH: 'Dockerfile'
 
@@ -52,13 +53,13 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log into registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3.1.0
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
