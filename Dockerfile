@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS base
+FROM --platform=$BUILDPLATFORM node:lts-alpine AS base
 
 FROM base AS dependencies
 
@@ -32,7 +32,7 @@ ENV ENVIRONMENT=production
 
 RUN yarn build
 
-FROM base AS runner
+FROM --platform=$TARGETPLATFORM base AS runner
 
 WORKDIR /app
 
