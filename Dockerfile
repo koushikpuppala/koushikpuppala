@@ -1,10 +1,6 @@
-FROM --platform=$BUILDPLATFORM node:lts-alpine AS base
+FROM --platform=$BUILDPLATFORM node:lts AS base
 
 FROM base AS dependencies
-
-RUN apk add --no-cache libc6-compat
-
-RUN apk update && apk upgrade
 
 RUN corepack enable
 
@@ -15,10 +11,6 @@ COPY package.json yarn.lock .yarnrc.yml ./
 RUN yarn install
 
 FROM base AS builder
-
-RUN apk add --no-cache libc6-compat
-
-RUN apk update && apk upgrade
 
 RUN corepack enable
 
@@ -53,9 +45,5 @@ COPY --from=builder --chown=portfolio:koushikpuppala /app/.next/static ./.next/s
 USER portfolio
 
 EXPOSE 3000
-
-ENV PORT=3000
-
-ENV HOSTNAME=0.0.0.0
 
 CMD [ "node", "server.js" ]
