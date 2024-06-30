@@ -46,12 +46,6 @@ COPY --from=builder --chown=portfolio:koushikpuppala /app/.next/static ./.next/s
 
 USER portfolio
 
-EXPOSE 3000
-
-# Make sure container is running in localhost
-
-ENV HOST="localhost"
-
-ENV PORT=3000
+EXPOSE 80
 
 CMD [ "node", "server.js" ]

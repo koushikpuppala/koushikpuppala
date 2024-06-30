@@ -44,6 +44,8 @@ jobs:
           echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
           echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
+          echo "HOSTNAME=localhost" >> .env
+          echo "PORT=80" >> .env
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
