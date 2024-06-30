@@ -48,4 +48,10 @@ USER portfolio
 
 EXPOSE 3000
 
+# Make sure container is running in localhost
+
+ENV HOST="localhost"
+
+ENV PORT=3000
+
 CMD [ "node", "server.js" ]
