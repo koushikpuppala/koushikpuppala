@@ -26,6 +26,8 @@ RUN yarn build
 
 FROM --platform=$TARGETPLATFORM base AS runner
 
+RUN apk add --no-cache curl bash
+
 WORKDIR /app
 
 RUN addgroup --system --gid 1001 koushikpuppala
