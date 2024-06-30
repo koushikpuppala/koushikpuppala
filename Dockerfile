@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:lts AS base
+FROM --platform=$BUILDPLATFORM node:lts-alpine AS base
 
 FROM base AS dependencies
 
