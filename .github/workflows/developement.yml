@@ -6,6 +6,7 @@ on:
     branches:
       - dev
     paths-ignore:
+      - '!.github/workflows/development.yml'
       - 'README.md'
       - 'LICENSE.md'
       - '.github/**'
@@ -15,11 +16,11 @@ on:
       - '.prettierignore'
       - '.dockerignore'
       - '.commitlintrc.ts'
-      - '!.github/workflows/development.yml'
   pull_request:
     branches:
       - dev
     paths-ignore:
+      - '!.github/workflows/development.yml'
       - 'README.md'
       - 'LICENSE.md'
       - '.github/**'
@@ -29,7 +30,6 @@ on:
       - '.prettierignore'
       - '.dockerignore'
       - '.commitlintrc.ts'
-      - '!.github/workflows/development.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -69,6 +69,12 @@ jobs:
           echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
           echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
+
+      # Set up QEMU for multi-platform builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3.0.0
+        with:
+          platforms: all
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache

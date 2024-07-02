@@ -6,6 +6,7 @@ on:
     branches:
       - master
     paths-ignore:
+      - '!.github/workflows/production.yml'
       - 'README.md'
       - 'LICENSE.md'
       - '.github/**'
@@ -15,11 +16,11 @@ on:
       - '.prettierignore'
       - '.dockerignore'
       - '.commitlintrc.ts'
-      - '!.github/workflows/production.yml'
   pull_request:
     branches:
       - master
     paths-ignore:
+      - '!.github/workflows/production.yml'
       - 'README.md'
       - 'LICENSE.md'
       - '.github/**'
@@ -29,7 +30,6 @@ on:
       - '.prettierignore'
       - '.dockerignore'
       - '.commitlintrc.ts'
-      - '!.github/workflows/production.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -74,6 +74,12 @@ jobs:
       - name: Get version
         id: version
         run: echo "VERSION=$(node -p "require('./projects/admin/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      # Set up QEMU for multi-platform builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3.0.0
+        with:
+          platforms: all
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
