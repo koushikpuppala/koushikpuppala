@@ -44,3 +44,5 @@ export type {
 	CardContainerComponentProps,
 	CardItemComponentProps,
 } from './components'
+
+export type { ContactFormType } from './validation'
