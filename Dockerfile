@@ -24,7 +24,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 
 COPY . .
 
-ENV ENVIRONMENT production
+ENV ENVIRONMENT=production
 
 RUN yarn build
 
@@ -52,6 +52,6 @@ USER portfolio
 
 EXPOSE 3000
 
-ENV PORT 3000
+ENV PORT=3000
 
 CMD node server.js
