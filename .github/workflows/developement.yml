@@ -27,6 +27,11 @@ jobs:
     environment: Development
     runs-on: ubuntu-latest
 
+  build:
+    environment: Development
+    runs-on: ubuntu-latest
+    needs: checkout
+
     steps:
       # Checkout the repository
       - name: Checkout Repository
@@ -46,32 +51,6 @@ jobs:
           echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
           echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
-
-      # Upload .env file as artifact for build job to download it
-      - name: Upload .env file
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: env
-          path: .env
-          retention-days: 1
-          compression-level: 0
-          if-no-files-found: error
-
-  build:
-    environment: Development
-    runs-on: ubuntu-latest
-    needs: checkout
-
-    steps:
-      # Checkout the repository
-      - name: Checkout Repository
-        uses: actions/checkout@v4.1.4
-
-      # Download .env file from checkout job to use it for Docker build
-      - name: Download .env file
-        uses: actions/download-artifact@v4.1.7
-        with:
-          name: env
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
