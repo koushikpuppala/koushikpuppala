@@ -23,14 +23,9 @@ permissions:
   id-token: write
 
 jobs:
-  checkout:
-    environment: Development
-    runs-on: ubuntu-latest
-
   build:
     environment: Development
     runs-on: ubuntu-latest
-    needs: checkout
 
     steps:
       # Checkout the repository
