@@ -2,8 +2,8 @@ import Script from 'next/script'
 import classNames from 'classnames'
 import { Sora } from 'next/font/google'
 import { Metadata, Viewport } from 'next'
-import { RootLayoutProps } from '@import/interface'
-import { NavbarComponent, TransitionComponent } from '@import/components'
+import { RootLayoutProps } from '@import/types'
+import { BackgroundBeamsComponent, NavbarComponent } from '@import/components'
 
 import '@import/styles/globals.scss'
 import 'react-vertical-timeline-component/style.min.css'
@@ -77,7 +77,7 @@ export const metadata: Metadata = {
 		apple: { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
 	},
 	manifest: '/manifest.webmanifest',
-	metadataBase: new URL(process.env.NEXT_PUBLIC_VERCEL_URL!),
+	metadataBase: new URL(process.env.NEXT_PUBLIC_DEPLOY_URL!),
 	robots: {
 		index: true,
 		follow: true,
@@ -92,6 +92,8 @@ export const metadata: Metadata = {
 		},
 	},
 }
+
+export const revalidate = 300
 
 export const viewport: Viewport = {
 	width: 'device-width',
@@ -113,7 +115,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 				<Script
 					id='google-analytics-g4'
 					async={true}
-					src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_MEASUREMENT_ID}`}
+					src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
 					strategy='afterInteractive'
 				/>
 				<Script
@@ -126,17 +128,19 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 								dataLayer.push(arguments);
 							}
 							gtag('js', new Date());
-							gtag('config', '${process.env.NEXT_PUBLIC_MEASUREMENT_ID}');`,
+							gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');`,
 					}}
 				/>
 			</head>
 			<body
 				className={classNames(
 					sora.className,
-					'relative h-screen w-full overflow-hidden bg-site bg-cover bg-center bg-no-repeat text-white',
+					'relative h-screen w-full overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white',
 				)}>
 				<NavbarComponent />
-				<TransitionComponent>{children}</TransitionComponent>
+				{/* <TransitionComponent></TransitionComponent> */}
+				{children}
+				<BackgroundBeamsComponent />
 			</body>
 		</html>
 	)

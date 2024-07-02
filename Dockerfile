@@ -1,26 +1,57 @@
-FROM node:lts-alpine
+FROM --platform=$TARGETPLATFORM node:lts-alpine AS base
 
-RUN addgroup app && adduser -S -G app app
+FROM base AS dependencies
 
-USER app
+RUN corepack enable
+
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
 COPY package.json yarn.lock .yarnrc.yml ./
 
-USER root
+RUN yarn install
 
-RUN chown -R app:app .
+FROM base AS builder
 
-USER app
+RUN corepack enable
 
-RUN yarn set version stable
+RUN apk add --no-cache libc6-compat
 
-RUN yarn install \
-    yarn cache clean
+WORKDIR /app
+
+COPY --from=dependencies /app/node_modules ./node_modules
 
 COPY . .
 
+ENV ENVIRONMENT=production
+
+RUN yarn build
+
+FROM base AS runner
+
+RUN apk add --no-cache curl bash
+
+WORKDIR /app
+
+RUN addgroup --system --gid 1001 koushikpuppala
+
+RUN adduser --system --uid 1001 portfolio --ingroup koushikpuppala
+
+COPY --from=builder /app/public ./public
+
+RUN mkdir .next
+
+RUN chown portfolio:koushikpuppala .next
+
+COPY --from=builder --chown=portfolio:koushikpuppala /app/.next/standalone ./
+
+COPY --from=builder --chown=portfolio:koushikpuppala /app/.next/static ./.next/static
+
+USER portfolio
+
 EXPOSE 3000
 
-CMD ["yarn", "dev"]
+ENV PORT=3000
+
+CMD node server.js

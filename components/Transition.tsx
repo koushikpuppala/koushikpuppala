@@ -1,6 +1,6 @@
 'use client'
 
-import { TransitionComponentProps } from '@import/interface'
+import { TransitionComponentProps } from '@import/types'
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 
@@ -22,6 +22,9 @@ const transitionVariants = {
 
 const TransitionComponent = ({ children }: TransitionComponentProps) => {
 	const pathname = usePathname()
+
+	if (pathname.includes('/studio')) return children
+
 	return (
 		<AnimatePresence mode='sync'>
 			<motion.div key={pathname} className='h-full'>

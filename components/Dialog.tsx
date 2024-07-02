@@ -1,7 +1,7 @@
 'use client'
 
 import { Transition, Dialog } from '@headlessui/react'
-import { DialogComponentProps } from '@import/interface'
+import { DialogComponentProps } from '@import/types'
 import { Fragment } from 'react'
 
 const DialogComponent = ({ children, open, setOpen, cancelButtonRef }: DialogComponentProps) => {

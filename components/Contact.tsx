@@ -1,28 +1,24 @@
 'use client'
 
-import { handleSubmit } from '@import/actions'
 import classNames from 'classnames'
+import { fromZodError } from 'zod-validation-error'
+import { handleSubmit } from '@import/actions'
+import { ContactFormSchema } from '@import/validation'
+import { ContactFormType } from '@import/types'
 import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 
 const initialValue = {
-	value: {
-		name: '',
-		email: '',
-		subject: '',
-		message: '',
-	},
-	error: {
-		name: '',
-		email: '',
-		subject: '',
-		message: '',
-	},
+	name: '',
+	email: '',
+	subject: '',
+	message: '',
 }
 
 const ContactComponent = () => {
 	const [isDisabled, setIsDisabled] = useState(true)
-	const [form, setForm] = useState(initialValue)
+	const [form, setForm] = useState<ContactFormType>(initialValue)
+	const [error, setError] = useState<ContactFormType>(initialValue)
 
 	const initialState = {
 		statusCode: 0,
@@ -32,9 +28,9 @@ const ContactComponent = () => {
 	const [state, formActions] = useFormState(handleSubmit, initialState)
 
 	useEffect(() => {
-		setIsDisabled(
-			Object.values(form.error).some(err => err !== '') || Object.values(form.value).some(val => val === ''),
-		)
+		const { success } = ContactFormSchema.safeParse(form)
+
+		setIsDisabled(!success)
 	}, [form])
 
 	useEffect(() => {
@@ -44,32 +40,13 @@ const ContactComponent = () => {
 	const handleChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const { name, value } = e.target
 
-		let error = ''
-		const regex = new RegExp(/^\w+(?:[\.-]?\w+)*@\w+(?:[\.-]?\w+)*(\.\w{2,})+$/)
+		setForm({ ...form, [name]: value })
 
-		switch (name) {
-			case 'name':
-				if (value.length == 0) error = 'Name is required'
-				else if (value.length < 3) error = 'Name must be at least 3 characters'
-				break
-			case 'email':
-				if (value.length == 0) error = 'Email is required'
-				else if (!value.match(regex)) error = 'Email is invalid'
-				break
-			case 'subject':
-				if (value.length == 0) error = 'Subject is required'
-				else if (value.length < 20) error = 'Subject must be at least 20 characters'
-				break
-			case 'message':
-				if (value.length == 0) error = 'Message is required'
-				else if (value.length < 50) error = 'Message must be at least 50 characters'
-				break
-		}
+		const { success, error: zodError } =
+			ContactFormSchema.shape[name as keyof typeof ContactFormSchema.shape].safeParse(value)
 
-		setForm({
-			value: { ...form.value, [name]: value },
-			error: { ...form.error, [name]: error },
-		})
+		if (!success) setError({ ...error, [name]: fromZodError(zodError).details[0].message })
+		else setError({ ...error, [name]: '' })
 	}
 
 	return (
@@ -82,12 +59,13 @@ const ContactComponent = () => {
 					<input
 						type='text'
 						name='name'
-						value={form.value.name}
+						value={form.name}
 						onChange={handleChange}
 						placeholder="What's your name?"
+						autoComplete='off'
 						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
-					{form.error.name && <span className='mt-2 px-6 text-red-500'>{form.error.name}</span>}
+					{error.name && <span className='mt-2 px-6 text-red-500'>{error.name}</span>}
 				</label>
 				<label className='flex flex-col'>
 					<span className='mb-4 font-medium text-white'>
@@ -96,12 +74,13 @@ const ContactComponent = () => {
 					<input
 						type='email'
 						name='email'
-						value={form.value.email}
+						value={form.email}
 						onChange={handleChange}
 						placeholder="What's Your Email Address?"
+						autoComplete='off'
 						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
-					{form.error.email && <span className='mt-2 px-6 text-red-500'>{form.error.email}</span>}
+					{error.email && <span className='mt-2 px-6 text-red-500'>{error.email}</span>}
 				</label>
 				<label className='flex flex-col'>
 					<span className='mb-4 font-medium text-white'>
@@ -110,12 +89,13 @@ const ContactComponent = () => {
 					<input
 						type='text'
 						name='subject'
-						value={form.value.subject}
+						value={form.subject}
 						onChange={handleChange}
 						placeholder='What is it about?'
-						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						autoComplete='off'
+						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
-					{form.error.subject && <span className='mt-2 px-6 text-red-500'>{form.error.subject}</span>}
+					{error.subject && <span className='mt-2 px-6 text-red-500'>{error.subject}</span>}
 				</label>
 				<label className='flex flex-col'>
 					<span className='mb-4 font-medium text-white'>
@@ -124,12 +104,13 @@ const ContactComponent = () => {
 					<textarea
 						rows={8}
 						name='message'
-						value={form.value.message}
+						value={form.message}
 						onChange={handleChange}
 						placeholder='What you want to say?'
-						className='resize-none rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						autoComplete='off'
+						className='resize-none rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
-					{form.error.message && <span className='mt-2 px-6 text-red-500'>{form.error.message}</span>}
+					{error.message && <span className='mt-2 px-6 text-red-500'>{error.message}</span>}
 				</label>
 				<div
 					className={classNames({
@@ -140,7 +121,7 @@ const ContactComponent = () => {
 					{state.statusCode === 400 && <span className='text-yellow-500'>{state.statusMessage}</span>}
 					{state.statusCode === 200 && <span className='text-green-500'>{state.statusMessage}</span>}
 				</div>
-				<SubmitButton isDisabled={isDisabled} />
+				<SubmitButton isDisabled={isDisabled || state.statusCode === 200} />
 			</form>
 		</div>
 	)

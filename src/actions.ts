@@ -23,8 +23,8 @@ export const handleSubmit = async (
 	const mailer = createTransport({
 		service: 'gmail',
 		auth: {
-			user: process.env.USER!,
-			pass: process.env.PASS!,
+			user: process.env.USERNAME!,
+			pass: process.env.PASSWORD!,
 		},
 	})
 
