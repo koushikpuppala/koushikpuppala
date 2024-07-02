@@ -27,7 +27,7 @@ export class Database {
 			family: 4,
 			maxPoolSize: 100,
 			minPoolSize: 10,
-			dbName: process.env.DATABASE_NAME!,
+			dbName: process.env.DATABASE!,
 		})
 		this._client = connection
 		this._client.on('error', console.error.bind(console, 'connection error:'))

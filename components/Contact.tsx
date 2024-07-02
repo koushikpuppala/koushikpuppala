@@ -93,7 +93,7 @@ const ContactComponent = () => {
 						onChange={handleChange}
 						placeholder='What is it about?'
 						autoComplete='off'
-						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{error.subject && <span className='mt-2 px-6 text-red-500'>{error.subject}</span>}
 				</label>
@@ -108,7 +108,7 @@ const ContactComponent = () => {
 						onChange={handleChange}
 						placeholder='What you want to say?'
 						autoComplete='off'
-						className='resize-none rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						className='resize-none rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
 					/>
 					{error.message && <span className='mt-2 px-6 text-red-500'>{error.message}</span>}
 				</label>
