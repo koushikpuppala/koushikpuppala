@@ -1,6 +1,7 @@
 import Script from 'next/script'
 import classNames from 'classnames'
 import { Sora } from 'next/font/google'
+import { config } from '@import/config'
 import { Metadata, Viewport } from 'next'
 import { RootLayoutProps } from '@import/types'
 import { BackgroundBeamsComponent, NavbarComponent } from '@import/components'
@@ -115,7 +116,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 				<Script
 					id='google-analytics-g4'
 					async={true}
-					src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+					src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalytics}`}
 					strategy='afterInteractive'
 				/>
 				<Script
@@ -124,11 +125,11 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					type='text/javascript'
 					dangerouslySetInnerHTML={{
 						__html: `window.dataLayer = window.dataLayer || [];
-							function gtag(){
+							function gtag() {
 								dataLayer.push(arguments);
 							}
 							gtag('js', new Date());
-							gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}');`,
+							gtag('config', '${config.googleAnalytics}');`,
 					}}
 				/>
 			</head>

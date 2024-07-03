@@ -16,20 +16,6 @@ on:
       - '.prettierignore'
       - '.dockerignore'
       - '.commitlintrc.ts'
-  pull_request:
-    branches:
-      - dev
-    paths-ignore:
-      - '!.github/workflows/development.yml'
-      - 'README.md'
-      - 'LICENSE.md'
-      - '.github/**'
-      - 'docs/**'
-      - '.husky/**'
-      - '.gitignore'
-      - '.prettierignore'
-      - '.dockerignore'
-      - '.commitlintrc.ts'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
