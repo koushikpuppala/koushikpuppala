@@ -16,20 +16,6 @@ on:
       - '.prettierignore'
       - '.dockerignore'
       - '.commitlintrc.ts'
-  pull_request:
-    branches:
-      - master
-    paths-ignore:
-      - '!.github/workflows/production.yml'
-      - 'README.md'
-      - 'LICENSE.md'
-      - '.github/**'
-      - 'docs/**'
-      - '.husky/**'
-      - '.gitignore'
-      - '.prettierignore'
-      - '.dockerignore'
-      - '.commitlintrc.ts'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -73,7 +59,7 @@ jobs:
       # Get version from package.json using GITHUB_OUTPUT
       - name: Get version
         id: version
-        run: echo "VERSION=$(node -p "require('./projects/admin/package.json').version")" >> "$GITHUB_OUTPUT"
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
       # Set up QEMU for multi-platform builds
       - name: Set up QEMU
