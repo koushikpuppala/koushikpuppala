@@ -64,7 +64,7 @@
 		"@types/react-vertical-timeline-component": "^3.3.6",
 		"@typescript-eslint/parser": "^7.15.0",
 		"autoprefixer": "^10.4.19",
-		"cssnano": "^7.0.3",
+		"cssnano": "^7.0.4",
 		"eslint": "8.56.0",
 		"eslint-config-next": "^14.2.4",
 		"husky": "^9.0.11",
