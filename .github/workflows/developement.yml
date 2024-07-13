@@ -44,17 +44,19 @@ jobs:
       # Create .env file from secrets for Docker build
       - name: Create .env file
         run: |
+          echo "USER=${{ secrets.USER }}" >> .env
+          echo "PASS=${{ secrets.PASS }}" >> .env
           echo "DATABASE=${{ secrets.DATABASE }}" >> .env
-          echo "USERNAME=${{ secrets.USERNAME }}" >> .env
-          echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
           echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
           echo "MONGO_API=${{ secrets.MONGO_API }}" >> .env
           echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
           echo "NEXT_PUBLIC_DATASET=${{ secrets.NEXT_PUBLIC_DATASET }}" >> .env
+          echo "RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }}" >> .env
           echo "NEXT_PUBLIC_SANITY_ID=${{ secrets.NEXT_PUBLIC_SANITY_ID }}" >> .env
           echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
           echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
+          echo "NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}" >> .env
 
       # Set up QEMU for multi-platform builds
       - name: Set up QEMU

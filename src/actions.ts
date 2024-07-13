@@ -11,8 +11,6 @@ export const handleSubmit = async (
 	},
 	form: FormData,
 ) => {
-	'use server'
-
 	const database = Database.instance
 
 	const name = form.get('name')!.toString()
@@ -23,8 +21,8 @@ export const handleSubmit = async (
 	const mailer = createTransport({
 		service: 'gmail',
 		auth: {
-			user: process.env.USERNAME!,
-			pass: process.env.PASSWORD!,
+			user: process.env.USER!,
+			pass: process.env.PASS!,
 		},
 	})
 
@@ -69,4 +67,18 @@ export const handleSubmit = async (
 		await database.disconnect()
 		mailer.close()
 	}
+}
+
+export const handleReCaptcha = async (token: string) => {
+	const response = await fetch(
+		`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
+		{
+			method: 'POST',
+			cache: 'no-cache',
+		},
+	)
+
+	const data = await response.json()
+
+	return data.success
 }
