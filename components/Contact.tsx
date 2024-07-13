@@ -2,11 +2,13 @@
 
 import classNames from 'classnames'
 import { fromZodError } from 'zod-validation-error'
-import { handleSubmit } from '@import/actions'
+import { handleReCaptcha, handleSubmit } from '@import/actions'
 import { ContactFormSchema } from '@import/validation'
 import { ContactFormType } from '@import/types'
 import { useEffect, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
+import { useReCaptcha } from 'next-recaptcha-v3'
+import { captureException } from '@sentry/nextjs'
 
 const initialValue = {
 	name: '',
@@ -24,6 +26,7 @@ const ContactComponent = () => {
 		statusCode: 0,
 		statusMessage: '',
 	}
+	const { executeRecaptcha } = useReCaptcha()
 
 	const [state, formActions] = useFormState(handleSubmit, initialState)
 
@@ -51,7 +54,21 @@ const ContactComponent = () => {
 
 	return (
 		<div className='h-full w-full rounded-2xl bg-black-100/60 p-8'>
-			<form action={formActions} className='flex flex-col gap-8'>
+			<form
+				action={async payload => {
+					const token = await executeRecaptcha('contact_form_submit')
+
+					try {
+						const success = await handleReCaptcha(token)
+
+						if (success) formActions(payload)
+						else captureException(new Error('Failed to verify reCaptcha'))
+					} catch (error) {
+						captureException(error)
+						console.error(error)
+					}
+				}}
+				className='flex flex-col gap-8'>
 				<label className='flex flex-col'>
 					<span className='mb-4 font-medium text-white'>
 						Your Name <span className='text-red-500'>*</span>

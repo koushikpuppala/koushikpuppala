@@ -17,4 +17,8 @@ export const config = {
 		process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS,
 		'Missing environment variable: NEXT_PUBLIC_GOOGLE_ANALYTICS',
 	),
+	reCaptchaSiteKey: assertValue(
+		process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+		'Missing environment variable: NEXT_PUBLIC_RECAPTCHA_SITE_KEY',
+	),
 }

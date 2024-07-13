@@ -4,10 +4,12 @@ import { Sora } from 'next/font/google'
 import { config } from '@import/config'
 import { Metadata, Viewport } from 'next'
 import { RootLayoutProps } from '@import/types'
+import { ReCaptchaProvider } from 'next-recaptcha-v3'
 import { BackgroundBeamsComponent, NavbarComponent } from '@import/components'
 
 import '@import/styles/globals.scss'
 import 'react-vertical-timeline-component/style.min.css'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
 	title: {
@@ -138,10 +140,23 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					sora.className,
 					'relative h-screen w-full overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white',
 				)}>
-				<NavbarComponent />
-				{/* <TransitionComponent></TransitionComponent> */}
-				{children}
-				<BackgroundBeamsComponent />
+				<ReCaptchaProvider reCaptchaKey={config.reCaptchaSiteKey}>
+					<span className='sr-only'>
+						This site is protected by reCAPTCHA and the Google
+						<Link target='_blank' href='https://policies.google.com/privacy'>
+							Privacy Policy
+						</Link>{' '}
+						and
+						<Link target='_blank' href='https://policies.google.com/terms'>
+							Terms of Service
+						</Link>{' '}
+						apply.
+					</span>
+					<NavbarComponent />
+					{/* <TransitionComponent></TransitionComponent> */}
+					{children}
+					<BackgroundBeamsComponent />
+				</ReCaptchaProvider>
 			</body>
 		</html>
 	)
