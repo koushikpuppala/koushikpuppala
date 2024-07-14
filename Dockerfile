@@ -1,11 +1,12 @@
-FROM --platform=$TARGETPLATFORM node:lts-slim AS base
+FROM --platform=$TARGETPLATFORM node:lts-alpine AS base
 
 FROM base AS dependencies
 
 RUN corepack enable
 
-RUN apt-get update && apt-get install -y libc6 && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update
+
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
@@ -17,8 +18,9 @@ FROM base AS builder
 
 RUN corepack enable
 
-RUN apt-get update && apt-get install -y libc6 && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt update
+
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
@@ -32,7 +34,9 @@ RUN yarn build
 
 FROM base AS runner
 
-RUN apt-get update && apt-get install -y curl bash
+RUN apt update
+
+RUN apk add --no-cache curl bash
 
 WORKDIR /app
 
