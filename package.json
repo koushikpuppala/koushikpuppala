@@ -1,6 +1,6 @@
 {
 	"name": "koushikpuppala",
-	"version": "5.4.0",
+	"version": "5.4.1",
 	"description": "My website was developed using the Next.js framework and the TypeScript programming language and hosted on the Vercel cloud platform. It contains blogs, a portfolio, and a contact form.",
 	"main": "next.config.js",
 	"packageManager": "yarn@4.3.1",
