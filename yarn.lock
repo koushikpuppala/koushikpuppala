@@ -3948,9 +3948,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sanity/vision@npm:^3.50.0":
-  version: 3.50.0
-  resolution: "@sanity/vision@npm:3.50.0"
+"@sanity/vision@npm:^3.51.0":
+  version: 3.51.0
+  resolution: "@sanity/vision@npm:3.51.0"
   dependencies:
     "@codemirror/autocomplete": "npm:^6.1.0"
     "@codemirror/commands": "npm:^6.0.1"
@@ -3965,7 +3965,7 @@ __metadata:
     "@rexxars/react-split-pane": "npm:^0.1.93"
     "@sanity/color": "npm:^3.0.0"
     "@sanity/icons": "npm:^3.3.0"
-    "@sanity/ui": "npm:^2.6.7"
+    "@sanity/ui": "npm:^2.6.8"
     "@uiw/react-codemirror": "npm:^4.11.4"
     is-hotkey-esm: "npm:^1.0.0"
     json-2-csv: "npm:^5.5.1"
@@ -3975,7 +3975,7 @@ __metadata:
   peerDependencies:
     react: ^18
     styled-components: ^6.1
-  checksum: 10c0/7cae3abe517dae2d386db944926ab3c5d58bb374a4673b275a7cd511c28ce85d674ba9510228e196178fcf445e0ffbef0a251581b3be4620bec903215032251d
+  checksum: 10c0/d9064b7f330f68173fc25c0a970a07ec847d2279ab329776c6f9c3927a5c13231a080bea364bd99b57003fabeb0e8f3eaade645870f10a0e898a4fbca9ff92e9
   languageName: node
   linkType: hard
 
@@ -10127,7 +10127,7 @@ __metadata:
     "@sanity/image-url": "npm:^1.0.2"
     "@sanity/types": "npm:^3.50.0"
     "@sanity/ui": "npm:^2.6.8"
-    "@sanity/vision": "npm:^3.50.0"
+    "@sanity/vision": "npm:^3.51.0"
     "@sentry/nextjs": "npm:^8.17.0"
     "@types/eslint": "npm:^8.56.10"
     "@types/node": "npm:^20.14.10"
