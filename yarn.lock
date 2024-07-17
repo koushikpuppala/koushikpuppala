@@ -3892,7 +3892,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sanity/ui@npm:^2.6.7, @sanity/ui@npm:^2.6.8":
+"@sanity/ui@npm:^2.6.7":
   version: 2.6.8
   resolution: "@sanity/ui@npm:2.6.8"
   dependencies:
@@ -3909,6 +3909,26 @@ __metadata:
     react-is: ^18
     styled-components: ^5.2 || ^6
   checksum: 10c0/5326adc07d6302f19dd84b6abd8b2cfa9dd687d8ecb52880db78cdd8a198ece6e758928ddd8c9645d1d804d77410bcc4a93bdf109d2b5a3e9832cbe0882b8a88
+  languageName: node
+  linkType: hard
+
+"@sanity/ui@npm:^2.7.0":
+  version: 2.7.0
+  resolution: "@sanity/ui@npm:2.7.0"
+  dependencies:
+    "@floating-ui/react-dom": "npm:^2.1.1"
+    "@sanity/color": "npm:^3.0.6"
+    "@sanity/icons": "npm:^3.3.0"
+    csstype: "npm:^3.1.3"
+    framer-motion: "npm:11.0.8"
+    react-refractor: "npm:^2.2.0"
+    use-effect-event: "npm:^1.0.2"
+  peerDependencies:
+    react: ^18
+    react-dom: ^18
+    react-is: ^18
+    styled-components: ^5.2 || ^6
+  checksum: 10c0/0e9f2ab2af068e18ed20f871cfd2a451bfca1f93d391e6cdaa43b6e7e6449efdc7ebbdbcd8dc2280c25b42fcf6ef73224f5ed031842e17b8b51a2147d880397d
   languageName: node
   linkType: hard
 
@@ -10126,7 +10146,7 @@ __metadata:
     "@sanity/icons": "npm:^3.3.0"
     "@sanity/image-url": "npm:^1.0.2"
     "@sanity/types": "npm:^3.50.0"
-    "@sanity/ui": "npm:^2.6.8"
+    "@sanity/ui": "npm:^2.7.0"
     "@sanity/vision": "npm:^3.50.0"
     "@sentry/nextjs": "npm:^8.17.0"
     "@types/eslint": "npm:^8.56.10"
