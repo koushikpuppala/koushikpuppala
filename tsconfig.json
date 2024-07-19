@@ -50,6 +50,6 @@
 			}
 		] /* Use TypeScript-specific functionality in Next.js pages and API routes. */
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next.config.js", "postcss.config.js"],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
 }

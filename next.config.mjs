@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 
-const { withSentryConfig } = require('@sentry/nextjs')
-const withPWA = require('@ducanh2912/next-pwa')
+import { withSentryConfig } from '@sentry/nextjs'
+import * as nextPWA from '@ducanh2912/next-pwa'
 
-const nextConfig = withPWA.default({
+const nextConfig = nextPWA.default({
 	dest: 'public',
 	register: process.env.NODE_ENV !== 'development',
 	disable: process.env.NODE_ENV === 'development',
@@ -14,8 +14,8 @@ const nextConfig = withPWA.default({
 		cleanupOutdatedCaches: process.env.NODE_ENV !== 'development',
 	},
 })({
-	experimental: { instrumentationHook: true },
 	reactStrictMode: process.env.NODE_ENV !== 'development',
+	experimental: { instrumentationHook: true, reactCompiler: true },
 	output: process.env.ENVIRONMENT === 'production' ? 'standalone' : undefined,
 	images: { remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }] },
 	redirects: async () => {
@@ -116,4 +116,4 @@ const sentryOptions = {
 	automaticVercelMonitors: true,
 }
 
-module.exports = withSentryConfig(nextConfig, userSentryWebpackPluginOptions, sentryOptions)
+export default withSentryConfig(nextConfig, userSentryWebpackPluginOptions, sentryOptions)

@@ -137,11 +137,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					sora.className,
 					'relative h-screen w-full overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white',
 				)}>
-				<ReCaptchaProvider reCaptchaKey={config.reCaptchaSiteKey}>
-					<NavbarComponent />
-					{children}
-					<BackgroundBeamsComponent />
-				</ReCaptchaProvider>
+				<NavbarComponent />
+				<ReCaptchaProvider reCaptchaKey={config.reCaptchaSiteKey}>{children}</ReCaptchaProvider>
+				<BackgroundBeamsComponent />
 			</body>
 		</html>
 	)
