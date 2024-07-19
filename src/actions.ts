@@ -1,17 +1,14 @@
 'use server'
 
-import { ContactModel, Database } from '@import/database'
+import { ContactModel, DatabaseInstance } from '@import/database'
+import { handleFormSubmitType } from '@import/types'
 import { captureException } from '@sentry/nextjs'
 import { createTransport } from 'nodemailer'
 
-export const handleSubmit = async (
-	prevState: {
-		statusCode: number
-		statusMessage: string
-	},
-	form: FormData,
-) => {
-	const database = Database.instance
+export const handleSubmit: handleFormSubmitType = async (prevState, form) => {
+	if (prevState.statusCode === 200) return prevState
+
+	const database = DatabaseInstance
 
 	const name = form.get('name')!.toString()
 	const email = form.get('email')!.toString()
@@ -20,18 +17,8 @@ export const handleSubmit = async (
 
 	const mailer = createTransport({
 		service: 'gmail',
-		auth: {
-			user: process.env.USER!,
-			pass: process.env.PASS!,
-		},
+		auth: { user: process.env.USER!, pass: process.env.PASS! },
 	})
-
-	if (prevState.statusCode === 200 || prevState.statusCode === 400) {
-		return {
-			statusCode: 400,
-			statusMessage: 'You have already submitted a message. Please wait for a response. Thank you!',
-		}
-	}
 
 	try {
 		await database.connect()

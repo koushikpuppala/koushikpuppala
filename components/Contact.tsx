@@ -1,34 +1,22 @@
 'use client'
 
+import Link from 'next/link'
 import classNames from 'classnames'
-import { fromZodError } from 'zod-validation-error'
-import { handleReCaptcha, handleSubmit } from '@import/actions'
-import { ContactFormSchema } from '@import/validation'
 import { ContactFormType } from '@import/types'
-import { useEffect, useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
 import { useReCaptcha } from 'next-recaptcha-v3'
 import { captureException } from '@sentry/nextjs'
-
-const initialValue = {
-	name: '',
-	email: '',
-	subject: '',
-	message: '',
-}
+import { fromZodError } from 'zod-validation-error'
+import { ContactFormSchema } from '@import/validation'
+import { useActionState, useEffect, useState } from 'react'
+import { handleReCaptcha, handleSubmit } from '@import/actions'
+import { FORM_INITIAL_STATE, FORM_INITIAL_VALUE } from '@import/constant'
 
 const ContactComponent = () => {
-	const [isDisabled, setIsDisabled] = useState(true)
-	const [form, setForm] = useState<ContactFormType>(initialValue)
-	const [error, setError] = useState<ContactFormType>(initialValue)
-
-	const initialState = {
-		statusCode: 0,
-		statusMessage: '',
-	}
 	const { executeRecaptcha } = useReCaptcha()
-
-	const [state, formActions] = useFormState(handleSubmit, initialState)
+	const [isDisabled, setIsDisabled] = useState(true)
+	const [form, setForm] = useState<ContactFormType>(FORM_INITIAL_VALUE)
+	const [error, setError] = useState<ContactFormType>(FORM_INITIAL_VALUE)
+	const [state, formActions, isSubmitting] = useActionState(handleSubmit, FORM_INITIAL_STATE)
 
 	useEffect(() => {
 		const { success } = ContactFormSchema.safeParse(form)
@@ -37,7 +25,10 @@ const ContactComponent = () => {
 	}, [form])
 
 	useEffect(() => {
-		if (state.statusCode === 200) setForm(initialValue)
+		if (state.statusCode !== 200) return
+
+		setForm(FORM_INITIAL_VALUE)
+		setIsDisabled(state.statusCode === 200)
 	}, [state])
 
 	const handleChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -135,38 +126,42 @@ const ContactComponent = () => {
 						'flex items-center justify-center': state.statusCode !== 0,
 					})}>
 					{state.statusCode === 500 && <span className='text-red-500'>{state.statusMessage}</span>}
-					{state.statusCode === 400 && <span className='text-yellow-500'>{state.statusMessage}</span>}
 					{state.statusCode === 200 && <span className='text-green-500'>{state.statusMessage}</span>}
 				</div>
-				<SubmitButton isDisabled={isDisabled || state.statusCode === 200} />
+
+				<button
+					type='submit'
+					disabled={isDisabled}
+					className={classNames(
+						{
+							'cursor-not-allowed bg-secondary': isDisabled,
+							'bg-accent hover:bg-opacity-100': !isDisabled,
+						},
+						'rounded-lg border-none bg-opacity-50 px-6 py-4 font-medium text-white outline-none placeholder:text-secondary',
+					)}>
+					{isSubmitting ? (
+						<div className='flex flex-row items-center justify-center gap-4 align-middle'>
+							<div className='h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-l-transparent border-r-transparent' />
+							Submitting...
+						</div>
+					) : (
+						'Submit'
+					)}
+				</button>
 			</form>
+			<span className='text-xs'>
+				<span className='text-red-500'>* </span>
+				This site is protected by reCAPTCHA and the Google{' '}
+				<Link className='text-blue-400' target='_blank' href='https://policies.google.com/privacy'>
+					Privacy Policy
+				</Link>
+				{' & '}
+				<Link className='text-blue-400' target='_blank' href='https://policies.google.com/terms'>
+					Terms of Service
+				</Link>{' '}
+				apply.
+			</span>
 		</div>
-	)
-}
-
-const SubmitButton = ({ isDisabled }: { isDisabled: boolean }) => {
-	const { pending } = useFormStatus()
-
-	return (
-		<button
-			type='submit'
-			disabled={isDisabled}
-			className={classNames(
-				{
-					'cursor-not-allowed bg-secondary': isDisabled,
-					'bg-accent hover:bg-opacity-100': !isDisabled,
-				},
-				'rounded-lg border-none bg-opacity-50 px-6 py-4 font-medium text-white outline-none placeholder:text-secondary',
-			)}>
-			{pending ? (
-				<div className='flex flex-row items-center justify-center gap-4 align-middle'>
-					<div className='h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-l-transparent border-r-transparent' />
-					Submitting...
-				</div>
-			) : (
-				'Submit'
-			)}
-		</button>
 	)
 }
 

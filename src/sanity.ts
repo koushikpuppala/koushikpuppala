@@ -23,9 +23,7 @@ export const sanityQuery = async (query: string, options?: FilteredResponseQuery
 	try {
 		return await sanityClient.fetch(query, params, {
 			...options,
-			next: {
-				revalidate: 300,
-			},
+			next: { revalidate: 60 * 60 * 24 },
 		})
 	} catch (error) {
 		process.env.NODE_ENV === 'development' && console.log('Sanity Query Error:', error)
@@ -34,10 +32,10 @@ export const sanityQuery = async (query: string, options?: FilteredResponseQuery
 	}
 }
 
-export const homeType = '*[_type == "home"][0]'
+export const HOME_DOCUMENT = '*[_type == "home"][0]'
 
-export const aboutType = '*[_type == "about"][0]'
+export const ABOUT_DOCUMENT = '*[_type == "about"][0]'
 
-export const experiencesType = '*[_type == "experience"] | order(startDate desc)'
+export const EXPERIENCE_DOCUMENTS = '*[_type == "experience"] | order(endDate desc)'
 
-export const projectsType = '*[_type == "project"] | order(title desc)'
+export const PROJECT_DOCUMENTS = '*[_type == "project"] | order(title desc)'

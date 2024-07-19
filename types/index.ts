@@ -22,7 +22,7 @@ export type MotionComponentProps = RootLayoutProps & {
 export type DialogComponentProps = RootLayoutProps & {
 	open: boolean
 	setOpen: (open: boolean) => void
-	cancelButtonRef: React.MutableRefObject<HTMLButtonElement | null>
+	cancelButtonRef: React.RefObject<HTMLButtonElement | null>
 }
 
 export type {
@@ -34,7 +34,7 @@ export type {
 	ServicesSchemaProps,
 } from './schemas'
 
-export type { ContactModalProps } from './models'
+export type { ContactFormType, ContactModalProps } from './models'
 
 export type {
 	FlipWordsComponentProps,
@@ -45,4 +45,4 @@ export type {
 	CardItemComponentProps,
 } from './components'
 
-export type { ContactFormType } from './validation'
+export type { handleFormSubmitType, prevStateType } from './actions'

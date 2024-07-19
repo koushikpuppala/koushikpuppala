@@ -1,9 +1,10 @@
 'use client'
-import React from 'react'
+
 import { motion } from 'framer-motion'
 import classNames from 'classnames'
+import { memo } from 'react'
 
-export const BackgroundBeamsComponent = React.memo(({ className }: { className?: string }) => {
+export const BackgroundBeamsComponent = memo(({ className }: { className?: string }) => {
 	const paths = [
 		'M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875',
 		'M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867',
@@ -86,14 +87,10 @@ export const BackgroundBeamsComponent = React.memo(({ className }: { className?:
 				<defs>
 					{paths.map((_path, index) => (
 						<motion.linearGradient
+							suppressHydrationWarning={true}
 							id={`linearGradient-${index}`}
 							key={`gradient-${index}`}
-							initial={{
-								x1: '0%',
-								x2: '0%',
-								y1: '0%',
-								y2: '0%',
-							}}
+							initial={{ x1: '0%', x2: '0%', y1: '0%', y2: '0%' }}
 							animate={{
 								x1: ['0%', '100%'],
 								x2: ['0%', '95%'],

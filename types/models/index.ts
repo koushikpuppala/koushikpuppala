@@ -1,1 +1,1 @@
-export type { ContactModalProps } from './contact'
+export type { ContactFormType, ContactModalProps } from './contact'

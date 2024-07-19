@@ -15,6 +15,7 @@ const nextConfig = withPWA.default({
 	},
 })({
 	experimental: { instrumentationHook: true },
+	reactStrictMode: process.env.NODE_ENV !== 'development',
 	output: process.env.ENVIRONMENT === 'production' ? 'standalone' : undefined,
 	images: { remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }] },
 	redirects: async () => {
@@ -84,7 +85,7 @@ const userSentryWebpackPluginOptions = {
 
 	// Suppresses source map uploading logs during build
 	// Only print logs for uploading source maps in CI
-	silent: !process.env.CI,
+	silent: process.env.NODE_ENV === 'production',
 	org: 'koushikpuppala',
 	project: 'koushikpuppala',
 }

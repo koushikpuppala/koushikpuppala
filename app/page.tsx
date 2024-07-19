@@ -7,14 +7,12 @@ import {
 	SocialMediaLogoComponent,
 	TextGenerateEffectComponent,
 } from '@import/components'
-import { homeType, sanityQuery } from '@import/sanity'
+import { HOME_DOCUMENT, sanityQuery } from '@import/sanity'
 import { HomeSchemaProps } from '@import/types'
 import { notFound } from 'next/navigation'
 
-export const revalidate = 300
-
 const HomePage = async () => {
-	const data: HomeSchemaProps | null = await sanityQuery(homeType)
+	const data: HomeSchemaProps | null = await sanityQuery(HOME_DOCUMENT)
 
 	if (!data) return notFound()
 

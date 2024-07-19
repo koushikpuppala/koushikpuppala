@@ -1,8 +1,8 @@
 import { EducationComponent, MotionDiv, MotionP, ServiceCardComponent } from '@import/components'
-import { aboutType, sanityQuery } from '@import/sanity'
+import { ABOUT_DOCUMENT, sanityQuery } from '@import/sanity'
 import { AboutSchemaProps } from '@import/types'
-import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'About',
@@ -10,10 +10,8 @@ export const metadata: Metadata = {
 	twitter: { title: 'About' },
 }
 
-export const revalidate = 300
-
 const AboutPage = async () => {
-	const data: AboutSchemaProps | null = await sanityQuery(aboutType)
+	const data: AboutSchemaProps | null = await sanityQuery(ABOUT_DOCUMENT)
 
 	if (!data) return notFound()
 

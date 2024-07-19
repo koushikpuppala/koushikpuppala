@@ -43,3 +43,5 @@ export class Database {
 		})
 	}
 }
+
+export const DatabaseInstance = Database.instance

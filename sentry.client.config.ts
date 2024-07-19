@@ -30,4 +30,7 @@ Sentry.init({
 
 	// Set Environment and release version
 	environment: process.env.NODE_ENV,
+
+	// Release version for Sentry monitoring and release health monitoring (https://docs.sentry.io/product/releases/)
+	release: process.env.npm_package_version,
 })

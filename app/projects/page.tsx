@@ -1,8 +1,8 @@
 import { MotionDiv, MotionP, ProjectCardComponent } from '@import/components'
-import { projectsType, sanityQuery } from '@import/sanity'
+import { PROJECT_DOCUMENTS, sanityQuery } from '@import/sanity'
 import { ProjectSchemaProps } from '@import/types'
-import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Projects',
@@ -10,12 +10,10 @@ export const metadata: Metadata = {
 	twitter: { title: 'Projects' },
 }
 
-export const revalidate = 300
-
 const ProjectsPage = async () => {
-	const data: ProjectSchemaProps[] | null = await sanityQuery(projectsType)
+	const data: ProjectSchemaProps[] = await sanityQuery(PROJECT_DOCUMENTS)
 
-	if (!data) return notFound()
+	if (data.length === 0) return notFound()
 
 	return (
 		<div className='h-full bg-primary/50'>

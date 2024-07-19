@@ -34,7 +34,6 @@ const config: Config = {
 				'white-100': '#f3f3f3',
 			},
 			backgroundImage: {
-				site: 'url("/site-bg.webp")',
 				'black-gradient': 'linear-gradient(to right, #434343, #000000)',
 				'accent-gradient': 'linear-gradient(-90deg, #915EFF 0%, rgba(60, 51, 80, 0) 100%)',
 				'violet-gradient': 'linear-gradient(to left, rgba(60, 51, 80, 0) 0%, #804dee 100%)',

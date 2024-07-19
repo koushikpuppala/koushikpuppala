@@ -9,6 +9,18 @@ export const NavbarData = [
 	{ name: 'Contact', href: '/contact', icon: HiEnvelopeOpen },
 ]
 
+export const FORM_INITIAL_VALUE = {
+	name: '',
+	email: '',
+	subject: '',
+	message: '',
+}
+
+export const FORM_INITIAL_STATE = {
+	statusCode: 0,
+	statusMessage: '',
+}
+
 export const transition = (direction: 'up' | 'down' | 'left' | 'right', delay: number) => ({
 	hidden: {
 		y: direction === 'up' ? 80 : direction === 'down' ? -80 : 0,
@@ -33,35 +45,6 @@ export const transition = (direction: 'up' | 'down' | 'left' | 'right', delay: n
 		},
 	},
 })
-
-export const readableDateTime = (date: string | number | Date) =>
-	new Date(date).toLocaleDateString('en-US', {
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-		weekday: 'long',
-		hour: 'numeric',
-		minute: 'numeric',
-		second: 'numeric',
-		fractionalSecondDigits: 3,
-		timeZoneName: 'longGeneric',
-	})
-
-export const readableDate = (date: string | number | Date) =>
-	new Date(date).toLocaleDateString('en-US', {
-		month: 'long',
-		day: 'numeric',
-		year: 'numeric',
-	})
-
-export const readableTime = (date: string | number | Date) =>
-	new Date(date).toLocaleTimeString('en-US', {
-		hour: 'numeric',
-		minute: 'numeric',
-		second: 'numeric',
-		fractionalSecondDigits: 3,
-		timeZoneName: 'short',
-	})
 
 export const monthYear = (date: string | number | Date) =>
 	new Date(date).toLocaleDateString('en-US', {

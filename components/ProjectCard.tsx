@@ -24,7 +24,6 @@ const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
 	const tagsSet = new Set(data.map(project => project.tag))
 	const tags = ['All', ...Array.from(tagsSet)]
 	const [tag, setTag] = useState('All')
-	const [random, setRandom] = useState(Math.random() * 1000)
 	const [projects, setProjects] = useState(data)
 	const [project, setProject] = useState<ProjectSchemaProps>()
 	const [open, setOpen] = useState(false)
@@ -38,8 +37,6 @@ const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
 
 	useEffect(() => {
 		tag !== 'All' && setProjects(data.filter(project => project.tag === tag))
-
-		setRandom(Math.random() * 1000)
 
 		return () => {
 			setOpen(false)
@@ -105,7 +102,7 @@ const ProjectCardComponent = ({ data }: { data: ProjectSchemaProps[] }) => {
 			</MotionDiv>
 			<div className='mt-6 flex flex-wrap justify-center gap-10 px-4 pb-40 lg:justify-normal lg:px-6 lg:pb-12'>
 				{projects.map(({ title, subtitle, descriptions, tags, image, github, website }, index) => (
-					<MotionDiv direction='right' delay={index * 0.2} key={random + index}>
+					<MotionDiv direction='right' delay={index * 0.2} key={tag + index}>
 						<CardContainer key={index} className='w-full rounded-2xl bg-green-pink-gradient p-px shadow-xl'>
 							<CardBody
 								className='group/card w-full cursor-pointer rounded-2xl bg-quaternary p-5 sm:w-80'
