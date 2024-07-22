@@ -3647,6 +3647,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sanity/icons@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "@sanity/icons@npm:3.3.1"
+  peerDependencies:
+    react: ^18.3 || >=19.0.0-rc
+  checksum: 10c0/d4104cffd466cbc597175510bfcf516be3d8d174bed5e462413597c02322aab7ac88fb0c53abac0d41d82cd928a646d099b1fb9d95be6e66e6e569e7ba7e2ea0
+  languageName: node
+  linkType: hard
+
 "@sanity/image-url@npm:^1.0.2":
   version: 1.0.2
   resolution: "@sanity/image-url@npm:1.0.2"
@@ -3912,6 +3921,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sanity/ui@npm:^2.8.8":
+  version: 2.8.8
+  resolution: "@sanity/ui@npm:2.8.8"
+  dependencies:
+    "@floating-ui/react-dom": "npm:^2.1.1"
+    "@sanity/color": "npm:^3.0.6"
+    "@sanity/icons": "npm:^3.3.1"
+    csstype: "npm:^3.1.3"
+    framer-motion: "npm:11.0.8"
+    react-refractor: "npm:^2.2.0"
+    use-effect-event: "npm:^1.0.2"
+  peerDependencies:
+    react: ^18
+    react-dom: ^18
+    react-is: ^18
+    styled-components: ^5.2 || ^6
+  checksum: 10c0/1eab12f3e09fecb57508c0a7f47907da4c11c5dc897d508ea2b854483c8d4a7b72ef614a81ce5dd5a5ac603ce6f479bac553aa542b399bd3e36f3fa43df4c898
+  languageName: node
+  linkType: hard
+
 "@sanity/util@npm:3.37.2":
   version: 3.37.2
   resolution: "@sanity/util@npm:3.37.2"
@@ -3948,9 +3977,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sanity/vision@npm:^3.50.0":
-  version: 3.50.0
-  resolution: "@sanity/vision@npm:3.50.0"
+"@sanity/vision@npm:^3.52.0":
+  version: 3.52.0
+  resolution: "@sanity/vision@npm:3.52.0"
   dependencies:
     "@codemirror/autocomplete": "npm:^6.1.0"
     "@codemirror/commands": "npm:^6.0.1"
@@ -3964,8 +3993,8 @@ __metadata:
     "@rexxars/react-json-inspector": "npm:^8.0.1"
     "@rexxars/react-split-pane": "npm:^0.1.93"
     "@sanity/color": "npm:^3.0.0"
-    "@sanity/icons": "npm:^3.3.0"
-    "@sanity/ui": "npm:^2.6.7"
+    "@sanity/icons": "npm:^3.3.1"
+    "@sanity/ui": "npm:^2.8.8"
     "@uiw/react-codemirror": "npm:^4.11.4"
     is-hotkey-esm: "npm:^1.0.0"
     json-2-csv: "npm:^5.5.1"
@@ -3975,7 +4004,7 @@ __metadata:
   peerDependencies:
     react: ^18
     styled-components: ^6.1
-  checksum: 10c0/7cae3abe517dae2d386db944926ab3c5d58bb374a4673b275a7cd511c28ce85d674ba9510228e196178fcf445e0ffbef0a251581b3be4620bec903215032251d
+  checksum: 10c0/7a5d9cf07cbe2f8f1eef7654a0fc34d0cc3e604c5df372b415cb3a3022f1532a2c5af4dce4a42da1c198b4dabfe48262e339f181269337a378fb633519bae404
   languageName: node
   linkType: hard
 
@@ -10127,7 +10156,7 @@ __metadata:
     "@sanity/image-url": "npm:^1.0.2"
     "@sanity/types": "npm:^3.50.0"
     "@sanity/ui": "npm:^2.6.8"
-    "@sanity/vision": "npm:^3.50.0"
+    "@sanity/vision": "npm:^3.52.0"
     "@sentry/nextjs": "npm:^8.17.0"
     "@types/eslint": "npm:^8.56.10"
     "@types/node": "npm:^20.14.10"

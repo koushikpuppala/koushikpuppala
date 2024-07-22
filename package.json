@@ -31,7 +31,7 @@
 		"@ducanh2912/next-pwa": "^10.2.7",
 		"@headlessui/react": "^2.1.2",
 		"@sanity/image-url": "^1.0.2",
-		"@sanity/vision": "^3.50.0",
+		"@sanity/vision": "^3.52.0",
 		"@sentry/nextjs": "^8.17.0",
 		"classnames": "^2.5.1",
 		"framer-motion": "^11.3.2",
