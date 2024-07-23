@@ -16,9 +16,9 @@ const ResumePage = () => {
 			className='h-screen w-full rounded-2xl'
 			src='/koushikpuppala_resume.pdf'
 			loading='eager'
-			title='Koushikpuppala Resume'>
-			<span className='sr-only'>Koushikpuppala Resume</span>
-		</iframe>
+			title='Koushikpuppala Resume'
+		/>
+		// <span className='sr-only'>Koushikpuppala Resume</span>
 	)
 }
 

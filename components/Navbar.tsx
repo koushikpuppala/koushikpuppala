@@ -72,7 +72,7 @@ const NavbarComponent = () => {
 				className='sticky left-0 right-0 z-10 p-2 text-center text-xs backdrop-blur-md lg:fixed lg:bottom-0 lg:p-4 lg:text-right lg:backdrop-blur-none'>
 				Github ❤️{' '}
 				<Link
-					href='/github/koushikpuppala'
+					href='https://github.com/koushikpuppala/koushikpuppala'
 					target='_blank'
 					rel='noopener noreferrer'
 					className='text-accent transition-all delay-100 ease-in-out hover:text-white/60'>
@@ -92,7 +92,8 @@ const LinkComponent = ({ pathname }: { pathname: string }) => {
 						className={classNames(
 							{
 								'text-accent': link.href === pathname,
-								'text-black dark:text-white': link.href !== pathname && pathname === '/resume',
+								'text-black lg:text-white dark:text-white':
+									link.href !== pathname && pathname === '/resume',
 							},
 							'group relative flex items-center transition-all duration-300 ease-in-out hover:text-accent',
 						)}

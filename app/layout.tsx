@@ -4,7 +4,6 @@ import { Sora } from 'next/font/google'
 import { config } from '@import/config'
 import { Metadata, Viewport } from 'next'
 import { RootLayoutProps } from '@import/types'
-import { ReCaptchaProvider } from 'next-recaptcha-v3'
 import { BackgroundBeamsComponent, NavbarComponent } from '@import/components'
 
 import '@import/styles/globals.scss'
@@ -138,7 +137,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					'relative h-screen w-full overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white',
 				)}>
 				<NavbarComponent />
-				<ReCaptchaProvider reCaptchaKey={config.reCaptchaSiteKey}>{children}</ReCaptchaProvider>
+				{children}
 				<BackgroundBeamsComponent />
 			</body>
 		</html>

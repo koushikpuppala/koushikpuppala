@@ -28,8 +28,8 @@ export const TextGenerateEffectComponent = ({ strings, className }: TextGenerate
 			'span',
 			{ opacity: 1 },
 			{
-				duration: currentString.split(' ').length * 0.2,
-				delay: stagger(0.2),
+				duration: currentString.split(' ').length * 0.075,
+				delay: stagger(0.1),
 			},
 		)
 	}, [currentString, animate])

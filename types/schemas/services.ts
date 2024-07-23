@@ -1,7 +1,7 @@
-import { Image, SanityDocument } from '@sanity/types'
+import { Image } from '@sanity/types'
 
-export type ServicesSchemaProps = SanityDocument & {
-	_id: string
+export type ServicesSchemaProps = {
+	_key: string
 	title: string
 	description: string
 	image: Image

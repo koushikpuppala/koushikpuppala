@@ -1,6 +1,6 @@
 import { MotionDiv, MotionP, ProjectCardComponent } from '@import/components'
 import { PROJECT_DOCUMENTS, sanityQuery } from '@import/sanity'
-import { ProjectSchemaProps } from '@import/types'
+import { ProjectSchemaProps, searchParamsProps } from '@import/types'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 	twitter: { title: 'Projects' },
 }
 
-const ProjectsPage = async () => {
+const ProjectsPage = async ({ searchParams }: searchParamsProps) => {
 	const data: ProjectSchemaProps[] = await sanityQuery(PROJECT_DOCUMENTS)
 
 	if (data.length === 0) return notFound()
@@ -34,7 +34,7 @@ const ProjectsPage = async () => {
 						projects effectively.
 					</MotionP>
 
-					<ProjectCardComponent data={data} />
+					<ProjectCardComponent data={data} searchParams={searchParams} />
 				</div>
 			</div>
 		</div>

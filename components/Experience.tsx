@@ -11,9 +11,9 @@ import { urlForImage } from '@import/sanity'
 const ExperienceComponent = ({ data }: { data: ExperienceSchemaProps[] }) => {
 	return (
 		<VerticalTimeline>
-			{data.map(({ _id, ...experience }, index) => (
+			{data.map(({ _rev, ...experience }, index) => (
 				<VerticalTimelineElement
-					key={_id}
+					key={_rev}
 					contentStyle={{ background: '#1D1836', color: '#E6DEDD' }}
 					contentArrowStyle={{ borderRight: '10px solid #1D1836' }}
 					date={`${monthYear(experience.startDate)} - ${experience.current ? 'Present' : monthYear(experience.endDate)}`}

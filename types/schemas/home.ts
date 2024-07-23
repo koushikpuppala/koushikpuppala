@@ -1,7 +1,5 @@
-import { SanityDocument } from '@sanity/types'
-
-export type HomeSchemaProps = SanityDocument & {
-	_id: string
+export type HomeSchemaProps = {
+	_rev: string
 	title: string
 	separator: string
 	subtitles: string[]

@@ -151,7 +151,7 @@ const ContactComponent = () => {
 			</form>
 			<span className='text-xs'>
 				<span className='text-red-500'>* </span>
-				This site is protected by reCAPTCHA and the Google{' '}
+				Protected by reCAPTCHA. Google{' '}
 				<Link className='text-blue-400' target='_blank' href='https://policies.google.com/privacy'>
 					Privacy Policy
 				</Link>

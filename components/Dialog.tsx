@@ -2,12 +2,20 @@
 
 import { Transition, Dialog, TransitionChild, DialogPanel } from '@headlessui/react'
 import { DialogComponentProps } from '@import/types'
+import { useRouter } from 'next/navigation'
 import { Fragment } from 'react'
 
-const DialogComponent = ({ children, open, setOpen, cancelButtonRef }: DialogComponentProps) => {
+const DialogComponent = ({ children, tag }: DialogComponentProps) => {
+	const router = useRouter()
+
+	const handleClose = () =>
+		router.replace(`?${new URLSearchParams(tag !== 'all' ? { tag: tag } : {}).toString()}`, {
+			scroll: false,
+		})
+
 	return (
-		<Transition show={open} as={Fragment}>
-			<Dialog as='div' className='relative z-10' initialFocus={cancelButtonRef} onClose={setOpen}>
+		<Transition show={true} as={Fragment}>
+			<Dialog as='div' className='relative z-10' onClose={handleClose}>
 				<TransitionChild
 					as={Fragment}
 					enter='ease-in-out duration-300'

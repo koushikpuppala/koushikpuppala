@@ -1,9 +1,10 @@
 'use client'
 
+import { globalErrorProps } from '@import/types'
 import * as Sentry from '@sentry/nextjs'
 import { useEffect } from 'react'
 
-const GlobalError = ({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) => {
+const GlobalError = ({ error, reset }: globalErrorProps) => {
 	useEffect(() => {
 		Sentry.captureException(error)
 	}, [error])
@@ -11,13 +12,11 @@ const GlobalError = ({ error, reset }: { error: Error & { digest?: string }; res
 	return (
 		<main className='grid h-screen place-content-center place-items-center px-6 pb-12 pt-24 text-center sm:pb-16 sm:pt-32 lg:px-8'>
 			<div className='text-center'>
-				<h1 className='text-9xl font-black text-gray-200 dark:text-gray-700'>500</h1>
+				<h1 className='text-9xl font-black text-gray-700'>500</h1>
 
-				<p className='text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white'>
-					Internal Server {error.name}
-				</p>
+				<p className='text-2xl font-bold tracking-tight text-white sm:text-4xl'>Internal Server {error.name}</p>
 
-				<p className='mt-4 text-gray-500 dark:text-gray-400'>Something went wrong!</p>
+				<p className='mt-4 text-gray-400'>Something went wrong!</p>
 
 				<button
 					onClick={() => reset()}

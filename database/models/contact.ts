@@ -1,7 +1,7 @@
 import { ContactModalProps } from '@import/types'
 import { Model, model, models, Schema } from 'mongoose'
 
-export default (models.Contact as Model<ContactModalProps>) ||
+export default (models?.Contact as Model<ContactModalProps>) ||
 	model(
 		'Contact',
 		new Schema<ContactModalProps>(

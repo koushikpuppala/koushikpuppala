@@ -51,6 +51,7 @@ jobs:
           echo "USER=${{ secrets.USER }}" >> .env
           echo "PASS=${{ secrets.PASS }}" >> .env
           echo "DATABASE=${{ secrets.DATABASE }}" >> .env
+          echo "APP_NAME=${{ secrets.APP_NAME }}" >> .env
           echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
           echo "MONGO_API=${{ secrets.MONGO_API }}" >> .env
           echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env

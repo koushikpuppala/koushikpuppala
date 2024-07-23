@@ -1,9 +1,10 @@
 'use client'
 
+import { BackgroundBeamsProps } from '@import/types'
 import { motion } from 'framer-motion'
 import classNames from 'classnames'
 
-export const BackgroundBeamsComponent = ({ className }: { className?: string }) => {
+export const BackgroundBeamsComponent = ({ className }: BackgroundBeamsProps) => {
 	const paths = [
 		'M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875',
 		'M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867',
