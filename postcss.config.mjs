@@ -1,6 +1,6 @@
 /** @type {import('postcss-load-config').Config} */
 
-export default {
+const config = {
 	plugins: {
 		'postcss-import': {},
 		tailwindcss: {},
@@ -8,3 +8,5 @@ export default {
 		...(process.env.NODE_ENV === 'production' && { cssnano: { preset: 'default' } }),
 	},
 }
+
+export default config
