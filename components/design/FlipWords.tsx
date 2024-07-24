@@ -33,7 +33,7 @@ export const FlipWordsComponent = ({ words, duration = 2500, className }: FlipWo
 						key={currentWord + index}
 						initial={{ opacity: 0, y: 10, filter: 'blur(8px)' }}
 						animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-						transition={{ delay: index * 0.075, duration: index * 0.075, ease: 'easeInOut' }}
+						transition={{ delay: index * 0.05, duration: index * 0.075, ease: 'easeInOut' }}
 						className='inline-block'>
 						{letter === ' ' ? '\u00A0' : letter}
 					</motion.span>
