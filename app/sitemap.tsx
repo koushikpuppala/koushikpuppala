@@ -8,6 +8,19 @@ const SitemapPage = async (): Promise<MetadataRoute.Sitemap> => {
 		path.replace('app', '').replace('/page.tsx', ''),
 	)
 
+	paths.push(
+		'/github',
+		'/linkedin',
+		'/twitter',
+		'/instagram',
+		'/facebook',
+		'/discord',
+		'/skype',
+		'/youtube',
+		'/server',
+		'/status',
+	)
+
 	paths.forEach(path => {
 		const priority = 1 - (path.split('/').length - 1) * 0.2
 		const date = new Date()
