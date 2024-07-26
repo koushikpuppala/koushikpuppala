@@ -3,6 +3,7 @@ declare namespace NodeJS {
 		readonly MONGO_URI: string
 		readonly DATABASE: string
 		readonly APP_NAME: string
+		readonly HOST: string
 		readonly USER: string
 		readonly PASS: string
 		readonly SENTRY_AUTH_TOKEN: string
