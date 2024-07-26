@@ -9,14 +9,3 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 512M
-      restart_policy:
-        condition: on-failure
-
-volumes:
-  node_modules:
-    name: koushikpuppala-node_modules
