@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 	title: 'Contact',
 	openGraph: { title: 'Contact' },
 	twitter: { title: 'Contact' },
+	alternates: { canonical: 'https://koushikpuppala.com/contact' },
 }
 
 const ContactPage = () => {

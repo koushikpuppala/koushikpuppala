@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 	title: 'Projects',
 	openGraph: { title: 'Projects' },
 	twitter: { title: 'Projects' },
+	alternates: { canonical: 'https://koushikpuppala.com/projects' },
 }
 
 const ProjectsPage = async ({ searchParams }: searchParamsProps) => {

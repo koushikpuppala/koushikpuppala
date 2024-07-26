@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 	title: 'About',
 	openGraph: { title: 'About' },
 	twitter: { title: 'About' },
+	alternates: { canonical: 'https://koushikpuppala.com/about' },
 }
 
 const AboutPage = async () => {

@@ -2,12 +2,9 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Resume',
-	openGraph: {
-		title: 'Resume',
-	},
-	twitter: {
-		title: 'Resume',
-	},
+	openGraph: { title: 'Resume' },
+	twitter: { title: 'Resume' },
+	alternates: { canonical: 'https://koushikpuppala.com/resume' },
 }
 
 const ResumePage = () => {

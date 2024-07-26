@@ -6,12 +6,9 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Experience',
-	openGraph: {
-		title: 'Experience',
-	},
-	twitter: {
-		title: 'Experience',
-	},
+	openGraph: { title: 'Experience' },
+	twitter: { title: 'Experience' },
+	alternates: { canonical: 'https://koushikpuppala.com/experience' },
 }
 
 const ExperiencePage = async () => {
