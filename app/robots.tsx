@@ -8,7 +8,6 @@ const RobotsPage = (): MetadataRoute.Robots => {
 			userAgent,
 			allow: '*',
 			disallow: ['/studio/**/*', '/api/**/*'],
-			crawlDelay: 5,
 		})),
 		sitemap: [`${process.env.NEXT_PUBLIC_DEPLOY_URL}/sitemap`],
 	}
