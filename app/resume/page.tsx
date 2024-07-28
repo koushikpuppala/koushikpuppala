@@ -1,3 +1,6 @@
+import { ABOUT_DOCUMENT, sanityQuery, urlForFile } from '@import/sanity'
+import { AboutSchemaProps } from '@import/types'
+import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -7,15 +10,18 @@ export const metadata: Metadata = {
 	alternates: { canonical: 'https://koushikpuppala.com/resume' },
 }
 
-const ResumePage = () => {
+const ResumePage = async () => {
+	const data: AboutSchemaProps | null = await sanityQuery(ABOUT_DOCUMENT)
+
+	if (!data) return notFound()
+
 	return (
 		<iframe
 			className='h-screen w-full rounded-2xl'
-			src='/koushikpuppala_resume.pdf'
+			src={urlForFile(data.resume)}
 			loading='eager'
 			title='Koushikpuppala Resume'
 		/>
-		// <span className='sr-only'>Koushikpuppala Resume</span>
 	)
 }
 

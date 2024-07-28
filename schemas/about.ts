@@ -22,6 +22,13 @@ export default defineType({
 			validation: Rule => Rule.required(),
 		}),
 		defineField({
+			name: 'resume',
+			title: 'Resume',
+			type: 'file',
+			description: 'Your resume',
+			validation: Rule => Rule.required(),
+		}),
+		defineField({
 			name: 'services',
 			title: 'Services',
 			type: 'array',

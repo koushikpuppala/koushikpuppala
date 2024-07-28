@@ -1,4 +1,4 @@
-import { Image } from '@sanity/types'
+import { SanityAssetSource } from '@sanity/asset-utils'
 
 export type ProjectSchemaProps = {
 	_rev: string
@@ -7,7 +7,7 @@ export type ProjectSchemaProps = {
 	tag: string
 	descriptions: string[]
 	tags: string[]
-	image: Image[]
+	image: SanityAssetSource[]
 	github?: string
 	website?: string
 }

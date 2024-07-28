@@ -1,4 +1,4 @@
-import { Image } from '@sanity/types'
+import { SanityAssetSource } from '@sanity/asset-utils'
 
 export type EducationSchemaProps = {
 	_key: string
@@ -8,6 +8,6 @@ export type EducationSchemaProps = {
 	endDate: string
 	expectedDate: string
 	current: boolean
-	image: Image
+	image: SanityAssetSource
 	website: string
 }

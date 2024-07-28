@@ -1,4 +1,4 @@
-import { Image } from '@sanity/types'
+import { SanityAssetSource } from '@sanity/asset-utils'
 
 export type ExperienceSchemaProps = {
 	_rev: string
@@ -8,6 +8,6 @@ export type ExperienceSchemaProps = {
 	endDate: string
 	current: boolean
 	description: string[]
-	image: Image
+	image: SanityAssetSource
 	website: string
 }
