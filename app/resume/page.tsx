@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const ResumePage = async () => {
 	const data: AboutSchemaProps | null = await sanityQuery(ABOUT_DOCUMENT)
 
-	if (!data) return notFound()
+	if (!data?.resume) return notFound()
 
 	return (
 		<iframe
