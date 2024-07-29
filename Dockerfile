@@ -1,5 +1,5 @@
-# Use the specified platform's node:lts-alpine image as the base image for the build
-FROM --platform=$TARGETPLATFORM node:lts-alpine AS base
+# Use the node:lts-alpine image as the base image for the build
+FROM node:lts-alpine AS base
 
 # Create a new stage called "dependencies" based on the "base" image
 FROM base AS dependencies
