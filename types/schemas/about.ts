@@ -1,10 +1,11 @@
-import { SanityDocument } from '@sanity/types'
 import { EducationSchemaProps, ServicesSchemaProps } from '@import/types'
+import { SanityAssetSource } from '@sanity/asset-utils'
 
-export type AboutSchemaProps = SanityDocument & {
-	_id: string
+export type AboutSchemaProps = {
+	_rev: string
 	title: string
 	introduction: string
+	resume: SanityAssetSource
 	services: ServicesSchemaProps[]
 	educations: EducationSchemaProps[]
 }

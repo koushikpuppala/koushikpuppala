@@ -1,21 +1,27 @@
 'use client'
 
 import { CardBodyComponentProps, CardContainerComponentProps, CardItemComponentProps } from '@import/types'
+import React, { createContext, useState, useRef, useEffect, use } from 'react'
 import classNames from 'classnames'
-import React, { createContext, useState, useContext, useRef, useEffect } from 'react'
 
 const MouseEnterContext = createContext<[boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined>(undefined)
 
-export const CardContainer = ({ children, className, containerClassName }: CardContainerComponentProps) => {
+export const CardContainer = ({ children, className, containerClassName, options }: CardContainerComponentProps) => {
+	const max = options?.max ?? 35
+	const scale = options?.scale ?? 1.1
+	const speed = options?.speed ?? 1000
+
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [isMouseEntered, setIsMouseEntered] = useState(false)
 
 	const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
 		if (!containerRef.current) return
 		const { left, top, width, height } = containerRef.current.getBoundingClientRect()
-		const x = (e.clientX - left - width / 2) / 25
-		const y = (e.clientY - top - height / 2) / 25
-		containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`
+		const x = Math.min(Math.max((e.nativeEvent.clientX - left) / width, 0), 1)
+		const y = Math.min(Math.max((e.nativeEvent.clientY - top) / height, 0), 1)
+		const tiltX = (max / 2 - x * max).toFixed(2)
+		const tiltY = (y * max - max / 2).toFixed(2)
+		containerRef.current.style.transform = `rotateY(${tiltX}deg) rotateX(${tiltY}deg)`
 	}
 
 	const handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -35,7 +41,9 @@ export const CardContainer = ({ children, className, containerClassName }: CardC
 			<div
 				className={classNames('flex items-center justify-center', containerClassName)}
 				style={{
-					perspective: '1000px',
+					perspective: `${1e3}px`,
+					scale: scale,
+					transition: `${speed}ms cubic-bezier(.03,.98,.52,.99)`,
 				}}>
 				<div
 					ref={containerRef}
@@ -46,9 +54,7 @@ export const CardContainer = ({ children, className, containerClassName }: CardC
 						'relative flex items-center justify-center transition-all duration-200 ease-linear',
 						className,
 					)}
-					style={{
-						transformStyle: 'preserve-3d',
-					}}>
+					style={{ transformStyle: 'preserve-3d' }}>
 					{children}
 				</div>
 			</div>
@@ -102,7 +108,7 @@ export const CardItem = ({
 
 // Create a hook to use the context
 export const useMouseEnter = () => {
-	const context = useContext(MouseEnterContext)
+	const context = use(MouseEnterContext)
 	if (context === undefined) {
 		throw new Error('useMouseEnter must be used within a MouseEnterProvider')
 	}

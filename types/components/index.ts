@@ -1,4 +1,5 @@
 import { HTMLAttributes } from 'react'
+import { ProjectSchemaProps, searchParamsProps } from '../'
 
 export type FlipWordsComponentProps = {
 	words: string[]
@@ -18,6 +19,7 @@ export type CardComponentProps = HTMLAttributes<HTMLElement> & {
 
 export type CardContainerComponentProps = CardComponentProps & {
 	containerClassName?: string
+	options?: { max?: number; scale?: number; speed?: number }
 }
 
 export type CardBodyComponentProps = CardComponentProps
@@ -31,4 +33,12 @@ export type CardItemComponentProps = CardComponentProps & {
 	rotateY?: number | string
 	rotateZ?: number | string
 	[key: string]: any
+}
+
+export type ProjectCardComponentProps = searchParamsProps & {
+	data: ProjectSchemaProps[]
+}
+
+export type BackgroundBeamsProps = {
+	className?: string
 }

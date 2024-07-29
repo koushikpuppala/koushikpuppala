@@ -1,4 +1,6 @@
-module.exports = {
+/** @type {import('postcss-load-config').Config} */
+
+const config = {
 	plugins: {
 		'postcss-import': {},
 		tailwindcss: {},
@@ -6,3 +8,5 @@ module.exports = {
 		...(process.env.NODE_ENV === 'production' && { cssnano: { preset: 'default' } }),
 	},
 }
+
+export default config

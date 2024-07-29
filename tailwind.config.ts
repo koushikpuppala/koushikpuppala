@@ -5,9 +5,6 @@ const config: Config = {
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
 		'./pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
-
-		// Or if using `src` directory:
-		'./src/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	theme: {
 		container: {
@@ -21,6 +18,7 @@ const config: Config = {
 			md: '768px',
 			lg: '960px',
 			xl: '1200px',
+			touch: { raw: '(hover: none)' },
 		},
 		extend: {
 			colors: {
@@ -34,7 +32,6 @@ const config: Config = {
 				'white-100': '#f3f3f3',
 			},
 			backgroundImage: {
-				site: 'url("/site-bg.webp")',
 				'black-gradient': 'linear-gradient(to right, #434343, #000000)',
 				'accent-gradient': 'linear-gradient(-90deg, #915EFF 0%, rgba(60, 51, 80, 0) 100%)',
 				'violet-gradient': 'linear-gradient(to left, rgba(60, 51, 80, 0) 0%, #804dee 100%)',

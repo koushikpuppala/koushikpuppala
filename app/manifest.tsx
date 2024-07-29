@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next'
 const ManifestPage = (): MetadataRoute.Manifest => {
 	return {
 		id: process.env.npm_package_version,
-		name: 'Koushik Puppala | Freelancer | Computer Science Engineer',
+		name: 'Koushik Puppala | Software Engineer | Freelancer',
 		short_name: 'Koushik Puppala',
 		description:
 			"Full-stack developer by day, dreamer by night. I believe that technology has the power to make the world a better place, and I'm committed to using my skills to make that happen.",
@@ -11,7 +11,7 @@ const ManifestPage = (): MetadataRoute.Manifest => {
 		display: 'fullscreen',
 		scope: '/',
 		start_url: '/',
-		theme_color: '#000000',
+		theme_color: '#915EFF',
 		background_color: '#000000',
 		display_override: ['window-controls-overlay'],
 		icons: [

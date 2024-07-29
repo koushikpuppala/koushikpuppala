@@ -1,10 +1,13 @@
 import { ContactComponent, MotionDiv, MotionP } from '@import/components'
+import { ReCaptchaProvider } from 'next-recaptcha-v3'
+import { config } from '@import/config'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Contact',
 	openGraph: { title: 'Contact' },
 	twitter: { title: 'Contact' },
+	alternates: { canonical: 'https://koushikpuppala.com/contact' },
 }
 
 const ContactPage = () => {
@@ -29,7 +32,9 @@ const ContactPage = () => {
 						direction='right'
 						delay={0.3}
 						className='mx-auto mt-4 max-w-3xl pb-40 text-justify text-sm leading-6 text-secondary md:px-6 lg:mx-0 lg:pb-12 lg:text-lg xl:max-w-5xl'>
-						<ContactComponent />
+						<ReCaptchaProvider reCaptchaKey={config.reCaptchaSiteKey}>
+							<ContactComponent />
+						</ReCaptchaProvider>
 					</MotionDiv>
 				</div>
 			</div>

@@ -1,13 +1,13 @@
-import { Image, SanityDocument } from '@sanity/types'
+import { SanityAssetSource } from '@sanity/asset-utils'
 
-export type ProjectSchemaProps = SanityDocument & {
-	_id: string
+export type ProjectSchemaProps = {
+	_rev: string
 	title: string
 	subtitle: string
 	tag: string
 	descriptions: string[]
 	tags: string[]
-	image: Image[]
+	image: SanityAssetSource[]
 	github?: string
 	website?: string
 }

@@ -1,21 +1,20 @@
 import { MotionDiv, MotionP, ProjectCardComponent } from '@import/components'
-import { projectsType, sanityQuery } from '@import/sanity'
-import { ProjectSchemaProps } from '@import/types'
-import { Metadata } from 'next'
+import { PROJECT_DOCUMENTS, sanityQuery } from '@import/sanity'
+import { ProjectSchemaProps, searchParamsProps } from '@import/types'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Projects',
 	openGraph: { title: 'Projects' },
 	twitter: { title: 'Projects' },
+	alternates: { canonical: 'https://koushikpuppala.com/projects' },
 }
 
-export const revalidate = 300
+const ProjectsPage = async ({ searchParams }: searchParamsProps) => {
+	const data: ProjectSchemaProps[] = await sanityQuery(PROJECT_DOCUMENTS)
 
-const ProjectsPage = async () => {
-	const data: ProjectSchemaProps[] | null = await sanityQuery(projectsType)
-
-	if (!data) return notFound()
+	if (data.length === 0) return notFound()
 
 	return (
 		<div className='h-full bg-primary/50'>
@@ -36,7 +35,7 @@ const ProjectsPage = async () => {
 						projects effectively.
 					</MotionP>
 
-					<ProjectCardComponent data={data} />
+					<ProjectCardComponent data={data} searchParams={searchParams} />
 				</div>
 			</div>
 		</div>

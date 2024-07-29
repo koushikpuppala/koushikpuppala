@@ -6,16 +6,20 @@ on:
     branches:
       - master
     paths-ignore:
-      - '!.github/workflows/production.yml'
-      - 'README.md'
-      - 'LICENSE.md'
-      - '.github/**'
       - 'docs/**'
       - '.husky/**'
-      - '.gitignore'
-      - '.prettierignore'
-      - '.dockerignore'
-      - '.commitlintrc.ts'
+      - 'README.md'
+      - '.github/**'
+      - 'LICENSE.md'
+  pull_request:
+    branches:
+      - master
+    paths-ignore:
+      - 'docs/**'
+      - '.husky/**'
+      - 'README.md'
+      - '.github/**'
+      - 'LICENSE.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -46,7 +50,9 @@ jobs:
         run: |
           echo "USER=${{ secrets.USER }}" >> .env
           echo "PASS=${{ secrets.PASS }}" >> .env
+          echo "HOST=${{ secrets.HOST }}" >> .env
           echo "DATABASE=${{ secrets.DATABASE }}" >> .env
+          echo "APP_NAME=${{ secrets.APP_NAME }}" >> .env
           echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
           echo "MONGO_API=${{ secrets.MONGO_API }}" >> .env
           echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
@@ -76,7 +82,7 @@ jobs:
         uses: docker/setup-buildx-action@v3.3.0
         with:
           install: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -109,7 +115,7 @@ jobs:
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           push: ${{ github.event_name != 'pull_request' }}
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

@@ -1,13 +1,13 @@
-import { Image, SanityDocument } from '@sanity/types'
+import { SanityAssetSource } from '@sanity/asset-utils'
 
-export type ExperienceSchemaProps = SanityDocument & {
-	_id: string
+export type ExperienceSchemaProps = {
+	_rev: string
 	position: string
 	company: string
 	startDate: string
 	endDate: string
 	current: boolean
 	description: string[]
-	image: Image
+	image: SanityAssetSource
 	website: string
 }

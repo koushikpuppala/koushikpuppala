@@ -1,17 +1,14 @@
 'use server'
 
-import { ContactModel, Database } from '@import/database'
+import { ContactModel, DatabaseInstance } from '@import/database'
+import { handleFormSubmitType } from '@import/types'
 import { captureException } from '@sentry/nextjs'
 import { createTransport } from 'nodemailer'
 
-export const handleSubmit = async (
-	prevState: {
-		statusCode: number
-		statusMessage: string
-	},
-	form: FormData,
-) => {
-	const database = Database.instance
+export const handleSubmit: handleFormSubmitType = async (prevState, form) => {
+	if (prevState.statusCode === 200) return prevState
+
+	const database = DatabaseInstance
 
 	const name = form.get('name')!.toString()
 	const email = form.get('email')!.toString()
@@ -19,37 +16,65 @@ export const handleSubmit = async (
 	const message = form.get('message')!.toString()
 
 	const mailer = createTransport({
-		service: 'gmail',
-		auth: {
-			user: process.env.USER!,
-			pass: process.env.PASS!,
-		},
+		host: process.env.HOST,
+		port: 587,
+		secure: false,
+		auth: { user: process.env.USER, pass: process.env.PASS },
+		tls: { ciphers: 'SSLv3', rejectUnauthorized: false },
 	})
-
-	if (prevState.statusCode === 200 || prevState.statusCode === 400) {
-		return {
-			statusCode: 400,
-			statusMessage: 'You have already submitted a message. Please wait for a response. Thank you!',
-		}
-	}
 
 	try {
 		await database.connect()
 
-		await ContactModel.create({
-			name,
-			email,
-			subject,
-			message,
+		await ContactModel.create({ name, email, subject, message })
+
+		await mailer.sendMail({
+			from: `Koushikpuppala <no-reply@koushikpuppala.com>`,
+			sender: email,
+			to: 'form@koushikpuppala.com',
+			subject: `${subject.toLocaleLowerCase().includes('urgent') ? 'URGENT: ' : ''} New Message from ${name}`,
+			html: `
+				<h4>Hi Koushik,</h4>
+				<p>You have received a new message from <strong>${name}</strong> with the following details:</p>
+				<p><strong>Name:</strong> ${name}</p>
+				<p><strong>Email:</strong> ${email}</p>
+				<p><strong>Subject:</strong> ${subject}</p>
+				<p><strong>Message:</strong> ${message}</p>
+				<p style="font-family: Georgia, serif;">
+					<strong><em>------</em></strong><br>
+					<strong><em>Best Regards,</em></strong><br>
+					<strong><em>Koushik Puppala</em></strong><br>
+					<strong><em>Freelancer and Developer</em></strong><br>
+					<strong><em>Website:</em></strong> <a href="https://koushikpuppala.com" style="color: rgb(230, 145, 56); text-decoration: none;"><strong><em>koushikpuppala.com</em></strong></a><br>
+					<strong><em>------</em></strong>
+				</p>
+				<hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+				<p>Note: This is an automated message. Please do not reply to this email.</p>
+			`,
 		})
 
 		await mailer.sendMail({
-			from: `Admin Contact Form <me@koushikpuppala.com>`,
-			replyTo: email,
-			sender: email,
-			to: 'message@koushikpuppala.com',
-			subject: `${name} (${email}) sent you a message`,
-			html: `<b>Subject:</b> ${subject}<br /><br /><b>Message:</b> ${message}`,
+			from: `Koushikpuppala <no-reply@koushikpuppala.com>`,
+			sender: 'no-reply@koushikpuppala.com',
+			to: email,
+			subject: 'Thank you for reaching out!',
+			html: `
+				<p>Dear ${name},</p>
+				<p>Thank you for getting in touch!</p>
+				<p>I have received your message regarding <strong>${subject}</strong> and will get back to you as soon as possible. Your input and inquiries are important to me, and I strive to respond promptly.</p>
+				<p>If your message requires immediate attention, please mention "Urgent" in the subject line next time, and I will prioritize it accordingly.</p>
+				<p>Thank you for your patience.</p>
+				<p style="font-family: Georgia, serif;">
+					<strong><em>------</em></strong><br>
+					<strong><em>Best Regards,</em></strong><br>
+					<strong><em>Koushik Puppala</em></strong><br>
+					<strong><em>Freelancer and Developer</em></strong><br>
+					<strong><em>Website:</em></strong> <a href="https://koushikpuppala.com" style="color: rgb(230, 145, 56); text-decoration: none;"><strong><em>koushikpuppala.com</em></strong></a><br>
+					<strong><em>------</em></strong>
+				</p>
+				<hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
+				<p>Note: This is an automated response. Please do not reply to this email.</p>
+			`,
 		})
 
 		return {

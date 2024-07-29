@@ -10,9 +10,9 @@ import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeli
 const EducationComponent = ({ data }: { data: EducationSchemaProps[] }) => {
 	return (
 		<VerticalTimeline>
-			{data.map(({ _id, ...education }) => (
+			{data.map(({ _key, ...education }) => (
 				<VerticalTimelineElement
-					key={_id}
+					key={_key}
 					contentStyle={{ background: '#1D1836', color: '#E6DEDD' }}
 					contentArrowStyle={{ borderRight: '10px solid #1D1836' }}
 					date={`${monthYear(education.startDate)} - ${education.current ? `Present (Until ${monthYear(education.expectedDate)})` : monthYear(education.endDate)}`}

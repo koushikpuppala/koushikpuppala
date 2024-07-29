@@ -1,14 +1,22 @@
 'use client'
 
-import { Transition, Dialog } from '@headlessui/react'
+import { Transition, Dialog, TransitionChild, DialogPanel } from '@headlessui/react'
 import { DialogComponentProps } from '@import/types'
+import { useRouter } from 'next/navigation'
 import { Fragment } from 'react'
 
-const DialogComponent = ({ children, open, setOpen, cancelButtonRef }: DialogComponentProps) => {
+const DialogComponent = ({ children, tag }: DialogComponentProps) => {
+	const router = useRouter()
+
+	const handleClose = () =>
+		router.replace(`?${new URLSearchParams(tag !== 'all' ? { tag: tag } : {}).toString()}`, {
+			scroll: false,
+		})
+
 	return (
-		<Transition.Root show={open} as={Fragment}>
-			<Dialog as='div' className='relative z-10' initialFocus={cancelButtonRef} onClose={setOpen}>
-				<Transition.Child
+		<Transition show={true} as={Fragment}>
+			<Dialog as='div' className='relative z-10' onClose={handleClose}>
+				<TransitionChild
 					as={Fragment}
 					enter='ease-in-out duration-300'
 					enterFrom='opacity-0'
@@ -17,10 +25,10 @@ const DialogComponent = ({ children, open, setOpen, cancelButtonRef }: DialogCom
 					leaveFrom='opacity-100'
 					leaveTo='opacity-0'>
 					<div className='fixed inset-0 bg-primary bg-opacity-75 backdrop-blur transition-opacity' />
-				</Transition.Child>
+				</TransitionChild>
 				<div className='fixed inset-0 z-10 w-screen overflow-y-auto'>
 					<div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
-						<Transition.Child
+						<TransitionChild
 							as={Fragment}
 							enter='ease-out duration-300'
 							enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
@@ -28,14 +36,14 @@ const DialogComponent = ({ children, open, setOpen, cancelButtonRef }: DialogCom
 							leave='ease-in duration-200'
 							leaveFrom='opacity-100 translate-y-0 sm:scale-100'
 							leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'>
-							<Dialog.Panel className='relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:m-8'>
+							<DialogPanel className='relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:m-8'>
 								{children}
-							</Dialog.Panel>
-						</Transition.Child>
+							</DialogPanel>
+						</TransitionChild>
 					</div>
 				</div>
 			</Dialog>
-		</Transition.Root>
+		</Transition>
 	)
 }
 

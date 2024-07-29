@@ -21,13 +21,10 @@ export class Database {
 
 	public async connect(): Promise<void> {
 		await connect(process.env.MONGO_URI!, {
-			connectTimeoutMS: 10000,
-			socketTimeoutMS: 45000,
-			serverSelectionTimeoutMS: 5000,
-			family: 4,
-			maxPoolSize: 100,
 			minPoolSize: 10,
+			maxIdleTimeMS: 60000,
 			dbName: process.env.DATABASE!,
+			appName: process.env.APP_NAME!,
 		})
 		this._client = connection
 		this._client.on('error', console.error.bind(console, 'connection error:'))
@@ -43,3 +40,5 @@ export class Database {
 		})
 	}
 }
+
+export const DatabaseInstance = Database.instance

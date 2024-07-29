@@ -4,32 +4,23 @@ import { Sora } from 'next/font/google'
 import { config } from '@import/config'
 import { Metadata, Viewport } from 'next'
 import { RootLayoutProps } from '@import/types'
-import { ReCaptchaProvider } from 'next-recaptcha-v3'
 import { BackgroundBeamsComponent, NavbarComponent } from '@import/components'
 
 import '@import/styles/globals.scss'
 import 'react-vertical-timeline-component/style.min.css'
-import Link from 'next/link'
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Koushik Puppala | Freelancer | Computer Science Engineer',
-		template: '%s | Koushik Puppala | Freelancer | Computer Science Engineer',
+		default: 'Koushik Puppala | Software Engineer | Freelancer',
+		template: '%s | Koushik Puppala | Software Engineer | Freelancer',
 	},
 	description:
 		"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
-	applicationName: 'Personal Website | Koushik Puppala | Freelancer | Computer Science Engineer',
+	applicationName: 'Personal Website | Koushik Puppala | Software Engineer | Freelancer',
 	keywords: ['Koushik', 'Koushik Puppala', 'Puppala Koushik', 'Koushikpuppala', 'Puppalakoushik'],
-	authors: [
-		{
-			name: 'Koushikpuppala',
-			url: 'http://koushikpuppala.com',
-		},
-	],
+	authors: [{ name: 'Koushikpuppala', url: 'https://koushikpuppala.com' }],
 	creator: 'Koushikpuppala',
-	alternates: {
-		canonical: 'https://koushikpuppala.com',
-	},
+	alternates: { canonical: 'https://koushikpuppala.com' },
 	formatDetection: {
 		email: true,
 		address: true,
@@ -39,40 +30,32 @@ export const metadata: Metadata = {
 	},
 	openGraph: {
 		title: {
-			template: '%s | Koushik Puppala | Freelancer | Computer Science Engineer',
-			default: 'Koushik Puppala | Freelancer | Computer Science Engineer',
+			template: '%s | Koushik Puppala | Software Engineer | Freelancer',
+			default: 'Koushik Puppala | Software Engineer | Freelancer',
 		},
 		description:
 			"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
-		url: 'http://koushikpuppala.com',
+		url: 'https://koushikpuppala.com',
 		type: 'website',
 		locale: 'en_IN',
-		siteName: 'Koushik Puppala | Freelancer | Computer Science Engineer',
-		images: [
-			{
-				url: '/icons/favicon.ico',
-				alt: 'Koushik Puppala | Freelancer | Computer Science Engineer',
-			},
-		],
+		siteName: 'Koushik Puppala | Software Engineer | Freelancer',
+		images: [{ url: '/favicon.ico', alt: 'Koushik Puppala | Software Engineer | Freelancer' }],
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: {
-			template: '%s | Koushik Puppala | Freelancer | Computer Science Engineer',
-			default: 'Koushik Puppala | Freelancer | Computer Science Engineer',
+			template: '%s | Koushik Puppala | Software Engineer | Freelancer',
+			default: 'Koushik Puppala | Software Engineer | Freelancer',
 		},
 		description:
 			"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
 		creator: '@puppala_koushik',
 		site: '@puppala_koushik',
-		images: {
-			url: '/icons/favicon.ico',
-			alt: 'Koushik Puppala | Freelancer | Computer Science Engineer',
-		},
+		images: { url: '/favicon.ico', alt: 'Koushik Puppala | Software Engineer | Freelancer' },
 	},
 	category: 'Software Engineer',
 	icons: {
-		icon: { url: '/icons/favicon.ico', type: 'image/x-icon' },
+		icon: { url: '/favicon.ico', type: 'image/x-icon' },
 		shortcut: [
 			{ url: '/icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
 			{ url: '/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
@@ -80,7 +63,7 @@ export const metadata: Metadata = {
 		apple: { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
 	},
 	manifest: '/manifest.webmanifest',
-	metadataBase: new URL(process.env.NEXT_PUBLIC_DEPLOY_URL!),
+	metadataBase: new URL('https://koushikpuppala.com'),
 	robots: {
 		index: true,
 		follow: true,
@@ -96,12 +79,10 @@ export const metadata: Metadata = {
 	},
 }
 
-export const revalidate = 300
-
 export const viewport: Viewport = {
 	width: 'device-width',
 	initialScale: 1,
-	themeColor: '#915EFF5A',
+	themeColor: '#915EFF',
 }
 
 const sora = Sora({
@@ -140,23 +121,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					sora.className,
 					'relative h-screen w-full overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white',
 				)}>
-				<ReCaptchaProvider reCaptchaKey={config.reCaptchaSiteKey}>
-					<span className='sr-only'>
-						This site is protected by reCAPTCHA and the Google
-						<Link target='_blank' href='https://policies.google.com/privacy'>
-							Privacy Policy
-						</Link>{' '}
-						and
-						<Link target='_blank' href='https://policies.google.com/terms'>
-							Terms of Service
-						</Link>{' '}
-						apply.
-					</span>
-					<NavbarComponent />
-					{/* <TransitionComponent></TransitionComponent> */}
-					{children}
-					<BackgroundBeamsComponent />
-				</ReCaptchaProvider>
+				<NavbarComponent />
+				{children}
+				<BackgroundBeamsComponent />
 			</body>
 		</html>
 	)

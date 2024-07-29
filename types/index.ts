@@ -1,29 +1,28 @@
-export type RootLayoutProps = {
-	children: React.ReactNode
-}
+export type { handleFormSubmitType, prevStateType } from './actions'
 
-export type TransitionComponentProps = RootLayoutProps
+export type {
+	DialogComponentProps,
+	MainLayoutProps,
+	MotionComponentProps,
+	RootLayoutProps,
+	SocialMediaLogoComponentProps,
+	TransitionComponentProps,
+	searchParamsProps,
+	globalErrorProps,
+} from './app'
 
-export type MainLayoutProps = RootLayoutProps & {
-	className?: string
-}
+export type {
+	FlipWordsComponentProps,
+	TextGenerateEffectComponentProps,
+	CardBodyComponentProps,
+	CardComponentProps,
+	CardContainerComponentProps,
+	CardItemComponentProps,
+	ProjectCardComponentProps,
+	BackgroundBeamsProps,
+} from './components'
 
-export type SocialMediaLogoComponentProps = {
-	platform: string
-	className: string
-}
-
-export type MotionComponentProps = RootLayoutProps & {
-	direction: 'left' | 'right' | 'up' | 'down'
-	delay: number
-	className?: string
-}
-
-export type DialogComponentProps = RootLayoutProps & {
-	open: boolean
-	setOpen: (open: boolean) => void
-	cancelButtonRef: React.MutableRefObject<HTMLButtonElement | null>
-}
+export type { ContactFormType, ContactModalProps } from './models'
 
 export type {
 	AboutSchemaProps,
@@ -33,16 +32,3 @@ export type {
 	ProjectSchemaProps,
 	ServicesSchemaProps,
 } from './schemas'
-
-export type { ContactModalProps } from './models'
-
-export type {
-	FlipWordsComponentProps,
-	TextGenerateEffectComponentProps,
-	CardBodyComponentProps,
-	CardComponentProps,
-	CardContainerComponentProps,
-	CardItemComponentProps,
-} from './components'
-
-export type { ContactFormType } from './validation'

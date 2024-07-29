@@ -1,10 +1,7 @@
+import { ContactFormSchema } from '@import/validation'
 import { Document } from 'mongoose'
+import { z } from 'zod'
 
-export type ContactModalProps = Document<string> & {
-	_id: string
-	name: string
-	email: string
-	subject: string
-	message: string
-	createdAt: Date
-}
+export type ContactFormType = z.infer<typeof ContactFormSchema>
+
+export type ContactModalProps = Document<string> & ContactFormType

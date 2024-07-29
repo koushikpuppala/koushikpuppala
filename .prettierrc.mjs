@@ -1,6 +1,6 @@
 /** @type {import('prettier').Config} */
 
-module.exports = {
+const config = {
 	tabWidth: 4,
 	semi: false,
 	useTabs: true,
@@ -20,3 +20,5 @@ module.exports = {
 		},
 	],
 }
+
+export default config

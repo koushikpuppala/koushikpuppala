@@ -1,25 +1,20 @@
 import { ExperienceComponent, MotionDiv } from '@import/components'
-import { experiencesType, sanityQuery } from '@import/sanity'
+import { EXPERIENCE_DOCUMENTS, sanityQuery } from '@import/sanity'
 import { ExperienceSchemaProps } from '@import/types'
-import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
 	title: 'Experience',
-	openGraph: {
-		title: 'Experience',
-	},
-	twitter: {
-		title: 'Experience',
-	},
+	openGraph: { title: 'Experience' },
+	twitter: { title: 'Experience' },
+	alternates: { canonical: 'https://koushikpuppala.com/experience' },
 }
 
-export const revalidate = 300
-
 const ExperiencePage = async () => {
-	const data: ExperienceSchemaProps[] | null = await sanityQuery(experiencesType)
+	const data: ExperienceSchemaProps[] = await sanityQuery(EXPERIENCE_DOCUMENTS)
 
-	if (!data) return notFound()
+	if (data.length === 0) return notFound()
 
 	return (
 		<div className='h-full bg-primary/50'>

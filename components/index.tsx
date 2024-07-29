@@ -6,7 +6,6 @@ export { default as NavbarComponent } from './Navbar'
 export { default as ProjectCardComponent } from './ProjectCard'
 export { default as ServiceCardComponent } from './ServiceCard'
 export { default as SocialMediaLogoComponent } from './SocialMediaLogo'
-export { default as TransitionComponent } from './Transition'
 
 export * from './Motion'
 export {
@@ -14,7 +13,6 @@ export {
 	CardContainer,
 	CardItem,
 	BackgroundBeamsComponent,
-	BackgroundGradientComponent,
 	FlipWordsComponent,
 	TextGenerateEffectComponent,
 } from './design'
