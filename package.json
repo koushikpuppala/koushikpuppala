@@ -28,7 +28,7 @@
 		"@ducanh2912/next-pwa": "^10.2.8",
 		"@headlessui/react": "^2.1.2",
 		"@sanity/image-url": "^1.0.2",
-		"@sanity/vision": "^3.52.0",
+		"@sanity/vision": "^3.52.2",
 		"@sentry/nextjs": "^8.19.0",
 		"babel-plugin-react-compiler": "0.0.0-experimental-696af53-20240625",
 		"classnames": "^2.5.1",
