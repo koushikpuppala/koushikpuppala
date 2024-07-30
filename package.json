@@ -40,7 +40,7 @@
 		"next-sanity": "^9.4.2",
 		"nodemailer": "^6.9.14",
 		"react": "19.0.0-rc-163365a0-20240717",
-		"react-dom": "19.0.0-rc-163365a0-20240717",
+		"react-dom": "19.0.0-rc.0",
 		"react-icons": "^5.2.1",
 		"react-vertical-timeline-component": "^3.6.0",
 		"sharp": "^0.33.4",

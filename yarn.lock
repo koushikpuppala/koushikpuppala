@@ -10287,7 +10287,7 @@ __metadata:
     prettier: "npm:^3.3.3"
     prettier-plugin-tailwindcss: "npm:^0.6.5"
     react: "npm:19.0.0-rc-163365a0-20240717"
-    react-dom: "npm:19.0.0-rc-163365a0-20240717"
+    react-dom: "npm:19.0.0-rc.0"
     react-icons: "npm:^5.2.1"
     react-is: "npm:^18.3.1"
     react-vertical-timeline-component: "npm:^3.6.0"
@@ -12902,14 +12902,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:19.0.0-rc-163365a0-20240717":
-  version: 19.0.0-rc-163365a0-20240717
-  resolution: "react-dom@npm:19.0.0-rc-163365a0-20240717"
+"react-dom@npm:19.0.0-rc.0":
+  version: 19.0.0-rc.0
+  resolution: "react-dom@npm:19.0.0-rc.0"
   dependencies:
-    scheduler: "npm:0.25.0-rc-163365a0-20240717"
+    scheduler: "npm:0.25.0-rc.0"
   peerDependencies:
-    react: 19.0.0-rc-163365a0-20240717
-  checksum: 10c0/3dd00a6bc368e4e0ede42a4c6d5e64d2521a1298145f6896a88b77874b9df6d491cbb4e6b217e0c5ecb18d92ab5fd9eb8f8bfe4329782a9b99dbc8030ea4f0ec
+    react: 19.0.0-rc.0
+  checksum: 10c0/1287ef8d37d1265adfbcce421cacad40610244f9e7433dc28c04ff74bfd02eb31df7cafc3dc033efd64e88c38dcc5fc1bb6660f708513b2349505b6643124582
   languageName: node
   linkType: hard
 
@@ -13687,10 +13687,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:0.25.0-rc-163365a0-20240717":
-  version: 0.25.0-rc-163365a0-20240717
-  resolution: "scheduler@npm:0.25.0-rc-163365a0-20240717"
-  checksum: 10c0/05d2e0de5442130eb1155a1761ce7017b142141f9e4d7fc2146b97d5a711401c87fec0a99a80725e19f569709f877df7235347d8a012f5ac30c4a95f5171c3c9
+"scheduler@npm:0.25.0-rc.0":
+  version: 0.25.0-rc.0
+  resolution: "scheduler@npm:0.25.0-rc.0"
+  checksum: 10c0/53733bc6e3b8bc66213147121795b011583efe7181f22858b878dea950ca9cca77d90729aca5ed8002f452ecad7f8ac7fdf82ad90447a7eb440b98cb392d7781
   languageName: node
   linkType: hard
 
