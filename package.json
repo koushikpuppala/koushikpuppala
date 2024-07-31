@@ -37,7 +37,7 @@
 		"mongoose": "^8.5.1",
 		"next": "canary",
 		"next-recaptcha-v3": "^1.4.1",
-		"next-sanity": "^9.4.2",
+		"next-sanity": "^9.4.3",
 		"nodemailer": "^6.9.14",
 		"react": "canary",
 		"react-dom": "canary",
