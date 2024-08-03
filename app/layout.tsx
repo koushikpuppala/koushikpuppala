@@ -85,6 +85,8 @@ export const viewport: Viewport = {
 	themeColor: '#915EFF',
 }
 
+export const revalidate = 60 * 60 * 24 // 24 hours
+
 const sora = Sora({
 	subsets: ['latin', 'latin-ext'],
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
