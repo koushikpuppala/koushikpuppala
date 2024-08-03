@@ -1,7 +1,9 @@
 import { FilteredResponseQueryOptions, createClient } from 'next-sanity'
 import { getFile, SanityAssetSource } from '@sanity/asset-utils'
 import createImageUrlBuilder from '@sanity/image-url'
+import { unstable_cache } from 'next/cache'
 import { config } from '@import/config'
+import { cache } from 'react'
 
 export const sanityClient = createClient({
 	apiVersion: config.apiVersion,
@@ -12,22 +14,26 @@ export const sanityClient = createClient({
 
 const imageBuilder = createImageUrlBuilder({ projectId: config.projectId, dataset: config.dataset })
 
-export const urlForImage = (source: SanityAssetSource) => {
+export const urlForImage = cache((source: SanityAssetSource) => {
 	return imageBuilder?.image(source).auto('format').quality(100).fit('max').url()
-}
+})
 
-export const urlForFile = (source: SanityAssetSource) => {
+export const urlForFile = cache((source: SanityAssetSource) => {
 	return getFile(source, { projectId: config.projectId, dataset: config.dataset }).asset.url
-}
+})
 
-export const sanityQuery = async (query: string, options?: FilteredResponseQueryOptions, params?: any) => {
-	try {
-		return await sanityClient.fetch(query, params, { ...options, next: { revalidate: 60 * 60 * 24 } })
-	} catch (error) {
-		process.env.NODE_ENV === 'development' && console.log('Sanity Query Error:', error)
-		throw new Error('Failed to fetch data from Sanity.')
-	}
-}
+export const sanityQuery = unstable_cache(
+	async (query: string, options?: FilteredResponseQueryOptions, params?: any) => {
+		try {
+			return await sanityClient.fetch(query, params, options)
+		} catch (error) {
+			process.env.NODE_ENV === 'development' && console.log('Sanity Query Error:', error)
+			throw new Error('Failed to fetch data from Sanity.')
+		}
+	},
+	['sanityQuery'],
+	{ revalidate: 60 * 60 * 24 },
+)
 
 export const HOME_DOCUMENT = '*[_type == "home"][0]'
 
