@@ -1,8 +1,11 @@
-import Image from 'next/image'
 import Link from 'next/link'
-import { FaGithub, FaGlobe } from 'react-icons/fa6'
-import { CardBody, CardContainer, CardItem, DialogComponent, MotionDiv } from '@import/components'
+import Image from 'next/image'
 import classNames from 'classnames'
+import { urlForImage } from '@import/sanity'
+import { FaGithub, FaGlobe } from 'react-icons/fa6'
+import { ProjectCardComponentProps } from '@import/types'
+import { HiCheck, HiChevronUpDown } from 'react-icons/hi2'
+import { CardBody, CardContainer, CardItem, DialogComponent, MotionDiv } from '@import/components'
 import {
 	Listbox,
 	ListboxButton,
@@ -13,9 +16,6 @@ import {
 	TabList,
 	Transition,
 } from '@headlessui/react'
-import { HiCheck, HiChevronUpDown } from 'react-icons/hi2'
-import { ProjectCardComponentProps } from '@import/types'
-import { urlForImage } from '@import/sanity'
 
 const ProjectCardComponent = ({ data, searchParams }: ProjectCardComponentProps) => {
 	const id = searchParams?.id ?? undefined

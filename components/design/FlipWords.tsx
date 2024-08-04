@@ -1,9 +1,9 @@
 'use client'
 
+import classNames from 'classnames'
+import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FlipWordsComponentProps } from '@import/types'
-import { useEffect, useState } from 'react'
-import classNames from 'classnames'
 
 export const FlipWordsComponent = ({ words, duration = 2500, className }: FlipWordsComponentProps) => {
 	const [currentWord, setCurrentWord] = useState(words[0])

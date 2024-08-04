@@ -1,8 +1,8 @@
-import { ExperienceComponent, MotionDiv } from '@import/components'
-import { EXPERIENCE_DOCUMENTS, sanityQuery } from '@import/sanity'
-import { ExperienceSchemaProps } from '@import/types'
-import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { ExperienceSchemaProps } from '@import/types'
+import { EXPERIENCE_DOCUMENTS, sanityQuery } from '@import/sanity'
+import { ExperienceComponent, MotionDiv } from '@import/components'
 
 export const metadata: Metadata = {
 	title: 'Experience',

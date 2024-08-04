@@ -7,11 +7,7 @@ const config: Config = {
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	theme: {
-		container: {
-			padding: {
-				DEFAULT: '15px',
-			},
-		},
+		container: { padding: { DEFAULT: '15px' } },
 		screens: {
 			xs: '450px',
 			sm: '540px',
@@ -37,9 +33,7 @@ const config: Config = {
 				'violet-gradient': 'linear-gradient(to left, rgba(60, 51, 80, 0) 0%, #804dee 100%)',
 				'green-pink-gradient': 'linear-gradient(90.13deg, #00cea8 1.9%, #bf61ff 97.5%)',
 			},
-			animation: {
-				'spin-slow': 'spin 6s linear infinite',
-			},
+			animation: { 'spin-slow': 'spin 6s linear infinite' },
 		},
 	},
 	plugins: [],

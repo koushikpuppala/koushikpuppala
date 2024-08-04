@@ -1,4 +1,7 @@
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { HomeSchemaProps } from '@import/types'
+import { HOME_DOCUMENT, sanityQuery } from '@import/sanity'
 import {
 	FlipWordsComponent,
 	MotionDiv,
@@ -7,9 +10,6 @@ import {
 	SocialMediaLogoComponent,
 	TextGenerateEffectComponent,
 } from '@import/components'
-import { HOME_DOCUMENT, sanityQuery } from '@import/sanity'
-import { HomeSchemaProps } from '@import/types'
-import { notFound } from 'next/navigation'
 
 const HomePage = async () => {
 	const data: HomeSchemaProps | null = await sanityQuery(HOME_DOCUMENT)

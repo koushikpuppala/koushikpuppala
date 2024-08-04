@@ -1,9 +1,9 @@
-import { FilteredResponseQueryOptions, createClient } from 'next-sanity'
-import { getFile, SanityAssetSource } from '@sanity/asset-utils'
-import createImageUrlBuilder from '@sanity/image-url'
-import { unstable_cache } from 'next/cache'
-import { config } from '@import/config'
 import { cache } from 'react'
+import { config } from '@import/config'
+import { unstable_cache } from 'next/cache'
+import createImageUrlBuilder from '@sanity/image-url'
+import { getFile, SanityAssetSource } from '@sanity/asset-utils'
+import { FilteredResponseQueryOptions, createClient } from 'next-sanity'
 
 export const sanityClient = createClient({
 	apiVersion: config.apiVersion,
@@ -14,13 +14,13 @@ export const sanityClient = createClient({
 
 const imageBuilder = createImageUrlBuilder({ projectId: config.projectId, dataset: config.dataset })
 
-export const urlForImage = cache((source: SanityAssetSource) => {
-	return imageBuilder?.image(source).auto('format').quality(100).fit('max').url()
-})
+export const urlForImage = cache((source: SanityAssetSource) =>
+	imageBuilder?.image(source).auto('format').quality(100).fit('max').url(),
+)
 
-export const urlForFile = cache((source: SanityAssetSource) => {
-	return getFile(source, { projectId: config.projectId, dataset: config.dataset }).asset.url
-})
+export const urlForFile = cache(
+	(source: SanityAssetSource) => getFile(source, { projectId: config.projectId, dataset: config.dataset }).asset.url,
+)
 
 export const sanityQuery = unstable_cache(
 	async (query: string, options?: FilteredResponseQueryOptions, params?: any) => {

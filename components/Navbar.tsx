@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { NavbarData } from '@import/constant'
-import { MotionDiv, MotionNav } from '@import/components'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
+import { NavbarData } from '@import/constant'
+import { usePathname } from 'next/navigation'
+import { MotionDiv, MotionNav } from '@import/components'
 import { HiExclamationCircle, HiXMark } from 'react-icons/hi2'
 
 const NavbarComponent = () => {

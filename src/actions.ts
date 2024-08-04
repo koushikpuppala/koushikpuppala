@@ -1,9 +1,9 @@
 'use server'
 
-import { ContactModel, DatabaseInstance } from '@import/database'
-import { handleFormSubmitType } from '@import/types'
-import { captureException } from '@sentry/nextjs'
 import { createTransport } from 'nodemailer'
+import { captureException } from '@sentry/nextjs'
+import { handleFormSubmitType } from '@import/types'
+import { ContactModel, DatabaseInstance } from '@import/database'
 
 export const handleSubmit: handleFormSubmitType = async (prevState, form) => {
 	if (prevState.statusCode === 200) return prevState

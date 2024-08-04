@@ -1,9 +1,9 @@
 'use client'
 
-import { Transition, Dialog, TransitionChild, DialogPanel } from '@headlessui/react'
-import { DialogComponentProps } from '@import/types'
-import { useRouter } from 'next/navigation'
 import { Fragment } from 'react'
+import { useRouter } from 'next/navigation'
+import { DialogComponentProps } from '@import/types'
+import { Transition, Dialog, TransitionChild, DialogPanel } from '@headlessui/react'
 
 const DialogComponent = ({ children, tag }: DialogComponentProps) => {
 	const router = useRouter()

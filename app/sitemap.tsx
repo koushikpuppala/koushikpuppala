@@ -1,5 +1,5 @@
-import { MetadataRoute } from 'next'
 import { globby } from 'globby'
+import { MetadataRoute } from 'next'
 import { ISODate } from '@import/constant'
 
 const SitemapPage = async (): Promise<MetadataRoute.Sitemap> => {

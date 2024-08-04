@@ -1,7 +1,7 @@
 import Image from 'next/image'
-import { CardBody, CardContainer, MotionDiv } from '@import/components'
-import { ServicesSchemaProps } from '@import/types'
 import { urlForImage } from '@import/sanity'
+import { ServicesSchemaProps } from '@import/types'
+import { CardBody, CardContainer, MotionDiv } from '@import/components'
 
 const ServiceCardComponent = ({ data }: { data: ServicesSchemaProps[] }) => {
 	return (
