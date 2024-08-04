@@ -1,7 +1,7 @@
-import { ContactComponent, MotionDiv, MotionP } from '@import/components'
-import { ReCaptchaProvider } from 'next-recaptcha-v3'
-import { config } from '@import/config'
 import { Metadata } from 'next'
+import { config } from '@import/config'
+import { ReCaptchaProvider } from 'next-recaptcha-v3'
+import { ContactComponent, MotionDiv, MotionP } from '@import/components'
 
 export const metadata: Metadata = {
 	title: 'Contact',

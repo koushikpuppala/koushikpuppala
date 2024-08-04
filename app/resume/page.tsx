@@ -1,7 +1,7 @@
-import { ABOUT_DOCUMENT, sanityQuery, urlForFile } from '@import/sanity'
-import { AboutSchemaProps } from '@import/types'
-import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { AboutSchemaProps } from '@import/types'
+import { ABOUT_DOCUMENT, sanityQuery, urlForFile } from '@import/sanity'
 
 export const metadata: Metadata = {
 	title: 'Resume',

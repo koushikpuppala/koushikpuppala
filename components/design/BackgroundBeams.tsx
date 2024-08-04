@@ -1,8 +1,8 @@
 'use client'
 
-import { BackgroundBeamsProps } from '@import/types'
-import { motion } from 'framer-motion'
 import classNames from 'classnames'
+import { motion } from 'framer-motion'
+import { BackgroundBeamsProps } from '@import/types'
 
 export const BackgroundBeamsComponent = ({ className }: BackgroundBeamsProps) => {
 	const paths = [

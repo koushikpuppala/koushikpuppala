@@ -1,6 +1,7 @@
 declare namespace NodeJS {
 	export interface ProcessEnv {
 		readonly MONGO_URI: string
+		readonly MONGO_API: string
 		readonly DATABASE: string
 		readonly APP_NAME: string
 		readonly HOST: string

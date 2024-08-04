@@ -1,12 +1,12 @@
 'use client'
 
-import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
-import { monthYear } from '@import/constant'
-import { FaCircle } from 'react-icons/fa6'
-import Image from 'next/image'
 import Link from 'next/link'
-import { ExperienceSchemaProps } from '@import/types'
+import Image from 'next/image'
+import { FaCircle } from 'react-icons/fa6'
+import { monthYear } from '@import/constant'
 import { urlForImage } from '@import/sanity'
+import { ExperienceSchemaProps } from '@import/types'
+import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
 
 const ExperienceComponent = ({ data }: { data: ExperienceSchemaProps[] }) => {
 	return (

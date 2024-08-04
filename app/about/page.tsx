@@ -1,8 +1,8 @@
-import { EducationComponent, MotionDiv, MotionP, ServiceCardComponent } from '@import/components'
-import { ABOUT_DOCUMENT, sanityQuery } from '@import/sanity'
-import { AboutSchemaProps } from '@import/types'
-import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { AboutSchemaProps } from '@import/types'
+import { ABOUT_DOCUMENT, sanityQuery } from '@import/sanity'
+import { EducationComponent, MotionDiv, MotionP, ServiceCardComponent } from '@import/components'
 
 export const metadata: Metadata = {
 	title: 'About',

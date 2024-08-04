@@ -1,10 +1,10 @@
 'use client'
 
+import Link from 'next/link'
+import Image from 'next/image'
 import { monthYear } from '@import/constant'
 import { urlForImage } from '@import/sanity'
 import { EducationSchemaProps } from '@import/types'
-import Image from 'next/image'
-import Link from 'next/link'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
 
 const EducationComponent = ({ data }: { data: EducationSchemaProps[] }) => {

@@ -1,8 +1,8 @@
 'use client'
 
-import { globalErrorProps } from '@import/types'
-import * as Sentry from '@sentry/nextjs'
 import { useEffect } from 'react'
+import * as Sentry from '@sentry/nextjs'
+import { globalErrorProps } from '@import/types'
 
 const GlobalError = ({ error, reset }: globalErrorProps) => {
 	useEffect(() => {

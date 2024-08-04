@@ -1,5 +1,5 @@
-import { EducationSchemaProps, ServicesSchemaProps } from '@import/types'
 import { SanityAssetSource } from '@sanity/asset-utils'
+import { EducationSchemaProps, ServicesSchemaProps } from '@import/types'
 
 export type AboutSchemaProps = {
 	_rev: string

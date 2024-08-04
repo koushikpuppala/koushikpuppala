@@ -1,8 +1,8 @@
-import { MotionDiv, MotionP, ProjectCardComponent } from '@import/components'
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { PROJECT_DOCUMENTS, sanityQuery } from '@import/sanity'
 import { ProjectSchemaProps, searchParamsProps } from '@import/types'
-import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
+import { MotionDiv, MotionP, ProjectCardComponent } from '@import/components'
 
 export const metadata: Metadata = {
 	title: 'Projects',

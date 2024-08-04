@@ -1,15 +1,11 @@
-import { MotionDiv, MotionH1, MotionP } from '@import/components'
-import { Metadata } from 'next'
 import Link from 'next/link'
+import { Metadata } from 'next'
+import { MotionDiv, MotionH1, MotionP } from '@import/components'
 
 export const metadata: Metadata = {
 	title: '404 | Page Not Found',
-	openGraph: {
-		title: '404 | Page Not Found',
-	},
-	twitter: {
-		title: '404 | Page Not Found',
-	},
+	openGraph: { title: '404 | Page Not Found' },
+	twitter: { title: '404 | Page Not Found' },
 }
 
 const NotFoundPage = () => {

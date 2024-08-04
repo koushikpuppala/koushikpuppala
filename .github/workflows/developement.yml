@@ -6,20 +6,20 @@ on:
     branches:
       - dev
     paths-ignore:
-      - 'docs/**'
+      - '.github/**'
       - '.husky/**'
       - 'README.md'
-      - '.github/**'
-      - 'LICENSE.md'
+      - 'docs/**'
+      - 'LICENSE'
   pull_request:
     branches:
       - dev
     paths-ignore:
-      - 'docs/**'
+      - '.github/**'
       - '.husky/**'
       - 'README.md'
-      - '.github/**'
-      - 'LICENSE.md'
+      - 'docs/**'
+      - 'LICENSE'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

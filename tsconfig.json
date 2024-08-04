@@ -44,11 +44,7 @@
 		/* Additional Checks */
 		"noUnusedLocals": true /* Enable error reporting when a local variables aren't read. */,
 		"noUnusedParameters": true /* Raise an error when a function parameter isn't read */,
-		"plugins": [
-			{
-				"name": "next"
-			}
-		] /* Use TypeScript-specific functionality in Next.js pages and API routes. */
+		"plugins": [{ "name": "next" }] /* Use TypeScript-specific functionality in Next.js pages and API routes. */
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.mjs"],
 	"exclude": ["node_modules"]
