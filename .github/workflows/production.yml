@@ -119,26 +119,26 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy:
-    if: github.event_name != 'pull_request'
-    environment: Production
-    runs-on: ubuntu-latest
-    needs: build
+  # deploy:
+  #   if: github.event_name != 'pull_request'
+  #   environment: Production
+  #   runs-on: ubuntu-latest
+  #   needs: build
 
-    steps:
-      # Checkout the repository
-      - name: Checkout Repository
-        uses: actions/checkout@v4.1.4
+  #   steps:
+  #     # Checkout the repository
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4.1.4
 
-      # Set up AWS ECS CLI to deploy the Docker image to ECS
-      - name: Set up AWS ECS CLI
-        uses: aws-actions/configure-aws-credentials@v4.0.2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION }}
+  #     # Set up AWS ECS CLI to deploy the Docker image to ECS
+  #     - name: Set up AWS ECS CLI
+  #       uses: aws-actions/configure-aws-credentials@v4.0.2
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ vars.AWS_REGION }}
 
-      # Deploy the Docker image to AWS ECS cluster
-      - name: Deploy to AWS ECS
-        run: |
-          aws ecs update-service --cluster ${{ vars.CLUSTER }} --service ${{ vars.SERVICE }} --force-new-deployment
+  #     # Deploy the Docker image to AWS ECS cluster
+  #     - name: Deploy to AWS ECS
+  #       run: |
+  #         aws ecs update-service --cluster ${{ vars.CLUSTER }} --service ${{ vars.SERVICE }} --force-new-deployment
