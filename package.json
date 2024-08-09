@@ -29,7 +29,7 @@
 		"@headlessui/react": "^2.1.2",
 		"@sanity/image-url": "^1.0.2",
 		"@sanity/vision": "^3.52.4",
-		"@sentry/nextjs": "^8.22.0",
+		"@sentry/nextjs": "^8.25.0",
 		"babel-plugin-react-compiler": "latest",
 		"classnames": "^2.5.1",
 		"framer-motion": "^11.3.21",
