@@ -12654,13 +12654,13 @@ __metadata:
   linkType: hard
 
 "react-dom@npm:canary":
-  version: 19.0.0-rc-8269d55d-20240802
-  resolution: "react-dom@npm:19.0.0-rc-8269d55d-20240802"
+  version: 19.0.0-rc-49496d49-20240814
+  resolution: "react-dom@npm:19.0.0-rc-49496d49-20240814"
   dependencies:
-    scheduler: "npm:0.25.0-rc-8269d55d-20240802"
+    scheduler: "npm:0.25.0-rc-49496d49-20240814"
   peerDependencies:
-    react: 19.0.0-rc-8269d55d-20240802
-  checksum: 10c0/03c7f2e19128b0583a910cbbc77db3a431af40c31365f1dca98ce4eef8f36992336341a714cc160e7e2c492b54c578c9c189f30a6b4b1bb1a578052e4e291e23
+    react: 19.0.0-rc-49496d49-20240814
+  checksum: 10c0/707239ced40b4477076fbb4a46ede7bfafd96041a4dd8f39c05cea89eb7f0d92358deec5a2f72dc4d5073336a464d05f4d408d7069bb167dac9f0c20b7fa5ca3
   languageName: node
   linkType: hard
 
@@ -13438,10 +13438,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"scheduler@npm:0.25.0-rc-8269d55d-20240802":
-  version: 0.25.0-rc-8269d55d-20240802
-  resolution: "scheduler@npm:0.25.0-rc-8269d55d-20240802"
-  checksum: 10c0/e9d5e6beaabdcf91837b84fb68e1db2f8fdd815767f5fc5f94ba9c4b634db2a8c239bc413943021999da3a7f58a3eb01076fb97eb9776c82bffcd2a71943b9fe
+"scheduler@npm:0.25.0-rc-49496d49-20240814":
+  version: 0.25.0-rc-49496d49-20240814
+  resolution: "scheduler@npm:0.25.0-rc-49496d49-20240814"
+  checksum: 10c0/4de42a6b30829865e584c01c4709d104a077f9cad36dd53914c19c37f1e1ead73fdcd137ffb34ba26d8867147de9131ac80578eaf4fe247e518d4980ff1cf9b8
   languageName: node
   linkType: hard
 
