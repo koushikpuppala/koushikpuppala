@@ -2727,12 +2727,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/eslint-plugin-next@npm:15.0.0-canary.100":
-  version: 15.0.0-canary.100
-  resolution: "@next/eslint-plugin-next@npm:15.0.0-canary.100"
+"@next/eslint-plugin-next@npm:15.0.0-canary.117":
+  version: 15.0.0-canary.117
+  resolution: "@next/eslint-plugin-next@npm:15.0.0-canary.117"
   dependencies:
     fast-glob: "npm:3.3.1"
-  checksum: 10c0/882d4601b86f7b713e2582f36827c4a297bdcb5510f62904b80e373e8f5de8e29f8bd40c578dd96fc860af56a1fc9d9c0f0dbc1112f39cc1929c91c0d8c65367
+  checksum: 10c0/a77267dee13a867c41f7d45bd8d4c5b3fce87ec49def17e5022bfa26066ca2b582d232edee0a1dc9a52b49ccb7547413ced5427aa4c6cf0bc4fb4edaf0fda025
   languageName: node
   linkType: hard
 
@@ -7682,10 +7682,10 @@ __metadata:
   linkType: hard
 
 "eslint-config-next@npm:canary":
-  version: 15.0.0-canary.100
-  resolution: "eslint-config-next@npm:15.0.0-canary.100"
+  version: 15.0.0-canary.117
+  resolution: "eslint-config-next@npm:15.0.0-canary.117"
   dependencies:
-    "@next/eslint-plugin-next": "npm:15.0.0-canary.100"
+    "@next/eslint-plugin-next": "npm:15.0.0-canary.117"
     "@rushstack/eslint-patch": "npm:^1.3.3"
     "@typescript-eslint/eslint-plugin": "npm:^5.4.2 || ^6.0.0 || ^7.0.0"
     "@typescript-eslint/parser": "npm:^5.4.2 || ^6.0.0 || ^7.0.0"
@@ -7701,7 +7701,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/b2d46d8583f4e091c931dec85a69067580571b1508931c77c8c409dbffbab8377144187d017f9a51df0fdf8bb52d460a85fbf9d0f8d1cdfaf31ee1438cad75d0
+  checksum: 10c0/0f95780d76b6bb686a2a29e357e8bf868a8586c59286af36eed95bc0729eb6edb55f5cc83e1fcde63b4729b9c0eea72c3b0d49e99893d13be5b35b5c1c4a6aa0
   languageName: node
   linkType: hard
 
