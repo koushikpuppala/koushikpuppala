@@ -62,6 +62,7 @@ jobs:
           echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
           echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
+          echo "NEXT_PUBLIC_MICROSOFT_CLARITY=${{ secrets.NEXT_PUBLIC_MICROSOFT_CLARITY }}" >> .env
           echo "NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}" >> .env
 
       # Get version from package.json using GITHUB_OUTPUT

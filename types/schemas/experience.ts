@@ -1,6 +1,6 @@
 import { SanityAssetSource } from '@sanity/asset-utils'
 
-export type ExperienceSchemaProps = {
+export type ExperienceSchema = {
 	_rev: string
 	position: string
 	company: string

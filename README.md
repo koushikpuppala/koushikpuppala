@@ -4,13 +4,11 @@
 
 <!-- ![Koushikpuppala](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=𝑲𝒐𝒖𝒔𝒉𝒊𝒌%20𝑷𝒖𝒑𝒑𝒂𝒍𝒂&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient) -->
 
-<!-- # Hi 👋, I'm Koushik Puppala -->
-
 </div>
 
 ## 💫About Me
 
-Hi there, I'm Koushik Puppala! I am currently employed with Upraised® as a software engineer and at the Indian Institute of Information Technology, Raichur, as a team lead and mentor for our college website team. Previously, I served as the GDSC lead at IIIT Raichur. My current projects focus on full-stack web development and creating advanced Discord bots. I have created a wide range of projects, such as straightforward webpages, full-stack web apps, desktop screen recorder software, and feature-rich Discord bots for server customization and entertainment. Additionally, I am expanding my skill set by learning Python and Flutter. For more information about my work, please visit the **_[Repositories Page](https://github.com/koushikpuppala?tab=repositories)_**. Let's connect and explore potential collaborations!
+Hi there, I'm Koushik Puppala! I am currently employed with Upraised® as a software engineer and at the Indian Institute of Information Technology, Raichur, as a team lead and mentor for our college website team. Previously, I served as the GDSC lead at IIIT Raichur. My current projects focus on full-stack web development and creating advanced Discord bots. I have created many projects, including straightforward webpages, full-stack web apps, desktop screen recorder software, and feature-rich Discord bots for server customization and entertainment. Additionally, I am expanding my skill set by learning Python and Flutter. For more information about my work, please visit the **_[Repositories Page](https://github.com/koushikpuppala?tab=repositories)_**. Let's connect and explore potential collaborations!
 
 -   👨‍💻 My first project was **_[Koushikpuppala](https://koushikpuppala.com)_**.
 
@@ -34,14 +32,6 @@ Hi there, I'm Koushik Puppala! I am currently employed with Upraised® as a soft
 
 </div>
 
-<!-- ## 🌐 Socials
-
-<div align="center">
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=social&logo=linkedin)](https://koushikpuppala.com/linkedin) [![G Mail](https://img.shields.io/badge/G%20Mail-%23EA4335.svg?style=social&logo=gmail)](mailto:contact@koushikpuppala.com) [![Website](https://img.shields.io/badge/Website-%231877F2.svg?style=social&logo=googlechrome)](https://koushikpuppala.com)
-
-</div> -->
-
 ## 💻 Tech Stack
 
 <div align="center">
@@ -58,13 +48,5 @@ Hi there, I'm Koushik Puppala! I am currently employed with Upraised® as a soft
 ![Random Dev Quote](https://quotes-github-readme.vercel.app/api?type=horizontal&theme=tokyonight)
 
 </div>
-
-<!-- ## 📊 GitHub Stats
-
-<div align="center">
-
-![GitHub Profile Trophy](https://github-profile-trophy.vercel.app/?username=koushikpuppala&theme=juicyfresh&no-frame=true&no-bg=false&margin-w=4&margin-h=4&column=3&row=3) ![GitHub Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=koushikpuppala&theme=blue-green&hide_border=true&include_all_commits=false&count_private=false&layout=compact) ![GitHub Readme Stats](https://github-readme-stats.vercel.app/api?username=koushikpuppala&show_icons=true&theme=blue-green&hide_border=true&include_all_commits=true&count_private=true) ![GitHub Readme Streak](https://github-readme-streak-stats.herokuapp.com/?user=koushikpuppala&theme=blue-green&hide_border=true) ![Activity Graph](https://activity-graph.herokuapp.com/graph?username=koushikpuppala&theme=xcode&hide_border=true&layout=compact)
-
-</div> -->
 
 ![](https://hit.yhype.me/github/profile?user_id=70138027)

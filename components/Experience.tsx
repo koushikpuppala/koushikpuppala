@@ -5,10 +5,10 @@ import Image from 'next/image'
 import { FaCircle } from 'react-icons/fa6'
 import { monthYear } from '@import/constant'
 import { urlForImage } from '@import/sanity'
-import { ExperienceSchemaProps } from '@import/types'
+import { ExperienceSchema } from '@import/types'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
 
-const ExperienceComponent = ({ data }: { data: ExperienceSchemaProps[] }) => {
+const ExperienceComponent = ({ data }: { data: ExperienceSchema[] }) => {
 	return (
 		<VerticalTimeline>
 			{data.map(({ _rev, ...experience }, index) => (

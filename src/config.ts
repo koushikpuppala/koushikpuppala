@@ -15,6 +15,10 @@ export const config = {
 		process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS,
 		'Missing environment variable: NEXT_PUBLIC_GOOGLE_ANALYTICS',
 	),
+	microsoftClarity: assertValue(
+		process.env.NEXT_PUBLIC_MICROSOFT_CLARITY,
+		'Missing environment variable: NEXT_PUBLIC_MICROSOFT_CLARITY',
+	),
 	reCaptchaSiteKey: assertValue(
 		process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
 		'Missing environment variable: NEXT_PUBLIC_RECAPTCHA_SITE_KEY',

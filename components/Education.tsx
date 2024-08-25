@@ -4,10 +4,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { monthYear } from '@import/constant'
 import { urlForImage } from '@import/sanity'
-import { EducationSchemaProps } from '@import/types'
+import { EducationSchema } from '@import/types'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
 
-const EducationComponent = ({ data }: { data: EducationSchemaProps[] }) => {
+const EducationComponent = ({ data }: { data: EducationSchema[] }) => {
 	return (
 		<VerticalTimeline>
 			{data.map(({ _key, ...education }) => (

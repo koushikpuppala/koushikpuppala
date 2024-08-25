@@ -1,4 +1,4 @@
-export type HomeSchemaProps = {
+export type HomeSchema = {
 	_rev: string
 	title: string
 	separator: string

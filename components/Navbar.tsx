@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import { NavbarData } from '@import/constant'
 import { usePathname } from 'next/navigation'
-import { MotionDiv, MotionNav } from '@import/components'
+import { Motion } from '@import/components'
 import { HiExclamationCircle, HiXMark } from 'react-icons/hi2'
 
 const NavbarComponent = () => {
@@ -20,7 +20,7 @@ const NavbarComponent = () => {
 
 	return (
 		<>
-			<MotionDiv
+			<Motion.div
 				direction='down'
 				delay={0.05}
 				className={classNames(
@@ -52,21 +52,21 @@ const NavbarComponent = () => {
 						</button>
 					</div>
 				</div>
-			</MotionDiv>
+			</Motion.div>
 
-			<MotionNav
+			<Motion.nav
 				direction='up'
 				delay={0.1}
 				className='fixed bottom-0 top-0 z-10 mt-auto flex h-max w-full flex-col items-center gap-y-4 lg:hidden'>
 				<LinkComponent pathname={pathname} />
-			</MotionNav>
-			<MotionNav
+			</Motion.nav>
+			<Motion.nav
 				direction='left'
 				delay={0.1}
 				className='fixed bottom-0 right-8 top-0 z-10 mt-auto hidden h-screen w-14 max-w-md flex-col items-center justify-center gap-y-4 lg:flex'>
 				<LinkComponent pathname={pathname} />
-			</MotionNav>
-			<MotionDiv
+			</Motion.nav>
+			<Motion.div
 				direction='down'
 				delay={0.1}
 				className='sticky left-0 right-0 z-10 bg-primary/50 p-2 text-center text-xs backdrop-blur-md lg:fixed lg:bottom-0 lg:bg-primary/0 lg:p-4 lg:text-right lg:backdrop-blur-none'>
@@ -78,7 +78,7 @@ const NavbarComponent = () => {
 					className='text-accent transition-all delay-100 ease-in-out hover:text-white/60'>
 					Source Code
 				</Link>
-			</MotionDiv>
+			</Motion.div>
 		</>
 	)
 }
