@@ -14,8 +14,8 @@ const nextConfig = nextPWA.default({
 		cleanupOutdatedCaches: process.env.NODE_ENV !== 'development',
 	},
 })({
+	experimental: { reactCompiler: true },
 	reactStrictMode: process.env.NODE_ENV !== 'development',
-	experimental: { instrumentationHook: true, reactCompiler: true },
 	output: process.env.ENVIRONMENT === 'production' ? 'standalone' : undefined,
 	images: { remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }] },
 	redirects: async () => {
@@ -40,7 +40,9 @@ const sentryBuildOptions = {
 	project: 'koushikpuppala',
 	release: process.env.npm_package_version,
 	authToken: process.env.SENTRY_AUTH_TOKEN,
+	debug: process.env.NODE_ENV !== 'production',
 	silent: process.env.NODE_ENV === 'production',
+	disableLogger: process.env.NODE_ENV === 'production',
 }
 
 const sentryOptions = {

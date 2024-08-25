@@ -5,7 +5,7 @@ import { urlForImage } from '@import/sanity'
 import { FaGithub, FaGlobe } from 'react-icons/fa6'
 import { ProjectCardComponentProps } from '@import/types'
 import { HiCheck, HiChevronUpDown } from 'react-icons/hi2'
-import { CardBody, CardContainer, CardItem, DialogComponent, MotionDiv } from '@import/components'
+import { CardBody, CardContainer, CardItem, Dialog, Motion } from '@import/components'
 import {
 	Listbox,
 	ListboxButton,
@@ -26,7 +26,7 @@ const ProjectCardComponent = ({ data, searchParams }: ProjectCardComponentProps)
 
 	return (
 		<>
-			<MotionDiv
+			<Motion.div
 				direction='right'
 				delay={0.2}
 				className='mx-auto mb-2 mt-4 max-w-3xl px-4 text-justify text-sm leading-6 text-secondary md:px-6 lg:mx-0 lg:px-6 lg:text-lg xl:max-w-5xl'>
@@ -84,10 +84,10 @@ const ProjectCardComponent = ({ data, searchParams }: ProjectCardComponentProps)
 						</TabList>
 					</TabGroup>
 				</div>
-			</MotionDiv>
+			</Motion.div>
 			<div className='mt-6 flex flex-wrap justify-center gap-10 px-4 pb-40 lg:justify-normal lg:px-6 lg:pb-12'>
 				{projects.map(({ title, subtitle, descriptions, tags, image, github, website, _rev }, index) => (
-					<MotionDiv direction='right' delay={index * 0.15} key={tag + index}>
+					<Motion.div direction='right' delay={index * 0.15} key={tag + index}>
 						<CardContainer
 							key={index}
 							className='w-full rounded-2xl bg-green-pink-gradient p-px shadow-xl'
@@ -156,11 +156,11 @@ const ProjectCardComponent = ({ data, searchParams }: ProjectCardComponentProps)
 								</Link>
 							</CardBody>
 						</CardContainer>
-					</MotionDiv>
+					</Motion.div>
 				))}
 			</div>
 			{project && (
-				<DialogComponent tag={tag}>
+				<Dialog tag={tag}>
 					<div className='flex w-full rounded-2xl bg-accent-gradient p-px'>
 						<div className='w-full rounded-2xl bg-quaternary p-5 sm:w-[30rem]'>
 							<div className='relative h-auto w-full'>
@@ -219,7 +219,7 @@ const ProjectCardComponent = ({ data, searchParams }: ProjectCardComponentProps)
 							</div>
 						</div>
 					</div>
-				</DialogComponent>
+				</Dialog>
 			)}
 		</>
 	)

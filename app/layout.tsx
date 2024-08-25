@@ -4,7 +4,7 @@ import { Sora } from 'next/font/google'
 import { config } from '@import/config'
 import { Metadata, Viewport } from 'next'
 import { RootLayoutProps } from '@import/types'
-import { BackgroundBeamsComponent, NavbarComponent } from '@import/components'
+import { BackgroundBeams, Navbar } from '@import/components'
 
 import '@import/styles/globals.scss'
 import 'react-vertical-timeline-component/style.min.css'
@@ -18,16 +18,10 @@ export const metadata: Metadata = {
 		"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
 	applicationName: 'Personal Website | Koushik Puppala | Software Engineer | Freelancer',
 	keywords: ['Koushik', 'Koushik Puppala', 'Puppala Koushik', 'Koushikpuppala', 'Puppalakoushik'],
-	authors: [{ name: 'Koushikpuppala', url: 'https://koushikpuppala.com' }],
+	authors: [{ name: 'Koushikpuppala', url: config.deployUrl }],
 	creator: 'Koushikpuppala',
-	alternates: { canonical: 'https://koushikpuppala.com' },
-	formatDetection: {
-		email: true,
-		address: true,
-		telephone: true,
-		date: true,
-		url: true,
-	},
+	alternates: { canonical: config.deployUrl },
+	formatDetection: { email: true, address: true, telephone: true, date: true, url: true },
 	openGraph: {
 		title: {
 			template: '%s | Koushik Puppala | Software Engineer | Freelancer',
@@ -35,7 +29,7 @@ export const metadata: Metadata = {
 		},
 		description:
 			"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
-		url: 'https://koushikpuppala.com',
+		url: config.deployUrl,
 		type: 'website',
 		locale: 'en_IN',
 		siteName: 'Koushik Puppala | Software Engineer | Freelancer',
@@ -63,7 +57,7 @@ export const metadata: Metadata = {
 		apple: { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
 	},
 	manifest: '/manifest.webmanifest',
-	metadataBase: new URL('https://koushikpuppala.com'),
+	metadataBase: new URL(config.deployUrl),
 	robots: {
 		index: true,
 		follow: true,
@@ -98,23 +92,41 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 			<head>
 				<link rel='preconnect' href='https://www.googletagmanager.com' crossOrigin='anonymous' />
 				<link rel='preconnect' href='https://analytics.google.com' crossOrigin='anonymous' />
+				<link rel='preconnect' href='https://fonts.gstatic.com' crossOrigin='anonymous' />
 				<Script
-					id='google-analytics-g4'
 					async={true}
-					src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalytics}`}
+					id='google-analytics-g4'
 					strategy='afterInteractive'
+					src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalytics}`}
 				/>
 				<Script
-					strategy='afterInteractive'
-					id='Google Analytics G4'
 					type='text/javascript'
+					id='Google Analytics G4'
+					strategy='afterInteractive'
 					dangerouslySetInnerHTML={{
-						__html: `window.dataLayer = window.dataLayer || [];
-							function gtag() {
-								dataLayer.push(arguments);
-							}
-							gtag('js', new Date());
-							gtag('config', '${config.googleAnalytics}');`,
+						__html: `
+							window.dataLayer = window.dataLayer || []
+							function gtag() { dataLayer.push(arguments) }
+							gtag('js', new Date())
+							gtag('config', '${config.googleAnalytics}')
+						`,
+					}}
+				/>
+				<Script
+					type='text/javascript'
+					id='Microsoft Clarity'
+					strategy='afterInteractive'
+					dangerouslySetInnerHTML={{
+						__html: `
+							(function (c, l, a, r, i, t, y) {
+								c[a] = c[a] ||function () { (c[a].q = c[a].q || []).push(arguments) }
+								t = l.createElement(r)
+								t.async = 1
+								t.src = 'https://www.clarity.ms/tag/' + i
+								y = l.getElementsByTagName(r)[0]
+								y.parentNode.insertBefore(t, y)
+							})(window, document, 'clarity', 'script', '${config.microsoftClarity}')
+						`,
 					}}
 				/>
 			</head>
@@ -123,9 +135,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					sora.className,
 					'relative h-screen w-full overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white',
 				)}>
-				<NavbarComponent />
+				<Navbar />
 				{children}
-				<BackgroundBeamsComponent />
+				<BackgroundBeams />
 			</body>
 		</html>
 	)

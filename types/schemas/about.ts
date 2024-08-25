@@ -1,11 +1,11 @@
 import { SanityAssetSource } from '@sanity/asset-utils'
-import { EducationSchemaProps, ServicesSchemaProps } from '@import/types'
+import { EducationSchema, ServicesSchema } from '@import/types'
 
-export type AboutSchemaProps = {
+export type AboutSchema = {
 	_rev: string
 	title: string
 	introduction: string
 	resume: SanityAssetSource
-	services: ServicesSchemaProps[]
-	educations: EducationSchemaProps[]
+	services: ServicesSchema[]
+	educations: EducationSchema[]
 }

@@ -1,3 +1,5 @@
+import { DocumentActionComponent, DocumentActionDescription, DocumentActionProps, DocumentActionsContext } from 'sanity'
+
 export type { handleFormSubmitType, prevStateType } from './actions'
 
 export type {
@@ -25,10 +27,17 @@ export type {
 export type { ContactFormType, ContactModalProps } from './models'
 
 export type {
-	AboutSchemaProps,
-	EducationSchemaProps,
-	ExperienceSchemaProps,
-	HomeSchemaProps,
-	ProjectSchemaProps,
-	ServicesSchemaProps,
+	AboutSchema,
+	EducationSchema,
+	ExperienceSchema,
+	HomeSchema,
+	ProjectSchema,
+	ServicesSchema,
 } from './schemas'
+
+export type BetterAction = (props: DocumentActionProps) => DocumentActionDescription | null
+
+export type SanityImprovedAction = (
+	originalAction: DocumentActionComponent,
+	context: DocumentActionsContext,
+) => DocumentActionComponent

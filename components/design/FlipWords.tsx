@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FlipWordsComponentProps } from '@import/types'
 
-export const FlipWordsComponent = ({ words, duration = 2500, className }: FlipWordsComponentProps) => {
+export const FlipWords = ({ words, duration = 2500, className }: FlipWordsComponentProps) => {
 	const [currentWord, setCurrentWord] = useState(words[0])
 
 	useEffect(() => {

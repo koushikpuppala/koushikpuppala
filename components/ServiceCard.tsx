@@ -1,13 +1,13 @@
 import Image from 'next/image'
 import { urlForImage } from '@import/sanity'
-import { ServicesSchemaProps } from '@import/types'
-import { CardBody, CardContainer, MotionDiv } from '@import/components'
+import { ServicesSchema } from '@import/types'
+import { CardBody, CardContainer, Motion } from '@import/components'
 
-const ServiceCardComponent = ({ data }: { data: ServicesSchemaProps[] }) => {
+const ServiceCardComponent = ({ data }: { data: ServicesSchema[] }) => {
 	return (
 		<div className='mt-10 flex flex-wrap justify-center gap-10 px-4 pb-16 lg:justify-normal lg:px-6'>
 			{data.map(({ _key, title, image }, index) => (
-				<MotionDiv key={_key} direction='right' delay={index * 0.2} className='w-full xs:w-60'>
+				<Motion.div key={_key} direction='right' delay={index * 0.2} className='w-full xs:w-60'>
 					<CardContainer
 						className='group/card w-full cursor-pointer rounded-2xl bg-quaternary'
 						options={{ max: 45, scale: 1, speed: 450 }}>
@@ -26,7 +26,7 @@ const ServiceCardComponent = ({ data }: { data: ServicesSchemaProps[] }) => {
 							</div>
 						</CardBody>
 					</CardContainer>
-				</MotionDiv>
+				</Motion.div>
 			))}
 		</div>
 	)

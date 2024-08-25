@@ -1,8 +1,29 @@
 import { defineConfig } from 'sanity'
 import { config } from '@import/config'
 import { schema } from '@import/schemas'
+import { revalidateTag } from 'next/cache'
 import { visionTool } from '@sanity/vision'
 import { structureTool } from 'sanity/structure'
+import { BetterAction, SanityImprovedAction } from '@import/types'
+
+const sanityImprovedAction: SanityImprovedAction = (originalAction, context) => {
+	const BetterAction: BetterAction = props => {
+		const originalResult = originalAction(props)
+
+		if (!originalResult) return originalResult
+
+		return {
+			...originalResult,
+			onHandle: () => {
+				if (originalResult.onHandle) originalResult.onHandle()
+				revalidateTag(context.schemaType)
+			},
+			label: originalResult.label + ' & Revalidate',
+		}
+	}
+
+	return BetterAction
+}
 
 export default defineConfig({
 	title: 'Sanity Studio | Koushik Puppala',
@@ -11,4 +32,12 @@ export default defineConfig({
 	dataset: config.dataset,
 	schema,
 	plugins: [structureTool(), visionTool({ defaultApiVersion: config.apiVersion })],
+	document: {
+		actions: (prev, context) =>
+			prev.map(originalAction =>
+				originalAction.name === 'PublishAction' || originalAction.name === 'DeleteAction'
+					? sanityImprovedAction(originalAction, context)
+					: originalAction,
+			),
+	},
 })

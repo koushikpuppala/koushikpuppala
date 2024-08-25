@@ -13,6 +13,21 @@ export const FORM_INITIAL_VALUE = { name: '', email: '', subject: '', message: '
 
 export const FORM_INITIAL_STATE = { statusCode: 0, statusMessage: '' }
 
+export enum SANITY_DOCUMENT_TYPE {
+	HOME = 'home',
+	ABOUT = 'about',
+	EXPERIENCE = 'experience',
+	PROJECT = 'project',
+}
+
+export enum SANITY_DOCUMENT_QUERY {
+	HOME_DOCUMENT = `*[_type == "${SANITY_DOCUMENT_TYPE.HOME}"][0]`,
+	ABOUT_DOCUMENT = `*[_type == "${SANITY_DOCUMENT_TYPE.ABOUT}"][0]`,
+	EXPERIENCE_DOCUMENTS = `*[_type == "${SANITY_DOCUMENT_TYPE.EXPERIENCE}"] | order(endDate desc)`,
+	PROJECT_DOCUMENTS = `*[_type == "${SANITY_DOCUMENT_TYPE.PROJECT}"] | order(title desc)`,
+	RESUME_DOCUMENT = `*[_type == "${SANITY_DOCUMENT_TYPE.ABOUT}"][0].resume`,
+}
+
 export const transition = (direction: 'up' | 'down' | 'left' | 'right', delay: number) => ({
 	hidden: {
 		y: direction === 'up' ? 80 : direction === 'down' ? -80 : 0,

@@ -1,4 +1,4 @@
 export { CardBody, CardContainer, CardItem } from './3DCard'
-export { BackgroundBeamsComponent } from './BackgroundBeams'
-export { FlipWordsComponent } from './FlipWords'
-export { TextGenerateEffectComponent } from './TextGenerateEffect'
+export { BackgroundBeams } from './BackgroundBeams'
+export { FlipWords } from './FlipWords'
+export { TextGenerateEffect } from './TextGenerateEffect'

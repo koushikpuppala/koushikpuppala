@@ -1,6 +1,6 @@
 import { SanityAssetSource } from '@sanity/asset-utils'
 
-export type EducationSchemaProps = {
+export type EducationSchema = {
 	_key: string
 	degree: string
 	university: string

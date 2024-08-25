@@ -1,6 +1,6 @@
 import { SanityAssetSource } from '@sanity/asset-utils'
 
-export type ProjectSchemaProps = {
+export type ProjectSchema = {
 	_rev: string
 	title: string
 	subtitle: string
