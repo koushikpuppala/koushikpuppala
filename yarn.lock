@@ -12824,9 +12824,9 @@ __metadata:
   linkType: hard
 
 "react@npm:canary":
-  version: 19.0.0-rc-b57d2823-20240822
-  resolution: "react@npm:19.0.0-rc-b57d2823-20240822"
-  checksum: 10c0/4c2dece815ae3edc36c147c589fb2be0a6088b3fdaa64993031ecdac6e7d5efe9a4cd4f57c5cee691a00ed961a56b750a56c6bcc6786e82ce3bfaacce3322246
+  version: 19.0.0-rc-e56f4ae3-20240830
+  resolution: "react@npm:19.0.0-rc-e56f4ae3-20240830"
+  checksum: 10c0/43dac4315ba43f939e9c179ff38d7879e82a71fc1d81c31a025664f083733871f9bcf8ad3dcdb24a93974cfa778a5d6a2fbc698f5ea084076943de8700e5b469
   languageName: node
   linkType: hard
 
