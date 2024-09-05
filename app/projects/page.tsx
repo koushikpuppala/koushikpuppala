@@ -15,6 +15,9 @@ const ProjectsPage = async ({ searchParams }: searchParamsProps) => {
 
 	if (data.length === 0) return notFound()
 
+	const id = searchParams?.id ?? undefined
+	const tag = searchParams?.tag?.toLocaleLowerCase() ?? 'all'
+
 	return (
 		<div className='h-full bg-primary/50'>
 			<div className='h-full w-full overflow-y-auto'>
@@ -34,7 +37,7 @@ const ProjectsPage = async ({ searchParams }: searchParamsProps) => {
 						projects effectively.
 					</Motion.p>
 
-					<ProjectCard data={data} searchParams={searchParams} />
+					<ProjectCard data={data} id={id} tag={tag} />
 				</div>
 			</div>
 		</div>

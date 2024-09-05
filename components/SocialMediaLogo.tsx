@@ -1,4 +1,4 @@
-import { SocialMediaLogoComponentProps } from '@import/types'
+import { SocialMediaLogoProps } from '@import/types'
 import {
 	FaLinkedinIn,
 	FaGithub,
@@ -11,7 +11,7 @@ import {
 	FaServer,
 } from 'react-icons/fa6'
 
-const SocialMediaLogoComponent = ({ platform, className }: SocialMediaLogoComponentProps) => {
+const SocialMediaLogo = ({ platform, className }: SocialMediaLogoProps) => {
 	switch (platform) {
 		case 'linkedin':
 			return <FaLinkedinIn className={className} />
@@ -36,4 +36,4 @@ const SocialMediaLogoComponent = ({ platform, className }: SocialMediaLogoCompon
 	}
 }
 
-export default SocialMediaLogoComponent
+export default SocialMediaLogo

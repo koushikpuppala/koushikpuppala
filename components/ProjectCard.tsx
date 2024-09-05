@@ -3,7 +3,7 @@ import Image from 'next/image'
 import classNames from 'classnames'
 import { urlForImage } from '@import/sanity'
 import { FaGithub, FaGlobe } from 'react-icons/fa6'
-import { ProjectCardComponentProps } from '@import/types'
+import { ProjectCardProps } from '@import/types'
 import { HiCheck, HiChevronUpDown } from 'react-icons/hi2'
 import { CardBody, CardContainer, CardItem, Dialog, Motion } from '@import/components'
 import {
@@ -17,9 +17,7 @@ import {
 	Transition,
 } from '@headlessui/react'
 
-const ProjectCardComponent = ({ data, searchParams }: ProjectCardComponentProps) => {
-	const id = searchParams?.id ?? undefined
-	const tag = searchParams?.tag?.toLocaleLowerCase() ?? 'all'
+const ProjectCard = ({ data, id, tag }: ProjectCardProps) => {
 	const tags = ['all', ...Array.from(new Set(data.map(project => project.tag.toLocaleLowerCase())))]
 	const projects = data.filter(project => project.tag.toLocaleLowerCase() === tag || tag === 'all')
 	const project = id ? projects.find(project => project._rev === id) : undefined
@@ -225,4 +223,4 @@ const ProjectCardComponent = ({ data, searchParams }: ProjectCardComponentProps)
 	)
 }
 
-export default ProjectCardComponent
+export default ProjectCard

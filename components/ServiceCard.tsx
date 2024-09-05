@@ -3,7 +3,7 @@ import { urlForImage } from '@import/sanity'
 import { ServicesSchema } from '@import/types'
 import { CardBody, CardContainer, Motion } from '@import/components'
 
-const ServiceCardComponent = ({ data }: { data: ServicesSchema[] }) => {
+const ServiceCard = ({ data }: { data: ServicesSchema[] }) => {
 	return (
 		<div className='mt-10 flex flex-wrap justify-center gap-10 px-4 pb-16 lg:justify-normal lg:px-6'>
 			{data.map(({ _key, title, image }, index) => (
@@ -32,4 +32,4 @@ const ServiceCardComponent = ({ data }: { data: ServicesSchema[] }) => {
 	)
 }
 
-export default ServiceCardComponent
+export default ServiceCard

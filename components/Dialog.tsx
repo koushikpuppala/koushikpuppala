@@ -2,10 +2,10 @@
 
 import { Fragment } from 'react'
 import { useRouter } from 'next/navigation'
-import { DialogComponentProps } from '@import/types'
+import { DialogProps } from '@import/types'
 import { Transition, Dialog, TransitionChild, DialogPanel } from '@headlessui/react'
 
-const DialogComponent = ({ children, tag }: DialogComponentProps) => {
+const CustomDialog = ({ children, tag }: DialogProps) => {
 	const router = useRouter()
 
 	const handleClose = () =>
@@ -47,4 +47,4 @@ const DialogComponent = ({ children, tag }: DialogComponentProps) => {
 	)
 }
 
-export default DialogComponent
+export default CustomDialog

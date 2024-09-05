@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation'
 import { Motion } from '@import/components'
 import { HiExclamationCircle, HiXMark } from 'react-icons/hi2'
 
-const NavbarComponent = () => {
+const Navbar = () => {
 	const pathname = usePathname()
 	const [online, setOnline] = useState(true)
 
@@ -58,13 +58,13 @@ const NavbarComponent = () => {
 				direction='up'
 				delay={0.1}
 				className='fixed bottom-0 top-0 z-10 mt-auto flex h-max w-full flex-col items-center gap-y-4 lg:hidden'>
-				<LinkComponent pathname={pathname} />
+				<CustomLink pathname={pathname} />
 			</Motion.nav>
 			<Motion.nav
 				direction='left'
 				delay={0.1}
 				className='fixed bottom-0 right-8 top-0 z-10 mt-auto hidden h-screen w-14 max-w-md flex-col items-center justify-center gap-y-4 lg:flex'>
-				<LinkComponent pathname={pathname} />
+				<CustomLink pathname={pathname} />
 			</Motion.nav>
 			<Motion.div
 				direction='down'
@@ -83,7 +83,7 @@ const NavbarComponent = () => {
 	)
 }
 
-const LinkComponent = ({ pathname }: { pathname: string }) => {
+const CustomLink = ({ pathname }: { pathname: string }) => {
 	return (
 		<div className='flex h-14 w-full items-center justify-between gap-y-10 bg-white/10 px-4 py-6 text-3xl backdrop-blur-sm sm:px-24 md:px-48 lg:h-max lg:flex-col lg:justify-center lg:rounded-full lg:px-0 lg:py-8 lg:text-xl'>
 			{NavbarData.map((link, index) => {
@@ -114,4 +114,4 @@ const LinkComponent = ({ pathname }: { pathname: string }) => {
 	)
 }
 
-export default NavbarComponent
+export default Navbar

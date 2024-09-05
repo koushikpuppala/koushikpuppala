@@ -2,9 +2,9 @@
 
 import { motion } from 'framer-motion'
 import { transition } from '@import/constant'
-import { MotionComponentProps } from '@import/types'
+import { MotionProps } from '@import/types'
 
-const div = ({ children, direction, delay, className }: MotionComponentProps) => (
+const div = ({ children, direction, delay, className }: MotionProps) => (
 	<motion.div
 		initial='hidden'
 		animate='show'
@@ -15,7 +15,7 @@ const div = ({ children, direction, delay, className }: MotionComponentProps) =>
 	</motion.div>
 )
 
-const h1 = ({ children, direction, delay, className }: MotionComponentProps) => (
+const h1 = ({ children, direction, delay, className }: MotionProps) => (
 	<motion.h1
 		initial='hidden'
 		animate='show'
@@ -26,7 +26,7 @@ const h1 = ({ children, direction, delay, className }: MotionComponentProps) => 
 	</motion.h1>
 )
 
-const nav = ({ children, direction, delay, className }: MotionComponentProps) => (
+const nav = ({ children, direction, delay, className }: MotionProps) => (
 	<motion.nav
 		initial='hidden'
 		animate='show'
@@ -37,7 +37,7 @@ const nav = ({ children, direction, delay, className }: MotionComponentProps) =>
 	</motion.nav>
 )
 
-const p = ({ children, direction, delay, className }: MotionComponentProps) => (
+const p = ({ children, direction, delay, className }: MotionProps) => (
 	<motion.p
 		initial='hidden'
 		animate='show'

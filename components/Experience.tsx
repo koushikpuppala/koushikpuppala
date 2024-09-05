@@ -8,7 +8,7 @@ import { urlForImage } from '@import/sanity'
 import { ExperienceSchema } from '@import/types'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
 
-const ExperienceComponent = ({ data }: { data: ExperienceSchema[] }) => {
+const Experience = ({ data }: { data: ExperienceSchema[] }) => {
 	return (
 		<VerticalTimeline>
 			{data.map(({ _rev, ...experience }, index) => (
@@ -61,4 +61,4 @@ const ExperienceComponent = ({ data }: { data: ExperienceSchema[] }) => {
 	)
 }
 
-export default ExperienceComponent
+export default Experience

@@ -11,7 +11,7 @@ import { useActionState, useEffect, useState } from 'react'
 import { handleReCaptcha, handleSubmit } from '@import/actions'
 import { FORM_INITIAL_STATE, FORM_INITIAL_VALUE } from '@import/constant'
 
-const ContactComponent = () => {
+const Contact = () => {
 	const { executeRecaptcha } = useReCaptcha()
 	const [isDisabled, setIsDisabled] = useState(true)
 	const [form, setForm] = useState<ContactFormType>(FORM_INITIAL_VALUE)
@@ -131,7 +131,7 @@ const ContactComponent = () => {
 
 				<button
 					type='submit'
-					disabled={isDisabled}
+					disabled={isDisabled || isSubmitting}
 					className={classNames(
 						{
 							'cursor-not-allowed bg-secondary': isDisabled,
@@ -165,4 +165,4 @@ const ContactComponent = () => {
 	)
 }
 
-export default ContactComponent
+export default Contact

@@ -2,10 +2,10 @@
 
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
-import { TextGenerateEffectComponentProps } from '@import/types'
+import { TextGenerateEffectProps } from '@import/types'
 import { AnimatePresence, motion, stagger, useAnimate } from 'framer-motion'
 
-export const TextGenerateEffect = ({ strings, className }: TextGenerateEffectComponentProps) => {
+export const TextGenerateEffect = ({ strings, className }: TextGenerateEffectProps) => {
 	const [scope, animate] = useAnimate()
 	const [currentString, setCurrentString] = useState(strings[0])
 

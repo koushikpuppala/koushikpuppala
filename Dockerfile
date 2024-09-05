@@ -46,26 +46,22 @@ RUN yarn build
 # Create a new stage called "runner" based on the "base" image
 FROM base AS runner
 
-# Install additional packages: curl and bash
-RUN apk add --no-cache curl bash
-
 # Set the working directory to /app
 WORKDIR /app
 
-# Create a new system group with GID 1001
-RUN addgroup --system --gid 1001 koushikpuppala
-
-# Create a new system user with UID 1001 and add it to the "koushikpuppala" group
-RUN adduser --system --uid 1001 portfolio --ingroup koushikpuppala
+# Install additional packages: curl and bash
+RUN apk add --no-cache curl bash && \
+    # Create a new system group with GID 1001
+    addgroup --system --gid 1001 koushikpuppala && \
+    # Create a new system user with UID 1001 and add it to the "koushikpuppala" group
+    adduser --system --uid 1001 portfolio --ingroup koushikpuppala && \
+    # Create a directory for the Next.js build output
+    mkdir .next && \
+    # Change the ownership of the .next directory to the "portfolio" user and "koushikpuppala" group
+    chown portfolio:koushikpuppala .next
 
 # Copy the public directory from the "builder" stage to the current working directory
 COPY --from=builder /app/public ./public
-
-# Create a directory for the Next.js build output
-RUN mkdir .next
-
-# Change the ownership of the .next directory to the "portfolio" user and "koushikpuppala" group
-RUN chown portfolio:koushikpuppala .next
 
 # Copy the standalone build output from the "builder" stage to the current working directory, with proper ownership
 COPY --from=builder --chown=portfolio:koushikpuppala /app/.next/standalone ./
