@@ -3,24 +3,24 @@ import { DocumentActionComponent, DocumentActionDescription, DocumentActionProps
 export type { handleFormSubmitType, prevStateType } from './actions'
 
 export type {
-	DialogComponentProps,
+	DialogProps,
 	MainLayoutProps,
-	MotionComponentProps,
+	MotionProps,
 	RootLayoutProps,
-	SocialMediaLogoComponentProps,
-	TransitionComponentProps,
+	SocialMediaLogoProps,
+	TransitionProps,
 	searchParamsProps,
 	globalErrorProps,
 } from './app'
 
 export type {
-	FlipWordsComponentProps,
-	TextGenerateEffectComponentProps,
-	CardBodyComponentProps,
-	CardComponentProps,
-	CardContainerComponentProps,
-	CardItemComponentProps,
-	ProjectCardComponentProps,
+	FlipWordsProps,
+	TextGenerateEffectProps,
+	CardBodyProps,
+	CardProps,
+	CardContainerProps,
+	CardItemProps,
+	ProjectCardProps,
 	BackgroundBeamsProps,
 } from './components'
 

@@ -7,7 +7,7 @@ import { urlForImage } from '@import/sanity'
 import { EducationSchema } from '@import/types'
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component'
 
-const EducationComponent = ({ data }: { data: EducationSchema[] }) => {
+const Education = ({ data }: { data: EducationSchema[] }) => {
 	return (
 		<VerticalTimeline>
 			{data.map(({ _key, ...education }) => (
@@ -46,4 +46,4 @@ const EducationComponent = ({ data }: { data: EducationSchema[] }) => {
 	)
 }
 
-export default EducationComponent
+export default Education

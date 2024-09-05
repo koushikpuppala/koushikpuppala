@@ -2,24 +2,24 @@ export type RootLayoutProps = {
 	children: React.ReactNode
 }
 
-export type TransitionComponentProps = RootLayoutProps
+export type TransitionProps = RootLayoutProps
 
 export type MainLayoutProps = RootLayoutProps & {
 	className?: string
 }
 
-export type SocialMediaLogoComponentProps = {
+export type SocialMediaLogoProps = {
 	platform: string
 	className: string
 }
 
-export type MotionComponentProps = RootLayoutProps & {
+export type MotionProps = RootLayoutProps & {
 	direction: 'left' | 'right' | 'up' | 'down'
 	delay: number
 	className?: string
 }
 
-export type DialogComponentProps = RootLayoutProps & {
+export type DialogProps = RootLayoutProps & {
 	tag: string
 }
 

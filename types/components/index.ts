@@ -1,30 +1,30 @@
 import { HTMLAttributes } from 'react'
-import { ProjectSchema, searchParamsProps } from '../'
+import { ProjectSchema } from '../'
 
-export type FlipWordsComponentProps = {
+export type FlipWordsProps = {
 	words: string[]
 	duration?: number
 	className?: string
 }
 
-export type TextGenerateEffectComponentProps = {
+export type TextGenerateEffectProps = {
 	strings: string[]
 	className?: string
 }
 
-export type CardComponentProps = HTMLAttributes<HTMLElement> & {
+export type CardProps = HTMLAttributes<HTMLElement> & {
 	children?: React.ReactNode
 	className?: string
 }
 
-export type CardContainerComponentProps = CardComponentProps & {
+export type CardContainerProps = CardProps & {
 	containerClassName?: string
 	options?: { max?: number; scale?: number; speed?: number }
 }
 
-export type CardBodyComponentProps = CardComponentProps
+export type CardBodyProps = CardProps
 
-export type CardItemComponentProps = CardComponentProps & {
+export type CardItemProps = CardProps & {
 	as?: React.ElementType
 	translateX?: number | string
 	translateY?: number | string
@@ -35,8 +35,10 @@ export type CardItemComponentProps = CardComponentProps & {
 	[key: string]: any
 }
 
-export type ProjectCardComponentProps = searchParamsProps & {
+export type ProjectCardProps = {
 	data: ProjectSchema[]
+	id: string | undefined
+	tag: string
 }
 
 export type BackgroundBeamsProps = {

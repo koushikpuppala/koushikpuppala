@@ -2,11 +2,11 @@
 
 import classNames from 'classnames'
 import React, { createContext, useState, useRef, useEffect, use } from 'react'
-import { CardBodyComponentProps, CardContainerComponentProps, CardItemComponentProps } from '@import/types'
+import { CardBodyProps, CardContainerProps, CardItemProps } from '@import/types'
 
 const MouseEnterContext = createContext<[boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined>(undefined)
 
-export const CardContainer = ({ children, className, containerClassName, options }: CardContainerComponentProps) => {
+export const CardContainer = ({ children, className, containerClassName, options }: CardContainerProps) => {
 	const max = options?.max ?? 35
 	const scale = options?.scale ?? 1.1
 	const speed = options?.speed ?? 1000
@@ -62,7 +62,7 @@ export const CardContainer = ({ children, className, containerClassName, options
 	)
 }
 
-export const CardBody = ({ children, className, ...rest }: CardBodyComponentProps) => {
+export const CardBody = ({ children, className, ...rest }: CardBodyProps) => {
 	return (
 		<div
 			{...rest}
@@ -86,7 +86,7 @@ export const CardItem = ({
 	rotateY = 0,
 	rotateZ = 0,
 	...rest
-}: CardItemComponentProps) => {
+}: CardItemProps) => {
 	const ref = useRef<HTMLDivElement>(null)
 	const [isMouseEntered] = useMouseEnter()
 
