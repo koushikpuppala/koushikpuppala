@@ -5712,8 +5712,8 @@ __metadata:
   linkType: hard
 
 "babel-plugin-react-compiler@npm:latest":
-  version: 0.0.0-experimental-4e0eccf-20240903
-  resolution: "babel-plugin-react-compiler@npm:0.0.0-experimental-4e0eccf-20240903"
+  version: 0.0.0-experimental-7449567-20240904
+  resolution: "babel-plugin-react-compiler@npm:0.0.0-experimental-7449567-20240904"
   dependencies:
     "@babel/generator": "npm:7.2.0"
     "@babel/types": "npm:^7.19.0"
@@ -5722,7 +5722,7 @@ __metadata:
     pretty-format: "npm:^24"
     zod: "npm:^3.22.4"
     zod-validation-error: "npm:^2.1.0"
-  checksum: 10c0/b3722416691a33e83b65bfd3cfc7e0616e3759b64910e83dd7af93a55ad9bfad306c6a42a11c60c837cd62c169936e8c41962785e4465d7ec4947fa5c65cec50
+  checksum: 10c0/8813485f3327a66f6a3cf68e06600c4649b1d8c52edc0d3f6e1cf750510aab363693532eccbb798cd08069e8b3f245e9c3435df043bbf4006052d7f50e180ddf
   languageName: node
   linkType: hard
 
