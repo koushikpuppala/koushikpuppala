@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import classNames from 'classnames'
@@ -16,11 +18,23 @@ import {
 	TabList,
 	Transition,
 } from '@headlessui/react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
-const ProjectCard = ({ data, id, tag }: ProjectCardProps) => {
+const ProjectCard = ({ data }: ProjectCardProps) => {
+	const searchParams = useSearchParams()
+	const router = useRouter()
+
+	const tag = searchParams.get('tag')?.toLocaleLowerCase() ?? 'all'
+	const id = searchParams.get('id')
+
 	const tags = ['all', ...Array.from(new Set(data.map(project => project.tag.toLocaleLowerCase())))]
 	const projects = data.filter(project => project.tag.toLocaleLowerCase() === tag || tag === 'all')
-	const project = id ? projects.find(project => project._rev === id) : undefined
+	const project = projects.find(project => project._rev === id)
+
+	const handleClose = () =>
+		router.replace(`?${new URLSearchParams(tag !== 'all' ? { tag: tag } : {}).toString()}`, {
+			scroll: false,
+		})
 
 	return (
 		<>
@@ -32,7 +46,7 @@ const ProjectCard = ({ data, id, tag }: ProjectCardProps) => {
 					<label htmlFor='Tab' className='sr-only'>
 						Tab
 					</label>
-					<Listbox value={tag}>
+					<Listbox value={tag} as='div'>
 						<ListboxButton
 							className={classNames(
 								'relative block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 capitalize text-white',
@@ -158,7 +172,7 @@ const ProjectCard = ({ data, id, tag }: ProjectCardProps) => {
 				))}
 			</div>
 			{project && (
-				<Dialog tag={tag}>
+				<Dialog handleClose={handleClose}>
 					<div className='flex w-full rounded-2xl bg-accent-gradient p-px'>
 						<div className='w-full rounded-2xl bg-quaternary p-5 sm:w-[30rem]'>
 							<div className='relative h-auto w-full'>

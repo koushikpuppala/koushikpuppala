@@ -13,11 +13,17 @@ export const FORM_INITIAL_VALUE = { name: '', email: '', subject: '', message: '
 
 export const FORM_INITIAL_STATE = { statusCode: 0, statusMessage: '' }
 
+export const REVALIDATION_TIME = 60 * 60 * 24 * 7
+
 export enum SANITY_DOCUMENT_TYPE {
 	HOME = 'home',
 	ABOUT = 'about',
+	RESUME = 'resume',
 	EXPERIENCE = 'experience',
 	PROJECT = 'project',
+	EDUCATION = 'education',
+	SERVICE = 'service',
+	SOCIAL = 'social',
 }
 
 export enum SANITY_DOCUMENT_QUERY {

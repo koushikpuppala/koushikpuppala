@@ -1,7 +1,8 @@
+import { SANITY_DOCUMENT_TYPE } from '@import/constant'
 import { defineField, defineType } from 'sanity'
 
 export default defineType({
-	name: 'social',
+	name: SANITY_DOCUMENT_TYPE.SOCIAL,
 	title: 'Social',
 	type: 'object',
 	fields: [

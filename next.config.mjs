@@ -35,6 +35,7 @@ const nextConfig = nextPWA.default({
 	},
 })
 
+/** @type {import('@sentry/nextjs').SentryBuildOptions} */
 const sentryBuildOptions = {
 	org: 'koushikpuppala',
 	project: 'koushikpuppala',
@@ -43,13 +44,11 @@ const sentryBuildOptions = {
 	debug: process.env.NODE_ENV !== 'production',
 	silent: process.env.NODE_ENV === 'production',
 	disableLogger: process.env.NODE_ENV === 'production',
-}
-
-const sentryOptions = {
-	disableLogger: process.env.NODE_ENV === 'production',
 	hideSourceMaps: process.env.NODE_ENV === 'production',
 	widenClientFileUpload: process.env.NODE_ENV !== 'production',
+	automaticVercelMonitors: process.env.NODE_ENV === 'production',
+	reactComponentAnnotation: { enabled: process.env.NODE_ENV === 'production' },
 	tunnelRoute: process.env.NODE_ENV === 'production' ? '/monitoring' : undefined,
 }
 
-export default withSentryConfig(nextConfig, sentryBuildOptions, sentryOptions)
+export default withSentryConfig(nextConfig, sentryBuildOptions)
