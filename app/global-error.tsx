@@ -14,7 +14,7 @@ const GlobalError = ({ error, reset }: globalErrorProps) => {
 			<div className='text-center'>
 				<h1 className='text-9xl font-black text-gray-700'>500</h1>
 
-				<p className='text-2xl font-bold tracking-tight text-white sm:text-4xl'>Internal Server {error.name}</p>
+				<p className='text-2xl font-bold tracking-tight text-white sm:text-4xl'>Internal Server Error</p>
 
 				<p className='mt-4 text-gray-400'>Something went wrong!</p>
 

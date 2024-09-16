@@ -1,7 +1,6 @@
 import { defineConfig } from 'sanity'
 import { config } from '@import/config'
 import { schema } from '@import/schemas'
-import { revalidateTag } from 'next/cache'
 import { visionTool } from '@sanity/vision'
 import { structureTool } from 'sanity/structure'
 import { BetterAction, SanityImprovedAction } from '@import/types'
@@ -16,7 +15,10 @@ const sanityImprovedAction: SanityImprovedAction = (originalAction, context) => 
 			...originalResult,
 			onHandle: () => {
 				if (originalResult.onHandle) originalResult.onHandle()
-				revalidateTag(context.schemaType)
+				fetch(`${process.env.NEXT_PUBLIC_DEPLOY_URL}/api/validation`, {
+					method: 'POST',
+					body: JSON.stringify({ tag: context.schemaType }),
+				})
 			},
 			label: originalResult.label + ' & Revalidate',
 		}
@@ -32,12 +34,5 @@ export default defineConfig({
 	dataset: config.dataset,
 	schema,
 	plugins: [structureTool(), visionTool({ defaultApiVersion: config.apiVersion })],
-	document: {
-		actions: (prev, context) =>
-			prev.map(originalAction =>
-				originalAction.name === 'PublishAction' || originalAction.name === 'DeleteAction'
-					? sanityImprovedAction(originalAction, context)
-					: originalAction,
-			),
-	},
+	document: { actions: (prev, context) => prev.map(originalAction => sanityImprovedAction(originalAction, context)) },
 })

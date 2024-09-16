@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { searchParamsProps } from '@import/types'
 import { getProjectDocuments } from '@import/sanity'
 import { Motion, ProjectCard } from '@import/components'
 
@@ -10,13 +9,10 @@ export const metadata: Metadata = {
 	twitter: { title: 'Projects' },
 }
 
-const ProjectsPage = async ({ searchParams }: searchParamsProps) => {
+const ProjectsPage = async () => {
 	const data = await getProjectDocuments()
 
 	if (data.length === 0) return notFound()
-
-	const id = searchParams?.id ?? undefined
-	const tag = searchParams?.tag?.toLocaleLowerCase() ?? 'all'
 
 	return (
 		<div className='h-full bg-primary/50'>
@@ -37,7 +33,7 @@ const ProjectsPage = async ({ searchParams }: searchParamsProps) => {
 						projects effectively.
 					</Motion.p>
 
-					<ProjectCard data={data} id={id} tag={tag} />
+					<ProjectCard data={data} />
 				</div>
 			</div>
 		</div>

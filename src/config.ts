@@ -5,8 +5,8 @@ const assertValue = <T>(value: T | undefined, errorMessage: string): T => {
 }
 
 export const config = {
-	apiVersion: '2024-05-18',
-	useCdn: process.env.NODE_ENV === 'production',
+	apiVersion: new Date().toISOString().split('T')[0],
+	useCdn: false,
 	dataset: assertValue(process.env.NEXT_PUBLIC_DATASET, 'Missing environment variable: NEXT_PUBLIC_DATASET'),
 	projectId: assertValue(process.env.NEXT_PUBLIC_SANITY_ID, 'Missing environment variable: NEXT_PUBLIC_SANITY_ID'),
 	sentryDsn: assertValue(process.env.NEXT_PUBLIC_SENTRY_DSN, 'Missing environment variable: NEXT_PUBLIC_SENTRY_DSN'),
