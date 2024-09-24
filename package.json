@@ -65,7 +65,7 @@
 		"@typescript-eslint/parser": "^8.5.0",
 		"autoprefixer": "^10.4.20",
 		"cssnano": "^7.0.6",
-		"eslint": "8.57.0",
+		"eslint": "9.11.1",
 		"eslint-config-next": "15.0.0-canary.156",
 		"husky": "^9.1.6",
 		"postcss": "^8.4.47",
