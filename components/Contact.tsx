@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Form from 'next/form'
 import classNames from 'classnames'
 import { ContactFormType } from '@import/types'
 import { useReCaptcha } from 'next-recaptcha-v3'
@@ -45,11 +46,11 @@ const Contact = () => {
 
 	return (
 		<div className='h-full w-full rounded-2xl bg-black-100/60 p-8'>
-			<form
+			<Form
 				action={async payload => {
-					const token = await executeRecaptcha('contact_form_submit')
-
 					try {
+						const token = await executeRecaptcha('contact_form_submit')
+
 						const success = await handleReCaptcha(token)
 
 						if (success) formActions(payload)
@@ -148,7 +149,7 @@ const Contact = () => {
 						'Submit'
 					)}
 				</button>
-			</form>
+			</Form>
 			<span className='text-xs'>
 				<span className='text-red-500'>* </span>
 				Protected by reCAPTCHA. Google{' '}
