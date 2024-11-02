@@ -2,7 +2,6 @@
 
 import * as nextPWA from '@ducanh2912/next-pwa'
 import { SentryBuildOptions, withSentryConfig } from '@sentry/nextjs'
-import exp from 'constants'
 
 const nextConfig = nextPWA.default({
 	dest: 'public',
