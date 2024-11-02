@@ -1,11 +1,11 @@
-import { HiHome, HiUser, HiDocument, HiEnvelopeOpen, HiBriefcase, HiFolder } from 'react-icons/hi2'
+import { HiHome, HiUser, HiEnvelopeOpen, HiBriefcase, HiFolder } from 'react-icons/hi2'
 
 export const NavbarData = [
 	{ name: 'Home', href: '/', icon: HiHome },
 	{ name: 'About', href: '/about', icon: HiUser },
 	{ name: 'Experience', href: '/experience', icon: HiBriefcase },
 	{ name: 'Projects', href: '/projects', icon: HiFolder },
-	{ name: 'Resume', href: '/resume', icon: HiDocument },
+	// { name: 'Resume', href: '/resume', icon: HiDocument },
 	{ name: 'Contact', href: '/contact', icon: HiEnvelopeOpen },
 ]
 

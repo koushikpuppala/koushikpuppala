@@ -92,7 +92,7 @@ const CustomLink = ({ pathname }: { pathname: string }) => {
 						className={classNames(
 							{
 								'text-accent': link.href === pathname,
-								'text-black lg:text-white dark:text-white':
+								'text-black dark:text-white lg:text-white':
 									link.href !== pathname && pathname === '/resume',
 							},
 							'group relative flex items-center transition-all duration-300 ease-in-out hover:text-accent',
