@@ -36,7 +36,7 @@
 		"classnames": "^2.5.1",
 		"framer-motion": "^11.11.11",
 		"globby": "^14.0.2",
-		"mongoose": "^8.8.0",
+		"mongoose": "^8.8.1",
 		"next": "^15.0.2",
 		"next-recaptcha-v3": "^1.5.0",
 		"next-sanity": "^9.8.8",
