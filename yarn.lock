@@ -5909,12 +5909,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-react-compiler@npm:19.0.0-beta-6fc168f-20241025":
-  version: 19.0.0-beta-6fc168f-20241025
-  resolution: "babel-plugin-react-compiler@npm:19.0.0-beta-6fc168f-20241025"
+"babel-plugin-react-compiler@npm:19.0.0-beta-37ed2a7-20241206":
+  version: 19.0.0-beta-37ed2a7-20241206
+  resolution: "babel-plugin-react-compiler@npm:19.0.0-beta-37ed2a7-20241206"
   dependencies:
     "@babel/types": "npm:^7.19.0"
-  checksum: 10c0/386f25d9937e26f5d999ce574dc4a23c5e903a6f142969a9aea7d68d850e0bbd7b8e99448cde3fa06196d2228385593ce06ddfde600f80de6a083bf203e6cded
+  checksum: 10c0/0b4b5ecf8bbd0805cf9f5d54c20e7fd6e269be0c1623aa2efde2b8d12ba2c5cadfc77e757c79526f738acbd28341d1db015b8943b7b7de4e2f27f072bf1792ee
   languageName: node
   linkType: hard
 
@@ -10121,7 +10121,7 @@ __metadata:
     "@types/react-vertical-timeline-component": "npm:^3.3.6"
     "@typescript-eslint/parser": "npm:^8.13.0"
     autoprefixer: "npm:^10.4.20"
-    babel-plugin-react-compiler: "npm:19.0.0-beta-6fc168f-20241025"
+    babel-plugin-react-compiler: "npm:19.0.0-beta-37ed2a7-20241206"
     classnames: "npm:^2.5.1"
     cssnano: "npm:^7.0.6"
     eslint: "npm:9.14.0"
