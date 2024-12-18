@@ -3318,15 +3318,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:^5.21.1":
-  version: 5.21.1
-  resolution: "@prisma/client@npm:5.21.1"
+"@prisma/client@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "@prisma/client@npm:6.1.0"
   peerDependencies:
     prisma: "*"
   peerDependenciesMeta:
     prisma:
       optional: true
-  checksum: 10c0/066bf678d6bda048893eb9080818339a99bba995a0ba19935cccda30a10eb46c6674bc445bbbbb37881e52d3010c72ce4a28565156b80bfea5438cafd9868941
+  checksum: 10c0/6cb3c81ce52e37f4d48598e114ff1f9c46297a3299ddf80701d26794aacb8e46f3726cb20dd4f1528cd7b8a713d38e8e68a1fd2be8c370f0925f92b7a9b6b955
   languageName: node
   linkType: hard
 
@@ -10104,7 +10104,7 @@ __metadata:
     "@commitlint/types": "npm:^19.5.0"
     "@ducanh2912/next-pwa": "npm:^10.2.9"
     "@headlessui/react": "npm:^2.2.0"
-    "@prisma/client": "npm:^5.21.1"
+    "@prisma/client": "npm:^6.1.0"
     "@sanity/asset-utils": "npm:^2.1.0"
     "@sanity/icons": "npm:^3.4.0"
     "@sanity/image-url": "npm:^1.1.0"
