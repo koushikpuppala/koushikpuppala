@@ -60,7 +60,9 @@ jobs:
           echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
           echo "MONGO_API=${{ secrets.MONGO_API }}" >> .env
           echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
+          echo "NEXT_PUBLIC_DATASET=${{ secrets.NEXT_PUBLIC_DATASET }}" >> .env
           echo "RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }}" >> .env
+          echo "NEXT_PUBLIC_SANITY_ID=${{ secrets.NEXT_PUBLIC_SANITY_ID }}" >> .env
           echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
           echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
           echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
@@ -123,7 +125,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: false
     environment: Production
     runs-on: ubuntu-latest
     needs: build # Ensure deploy only runs after build completes successfully
