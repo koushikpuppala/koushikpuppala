@@ -32,7 +32,7 @@
 		"@sanity/image-url": "~1.1.0",
 		"@sanity/vision": "~3.75.1",
 		"@sentry/nextjs": "~9.1.0",
-		"babel-plugin-react-compiler": "~19.0.0-beta-6fc168f-20241025",
+		"babel-plugin-react-compiler": "~19.0.0-beta-21e868a-20250216",
 		"classnames": "~2.5.1",
 		"framer-motion": "~12.4.3",
 		"globby": "~14.1.0",
