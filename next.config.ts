@@ -41,7 +41,7 @@ const sentryBuildOptions: SentryBuildOptions = {
 	silent: process.env.NODE_ENV === 'production',
 	release: { name: process.env.npm_package_version },
 	disableLogger: process.env.NODE_ENV === 'production',
-	hideSourceMaps: process.env.NODE_ENV === 'production',
+	sourcemaps: { disable: process.env.NODE_ENV === 'production' },
 	widenClientFileUpload: process.env.NODE_ENV !== 'production',
 	automaticVercelMonitors: process.env.NODE_ENV === 'production',
 	reactComponentAnnotation: { enabled: process.env.NODE_ENV === 'production' },

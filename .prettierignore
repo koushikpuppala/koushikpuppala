@@ -3,6 +3,7 @@ node_modules
 .yarn
 .pnp
 .pnp.*
+pnpm-lock.yaml
 
 # Coverage directory used by testing tools
 coverage

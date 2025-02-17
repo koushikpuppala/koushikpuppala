@@ -27,8 +27,9 @@ concurrency:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: ${{ github.repository }}
   DOCKERFILE_PATH: 'Dockerfile'
+  IMAGE_PORT: ${{ vars.IMAGE_PORT }}
+  IMAGE_NAME: ${{ github.repository }}
 
 permissions:
   contents: read
@@ -40,10 +41,13 @@ jobs:
     environment: Development
     runs-on: ubuntu-latest
 
+    env:
+      IMAGE_TAG: ${{ vars.IMAGE_TAG }}
+
     steps:
       # Checkout the repository
       - name: Checkout Repository
-        uses: actions/checkout@v4.1.4
+        uses: actions/checkout@master
 
       # Create .env file from secrets for Docker build
       - name: Create .env file
@@ -67,7 +71,7 @@ jobs:
 
       # Set up QEMU for multi-platform builds
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.0.0
+        uses: docker/setup-qemu-action@master
         with:
           platforms: all
 
@@ -75,7 +79,7 @@ jobs:
       # multi-platform images and export cache
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.3.0
+        uses: docker/setup-buildx-action@master
         with:
           install: true
           platforms: linux/amd64
@@ -84,7 +88,7 @@ jobs:
       # https://github.com/docker/login-action
       - name: Log into registry
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3.1.0
+        uses: docker/login-action@master
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -94,15 +98,15 @@ jobs:
       # https://github.com/docker/metadata-action
       - name: Extract metadata from Dockerfile
         id: metadata
-        uses: docker/metadata-action@v5.5.1
+        uses: docker/metadata-action@master
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: dev
+          tags: ${{ env.IMAGE_TAG }}
 
       # Build and push Docker image with Buildx except on pull requests
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@master
         with:
           context: .
           file: ${{ env.DOCKERFILE_PATH }}
@@ -112,3 +116,35 @@ jobs:
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    environment: Development
+    runs-on: ubuntu-latest
+    needs: build # Ensure deploy only runs after build completes successfully
+
+    env:
+      HOST_PORT: ${{ vars.HOST_PORT }}
+      IMAGE_TAG: ${{ vars.IMAGE_TAG }}
+
+    steps:
+      # Set up SSH key for EC2 access
+      - name: Set up SSH key for EC2
+        uses: webfactory/ssh-agent@master
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+      # SSH into EC2 and deploy the Docker container
+      - name: Deploy to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ vars.EC2_USER }}@${{ vars.EC2_HOST }} << 'EOF'
+            # Pull the latest Docker image
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+
+            # Stop and remove any existing container
+            docker stop ${{ vars.CLUSTER }} || true
+            docker rm ${{ vars.CLUSTER }} || true
+
+            # Run the new container
+            docker run -d --name ${{ vars.CLUSTER }} -p ${{ env.HOST_PORT }}:${{ env.IMAGE_PORT }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          EOF
