@@ -1,1 +1,1 @@
-yarn lint && npx prettier --check .
+pnpm lint && npx prettier --check .

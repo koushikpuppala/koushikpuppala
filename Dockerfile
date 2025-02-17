@@ -1,32 +1,25 @@
 # Use the node:lts-alpine image as the base image for the build
 FROM node:lts-alpine AS base
 
+# Enable Corepack, which provides a consistent way to manage package managers
+RUN corepack enable && \
+    # Install compatibility libraries
+    apk add --no-cache libc6-compat
+
 # Create a new stage called "dependencies" based on the "base" image
 FROM base AS dependencies
-
-# Enable Corepack, which provides a consistent way to manage package managers
-RUN corepack enable
-
-# Install compatibility libraries
-RUN apk add --no-cache libc6-compat
 
 # Set the working directory to /app
 WORKDIR /app
 
 # Copy package management files to the working directory
-COPY package.json yarn.lock .yarnrc.yml ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 
 # Install project dependencies using Yarn
-RUN yarn install
+RUN pnpm install
 
 # Create a new stage called "builder" based on the "base" image
 FROM base AS builder
-
-# Enable Corepack again in the builder stage
-RUN corepack enable
-
-# Install compatibility libraries
-RUN apk add --no-cache libc6-compat
 
 # Set the working directory to /app
 WORKDIR /app
@@ -41,7 +34,9 @@ COPY . .
 ENV ENVIRONMENT=production
 
 # Build the application using Yarn
-RUN yarn build
+RUN pnpm build && \
+    # Remove the cache and clean up the npm cache
+    rm -rf node_modules/.cache && npm cache clean --force
 
 # Create a new stage called "runner" based on the "base" image
 FROM base AS runner
@@ -55,19 +50,20 @@ RUN apk add --no-cache curl bash && \
     addgroup --system --gid 1001 koushikpuppala && \
     # Create a new system user with UID 1001 and add it to the "koushikpuppala" group
     adduser --system --uid 1001 portfolio --ingroup koushikpuppala && \
-    # Create a directory for the Next.js build output
-    mkdir .next && \
-    # Change the ownership of the .next directory to the "portfolio" user and "koushikpuppala" group
-    chown portfolio:koushikpuppala .next
+    # Create a directory for the Next.js build output and application logs
+    mkdir .next, logs
 
 # Copy the public directory from the "builder" stage to the current working directory
 COPY --from=builder /app/public ./public
 
-# Copy the standalone build output from the "builder" stage to the current working directory, with proper ownership
-COPY --from=builder --chown=portfolio:koushikpuppala /app/.next/standalone ./
+# Copy the standalone build output from the "builder" stage to the current working directory
+COPY --from=builder /app/.next/standalone ./
 
-# Copy the static build output from the "builder" stage to the .next/static directory, with proper ownership
-COPY --from=builder --chown=portfolio:koushikpuppala /app/.next/static ./.next/static
+# Copy the static build output from the "builder" stage to the .next/static directory
+COPY --from=builder /app/.next/static ./.next/static
+
+# Change the ownership of the .next, public, and logs directory to the "portfolio" user and "koushikpuppala" group
+RUN chown -R portfolio:koushikpuppala .next public logs
 
 # Switch to the "portfolio" user
 USER portfolio

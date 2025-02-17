@@ -10,17 +10,17 @@
 
 Hi there, I'm Koushik Puppala! I am currently employed with Upraised® as a software engineer and at the Indian Institute of Information Technology, Raichur, as a team lead and mentor for our college website team. Previously, I served as the GDSC lead at IIIT Raichur. My current projects focus on full-stack web development and creating advanced Discord bots. I have created many projects, including straightforward webpages, full-stack web apps, desktop screen recorder software, and feature-rich Discord bots for server customization and entertainment. Additionally, I am expanding my skill set by learning Python and Flutter. For more information about my work, please visit the **_[Repositories Page](https://github.com/koushikpuppala?tab=repositories)_**. Let's connect and explore potential collaborations!
 
--   👨‍💻 My first project was **_[Koushikpuppala](https://koushikpuppala.com)_**.
+- 👨‍💻 My first project was **_[Koushikpuppala](https://koushikpuppala.com)_**.
 
--   🔭 Currently working on **_Full-Stack Web Development and Discord Bots_**.
+- 🔭 Currently working on **_Full-Stack Web Development and Discord Bots_**.
 
--   👯 Collaborating with the **_[Indian Institute of Information Technology Raichur](https://iiitr.ac.in)_** and **_[Upraised®](https://upraised.in)_**.
+- 👯 Collaborating with the **_[Indian Institute of Information Technology Raichur](https://iiitr.ac.in)_** and **_[Earnest Data Analytics](https://earnestdata-analytics.in)_**.
 
--   💬 Ask me about **_Nextjs, React, Nodejs, MongoDB, Express, JavaScript, and TypeScript_**.
+- 💬 Ask me about **_Nextjs, React, Nodejs, MongoDB, Express, JavaScript, and TypeScript_**.
 
--   🌱 I started learning **_Python and Flutter_**.
+- 🌱 I started learning **_Python and Flutter_**.
 
--   📫 Reach me through the contact form on my **_[Website](https://koushikpuppala.com/contact)_**
+- 📫 Reach me through the contact form on my **_[Website](https://koushikpuppala.com/contact)_**
 
 #### **If you like my portfolio, feel free to leave a star 🌟 which encourages me!**
 

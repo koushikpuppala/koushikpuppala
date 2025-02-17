@@ -11,7 +11,7 @@ const config = {
 	bracketSameLine: true,
 	endOfLine: 'crlf',
 	plugins: ['prettier-plugin-tailwindcss'],
-	overrides: [{ files: '*.yml', options: { tabWidth: 2 } }],
+	overrides: [{ files: ['*.yml', '*.yaml'], options: { tabWidth: 2 } }],
 }
 
 export default config
