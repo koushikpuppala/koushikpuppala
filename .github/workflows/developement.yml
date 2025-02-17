@@ -118,7 +118,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    if: false
+    if: github.event_name != 'pull_request'
     environment: Development
     runs-on: ubuntu-latest
     needs: build # Ensure deploy only runs after build completes successfully
