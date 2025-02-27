@@ -1,4 +1,4 @@
-export type { handleFormSubmitType, prevStateType } from './actions'
+export type { handleFormSubmitType, prevStateType, ServerActionResponse } from './actions'
 
 export type {
 	DialogProps,
