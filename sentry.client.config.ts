@@ -14,5 +14,7 @@ if (process.env.NODE_ENV !== 'development')
 		environment: process.env.NODE_ENV,
 		dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 		release: process.env.npm_package_version,
-		integrations: [Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true, stickySession: true })],
+		integrations: [
+			Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true, stickySession: true }),
+		],
 	})

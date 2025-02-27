@@ -16,6 +16,8 @@ export type MotionProps = RootLayoutProps & {
 
 export type DialogProps = Readonly<RootLayoutProps & { handleClose: () => void }>
 
-export type searchParamsProps = Readonly<{ searchParams: { [key: string]: string | string[] | undefined } }>
+export type searchParamsProps = Readonly<{
+	searchParams: { [key: string]: string | string[] | undefined }
+}>
 
 export type globalErrorProps = Readonly<{ error: Error & { digest?: string }; reset: () => void }>

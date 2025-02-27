@@ -24,5 +24,8 @@ export const POST = async (req: NextRequest) => {
 			return Response.json({ success: false, message: 'Invalid tag.' }, { status: 400 })
 	}
 
-	return Response.json({ success: true, message: `Revalidation triggered for ${tag} documents.` }, { status: 200 })
+	return Response.json(
+		{ success: true, message: `Revalidation triggered for ${tag} documents.` },
+		{ status: 200 },
+	)
 }

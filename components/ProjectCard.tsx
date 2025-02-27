@@ -58,7 +58,10 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 								aria-hidden='true'
 							/>
 						</ListboxButton>
-						<Transition leave='transition ease-in duration-100' leaveFrom='opacity-100' leaveTo='opacity-0'>
+						<Transition
+							leave='transition ease-in duration-100'
+							leaveFrom='opacity-100'
+							leaveTo='opacity-0'>
 							<ListboxOptions
 								anchor='bottom'
 								className='mt-2 w-[var(--button-width)] rounded-xl border border-white/5 bg-black/10 p-1 backdrop-blur [--anchor-gap:var(--spacing-1)] focus:outline-none'>
@@ -98,78 +101,78 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 				</div>
 			</Motion.div>
 			<div className='mt-6 flex flex-wrap justify-center gap-10 px-4 pb-40 lg:justify-normal lg:px-6 lg:pb-12'>
-				{projects.map(({ title, subtitle, descriptions, tags, image, github, website, _rev }, index) => (
-					<Motion.div direction='right' delay={index * 0.15} key={tag + index}>
-						<CardContainer
-							key={index}
-							className='bg-green-pink-gradient w-full rounded-2xl p-px shadow-xl'
-							options={{ scale: 1 }}>
-							<CardBody className='group/card bg-quaternary w-full cursor-pointer rounded-2xl p-5 sm:w-80'>
-								<Link
-									href={`?${new URLSearchParams(
-										tag === 'all' ? { id: _rev } : { tag: tag, id: _rev },
-									).toString()}`}>
-									<CardItem translateZ={125} className='relative h-44 w-full'>
-										<Image
-											src={urlForImage(image[0])}
-											alt={title}
-											priority={true}
-											width={1920}
-											height={1080}
-											className='group-hover/card:border-accent/5 w-full rounded-2xl object-cover group-hover/card:border'
-										/>
+				{projects.map(
+					({ title, subtitle, descriptions, tags, image, github, website, _rev }, index) => (
+						<Motion.div direction='right' delay={index * 0.15} key={tag + index}>
+							<CardContainer
+								key={index}
+								className='bg-green-pink-gradient w-full rounded-2xl p-px shadow-xl'
+								options={{ scale: 1 }}>
+								<CardBody className='group/card bg-quaternary w-full cursor-pointer rounded-2xl p-5 sm:w-80'>
+									<Link
+										href={`?${new URLSearchParams(tag === 'all' ? { id: _rev } : { tag: tag, id: _rev }).toString()}`}>
+										<CardItem translateZ={125} className='relative h-44 w-full'>
+											<Image
+												src={urlForImage(image[0])}
+												alt={title}
+												priority={true}
+												width={1920}
+												height={1080}
+												className='group-hover/card:border-accent/5 w-full rounded-2xl object-cover group-hover/card:border'
+											/>
 
-										<div className='absolute inset-0 m-3 flex justify-end gap-1'>
-											{github && (
-												<span className='bg-black-gradient flex h-8 w-8 cursor-pointer items-center justify-center rounded-full'>
-													<span className='sr-only'>Source Code</span>
-													<FaGithub size={16} />
-												</span>
-											)}
-											{website && (
-												<span className='bg-black-gradient flex h-8 w-8 cursor-pointer items-center justify-center rounded-full'>
-													<span className='sr-only'>Website</span>
-													<FaGlobe size={16} />
-												</span>
-											)}
+											<div className='absolute inset-0 m-3 flex justify-end gap-1'>
+												{github && (
+													<span className='bg-black-gradient flex h-8 w-8 cursor-pointer items-center justify-center rounded-full'>
+														<span className='sr-only'>Source Code</span>
+														<FaGithub size={16} />
+													</span>
+												)}
+												{website && (
+													<span className='bg-black-gradient flex h-8 w-8 cursor-pointer items-center justify-center rounded-full'>
+														<span className='sr-only'>Website</span>
+														<FaGlobe size={16} />
+													</span>
+												)}
+											</div>
+										</CardItem>
+
+										<div className='mt-5'>
+											<CardItem translateZ={100}>
+												<h3 className='line-clamp-1 text-2xl font-bold text-white'>{title}</h3>
+											</CardItem>
+											<CardItem translateZ={85}>
+												<p className='text-secondary mt-2 line-clamp-1 text-sm'>{subtitle}</p>
+											</CardItem>
+											<CardItem translateZ={75}>
+												<p className='text-secondary mt-2 line-clamp-3 text-sm'>
+													{descriptions.join(' ')}
+												</p>
+											</CardItem>
 										</div>
-									</CardItem>
 
-									<div className='mt-5'>
-										<CardItem translateZ={100}>
-											<h3 className='line-clamp-1 text-2xl font-bold text-white'>{title}</h3>
+										<CardItem translateZ={85} className='mt-4 flex flex-wrap gap-2'>
+											{tags.map((tag, index) => (
+												<p
+													key={`${title}-${tag}`}
+													className={classNames(
+														{
+															'blue-text-gradient': index === 0,
+															'green-text-gradient hidden': index === 1,
+															'pink-text-gradient hidden': index === 2,
+														},
+														'text-sm whitespace-nowrap capitalize',
+													)}>
+													#{tag}
+												</p>
+											))}
 										</CardItem>
-										<CardItem translateZ={85}>
-											<p className='text-secondary mt-2 line-clamp-1 text-sm'>{subtitle}</p>
-										</CardItem>
-										<CardItem translateZ={75}>
-											<p className='text-secondary mt-2 line-clamp-3 text-sm'>
-												{descriptions.join(' ')}
-											</p>
-										</CardItem>
-									</div>
-
-									<CardItem translateZ={85} className='mt-4 flex flex-wrap gap-2'>
-										{tags.map((tag, index) => (
-											<p
-												key={`${title}-${tag}`}
-												className={classNames(
-													{
-														'blue-text-gradient': index === 0,
-														'green-text-gradient hidden': index === 1,
-														'pink-text-gradient hidden': index === 2,
-													},
-													'text-sm whitespace-nowrap capitalize',
-												)}>
-												#{tag}
-											</p>
-										))}
-									</CardItem>
-								</Link>
-							</CardBody>
-						</CardContainer>
-					</Motion.div>
-				))}
+									</Link>
+								</CardBody>
+							</CardContainer>
+						</Motion.div>
+					),
+				)}
 			</div>
 			{project && (
 				<Dialog handleClose={handleClose}>

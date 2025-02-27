@@ -20,7 +20,13 @@ export const metadata: Metadata = {
 	authors: [{ name: 'Koushikpuppala', url: config.deployUrl }],
 	creator: 'Koushikpuppala',
 	alternates: { canonical: config.deployUrl },
-	formatDetection: { email: true, address: true, telephone: true, date: true, url: true },
+	formatDetection: {
+		email: true,
+		address: true,
+		telephone: true,
+		date: true,
+		url: true,
+	},
 	openGraph: {
 		title: {
 			template: '%s | Koushik Puppala | Software Engineer | Freelancer',
@@ -32,7 +38,12 @@ export const metadata: Metadata = {
 		type: 'website',
 		locale: 'en_IN',
 		siteName: 'Koushik Puppala | Software Engineer | Freelancer',
-		images: [{ url: '/favicon.ico', alt: 'Koushik Puppala | Software Engineer | Freelancer' }],
+		images: [
+			{
+				url: '/favicon.ico',
+				alt: 'Koushik Puppala | Software Engineer | Freelancer',
+			},
+		],
 	},
 	twitter: {
 		card: 'summary_large_image',
@@ -44,7 +55,10 @@ export const metadata: Metadata = {
 			"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
 		creator: '@puppala_koushik',
 		site: '@puppala_koushik',
-		images: { url: '/favicon.ico', alt: 'Koushik Puppala | Software Engineer | Freelancer' },
+		images: {
+			url: '/favicon.ico',
+			alt: 'Koushik Puppala | Software Engineer | Freelancer',
+		},
 	},
 	category: 'Software Engineer',
 	icons: {
@@ -53,7 +67,11 @@ export const metadata: Metadata = {
 			{ url: '/icons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
 			{ url: '/icons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
 		],
-		apple: { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+		apple: {
+			url: '/icons/apple-touch-icon.png',
+			sizes: '180x180',
+			type: 'image/png',
+		},
 	},
 	manifest: '/manifest.webmanifest',
 	metadataBase: new URL(config.deployUrl),

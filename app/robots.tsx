@@ -1,6 +1,15 @@
 import { MetadataRoute } from 'next'
 
-const userAgents = ['Googlebot', 'googlebot-image', 'googlebot-mobile', 'MSNBot', 'Teoma', 'ia_archiver', 'psbot', '*']
+const userAgents = [
+	'Googlebot',
+	'googlebot-image',
+	'googlebot-mobile',
+	'MSNBot',
+	'Teoma',
+	'ia_archiver',
+	'psbot',
+	'*',
+]
 
 const RobotsPage = (): MetadataRoute.Robots => {
 	return {

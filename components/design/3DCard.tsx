@@ -4,9 +4,16 @@ import classNames from 'classnames'
 import React, { createContext, useState, useRef, useEffect, use } from 'react'
 import { CardBodyProps, CardContainerProps, CardItemProps } from '@import/types'
 
-const MouseEnterContext = createContext<[boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined>(undefined)
+const MouseEnterContext = createContext<
+	[boolean, React.Dispatch<React.SetStateAction<boolean>>] | undefined
+>(undefined)
 
-export const CardContainer = ({ children, className, containerClassName, options }: CardContainerProps) => {
+export const CardContainer = ({
+	children,
+	className,
+	containerClassName,
+	options,
+}: CardContainerProps) => {
 	const max = options?.max ?? 35
 	const scale = options?.scale ?? 1.1
 	const speed = options?.speed ?? 1000
@@ -100,7 +107,10 @@ export const CardItem = ({
 	}, [isMouseEntered, translateX, translateY, translateZ, rotateX, rotateY, rotateZ])
 
 	return (
-		<Tag ref={ref} className={classNames('w-fit transition duration-200 ease-linear', className)} {...rest}>
+		<Tag
+			ref={ref}
+			className={classNames('w-fit transition duration-200 ease-linear', className)}
+			{...rest}>
 			{children}
 		</Tag>
 	)

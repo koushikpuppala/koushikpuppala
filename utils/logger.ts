@@ -61,17 +61,29 @@ export class Logger {
 
 	private _normalizeError: (error?: Error) => string | Error | undefined = error => {
 		if (!error) return undefined
-		return this._production ? error : { name: error.name, message: error.message, stack: error.stack }
+		return this._production
+			? error
+			: { name: error.name, message: error.message, stack: error.stack }
 	}
 
-	private _log(level: string, message: string, functionName: string, meta?: Record<string, any>, error?: Error) {
+	private _log(
+		level: string,
+		message: string,
+		functionName: string,
+		meta?: Record<string, any>,
+		error?: Error,
+	) {
 		const data = { functionName, ...meta }
 
 		if (this._isClient) {
 			if (error) console.error(message, { error: this._normalizeError(error), ...data })
 			else console.log(message, data)
 		} else {
-			if (error) this._logger.log(level, message, { error: this._normalizeError(error), ...data })
+			if (error)
+				this._logger.log(level, message, {
+					error: this._normalizeError(error),
+					...data,
+				})
 			else this._logger.log(level, message, data)
 		}
 	}

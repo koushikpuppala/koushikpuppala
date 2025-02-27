@@ -5,7 +5,10 @@ export type FlipWordsProps = { words: string[]; duration?: number; className?: s
 
 export type TextGenerateEffectProps = { strings: string[]; className?: string }
 
-export type CardProps = HTMLAttributes<HTMLElement> & { children?: React.ReactNode; className?: string }
+export type CardProps = HTMLAttributes<HTMLElement> & {
+	children?: React.ReactNode
+	className?: string
+}
 
 export type CardContainerProps = CardProps & {
 	containerClassName?: string
@@ -30,4 +33,7 @@ export type ProjectCardProps = { data: ProjectSchema[] }
 export type BackgroundBeamsProps = { className?: string }
 
 export type AnimationProps<T> = Partial<T> &
-	({ direction: 'left' | 'right' | 'up' | 'down'; delay: number } | { direction?: never; delay?: never })
+	(
+		| { direction: 'left' | 'right' | 'up' | 'down'; delay: number }
+		| { direction?: never; delay?: never }
+	)

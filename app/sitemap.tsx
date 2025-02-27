@@ -4,9 +4,9 @@ import { ISODate } from '@import/constant'
 
 const SitemapPage = async (): Promise<MetadataRoute.Sitemap> => {
 	const routes: MetadataRoute.Sitemap = []
-	const paths = (await globby(['app/**/page.tsx', '!app/api/**/*', '!app/**/[id]/*', '!app/studio/**/*'])).map(path =>
-		path.replace('app', '').replace('/page.tsx', ''),
-	)
+	const paths = (
+		await globby(['app/**/page.tsx', '!app/api/**/*', '!app/**/[id]/*', '!app/studio/**/*'])
+	).map(path => path.replace('app', '').replace('/page.tsx', ''))
 
 	paths.forEach(path => {
 		const priority = 1 - (path.split('/').length - 1) * 0.2

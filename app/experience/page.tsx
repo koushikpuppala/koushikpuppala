@@ -22,7 +22,9 @@ const ExperiencePage = async () => {
 						<p className='text-secondary text-center text-xs tracking-wider uppercase lg:text-base'>
 							What I have done so far
 						</p>
-						<h2 className='text-center text-3xl font-black text-white lg:text-5xl'>Work Experience</h2>
+						<h2 className='text-center text-3xl font-black text-white lg:text-5xl'>
+							Work Experience
+						</h2>
 					</Motion.div>
 
 					<Motion.div direction='up' delay={0.2} className='mt-10 flex flex-col pb-40 lg:pb-12'>

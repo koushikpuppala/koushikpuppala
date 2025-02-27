@@ -47,11 +47,14 @@ export class Result<T> implements ServerActionResponse<T> {
 	static unauthorized: <T>(message: string) => Result<T> = message =>
 		new Result(true, RESPONSE_CODES.UNAUTHORIZED, message)
 
-	static forbidden: <T>(message: string) => Result<T> = message => new Result(true, RESPONSE_CODES.FORBIDDEN, message)
+	static forbidden: <T>(message: string) => Result<T> = message =>
+		new Result(true, RESPONSE_CODES.FORBIDDEN, message)
 
-	static notFound: <T>(message: string) => Result<T> = message => new Result(true, RESPONSE_CODES.NOT_FOUND, message)
+	static notFound: <T>(message: string) => Result<T> = message =>
+		new Result(true, RESPONSE_CODES.NOT_FOUND, message)
 
-	static conflict: <T>(message: string) => Result<T> = message => new Result(true, RESPONSE_CODES.CONFLICT, message)
+	static conflict: <T>(message: string) => Result<T> = message =>
+		new Result(true, RESPONSE_CODES.CONFLICT, message)
 
 	static internalServerError: <T>(message: string) => Result<T> = message =>
 		new Result(true, RESPONSE_CODES.INTERNAL_SERVER_ERROR, message)

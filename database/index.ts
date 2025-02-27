@@ -28,7 +28,10 @@ export class Database {
 		})
 		this._client = connection
 		this._client.on('error', console.error.bind(console, 'connection error:'))
-		this._client.once('open', () => process.env.NODE_ENV === 'development' && console.log('Connected to MongoDB'))
+		this._client.once(
+			'open',
+			() => process.env.NODE_ENV === 'development' && console.log('Connected to MongoDB'),
+		)
 	}
 
 	public async disconnect(): Promise<void> {

@@ -5,7 +5,10 @@ export default z.object({
 		.string()
 		.min(3, 'Name must be at least 3 characters')
 		.max(20, 'Name must be at most 20 characters')
-		.regex(/^[a-zA-Z\s,.'-]+$/, 'Name must only contain letters, spaces, commas, periods, and hyphens'),
+		.regex(
+			/^[a-zA-Z\s,.'-]+$/,
+			'Name must only contain letters, spaces, commas, periods, and hyphens',
+		),
 	email: z.string().email('Email must be a valid email address'),
 	subject: z
 		.string()

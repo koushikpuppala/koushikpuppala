@@ -36,9 +36,21 @@
 
 	/* Gradients */
 	--gradient-black: linear-gradient(to right, oklch(38.29% 0 0), oklch(0% 0 0));
-	--gradient-accent: linear-gradient(-90deg, oklch(67.4% 0.195 295.27) 0%, rgba(60, 51, 80, 0) 100%);
-	--gradient-violet: linear-gradient(to left, rgba(60, 51, 80, 0) 0%, oklch(56.85% 0.228 292.11) 100%);
-	--gradient-green-pink: linear-gradient(90.13deg, oklch(75.9% 0.146 173.06) 1.9%, oklch(67.26% 0.231 308.87) 97.5%);
+	--gradient-accent: linear-gradient(
+		-90deg,
+		oklch(67.4% 0.195 295.27) 0%,
+		rgba(60, 51, 80, 0) 100%
+	);
+	--gradient-violet: linear-gradient(
+		to left,
+		rgba(60, 51, 80, 0) 0%,
+		oklch(56.85% 0.228 292.11) 100%
+	);
+	--gradient-green-pink: linear-gradient(
+		90.13deg,
+		oklch(75.9% 0.146 173.06) 1.9%,
+		oklch(67.26% 0.231 308.87) 97.5%
+	);
 }
 
 @utility orange-text-gradient {

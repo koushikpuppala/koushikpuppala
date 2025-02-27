@@ -127,7 +127,9 @@ const Contact = () => {
 						'flex items-center justify-center': state.statusCode !== 0,
 					})}>
 					{state.statusCode === 500 && <span className='text-red-500'>{state.statusMessage}</span>}
-					{state.statusCode === 200 && <span className='text-green-500'>{state.statusMessage}</span>}
+					{state.statusCode === 200 && (
+						<span className='text-green-500'>{state.statusMessage}</span>
+					)}
 				</div>
 
 				<button

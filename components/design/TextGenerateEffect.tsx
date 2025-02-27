@@ -46,7 +46,14 @@ export const TextGenerateEffect = ({ strings, className }: TextGenerateEffectPro
 					stiffness: 100,
 					damping: 10,
 				}}
-				exit={{ opacity: 0, y: -40, x: 40, filter: 'blur(24px)', scale: 0.5, position: 'absolute' }}
+				exit={{
+					opacity: 0,
+					y: -40,
+					x: 40,
+					filter: 'blur(24px)',
+					scale: 0.5,
+					position: 'absolute',
+				}}
 				className={classNames('relative z-10 text-left', className)}
 				ref={scope}>
 				{currentString.split(' ').map((word, idx) => {

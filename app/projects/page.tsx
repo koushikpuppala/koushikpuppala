@@ -27,10 +27,10 @@ const ProjectsPage = async () => {
 						direction='right'
 						delay={0.2}
 						className='text-secondary mx-auto mt-4 mb-2 max-w-3xl text-justify text-sm leading-6 md:px-6 lg:mx-0 lg:text-lg xl:max-w-5xl'>
-						Following projects showcases my skills and experience through real-world examples of my work.
-						Each project is briefly described with links to code repositories and live demos in it. It
-						reflects my ability to solve complex problems, work with different technologies, and manage
-						projects effectively.
+						Following projects showcases my skills and experience through real-world examples of my
+						work. Each project is briefly described with links to code repositories and live demos
+						in it. It reflects my ability to solve complex problems, work with different
+						technologies, and manage projects effectively.
 					</Motion.p>
 
 					<ProjectCard data={data} />
