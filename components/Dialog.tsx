@@ -15,7 +15,7 @@ const CustomDialog = ({ children, handleClose }: DialogProps) => {
 					leave='ease-in-out duration-200'
 					leaveFrom='opacity-100'
 					leaveTo='opacity-0'>
-					<div className='fixed inset-0 bg-primary bg-opacity-75 backdrop-blur transition-opacity' />
+					<div className='bg-primary bg-opacity-75 fixed inset-0 backdrop-blur transition-opacity' />
 				</TransitionChild>
 				<div className='fixed inset-0 z-10 w-screen overflow-y-auto'>
 					<div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>

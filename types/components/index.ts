@@ -28,3 +28,6 @@ export type CardItemProps = CardProps & {
 export type ProjectCardProps = { data: ProjectSchema[] }
 
 export type BackgroundBeamsProps = { className?: string }
+
+export type AnimationProps<T> = Partial<T> &
+	({ direction: 'left' | 'right' | 'up' | 'down'; delay: number } | { direction?: never; delay?: never })

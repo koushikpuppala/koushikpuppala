@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import { NavbarData } from '@import/constant'
 import { usePathname } from 'next/navigation'
-import { Motion } from '@import/components'
+import { Animation } from '@import/components'
 import { HiExclamationCircle, HiXMark } from 'react-icons/hi2'
 
 const Navbar = () => {
@@ -20,7 +20,7 @@ const Navbar = () => {
 
 	return (
 		<>
-			<Motion.div
+			<Animation.div
 				direction='down'
 				delay={0.05}
 				className={classNames(
@@ -32,7 +32,7 @@ const Navbar = () => {
 				)}>
 				<div
 					role='alert'
-					className='rounded-xl border border-red-600 bg-primary bg-opacity-75 px-4 py-2 backdrop-blur-md'>
+					className='bg-primary bg-opacity-75 rounded-xl border border-red-600 px-4 py-2 backdrop-blur-md'>
 					<div className='flex items-center gap-4'>
 						<span className='text-red-500'>
 							<HiExclamationCircle size={32} />
@@ -52,24 +52,24 @@ const Navbar = () => {
 						</button>
 					</div>
 				</div>
-			</Motion.div>
+			</Animation.div>
 
-			<Motion.nav
+			<Animation.nav
 				direction='up'
 				delay={0.1}
-				className='fixed bottom-0 top-0 z-10 mt-auto flex h-max w-full flex-col items-center gap-y-4 lg:hidden'>
+				className='fixed top-0 bottom-0 z-10 mt-auto flex h-max w-full flex-col items-center gap-y-4 lg:hidden'>
 				<CustomLink pathname={pathname} />
-			</Motion.nav>
-			<Motion.nav
+			</Animation.nav>
+			<Animation.nav
 				direction='left'
 				delay={0.1}
-				className='fixed bottom-0 right-8 top-0 z-10 mt-auto hidden h-screen w-14 max-w-md flex-col items-center justify-center gap-y-4 lg:flex'>
+				className='fixed top-0 right-8 bottom-0 z-10 mt-auto hidden h-screen w-14 max-w-md flex-col items-center justify-center gap-y-4 lg:flex'>
 				<CustomLink pathname={pathname} />
-			</Motion.nav>
-			<Motion.div
+			</Animation.nav>
+			<Animation.div
 				direction='down'
 				delay={0.1}
-				className='sticky left-0 right-0 z-10 bg-primary/50 p-2 text-center text-xs backdrop-blur-md lg:fixed lg:bottom-0 lg:bg-primary/0 lg:p-4 lg:text-right lg:backdrop-blur-none'>
+				className='bg-primary/50 lg:bg-primary/0 sticky right-0 left-0 z-10 p-2 text-center text-xs backdrop-blur-md lg:fixed lg:bottom-0 lg:p-4 lg:text-right lg:backdrop-blur-none'>
 				Github ❤️{' '}
 				<Link
 					href='https://github.com/koushikpuppala/koushikpuppala'
@@ -78,7 +78,7 @@ const Navbar = () => {
 					className='text-accent transition-all delay-100 ease-in-out hover:text-white/60'>
 					Source Code
 				</Link>
-			</Motion.div>
+			</Animation.div>
 		</>
 	)
 }
@@ -92,18 +92,18 @@ const CustomLink = ({ pathname }: { pathname: string }) => {
 						className={classNames(
 							{
 								'text-accent': link.href === pathname,
-								'text-black dark:text-white lg:text-white':
+								'text-black lg:text-white dark:text-white':
 									link.href !== pathname && pathname === '/resume',
 							},
-							'group relative flex items-center transition-all duration-300 ease-in-out hover:text-accent',
+							'group hover:text-accent relative flex items-center transition-all duration-300 ease-in-out',
 						)}
 						href={link.href}
 						key={index}>
 						<span className='sr-only'>{link.name}</span>
 						<div className='absolute right-0 hidden pr-12 lg:group-hover:flex'>
-							<div className='relative flex items-center rounded bg-white p-2 text-primary'>
-								<div className='text-xs font-semibold capitalize leading-none'>{link.name}</div>
-								<div className='absolute -right-2 border-y-4 border-l-4 border-r-0 border-solid border-y-transparent border-l-white' />
+							<div className='text-primary relative flex items-center rounded bg-white p-2'>
+								<div className='text-xs leading-none font-semibold capitalize'>{link.name}</div>
+								<div className='absolute -right-2 border-y-4 border-r-0 border-l-4 border-solid border-y-transparent border-l-white' />
 							</div>
 						</div>
 						<link.icon className='w-5 lg:w-10' />

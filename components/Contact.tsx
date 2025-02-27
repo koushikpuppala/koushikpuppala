@@ -45,7 +45,7 @@ const Contact = () => {
 	}
 
 	return (
-		<div className='h-full w-full rounded-2xl bg-black-100/60 p-8'>
+		<div className='bg-black-100/60 h-full w-full rounded-2xl p-8'>
 			<Form
 				action={async payload => {
 					try {
@@ -72,7 +72,7 @@ const Contact = () => {
 						onChange={handleChange}
 						placeholder="What's your name?"
 						autoComplete='off'
-						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium capitalize text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						className='bg-tertiary selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-accent rounded-lg border-none px-6 py-4 font-medium text-white capitalize outline-none focus:ring-1'
 					/>
 					{error.name && <span className='mt-2 px-6 text-red-500'>{error.name}</span>}
 				</label>
@@ -87,7 +87,7 @@ const Contact = () => {
 						onChange={handleChange}
 						placeholder="What's Your Email Address?"
 						autoComplete='off'
-						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						className='bg-tertiary selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-accent rounded-lg border-none px-6 py-4 font-medium text-white outline-none focus:ring-1'
 					/>
 					{error.email && <span className='mt-2 px-6 text-red-500'>{error.email}</span>}
 				</label>
@@ -102,7 +102,7 @@ const Contact = () => {
 						onChange={handleChange}
 						placeholder='What is it about?'
 						autoComplete='off'
-						className='rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						className='bg-tertiary selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-accent rounded-lg border-none px-6 py-4 font-medium text-white outline-none focus:ring-1'
 					/>
 					{error.subject && <span className='mt-2 px-6 text-red-500'>{error.subject}</span>}
 				</label>
@@ -117,7 +117,7 @@ const Contact = () => {
 						onChange={handleChange}
 						placeholder='What you want to say?'
 						autoComplete='off'
-						className='resize-none rounded-lg border-none bg-tertiary px-6 py-4 font-medium text-white outline-none selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-1 focus:ring-accent'
+						className='bg-tertiary selection:bg-tertiary selection:text-secondary placeholder:text-secondary focus:ring-accent resize-none rounded-lg border-none px-6 py-4 font-medium text-white outline-none focus:ring-1'
 					/>
 					{error.message && <span className='mt-2 px-6 text-red-500'>{error.message}</span>}
 				</label>
@@ -135,14 +135,14 @@ const Contact = () => {
 					disabled={isDisabled || isSubmitting}
 					className={classNames(
 						{
-							'cursor-not-allowed bg-secondary': isDisabled,
+							'bg-secondary cursor-not-allowed': isDisabled,
 							'bg-accent hover:bg-opacity-100': !isDisabled,
 						},
-						'rounded-lg border-none bg-opacity-50 px-6 py-4 font-medium text-white outline-none placeholder:text-secondary',
+						'bg-opacity-50 placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none',
 					)}>
 					{isSubmitting ? (
 						<div className='flex flex-row items-center justify-center gap-4 align-middle'>
-							<div className='h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-l-transparent border-r-transparent' />
+							<div className='h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-r-transparent border-l-transparent' />
 							Submitting...
 						</div>
 					) : (

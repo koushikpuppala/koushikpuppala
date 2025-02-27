@@ -41,7 +41,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 			<Motion.div
 				direction='right'
 				delay={0.2}
-				className='mx-auto mb-2 mt-4 max-w-3xl px-4 text-justify text-sm leading-6 text-secondary md:px-6 lg:mx-0 lg:px-6 lg:text-lg xl:max-w-5xl'>
+				className='text-secondary mx-auto mt-4 mb-2 max-w-3xl px-4 text-justify text-sm leading-6 md:px-6 lg:mx-0 lg:px-6 lg:text-lg xl:max-w-5xl'>
 				<div className='md:hidden'>
 					<label htmlFor='Tab' className='sr-only'>
 						Tab
@@ -49,12 +49,12 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 					<Listbox value={tag} as='div'>
 						<ListboxButton
 							className={classNames(
-								'relative block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 capitalize text-white',
+								'relative block w-full rounded-lg bg-white/5 py-1.5 pr-8 pl-3 text-left text-sm/6 text-white capitalize',
 								'focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25',
 							)}>
 							{tag}
 							<HiChevronUpDown
-								className='group pointer-events-none absolute right-2.5 top-2.5 size-4 fill-white/60'
+								className='group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-white/60'
 								aria-hidden='true'
 							/>
 						</ListboxButton>
@@ -69,7 +69,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 										className='flex w-full'>
 										<ListboxOption
 											value={tag}
-											className='group flex w-full cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 capitalize data-[focus]:bg-white/10'>
+											className='group flex w-full cursor-default items-center gap-2 rounded-lg px-3 py-1.5 capitalize select-none data-[focus]:bg-white/10'>
 											<HiCheck className='invisible size-4 fill-white group-data-[selected]:visible' />
 											<div className='text-sm/6 text-white'>{tag}</div>
 										</ListboxOption>
@@ -85,7 +85,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 							{tags.map(tag => (
 								<Tab
 									key={tag}
-									className='flex w-full rounded-lg text-sm/6 font-medium leading-5 text-secondary outline-none transition-all duration-200 ease-in-out focus:outline-none data-[hover]:bg-white/5 data-[selected]:bg-white/10 data-[selected]:data-[hover]:bg-white/10 data-[selected]:text-white data-[selected]:ring-1 data-[selected]:ring-zinc-500'>
+									className='text-secondary flex w-full rounded-lg text-sm/6 leading-5 font-medium transition-all duration-200 ease-in-out outline-none focus:outline-none data-[hover]:bg-white/5 data-[selected]:bg-white/10 data-[selected]:text-white data-[selected]:ring-1 data-[selected]:ring-zinc-500 data-[selected]:data-[hover]:bg-white/10'>
 									<Link
 										href={`?${new URLSearchParams(tag !== 'all' ? { tag: tag } : {}).toString()}`}
 										className='flex h-full w-full items-center justify-center px-3 py-1 capitalize focus:outline-none'>
@@ -102,9 +102,9 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 					<Motion.div direction='right' delay={index * 0.15} key={tag + index}>
 						<CardContainer
 							key={index}
-							className='w-full rounded-2xl bg-green-pink-gradient p-px shadow-xl'
+							className='bg-green-pink-gradient w-full rounded-2xl p-px shadow-xl'
 							options={{ scale: 1 }}>
-							<CardBody className='group/card w-full cursor-pointer rounded-2xl bg-quaternary p-5 sm:w-80'>
+							<CardBody className='group/card bg-quaternary w-full cursor-pointer rounded-2xl p-5 sm:w-80'>
 								<Link
 									href={`?${new URLSearchParams(
 										tag === 'all' ? { id: _rev } : { tag: tag, id: _rev },
@@ -116,18 +116,18 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 											priority={true}
 											width={1920}
 											height={1080}
-											className='w-full rounded-2xl object-cover group-hover/card:border group-hover/card:border-accent/5'
+											className='group-hover/card:border-accent/5 w-full rounded-2xl object-cover group-hover/card:border'
 										/>
 
 										<div className='absolute inset-0 m-3 flex justify-end gap-1'>
 											{github && (
-												<span className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient'>
+												<span className='bg-black-gradient flex h-8 w-8 cursor-pointer items-center justify-center rounded-full'>
 													<span className='sr-only'>Source Code</span>
 													<FaGithub size={16} />
 												</span>
 											)}
 											{website && (
-												<span className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient'>
+												<span className='bg-black-gradient flex h-8 w-8 cursor-pointer items-center justify-center rounded-full'>
 													<span className='sr-only'>Website</span>
 													<FaGlobe size={16} />
 												</span>
@@ -140,10 +140,10 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 											<h3 className='line-clamp-1 text-2xl font-bold text-white'>{title}</h3>
 										</CardItem>
 										<CardItem translateZ={85}>
-											<p className='mt-2 line-clamp-1 text-sm text-secondary'>{subtitle}</p>
+											<p className='text-secondary mt-2 line-clamp-1 text-sm'>{subtitle}</p>
 										</CardItem>
 										<CardItem translateZ={75}>
-											<p className='mt-2 line-clamp-3 text-sm text-secondary'>
+											<p className='text-secondary mt-2 line-clamp-3 text-sm'>
 												{descriptions.join(' ')}
 											</p>
 										</CardItem>
@@ -159,7 +159,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 														'green-text-gradient hidden': index === 1,
 														'pink-text-gradient hidden': index === 2,
 													},
-													'whitespace-nowrap text-sm capitalize',
+													'text-sm whitespace-nowrap capitalize',
 												)}>
 												#{tag}
 											</p>
@@ -173,8 +173,8 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 			</div>
 			{project && (
 				<Dialog handleClose={handleClose}>
-					<div className='flex w-full rounded-2xl bg-accent-gradient p-px'>
-						<div className='w-full rounded-2xl bg-quaternary p-5 sm:w-[30rem]'>
+					<div className='bg-accent-gradient flex w-full rounded-2xl p-px'>
+						<div className='bg-quaternary w-full rounded-2xl p-5 sm:w-[30rem]'>
 							<div className='relative h-auto w-full'>
 								<Image
 									src={urlForImage(project.image[0])}
@@ -190,7 +190,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 										<Link
 											href={project.github}
 											target='_blank'
-											className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient outline-none'>
+											className='bg-black-gradient flex h-8 w-8 cursor-pointer items-center justify-center rounded-full outline-none'>
 											<span className='sr-only'>Source Code</span>
 											<FaGithub size={16} />
 										</Link>
@@ -199,7 +199,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 										<Link
 											href={project.website}
 											target='_blank'
-											className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-black-gradient outline-none'>
+											className='bg-black-gradient flex h-8 w-8 cursor-pointer items-center justify-center rounded-full outline-none'>
 											<span className='sr-only'>Website</span>
 											<FaGlobe size={16} />
 										</Link>
@@ -209,8 +209,8 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
 
 							<div className='mt-5'>
 								<h3 className='text-2xl font-bold text-white'>{project.title}</h3>
-								<p className='mt-2 text-sm text-secondary'>{project.subtitle}</p>
-								<p className='mt-2 text-sm text-secondary'>{project.descriptions.join(' ')}</p>
+								<p className='text-secondary mt-2 text-sm'>{project.subtitle}</p>
+								<p className='text-secondary mt-2 text-sm'>{project.descriptions.join(' ')}</p>
 							</div>
 
 							<div className='mt-4 flex flex-wrap gap-2'>

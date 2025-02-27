@@ -38,18 +38,18 @@ const Experience = ({ data }: { data: ExperienceSchema[] }) => {
 					}>
 					<div>
 						<h3 className='text-[24px] font-bold text-white'>{experience.position}</h3>
-						<p className='text-[16px] font-semibold text-secondary' style={{ margin: 0 }}>
+						<p className='text-secondary text-[16px] font-semibold' style={{ margin: 0 }}>
 							{experience.company}
 						</p>
 					</div>
 
-					<ul className='ml-2 mt-5 list-disc space-y-2'>
+					<ul className='mt-5 ml-2 list-disc space-y-2'>
 						{experience.description.map((description, index) => (
 							<li
 								key={index}
-								className='line-clamp-2 text-sm tracking-wider text-white-100 hover:line-clamp-none'>
+								className='text-white-100 line-clamp-2 text-sm tracking-wider hover:line-clamp-none'>
 								<span>
-									<FaCircle fontSize={5} className='mr-3 inline-block text-secondary' />
+									<FaCircle fontSize={5} className='text-secondary mr-3 inline-block' />
 									{description}
 								</span>
 							</li>

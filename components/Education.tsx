@@ -36,7 +36,7 @@ const Education = ({ data }: { data: EducationSchema[] }) => {
 					}>
 					<div>
 						<h3 className='text-[24px] font-bold text-white'>{education.degree}</h3>
-						<p className='text-[16px] font-semibold text-secondary' style={{ margin: 0 }}>
+						<p className='text-secondary text-[16px] font-semibold' style={{ margin: 0 }}>
 							{education.university}
 						</p>
 					</div>

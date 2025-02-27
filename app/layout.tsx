@@ -1,3 +1,5 @@
+import '@import/styles/globals.css'
+
 import Script from 'next/script'
 import classNames from 'classnames'
 import { Sora } from 'next/font/google'
@@ -5,9 +7,6 @@ import { config } from '@import/config'
 import { Metadata, Viewport } from 'next'
 import { RootLayoutProps } from '@import/types'
 import { BackgroundBeams, Navbar } from '@import/components'
-
-import '@import/styles/globals.scss'
-import 'react-vertical-timeline-component/style.min.css'
 
 export const metadata: Metadata = {
 	title: {
@@ -76,7 +75,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
 	width: 'device-width',
 	initialScale: 1,
-	themeColor: '#915EFF',
+	themeColor: '#A277FF',
 }
 
 const sora = Sora({

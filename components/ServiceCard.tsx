@@ -7,12 +7,12 @@ const ServiceCard = ({ data }: { data: ServicesSchema[] }) => {
 	return (
 		<div className='mt-10 flex flex-wrap justify-center gap-10 px-4 pb-16 lg:justify-normal lg:px-6'>
 			{data.map(({ _key, title, image }, index) => (
-				<Motion.div key={_key} direction='right' delay={index * 0.2} className='w-full xs:w-60'>
+				<Motion.div key={_key} direction='right' delay={index * 0.2} className='xs:w-60 w-full'>
 					<CardContainer
-						className='group/card w-full cursor-pointer rounded-2xl bg-quaternary'
+						className='group/card bg-quaternary w-full cursor-pointer rounded-2xl'
 						options={{ max: 45, scale: 1, speed: 450 }}>
-						<CardBody className='w-full rounded-2xl bg-violet-gradient p-px'>
-							<div className='flex min-h-[280px] flex-col items-center justify-evenly rounded-2xl bg-tertiary px-12 py-5'>
+						<CardBody className='bg-violet-gradient w-full rounded-2xl p-px'>
+							<div className='bg-tertiary flex min-h-[280px] flex-col items-center justify-evenly rounded-2xl px-12 py-5'>
 								<Image
 									src={urlForImage(image)}
 									alt={title}
