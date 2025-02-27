@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @media (prefers-reduced-motion: no-preference) {
 	:root {
@@ -16,13 +14,13 @@
 		@apply overflow-hidden leading-relaxed;
 	}
 	h1 {
-		@apply text-3xl font-semibold leading-tight md:text-5xl;
+		@apply text-3xl leading-tight font-semibold md:text-5xl;
 	}
 	h2 {
-		@apply text-2xl font-semibold leading-tight md:text-4xl;
+		@apply text-2xl leading-tight font-semibold md:text-4xl;
 	}
 	p {
-		@apply font-light leading-relaxed text-white/60;
+		@apply leading-relaxed font-light text-white/60;
 	}
 }
 

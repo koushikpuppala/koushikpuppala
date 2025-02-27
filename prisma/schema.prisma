@@ -1,0 +1,155 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["prismaSchemaFolder", "strictUndefinedChecks"]
+}
+
+datasource db {
+    provider     = "mongodb"
+    relationMode = "prisma"
+    url          = env("PRISMA_URI")
+    directUrl    = env("MONGO_URI")
+}
+
+model Assets {
+    id         String      @id @map("_id") @db.ObjectId
+    version    Float       @default(0.1) @map("__v")
+    name       String
+    type       AssetType
+    uid        String
+    url        String
+    resume     Resume?
+    service    Service?
+    projects   Projects?
+    education  Education?
+    Experience Experience?
+}
+
+enum AssetType {
+    IMAGE
+    VIDEO
+    AUDIO
+    DOCUMENT
+}
+
+model Description {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    version   Float    @default(0.1) @map("__v")
+    content   String
+    extension String[]
+    home      Home?
+    createdAt DateTime @default(now()) @db.Date
+    updatedAt DateTime @updatedAt @db.Date
+}
+
+model Social {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    version   Float    @default(0.1) @map("__v")
+    platform  String
+    url       String
+    home      Home?    @relation(fields: [homeId], references: [id])
+    homeId    String?  @db.ObjectId
+    createdAt DateTime @default(now()) @db.Date
+    updatedAt DateTime @updatedAt @db.Date
+}
+
+model Home {
+    id            String      @id @default(auto()) @map("_id") @db.ObjectId
+    version       Float       @default(0.1) @map("__v")
+    title         String
+    separator     String
+    subtitle      String[]
+    description   Description @relation(fields: [descriptionId], references: [id])
+    descriptionId String      @unique @db.ObjectId
+    social        Social[]
+    createdAt     DateTime    @default(now()) @db.Date
+    updatedAt     DateTime    @updatedAt @db.Date
+}
+
+model About {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    version      Float    @default(0.1) @map("__v")
+    title        String
+    introduction String
+    createdAt    DateTime @default(now()) @db.Date
+    updatedAt    DateTime @updatedAt @db.Date
+}
+
+model Resume {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    version   Float    @default(0.1) @map("__v")
+    resume    Assets   @relation(fields: [resumeId], references: [id])
+    resumeId  String   @unique @db.ObjectId
+    createdAt DateTime @default(now()) @db.Date
+    updatedAt DateTime @updatedAt @db.Date
+}
+
+model Service {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    version     Float    @default(0.1) @map("__v")
+    title       String
+    description String
+    image       Assets   @relation(fields: [imageId], references: [id])
+    imageId     String   @unique @db.ObjectId
+    createdAt   DateTime @default(now()) @db.Date
+    updatedAt   DateTime @updatedAt @db.Date
+}
+
+model Education {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    version      Float    @default(0.1) @map("__v")
+    degree       String
+    university   String
+    startDate    DateTime @db.Date
+    endDate      DateTime @db.Date
+    expectedDate DateTime @db.Date
+    current      Boolean
+    image        Assets   @relation(fields: [imageId], references: [id])
+    imageId      String   @unique @db.ObjectId
+    website      String
+    createdAt    DateTime @default(now()) @db.Date
+    updatedAt    DateTime @updatedAt @db.Date
+}
+
+model Experience {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    version     Float    @default(0.1) @map("__v")
+    company     String
+    position    String
+    startDate   DateTime @db.Date
+    endDate     DateTime @db.Date
+    current     Boolean
+    description String[]
+    image       Assets   @relation(fields: [imageId], references: [id])
+    imageId     String   @unique @db.ObjectId
+    website     String
+    createdAt   DateTime @default(now()) @db.Date
+    updatedAt   DateTime @updatedAt @db.Date
+}
+
+model Projects {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    version      Float    @default(0.1) @map("__v")
+    title        String
+    subtitle     String
+    category     String
+    descriptions String[]
+    tags         String[]
+    image        Assets   @relation(fields: [imageId], references: [id])
+    imageId      String   @unique @db.ObjectId
+    github       String?
+    url          String?
+    createdAt    DateTime @default(now()) @db.Date
+    updatedAt    DateTime @updatedAt @db.Date
+}
+
+model Contacts {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    version   Float    @default(0.1) @map("__v")
+    name      String
+    email     String
+    subject   String
+    message   String
+    url       String?
+    createdAt DateTime @default(now()) @db.Date
+    updatedAt DateTime @updatedAt @db.Date
+}
