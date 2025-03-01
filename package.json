@@ -1,8 +1,9 @@
 {
 	"name": "koushikpuppala",
-	"version": "5.7.5",
 	"description": "My website was developed using the Next.js framework and the TypeScript programming language and hosted on the Vercel cloud platform. It contains blogs, a portfolio, and a contact form.",
-	"main": "next.config.js",
+	"type": "module",
+	"version": "5.7.5",
+	"main": "next.config.ts",
 	"packageManager": "pnpm@10.5.2",
 	"scripts": {
 		"dev": "next dev",
@@ -54,6 +55,7 @@
 		"@commitlint/cli": "~19.7.1",
 		"@commitlint/config-conventional": "~19.7.1",
 		"@commitlint/types": "~19.5.0",
+		"@eslint/eslintrc": "~3.3.0",
 		"@types/eslint": "~9.6.1",
 		"@types/node": "~22.13.5",
 		"@types/nodemailer": "~6.4.17",

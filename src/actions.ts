@@ -50,7 +50,7 @@ export const handleSubmit: handleFormSubmitType = async (prevState, form) => {
 			statusMessage: 'Submitted successfully, I will get back to you as soon as possible!',
 		}
 	} catch (error) {
-		process.env.NODE_ENV === 'development' && console.log(error)
+		// process.env.NODE_ENV === 'development' && console.log(error)
 		captureException(error)
 		return {
 			statusCode: 500,
