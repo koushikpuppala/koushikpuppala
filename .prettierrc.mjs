@@ -5,7 +5,6 @@ const config = {
 	semi: false,
 	useTabs: true,
 	printWidth: 100,
-	endOfLine: 'lf',
 	singleQuote: true,
 	arrowParens: 'avoid',
 	jsxSingleQuote: true,

@@ -53,6 +53,22 @@
 	);
 }
 
+@utility bg-gradient-black {
+	background: var(--gradient-black);
+}
+
+@utility bg-gradient-accent {
+	background: var(--gradient-accent);
+}
+
+@utility bg-gradient-violet {
+	background: var(--gradient-violet);
+}
+
+@utility bg-gradient-green-pink {
+	background: var(--gradient-green-pink);
+}
+
 @utility orange-text-gradient {
 	background: linear-gradient(to top, oklch(61.45% 0.235 30.43), oklch(79.99% 0.162 78.77));
 	background-clip: text;

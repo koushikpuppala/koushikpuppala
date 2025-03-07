@@ -153,7 +153,7 @@ jobs:
             docker rm ${{ vars.CLUSTER }} || true
 
             # Run the new container
-            docker run -d --name ${{ vars.CLUSTER }} -p ${{ env.HOST_PORT }}:${{ env.IMAGE_PORT }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+            docker run -d --restart unless-stopped --name ${{ vars.CLUSTER }} -p ${{ env.HOST_PORT }}:${{ env.IMAGE_PORT }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           EOF
 
   # deploy:
