@@ -56,7 +56,7 @@
 		"@commitlint/types": "~19.5.0",
 		"@sanity/icons": "~3.6.0",
 		"@sanity/types": "~3.75.1",
-		"@sanity/ui": "~2.13.4",
+		"@sanity/ui": "~2.15.5",
 		"@types/eslint": "~9.6.1",
 		"@types/node": "~22.13.4",
 		"@types/nodemailer": "~6.4.17",
