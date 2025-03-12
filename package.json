@@ -74,7 +74,7 @@
 		"postcss-import": "~16.1.0",
 		"prettier": "~3.5.1",
 		"prettier-plugin-tailwindcss": "~0.6.11",
-		"prisma": "~6.3.1",
+		"prisma": "~6.5.0",
 		"react-is": "~19.0.0",
 		"sanity": "~3.75.1",
 		"sass": "~1.85.0",
