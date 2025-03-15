@@ -1,0 +1,9 @@
+model Resume {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  version   Float     @default(0.1) @map("__v")
+  resume    Media     @relation(fields: [resumeId], references: [id])
+  resumeId  String    @unique @db.ObjectId
+  createdAt DateTime  @default(now()) @db.Date
+  updatedAt DateTime  @updatedAt @db.Date
+  deletedAt DateTime? @db.Date
+}

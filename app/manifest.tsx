@@ -69,16 +69,19 @@ const ManifestPage = (): MetadataRoute.Manifest => {
 				src: '/screenshots/desktop.png',
 				sizes: '1920x1080',
 				type: 'image/png',
+				form_factor: 'wide',
 			},
 			{
 				src: '/screenshots/phone.png',
 				sizes: '412x915',
 				type: 'image/png',
+				form_factor: 'narrow',
 			},
 			{
 				src: '/screenshots/tablet.png',
 				sizes: '800x1280',
 				type: 'image/png',
+				form_factor: 'narrow',
 			},
 		],
 	}

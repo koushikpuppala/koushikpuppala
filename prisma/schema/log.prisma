@@ -1,0 +1,18 @@
+model Log {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  version     Float    @default(0.1) @map("__v")
+  method      String
+  endpoint    String
+  requestBody Json?
+  response    Json?
+  statusCode  Int
+  ipAddress   String?
+  userAgent   String?
+  duration    Int
+  createdAt   DateTime @default(now()) @db.Date
+  updatedAt   DateTime @updatedAt @db.Date
+
+  @@index([endpoint], name: "endpoint")
+  @@index([method], name: "method")
+  @@index([statusCode], name: "statusCode")
+}

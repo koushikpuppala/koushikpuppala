@@ -1,0 +1,28 @@
+model Media {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  version    Float       @default(0.1) @map("__v")
+  name       String
+  type       MEDIA_TYPE
+  uid        String      @unique
+  url        String
+  education  Education?
+  experience Experience?
+  project    Project?
+  resume     Resume?
+  service    Service?
+  createdAt  DateTime    @default(now()) @db.Date
+  updatedAt  DateTime    @updatedAt @db.Date
+  deletedAt  DateTime?   @db.Date
+
+  @@index([type], name: "type")
+}
+
+enum MEDIA_TYPE {
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+  PDF
+  ICON
+  OTHER
+}

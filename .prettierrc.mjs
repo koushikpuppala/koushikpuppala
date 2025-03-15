@@ -9,7 +9,7 @@ const config = {
 	arrowParens: 'avoid',
 	jsxSingleQuote: true,
 	bracketSameLine: true,
-	plugins: ['prettier-plugin-tailwindcss'],
+	plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-prisma'],
 }
 
 export default config

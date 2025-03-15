@@ -1,0 +1,17 @@
+model Experience {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  version     Float     @default(0.1) @map("__v")
+  title       String
+  company     String
+  location    String
+  startDate   DateTime  @db.Date
+  endDate     DateTime? @db.Date
+  current     Boolean   @default(false)
+  description String[]
+  logo        Media     @relation(fields: [logoId], references: [id])
+  logoId      String    @unique @db.ObjectId
+  website     String
+  createdAt   DateTime  @default(now()) @db.Date
+  updatedAt   DateTime  @updatedAt @db.Date
+  deletedAt   DateTime? @db.Date
+}

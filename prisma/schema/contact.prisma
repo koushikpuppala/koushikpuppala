@@ -1,0 +1,14 @@
+model Contact {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  version   Float     @default(0.1) @map("__v")
+  name      String
+  email     String
+  subject   String
+  message   String
+  url       String?
+  createdAt DateTime  @default(now()) @db.Date
+  updatedAt DateTime  @updatedAt @db.Date
+  deletedAt DateTime? @db.Date
+
+  @@index([email], name: "email")
+}

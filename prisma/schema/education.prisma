@@ -1,0 +1,16 @@
+model Education {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  version      Float     @default(0.1) @map("__v")
+  degree       String
+  university   String
+  startDate    DateTime  @db.Date
+  endDate      DateTime? @db.Date
+  expectedDate DateTime? @db.Date
+  current      Boolean   @default(false)
+  logo         Media     @relation(fields: [logoId], references: [id])
+  logoId       String    @unique @db.ObjectId
+  website      String
+  createdAt    DateTime  @default(now()) @db.Date
+  updatedAt    DateTime  @updatedAt @db.Date
+  deletedAt    DateTime? @db.Date
+}

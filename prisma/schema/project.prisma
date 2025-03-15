@@ -1,0 +1,18 @@
+model Project {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  version      Float     @default(0.1) @map("__v")
+  title        String
+  subtitle     String
+  category     String
+  descriptions String[]
+  tags         String[]
+  image        Media     @relation(fields: [imageId], references: [id])
+  imageId      String    @unique @db.ObjectId
+  github       String?
+  url          String?
+  createdAt    DateTime  @default(now()) @db.Date
+  updatedAt    DateTime  @updatedAt @db.Date
+  deletedAt    DateTime? @db.Date
+
+  @@index([category], name: "category")
+}

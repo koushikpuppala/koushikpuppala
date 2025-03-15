@@ -1,0 +1,22 @@
+model Social {
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  version   Float           @default(0.1) @map("__v")
+  platform  SOCIAL_PLATFORM @unique
+  url       String
+  createdAt DateTime        @default(now()) @db.Date
+  updatedAt DateTime        @updatedAt @db.Date
+  deletedAt DateTime?       @db.Date
+}
+
+enum SOCIAL_PLATFORM {
+  LINKEDIN
+  GITHUB
+  DISCORD
+  SKYPE
+  TWITTER
+  INSTAGRAM
+  FACEBOOK
+  YOUTUBE
+  SERVER
+  OTHER
+}
