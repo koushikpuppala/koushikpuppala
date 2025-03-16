@@ -14,8 +14,8 @@ const nextConfig = nextPWA.default({
 		cleanupOutdatedCaches: process.env.NODE_ENV !== 'development',
 	},
 })({
-	experimental: { reactCompiler: true },
 	reactStrictMode: process.env.NODE_ENV !== 'development',
+	experimental: { reactCompiler: process.env.NODE_ENV === 'development' },
 	output: process.env.ENVIRONMENT === 'production' ? 'standalone' : undefined,
 	images: {
 		remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }],

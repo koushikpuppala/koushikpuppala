@@ -74,4 +74,24 @@ const span = ({
 	</motion.span>
 )
 
-export { div, h1, h2, nav, p, span }
+const path = ({
+	direction,
+	delay,
+	...props
+}: AnimationProps<React.ComponentProps<typeof motion.path>>) => (
+	<motion.path {...props} {...animation(direction, delay)}>
+		{props.children}
+	</motion.path>
+)
+
+const linearGradient = ({
+	direction,
+	delay,
+	...props
+}: AnimationProps<React.ComponentProps<typeof motion.linearGradient>>) => (
+	<motion.linearGradient {...props} {...animation(direction, delay)}>
+		{props.children}
+	</motion.linearGradient>
+)
+
+export { div, h1, h2, nav, p, span, path, linearGradient }

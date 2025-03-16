@@ -1,10 +1,11 @@
 'use client'
 
+import { memo } from 'react'
 import classNames from 'classnames'
-import { motion } from 'framer-motion'
+import { Animation } from '@import/components'
 import { BackgroundBeamsProps } from '@import/types'
 
-export const BackgroundBeams = ({ className }: BackgroundBeamsProps) => {
+export const BackgroundBeams = memo(({ className }: BackgroundBeamsProps) => {
 	const paths = [
 		'M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875',
 		'M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867',
@@ -77,16 +78,16 @@ export const BackgroundBeams = ({ className }: BackgroundBeamsProps) => {
 					strokeWidth='0.5'></path>
 
 				{paths.map((path, index) => (
-					<motion.path
+					<Animation.path
 						key={`path-` + index}
 						d={path}
 						stroke={`url(#linearGradient-${index})`}
 						strokeOpacity='0.4'
-						strokeWidth='0.5'></motion.path>
+						strokeWidth='0.5'></Animation.path>
 				))}
 				<defs>
-					{paths.map((_path, index) => (
-						<motion.linearGradient
+					{paths.map((_, index) => (
+						<Animation.linearGradient
 							suppressHydrationWarning={true}
 							id={`linearGradient-${index}`}
 							key={`gradient-${index}`}
@@ -107,7 +108,7 @@ export const BackgroundBeams = ({ className }: BackgroundBeamsProps) => {
 							<stop stopColor='#18CCFC'></stop>
 							<stop offset='32.5%' stopColor='#6344F5'></stop>
 							<stop offset='100%' stopColor='#AE48FF' stopOpacity='0'></stop>
-						</motion.linearGradient>
+						</Animation.linearGradient>
 					))}
 
 					<radialGradient
@@ -125,4 +126,6 @@ export const BackgroundBeams = ({ className }: BackgroundBeamsProps) => {
 			</svg>
 		</div>
 	)
-}
+})
+
+BackgroundBeams.displayName = 'BackgroundBeams'

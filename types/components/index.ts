@@ -1,5 +1,4 @@
 import { HTMLAttributes } from 'react'
-import { ProjectSchema } from '../'
 
 export type FlipWordsProps = { words: string[]; duration?: number; className?: string }
 
@@ -28,7 +27,7 @@ export type CardItemProps = CardProps & {
 	[key: string]: any
 }
 
-export type ProjectCardProps = { data: ProjectSchema[] }
+export type ProjectCardProps = { data: any[] }
 
 export type BackgroundBeamsProps = { className?: string }
 

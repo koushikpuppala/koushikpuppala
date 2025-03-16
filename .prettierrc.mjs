@@ -4,6 +4,7 @@ const config = {
 	tabWidth: 2,
 	semi: false,
 	useTabs: true,
+	endOfLine: 'lf',
 	printWidth: 100,
 	singleQuote: true,
 	arrowParens: 'avoid',

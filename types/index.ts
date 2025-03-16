@@ -24,11 +24,4 @@ export type {
 
 export type { ContactFormType, ContactModalProps } from './models'
 
-export type {
-	AboutSchema,
-	EducationSchema,
-	ExperienceSchema,
-	HomeSchema,
-	ProjectSchema,
-	ServicesSchema,
-} from './schemas'
+export type { LoggerType } from './lib'
