@@ -1,7 +1,7 @@
 'use client'
 
 import { memo } from 'react'
-import classNames from 'classnames'
+import { classNames } from '@import/utils'
 import { Animation } from '@import/components'
 import { BackgroundBeamsProps } from '@import/types'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import classNames from 'classnames'
+import { classNames } from '@import/utils'
 import React, { createContext, useState, useRef, useEffect, use } from 'react'
 import { CardBodyProps, CardContainerProps, CardItemProps } from '@import/types'
 

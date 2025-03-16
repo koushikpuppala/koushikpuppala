@@ -1,7 +1,7 @@
 import '@import/styles/globals.css'
 
 import Script from 'next/script'
-import classNames from 'classnames'
+import { classNames } from '@import/utils'
 import { Sora } from 'next/font/google'
 import { config } from '@import/config'
 import { Metadata, Viewport } from 'next'

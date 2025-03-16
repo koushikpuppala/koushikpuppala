@@ -1,6 +1,6 @@
 'use client'
 
-import classNames from 'classnames'
+import { classNames } from '@import/utils'
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FlipWordsProps } from '@import/types'

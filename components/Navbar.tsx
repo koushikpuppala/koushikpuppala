@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import classNames from 'classnames'
+import { classNames } from '@import/utils'
 import { useEffect, useState } from 'react'
 import { NavbarData } from '@import/constant'
 import { usePathname } from 'next/navigation'

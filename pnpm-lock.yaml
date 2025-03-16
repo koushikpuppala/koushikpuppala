@@ -26,9 +26,9 @@ importers:
       babel-plugin-react-compiler:
         specifier: 19.0.0-beta-bafa41b-20250307
         version: 19.0.0-beta-bafa41b-20250307
-      classnames:
-        specifier: ~2.5.1
-        version: 2.5.1
+      clsx:
+        specifier: ~2.1.1
+        version: 2.1.1
       framer-motion:
         specifier: ~12.5.0
         version: 12.5.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -65,6 +65,9 @@ importers:
       sharp:
         specifier: ~0.33.5
         version: 0.33.5
+      tailwind-merge:
+        specifier: ~3.0.2
+        version: 3.0.2
       tailwindcss:
         specifier: ~4.0.14
         version: 4.0.14
@@ -4298,6 +4301,9 @@ packages:
 
   tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
+
+  tailwind-merge@3.0.2:
+    resolution: {integrity: sha512-l7z+OYZ7mu3DTqrL88RiKrKIqO3NcpEO8V/Od04bNpvk0kiIFndGEoqfuzvj4yuhRkHKjRkII2z+KS2HfPcSxw==}
 
   tailwindcss@4.0.14:
     resolution: {integrity: sha512-92YT2dpt671tFiHH/e1ok9D987N9fHD5VWoly1CdPD/Cd1HMglvZwP3nx2yTj2lbXDAHt8QssZkxTLCCTNL+xw==}
@@ -9231,6 +9237,8 @@ snapshots:
       picocolors: 1.1.1
 
   tabbable@6.2.0: {}
+
+  tailwind-merge@3.0.2: {}
 
   tailwindcss@4.0.14: {}
 

@@ -1,6 +1,6 @@
 'use client'
 
-import classNames from 'classnames'
+import { classNames } from '@import/utils'
 import { useEffect, useState } from 'react'
 import { TextGenerateEffectProps } from '@import/types'
 import { AnimatePresence, motion, stagger, useAnimate } from 'framer-motion'
