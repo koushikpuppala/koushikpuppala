@@ -22,6 +22,8 @@ export type {
 	AnimationProps,
 } from './components'
 
+export type { AuthContextProps } from './contexts'
+
 export type { ContactFormType, ContactModalProps } from './models'
 
 export type { LoggerType } from './lib'

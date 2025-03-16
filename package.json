@@ -10,7 +10,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"prepare": "husky || true"
+		"prepare": "husky || true",
+		"postinstall": "prisma generate --schema=./prisma/schema"
 	},
 	"repository": "https://github.com/koushikpuppala/koushikpuppala.git",
 	"bugs": "https://github.com/koushikpuppala/koushikpuppala/issues",
@@ -33,6 +34,7 @@
 		"@tailwindcss/postcss": "~4.0.14",
 		"babel-plugin-react-compiler": "19.0.0-beta-bafa41b-20250307",
 		"clsx": "~2.1.1",
+		"firebase": "~11.4.0",
 		"framer-motion": "~12.5.0",
 		"globby": "~14.1.0",
 		"mongoose": "~8.12.1",
