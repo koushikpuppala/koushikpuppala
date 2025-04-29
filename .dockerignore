@@ -8,6 +8,7 @@ node_modules
 coverage
 
 # Build Outputs
+.prisma
 .next
 out
 build
