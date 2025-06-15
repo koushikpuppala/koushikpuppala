@@ -36,3 +36,11 @@ export type AnimationProps<T> = Partial<T> &
 		| { direction: 'left' | 'right' | 'up' | 'down'; delay: number }
 		| { direction?: never; delay?: never }
 	)
+
+export type LinkProps = {
+	label: string
+	href: string
+	icon: React.JSX.Element | React.ReactNode
+}
+
+export type SidebarLinkProps = { link: LinkProps; className?: string } & React.ComponentProps<'a'>

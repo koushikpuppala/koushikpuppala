@@ -1,6 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["prismaSchemaFolder", "strictUndefinedChecks"]
+  provider        = "prisma-client"
+  previewFeatures = ["strictUndefinedChecks"]
   output          = "../../.prisma"
 }
 

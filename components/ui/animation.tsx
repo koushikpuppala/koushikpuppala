@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import { transition } from '@import/constant'
 import { AnimationProps } from '@import/types'
 
@@ -94,4 +94,4 @@ const linearGradient = ({
 	</motion.linearGradient>
 )
 
-export { div, h1, h2, nav, p, span, path, linearGradient }
+export { div, h1, h2, nav, p, span, path, linearGradient, AnimatePresence }

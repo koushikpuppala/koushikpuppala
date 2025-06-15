@@ -1,0 +1,17 @@
+model Metadata {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  version   Float        @default(0.1) @map("__v")
+  type      MetadataType
+  key       String       @unique
+  value     String
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  deletedAt DateTime?    @db.Date
+
+  @@index([type], name: "metadata_type_index")
+}
+
+enum MetadataType {
+  PAGE
+  LAYOUT
+}

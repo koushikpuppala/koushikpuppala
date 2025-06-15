@@ -12,7 +12,7 @@ model Log {
   createdAt   DateTime @default(now()) @db.Date
   updatedAt   DateTime @updatedAt @db.Date
 
-  @@index([endpoint], name: "endpoint")
-  @@index([method], name: "method")
-  @@index([statusCode], name: "statusCode")
+  @@index([endpoint], name: "log_endpoint_index")
+  @@index([method], name: "log_method_index")
+  @@index([statusCode], name: "log_status_code_index")
 }

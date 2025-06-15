@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 import { revalidateTag } from 'next/cache'
 import { SANITY_DOCUMENT_TYPE } from '@import/constant'

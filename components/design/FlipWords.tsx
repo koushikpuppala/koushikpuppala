@@ -2,7 +2,7 @@
 
 import { classNames } from '@import/utils'
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'motion/react'
 import { FlipWordsProps } from '@import/types'
 
 export const FlipWords = ({ words, duration = 2500, className }: FlipWordsProps) => {

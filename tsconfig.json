@@ -49,6 +49,6 @@
 			{ "name": "next" }
 		] /* Use TypeScript-specific functionality in Next.js pages and API routes. */
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.mjs"],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.mjs", "types"],
 	"exclude": ["node_modules"]
 }

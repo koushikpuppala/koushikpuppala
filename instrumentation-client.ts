@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== 'development')
 	Sentry.init({
 		debug: false,
 		spotlight: false,
+		sendDefaultPii: true,
 		tracesSampleRate: 0.1,
 		replaysSessionSampleRate: 0.1,
 		replaysOnErrorSampleRate: 1.0,
@@ -18,3 +19,5 @@ if (process.env.NODE_ENV !== 'development')
 			Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true, stickySession: true }),
 		],
 	})
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart

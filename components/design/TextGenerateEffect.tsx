@@ -3,7 +3,7 @@
 import { classNames } from '@import/utils'
 import { useEffect, useState } from 'react'
 import { TextGenerateEffectProps } from '@import/types'
-import { AnimatePresence, motion, stagger, useAnimate } from 'framer-motion'
+import { AnimatePresence, motion, stagger, useAnimate } from 'motion/react'
 
 export const TextGenerateEffect = ({ strings, className }: TextGenerateEffectProps) => {
 	const [scope, animate] = useAnimate()

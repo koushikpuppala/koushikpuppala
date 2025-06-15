@@ -14,7 +14,7 @@ model Media {
   updatedAt  DateTime    @updatedAt @db.Date
   deletedAt  DateTime?   @db.Date
 
-  @@index([type], name: "type")
+  @@index([type], name: "media_type_index")
 }
 
 enum MEDIA_TYPE {

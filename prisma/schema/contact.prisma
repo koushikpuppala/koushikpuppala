@@ -10,5 +10,5 @@ model Contact {
   updatedAt DateTime  @updatedAt @db.Date
   deletedAt DateTime? @db.Date
 
-  @@index([email], name: "email")
+  @@index([email], name: "contact_email_index")
 }

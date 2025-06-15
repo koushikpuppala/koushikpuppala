@@ -2,12 +2,12 @@
 
 import {
 	GoogleAuthProvider,
-	User,
 	inMemoryPersistence,
 	onAuthStateChanged,
 	onIdTokenChanged,
 	setPersistence,
 	signInWithPopup,
+	User,
 } from 'firebase/auth'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { AuthContextProps, RootLayoutProps } from '@import/types'

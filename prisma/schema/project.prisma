@@ -14,5 +14,5 @@ model Project {
   updatedAt    DateTime  @updatedAt @db.Date
   deletedAt    DateTime? @db.Date
 
-  @@index([category], name: "category")
+  @@index([category], name: "project_category_index")
 }
