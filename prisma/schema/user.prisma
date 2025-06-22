@@ -1,0 +1,26 @@
+model User {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  version   Float        @default(0.1) @map("__v")
+  uid       String       @unique // Firebase UID
+  email     String       @unique
+  firstName String
+  lastName  String?
+  photoUrl  String?
+  role      UserRole     @default(USER)
+  provider  AuthProvider @default(PASSWORD) // Google or Email/Password
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  deletedAt DateTime?    @db.Date
+  Session   Session[]
+}
+
+enum UserRole {
+  ADMIN
+  USER
+  GUEST
+}
+
+enum AuthProvider {
+  GOOGLE
+  PASSWORD
+}

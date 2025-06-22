@@ -1,18 +1,17 @@
 'use server'
 
-import { DOMAIN, EXPIRES_IN } from '@import/constants'
 import { cookies } from 'next/headers'
 import { logger } from '@import/lib'
 
-export const setCookie = async (name: string, value: string) => {
+export const setCookie = async (name: string, value: string, maxAge?: number) => {
 	const { set } = await cookies()
+
 	set(name, value, {
-		domain: logger._production ? DOMAIN : undefined,
 		secure: logger._production,
 		sameSite: 'strict',
 		httpOnly: true,
 		path: '/',
-		maxAge: EXPIRES_IN,
+		maxAge,
 	})
 }
 
@@ -21,7 +20,6 @@ export const removeCookie = async (name: string) => {
 
 	del({
 		name,
-		domain: logger._production ? DOMAIN : undefined,
 		secure: logger._production,
 		sameSite: 'strict',
 		httpOnly: true,

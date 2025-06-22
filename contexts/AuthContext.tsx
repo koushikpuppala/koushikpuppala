@@ -1,20 +1,12 @@
 'use client'
 
-import {
-	GoogleAuthProvider,
-	inMemoryPersistence,
-	onAuthStateChanged,
-	onIdTokenChanged,
-	setPersistence,
-	signInWithPopup,
-	User,
-} from 'firebase/auth'
+import { GoogleAuthProvider, onIdTokenChanged, signInWithPopup, User } from 'firebase/auth'
+import { COOKIE_NAME, EXPIRES_IN } from '@import/constants'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { AuthContextProps, RootLayoutProps } from '@import/types'
-import { removeCookie, setCookie } from '@import/lib'
+import { logger, removeCookie, setCookie } from '@import/lib'
 import { LoadingComponent } from '@import/components'
 import { auth } from '@import/firebase'
-import { COOKIE_NAME } from '@import/constants'
 
 const AuthContext = createContext<AuthContextProps>({
 	currentUser: null,
@@ -27,41 +19,34 @@ const AuthContext = createContext<AuthContextProps>({
 export const useAuth = () => useContext(AuthContext)
 
 export const AuthContextProvider = ({ children }: RootLayoutProps) => {
-	const [currentUser, setCurrentUser] = useState<User | null>(null)
 	const [token, setToken] = useState<string | null>(null)
 	const [userAuthLoading, setUserAuthLoading] = useState(true)
-	const forceRefresh = true
-
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, async user => {
-			if (user) setToken(await user.getIdToken(forceRefresh))
-			else setToken(null)
-
-			setCurrentUser(user)
-			setUserAuthLoading(false)
-		})
-
-		return unsubscribe
-	}, [])
+	const [currentUser, setCurrentUser] = useState<User | null>(null)
 
 	useEffect(() => {
 		const unsubscribe = onIdTokenChanged(auth, async user => {
-			if (user) setToken(await user.getIdToken(forceRefresh))
-			else setToken(null)
-
-			setCurrentUser(user)
+			try {
+				setCurrentUser(user)
+				setToken((await user?.getIdToken()) ?? null)
+				logger.info('User token updated', 'AuthContextProvider', { userId: user?.uid })
+			} catch (error) {
+				setToken(null)
+				setCurrentUser(null)
+				logger.error('Failed to get user token', 'AuthContextProvider', error as Error)
+			} finally {
+				setUserAuthLoading(false)
+			}
 		})
 
 		return unsubscribe
 	}, [])
 
 	useEffect(() => {
-		if (token) setCookie(COOKIE_NAME, token)
+		if (token) setCookie(COOKIE_NAME, token, EXPIRES_IN)
 		else removeCookie(COOKIE_NAME)
 	}, [token])
 
 	const login: AuthContextProps['login'] = async () => {
-		await setPersistence(auth, inMemoryPersistence)
 		const provider = new GoogleAuthProvider()
 		const { user } = await signInWithPopup(auth, provider)
 
@@ -69,7 +54,7 @@ export const AuthContextProvider = ({ children }: RootLayoutProps) => {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${await user.getIdToken(forceRefresh)}`,
+				Authorization: `Bearer ${await user.getIdToken()}`,
 			},
 			body: JSON.stringify({ user }),
 		})

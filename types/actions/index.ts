@@ -1,3 +1,5 @@
+export * from './metadata'
+
 export type prevStateType = { statusCode: number; statusMessage: string }
 
 export type handleFormSubmitType = (
@@ -10,4 +12,5 @@ export type ServerActionResponse<T> = {
 	code: number
 	message: string
 	result: T | undefined
+	totalCount?: number
 }

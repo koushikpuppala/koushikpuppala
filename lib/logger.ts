@@ -65,7 +65,7 @@ export class Logger implements LoggerType {
 		}
 
 		this._log = (level, message, functionName, meta, error) => {
-			const data = { functionName, ...meta }
+			const data = { functionName, ...meta, timestamp: new Date().toISOString() }
 
 			if (this._isClient) {
 				if (error) console.error(message, { error: this._normalizeError(error), ...data })
