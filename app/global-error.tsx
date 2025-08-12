@@ -1,11 +1,12 @@
 'use client'
 
-import { useEffect } from 'react'
-import * as Sentry from '@sentry/nextjs'
-import { Animation } from '@import/components'
-import { globalErrorProps } from '@import/types'
+import type { GlobalErrorProps } from 'types/app'
 
-const GlobalError = ({ error, reset }: globalErrorProps) => {
+import * as Sentry from '@sentry/nextjs'
+import { Animation } from 'components'
+import { useEffect } from 'react'
+
+const GlobalError = ({ error, reset }: GlobalErrorProps) => {
 	useEffect(() => {
 		Sentry.captureException(error)
 	}, [error])

@@ -1,0 +1,12 @@
+generator client {
+  provider        = "prisma-client"
+  previewFeatures = ["strictUndefinedChecks"]
+  output          = "./client"
+}
+
+datasource db {
+  provider     = "mongodb"
+  relationMode = "prisma"
+  url          = env("PRISMA_URI")
+  directUrl    = env("MONGO_URI")
+}

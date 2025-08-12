@@ -20,8 +20,8 @@
 		"resolveJsonModule": true /* Enable importing .json files. */,
 		"baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
 		"paths": {
-			"@import/*": ["src/*", "*"],
-			"@prisma/*": [".prisma/*"]
+			"*": ["src/*"],
+			"prisma/*": [".prisma/*"]
 		} /* Specify a set of entries that re-map imports to additional lookup locations. */,
 
 		/* JavaScript Support */
@@ -38,6 +38,7 @@
 		/* Type Checking */
 		"strict": true /* Enable all strict type-checking options. */,
 		"noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+		"verbatimModuleSyntax": true /* Use the exact syntax of the module format specified in the 'module' option. */,
 
 		/* Completeness */
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */,
@@ -49,6 +50,6 @@
 			{ "name": "next" }
 		] /* Use TypeScript-specific functionality in Next.js pages and API routes. */
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.mjs", "types"],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.mjs"],
 	"exclude": ["node_modules"]
 }

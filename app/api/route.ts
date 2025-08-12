@@ -1,6 +1,6 @@
-import { RESPONSE_CODES } from '@import/enums'
-import { prisma } from '@import/prisma'
-import { Result } from '@import/lib'
+import { RESPONSE_CODES } from 'enums'
+import { Result } from 'lib/result'
+import { prisma } from 'prisma'
 
 export const POST = async () => {
 	try {

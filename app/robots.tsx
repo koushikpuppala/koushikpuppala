@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next'
 
 const userAgents = [
 	'Googlebot',
@@ -16,7 +16,7 @@ const RobotsPage = (): MetadataRoute.Robots => {
 		rules: userAgents.map(userAgent => ({
 			userAgent,
 			allow: '*',
-			disallow: ['/studio/**/*', '/api/**/*'],
+			disallow: ['/admin/**/*', '/api/**/*'],
 		})),
 		sitemap: [`${process.env.NEXT_PUBLIC_DEPLOY_URL}/sitemap.xml`],
 	}

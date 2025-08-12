@@ -1,9 +1,10 @@
 'use server'
 
+import type { handleFormSubmitType } from 'types/actions'
+
 import { createTransport } from 'nodemailer'
 import { captureException } from '@sentry/nextjs'
-import { handleFormSubmitType } from '@import/types'
-import { ContactModel, DatabaseInstance } from '@import/database'
+import { ContactModel, DatabaseInstance } from 'database'
 import { notificationTemplate, autoReplyTemplate } from './constant'
 
 export const handleSubmit: handleFormSubmitType = async (prevState, form) => {

@@ -1,12 +1,14 @@
-import '@import/styles/globals.css'
+import 'styles/globals.css'
 
-import Script from 'next/script'
-import { classNames } from '@import/utils'
+import type { Metadata, Viewport } from 'next'
+import type { RootLayoutProps } from 'types/app'
+
+import { BackgroundBeams } from 'components/design'
+import { NavbarComponent } from 'components/navbar'
+import { classNames } from 'utils/classNames'
 import { Sora } from 'next/font/google'
-import { config } from '@import/config'
-import { Metadata, Viewport } from 'next'
-import { RootLayoutProps } from '@import/types'
-import { BackgroundBeams, Navbar } from '@import/components'
+import Script from 'next/script'
+import { config } from 'config'
 
 export const metadata: Metadata = {
 	title: {
@@ -150,7 +152,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					sora.className,
 					'relative h-screen w-full overflow-hidden bg-black bg-cover bg-center bg-no-repeat text-white',
 				)}>
-				<Navbar />
+				<NavbarComponent />
 				{children}
 				<BackgroundBeams />
 			</body>

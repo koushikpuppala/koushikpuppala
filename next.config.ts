@@ -1,7 +1,6 @@
-/** @type {import('next').NextConfig} */
+import { type SentryBuildOptions, withSentryConfig } from '@sentry/nextjs'
 
 import * as nextPWA from '@ducanh2912/next-pwa'
-import { SentryBuildOptions, withSentryConfig } from '@sentry/nextjs'
 
 const nextConfig = nextPWA.default({
 	dest: 'public',
@@ -40,7 +39,7 @@ const nextConfig = nextPWA.default({
 		},
 		{
 			source: '/facebook',
-			destination: 'https://www.facebook.com/puppalakoushik',
+			destination: 'https://www.facebook.com/koushikpuppala',
 			permanent: true,
 		},
 		{

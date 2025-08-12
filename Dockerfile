@@ -33,10 +33,10 @@ COPY . .
 # Set the environment variable to production
 ENV ENVIRONMENT=production
 
-# Build the application using Yarn
+# Build the application using pnpm
 RUN pnpm build && \
-    # Remove the cache and clean up the npm cache
-    rm -rf node_modules/.cache && npm cache clean --force
+    # Remove the cache and clean up the pnpm store to reduce image size
+    rm -rf node_modules/.cache && pnpm store prune
 
 # Create a new stage called "runner" based on the "base" image
 FROM base AS runner
@@ -51,7 +51,7 @@ RUN apk add --no-cache curl bash && \
     # Create a new system user with UID 1001 and add it to the "koushikpuppala" group
     adduser --system --uid 1001 portfolio --ingroup koushikpuppala && \
     # Create a directory for the Next.js build output and application logs
-    mkdir .next, logs
+    mkdir .next logs
 
 # Copy the public directory from the "builder" stage to the current working directory
 COPY --from=builder /app/public ./public

@@ -1,0 +1,132 @@
+@import 'tailwindcss';
+
+@theme {
+	/* Primary Colors */
+	--color-primary: oklch(18% 0.019 274.65); /* Dark Navy (Softer background) - #0f111a */
+	--color-primary-dark: oklch(16% 0.018 274.65); /* Darker shade for depth - #0b0d15 */
+	--color-primary-light: oklch(22% 0.02 274.65); /* Lighter shade for contrast - #181a24 */
+
+	/* Secondary & Supporting Colors */
+	--color-secondary: oklch(65.27% 0.043 289.9); /* Muted Purple (Better readability) - #8f8ca9 */
+	--color-tertiary: oklch(21.66% 0.035 278.16); /* Deep Blue-Grey (For depth) - #16182a */
+	--color-quaternary: oklch(16.76% 0.023 275.69); /* Darker Variant (For contrast) - #0c0e19 */
+	--color-accent: oklch(67.4% 0.195 295.27); /* Soft Neon Purple (Pops out more) - #a277ff */
+
+	/* Neutral Colors */
+	--color-black-100: oklch(19.47% 0.022 276.15); /* Dark Muted Blue-Black - #12141f */
+	--color-black-200: oklch(15.7% 0.02 274.31); /* Almost Black - #0a0c15 */
+	--color-white-100: oklch(92.19% 0 0); /* Off-White (Less strain on eyes) - #e5e5e5 */
+	--color-gray-100: oklch(55% 0.015 275); /* Muted gray for subtle elements - #6f717b */
+
+	/* Text Colors */
+	--color-text-primary: var(--color-white-100);
+	--color-text-secondary: var(--color-secondary);
+	--color-text-muted: var(--color-gray-100);
+	--color-text-inverted: var(--color-black-100);
+
+	/* Breakpoints */
+	--breakpoint-xs: 450px;
+	--breakpoint-sm: 540px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 960px;
+	--breakpoint-xl: 1200px;
+
+	/* Animation */
+	--animation-spin-slow: spin 6s linear infinite;
+
+	/* Gradients */
+	--gradient-black: linear-gradient(to right, oklch(38.29% 0 0), oklch(0% 0 0));
+	--gradient-accent: linear-gradient(
+		-90deg,
+		oklch(67.4% 0.195 295.27) 0%,
+		rgba(60, 51, 80, 0) 100%
+	);
+	--gradient-violet: linear-gradient(
+		to left,
+		rgba(60, 51, 80, 0) 0%,
+		oklch(56.85% 0.228 292.11) 100%
+	);
+	--gradient-green-pink: linear-gradient(
+		90.13deg,
+		oklch(75.9% 0.146 173.06) 1.9%,
+		oklch(67.26% 0.231 308.87) 97.5%
+	);
+}
+
+@utility bg-gradient-black {
+	background: var(--gradient-black);
+}
+
+@utility bg-gradient-accent {
+	background: var(--gradient-accent);
+}
+
+@utility bg-gradient-violet {
+	background: var(--gradient-violet);
+}
+
+@utility bg-gradient-green-pink {
+	background: var(--gradient-green-pink);
+}
+
+@utility orange-text-gradient {
+	background: linear-gradient(to top, oklch(61.45% 0.235 30.43), oklch(79.99% 0.162 78.77));
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+@utility green-text-gradient {
+	background: linear-gradient(to top, oklch(61.58% 0.105 185.75), oklch(83.89% 0.211 150.66));
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+@utility blue-text-gradient {
+	background: linear-gradient(to top, oklch(60.93% 0.182 257.29), oklch(79.31% 0.118 222.61));
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+@utility pink-text-gradient {
+	background: linear-gradient(to top, oklch(61.57% 0.253 355.14), oklch(70.14% 0.183 23.02));
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	:root {
+		scroll-behavior: smooth;
+	}
+	::-webkit-scrollbar {
+		width: 0;
+	}
+}
+
+@layer components {
+	body {
+		@apply bg-primary-dark text-text-primary overflow-hidden leading-relaxed;
+	}
+
+	h1 {
+		@apply text-accent text-3xl leading-tight font-semibold md:text-5xl;
+	}
+
+	h2 {
+		@apply text-accent text-2xl leading-tight font-semibold md:text-4xl;
+	}
+
+	p {
+		@apply text-text-secondary leading-relaxed font-light;
+	}
+	a {
+		@apply text-accent hover:text-accent/80 transition-colors duration-300;
+	}
+}
+
+.grecaptcha-badge {
+	@apply invisible;
+}
