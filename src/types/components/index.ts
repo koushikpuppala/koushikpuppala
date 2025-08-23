@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from 'react'
+import type { ColumnDef } from '@tanstack/react-table'
 
 export type FlipWordsProps = { words: string[]; duration?: number; className?: string }
 
@@ -44,3 +45,34 @@ export type LinkProps = {
 }
 
 export type SidebarLinkProps = { link: LinkProps; className?: string } & React.ComponentProps<'a'>
+
+// export type DataTableSearchProps =
+// 	| {
+// 			search: string
+// 			disableSearch?: false
+// 			setSearch: React.Dispatch<React.SetStateAction<string>>
+// 	  }
+// 	| { disableSearch: true; search?: never; setSearch?: never }
+
+export type DataTablePaginationProps =
+	| { disablePagination?: false; pageSize?: number }
+	| { disablePagination: true; pageSize: number }
+
+export type DataTableFilters = {
+	id: string
+	label: string
+} & (
+	| { type: 'select' | 'search-select'; options: { label: string; value: string }[] }
+	| { type: 'search'; options?: never }
+)
+
+export type DataTableProps<TData, TValue> = {
+	data: TData[]
+	pageSize?: number
+	totalCount: number
+	disableSearch?: boolean
+	disableDateRange?: boolean
+	filters?: DataTableFilters[]
+	disableColumnVisibility?: boolean
+	columns: ColumnDef<TData, TValue>[]
+} & DataTablePaginationProps

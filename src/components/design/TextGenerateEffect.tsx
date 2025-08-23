@@ -2,8 +2,8 @@
 
 import type { TextGenerateEffectProps } from 'types/components'
 
-import { classNames } from 'utils/classNames'
 import { useEffect, useState } from 'react'
+import { classNames } from 'utils/classNames'
 import { AnimatePresence, motion, stagger, useAnimate } from 'motion/react'
 
 export const TextGenerateEffect = ({ strings, className }: TextGenerateEffectProps) => {

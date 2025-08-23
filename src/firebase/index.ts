@@ -1,21 +1,16 @@
-import { getStorage } from 'firebase/storage'
-import { getApp, initializeApp } from 'firebase/app'
-import { getAnalytics } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
 import { firebaseConfig } from './config'
-import { logger } from 'lib/logger'
+import { getStorage } from 'firebase/storage'
+import { getApps, initializeApp } from 'firebase/app'
+import { getAnalytics, isSupported } from 'firebase/analytics'
 
-try {
+export const app =
+	getApps().find(app => app.name === 'koushikpuppala') ??
 	initializeApp(firebaseConfig, 'koushikpuppala')
-	logger.info('Firebase App Initialized', 'Firebase/InitializeApp')
-} catch (error) {
-	logger.error('Firebase App Initialization Error', 'Firebase/InitializeApp', error as Error)
-}
-
-export const app = getApp('koushikpuppala')
 
 export const auth = getAuth(app)
 
 export const storage = getStorage(app)
 
-export const analytics = getAnalytics(app)
+export const analytics =
+	typeof window !== 'undefined' && (await isSupported()) ? getAnalytics(app) : null

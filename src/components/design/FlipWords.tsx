@@ -2,8 +2,8 @@
 
 import type { FlipWordsProps } from 'types/components'
 
-import { classNames } from 'utils/classNames'
 import { useEffect, useState } from 'react'
+import { classNames } from 'utils/classNames'
 import { AnimatePresence, motion } from 'motion/react'
 
 export const FlipWords = ({ words, duration = 2500, className }: FlipWordsProps) => {

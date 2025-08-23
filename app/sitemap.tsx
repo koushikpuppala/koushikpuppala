@@ -4,14 +4,20 @@ import { globby } from 'globby'
 
 const SitemapPage = async (): Promise<MetadataRoute.Sitemap> => {
 	const routes: MetadataRoute.Sitemap = []
-	const paths = (
-		await globby(['app/**/page.tsx', '!app/api/**/*', '!app/**/[id]/*', '!app/admin/**/*'])
-	).map(path => path.replace('app', '').replace('/page.tsx', ''))
+	const paths = new Set(
+		(await globby(['app/**/page.tsx', '!app/api/**/*'])).map(
+			path =>
+				path
+					.replace(/^app|\/page\.tsx$|\/\([^/]*\)|\[[^\]]*]|@[^/]+/g, '') // Remove app prefix, /page.tsx, (param), [id], @dealer
+					.replace(/\/{2,}/g, '/') // Replace multiple slashes with single
+					.replace(/\/$/, ''), // Remove trailing slash
+		),
+	)
 
 	paths.forEach(path => {
 		const priority = Number((1 - (path.split('/').length - 1) * 0.2).toFixed(1))
 
-		let changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
+		let changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly'
 
 		switch (priority) {
 			case 1:

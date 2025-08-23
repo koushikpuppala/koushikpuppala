@@ -1,5 +1,5 @@
-import type { RootLayoutProps } from '../app'
 import type { User } from 'firebase/auth'
+import type { RootLayoutProps } from 'types/app'
 
 import { motion } from 'motion/react'
 

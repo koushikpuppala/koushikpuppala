@@ -5,7 +5,7 @@ const compat = new FlatCompat({ baseDirectory: import.meta.dirname })
 
 const config = [
 	...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier'),
-	{ languageOptions: { parser: parser, parserOptions: { project: true } } },
+	{ languageOptions: { parser, parserOptions: { project: './tsconfig.json' } } },
 ]
 
 export default config

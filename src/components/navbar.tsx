@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { classNames } from 'utils/classNames'
-import { useEffect, useState } from 'react'
-import { NavbarData } from 'constant'
-import { usePathname } from 'next/navigation'
 import { Animation } from './ui'
+import { NavbarData } from 'constant'
+import { useEffect, useState } from 'react'
+import { classNames } from 'utils/classNames'
+import { usePathname } from 'next/navigation'
 import { HiExclamationCircle, HiXMark } from 'react-icons/hi2'
 
 export const NavbarComponent = () => {
@@ -15,8 +15,6 @@ export const NavbarComponent = () => {
 	useEffect(() => {
 		setOnline(navigator.onLine)
 	}, [pathname])
-
-	if (pathname.includes('/studio') || pathname.includes('/admin')) return null
 
 	return (
 		<>

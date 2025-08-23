@@ -1,4 +1,6 @@
-import { type AppOptions, credential } from 'firebase-admin'
+import type { AppOptions } from 'firebase-admin'
+
+import { credential } from 'firebase-admin'
 
 export const firebaseAdminConfig: AppOptions = {
 	credential: credential.cert({

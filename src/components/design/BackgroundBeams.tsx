@@ -3,8 +3,8 @@
 import type { BackgroundBeamsProps } from 'types/components'
 
 import { memo } from 'react'
+import { Animation } from 'components/ui'
 import { classNames } from 'utils/classNames'
-import { Animation } from '../ui'
 
 export const BackgroundBeams = memo(({ className }: BackgroundBeamsProps) => {
 	const paths = [
@@ -59,6 +59,7 @@ export const BackgroundBeams = memo(({ className }: BackgroundBeamsProps) => {
 		'M-44 -573C-44 -573 24 -168 488 -41C952 86 1020 491 1020 491',
 		'M-37 -581C-37 -581 31 -176 495 -49C959 78 1027 483 1027 483',
 	]
+
 	return (
 		<div
 			className={classNames(

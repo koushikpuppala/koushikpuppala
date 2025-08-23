@@ -2,9 +2,9 @@
 
 import type { GlobalErrorProps } from 'types/app'
 
-import * as Sentry from '@sentry/nextjs'
-import { Animation } from 'components'
 import { useEffect } from 'react'
+import { Animation } from 'components'
+import * as Sentry from '@sentry/nextjs'
 
 const GlobalError = ({ error, reset }: GlobalErrorProps) => {
 	useEffect(() => {

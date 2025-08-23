@@ -1,14 +1,15 @@
 'use client'
 
-import type { AuthContextProps } from 'types/contexts'
+import type { User } from 'firebase/auth'
 import type { RootLayoutProps } from 'types/app'
+import type { AuthContextProps } from 'types/contexts'
 
-import { GoogleAuthProvider, onIdTokenChanged, signInWithPopup, type User } from 'firebase/auth'
-import { createContext, useContext, useEffect, useState } from 'react'
-import { COOKIE_NAME, EXPIRES_IN } from 'constants/cookies'
-import { removeCookie, setCookie } from 'lib/cookies'
-import { LoadingComponent } from 'components/loading'
 import { auth } from 'firebase'
+import { LoadingComponent } from 'components/loading'
+import { removeCookie, setCookie } from 'lib/cookies'
+import { COOKIE_NAME, EXPIRES_IN } from 'constants/cookies'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { GoogleAuthProvider, onIdTokenChanged, signInWithPopup } from 'firebase/auth'
 
 const AuthContext = createContext<AuthContextProps>({
 	currentUser: null,

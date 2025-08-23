@@ -1,14 +1,16 @@
 'use client'
 
-import type { SidebarButtonProps, SidebarBodyProps } from 'types/contexts'
 import type { SidebarLinkProps } from 'types/components'
+import type { SidebarButtonProps, SidebarBodyProps } from 'types/contexts'
 
+import Link from 'next/link'
 import { Animation } from '.'
+import Image from 'next/image'
+import { Logo } from 'assets/svg'
 import { classNames } from 'utils/classNames'
 import { usePathname } from 'next/navigation'
 import { TbMenu2, TbX } from 'react-icons/tb'
 import { SidebarProvider, useSidebar } from 'contexts'
-import Link from 'next/link'
 
 const SidebarBody = ({ open, setOpen, animate, ...props }: SidebarBodyProps) => {
 	return (
@@ -45,7 +47,7 @@ const DesktopSidebar = ({
 	return (
 		<Animation.div
 			className={classNames(
-				'hidden h-full w-72 flex-shrink-0 bg-neutral-800 px-3.5 py-4 lg:flex lg:flex-col',
+				'hidden h-full w-72 flex-shrink-0 rounded-md bg-neutral-900 px-3.5 py-4 lg:flex lg:flex-col',
 				className,
 			)}
 			animate={{
@@ -65,7 +67,7 @@ const MobileSidebar = ({ className, children, ...props }: React.ComponentProps<'
 	return (
 		<div
 			className={classNames(
-				'flex h-10 w-full flex-row items-center justify-between bg-neutral-800 px-4 py-4 lg:hidden',
+				'flex h-12 w-full flex-row items-center justify-between rounded-md bg-neutral-900 px-4 py-4 lg:hidden',
 			)}
 			{...props}>
 			<div className='z-20 flex w-full justify-end'>
@@ -82,7 +84,7 @@ const MobileSidebar = ({ className, children, ...props }: React.ComponentProps<'
 						exit={{ x: '-100%', opacity: 0 }}
 						transition={{ duration: 0.3, ease: 'easeInOut' }}
 						className={classNames(
-							'fixed inset-0 z-[100] flex h-full w-full flex-col justify-between bg-white px-4 py-4',
+							'fixed inset-0 z-[100] flex h-full w-full flex-col justify-between bg-neutral-900 px-4 py-4',
 							className,
 						)}>
 						<div className='absolute top-5 right-5 z-50' onClick={() => setOpen(!open)}>
@@ -106,7 +108,7 @@ const SidebarLink = ({ link, className, ...props }: SidebarLinkProps) => {
 			className={classNames(
 				className,
 				'group/sidebar flex items-center justify-start gap-2 rounded-lg bg-neutral-100/0 px-1.5 py-2 hover:bg-neutral-100/5',
-				{ 'bg-neutral-100/15 hover:bg-neutral-100/15': pathname === link.href },
+				{ 'bg-neutral-100/10 hover:bg-neutral-100/10': pathname === link.href },
 			)}
 			{...props}>
 			{link.icon}
@@ -125,4 +127,23 @@ const SidebarLink = ({ link, className, ...props }: SidebarLinkProps) => {
 	)
 }
 
-export { SidebarBody, SidebarButton, SidebarLink }
+const SidebarLogo = ({ open }: { open: boolean }) => {
+	return (
+		<div className='relative z-20 flex items-center justify-center space-x-2 py-1 text-sm font-normal'>
+			<Image
+				src={Logo}
+				alt='Logo'
+				priority={true}
+				className={classNames('h-auto w-12 mix-blend-multiply', { 'px-0.5': !open })}
+			/>
+			<Animation.span
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				className={classNames('font-medium whitespace-pre text-white', { hidden: !open })}>
+				Admin Dashboard
+			</Animation.span>
+		</div>
+	)
+}
+
+export { SidebarBody, SidebarButton, SidebarLink, SidebarLogo }

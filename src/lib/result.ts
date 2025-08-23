@@ -1,33 +1,28 @@
 import type { ServerActionResponse } from 'types/lib'
 
-import { RESPONSE_CODES } from 'enums'
 import { logger } from './logger'
+import { RESPONSE_CODES } from 'enums'
 
 export class Result<T> implements ServerActionResponse<T> {
-	error: boolean
-	code: RESPONSE_CODES
-	message: string
-	result: T | undefined
-	totalCount?: number
-	private functionName: string
-	private errorStack?: Error
-
 	constructor(
-		error: boolean,
-		code: RESPONSE_CODES,
-		message: string,
-		functionName: string,
-		result?: T,
-		totalCount?: number,
-		errorStack?: Error,
+		public error: boolean,
+		public code: RESPONSE_CODES,
+		public message: string,
+		private functionName: string,
+		public result?: T,
+		public totalCount?: number,
+		private errorStack?: Error,
 	) {
-		this.error = error
-		this.code = code
-		this.message = message
-		this.result = result
-		this.functionName = functionName
-		this.errorStack = errorStack
-		this.totalCount = totalCount
+		Object.defineProperty(this, 'functionName', {
+			value: functionName,
+			enumerable: false,
+			writable: true,
+		})
+		Object.defineProperty(this, 'errorStack', {
+			value: errorStack,
+			enumerable: false,
+			writable: true,
+		})
 
 		this.logResult()
 	}

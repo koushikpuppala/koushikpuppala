@@ -1,12 +1,12 @@
+import type { ServerActionResponse } from 'types/lib'
 import type { Metadata, MetadataType, Prisma } from 'prisma'
-import type { ServerActionResponse } from '../lib'
 
-export type GetMetadataArgs = (args: {
+export type GetMetadata = (args: {
 	key: string
 	type?: MetadataType
 }) => Promise<ServerActionResponse<Pick<Metadata, 'title' | 'description' | 'keywords'>>>
 
-export type GetAllMetadataArgs = (args: {
+export type GetAllMetadata = (args: {
 	page?: number
 	count?: number
 	nonPaginated?: boolean
@@ -15,19 +15,19 @@ export type GetAllMetadataArgs = (args: {
 	select?: Prisma.MetadataSelect
 }) => Promise<ServerActionResponse<Metadata[]>>
 
-export type CreateMetadataArgs = (args: {
+export type CreateMetadata = (args: {
 	data: Prisma.MetadataCreateInput
 }) => Promise<ServerActionResponse<Metadata>>
 
-export type UpdateMetadataArgs = (args: {
+export type UpdateMetadata = (args: {
 	where: Prisma.MetadataWhereUniqueInput
 	data: Prisma.MetadataUpdateInput
 }) => Promise<ServerActionResponse<Metadata>>
 
-export type DeleteMetadataArgs = (args: {
+export type DeleteMetadata = (args: {
 	where: Prisma.MetadataWhereUniqueInput
 }) => Promise<ServerActionResponse<Metadata>>
 
-export type ForceDeleteMetadataArgs = (args: {
+export type ForceDeleteMetadata = (args: {
 	where: Prisma.MetadataWhereUniqueInput
 }) => Promise<ServerActionResponse<Metadata>>

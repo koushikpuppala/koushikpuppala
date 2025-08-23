@@ -1,11 +1,11 @@
 'use cache'
 
-import type { GetAllMetadataArgs, GetMetadataArgs } from 'types/actions'
+import type { GetAllMetadata, GetMetadata } from 'types/actions'
 
-import { Result } from 'lib/result'
 import { prisma } from 'prisma'
+import { Result } from 'lib/result'
 
-export const getMetadata: GetMetadataArgs = async args => {
+export const getMetadata: GetMetadata = async args => {
 	const { key, type = 'PAGE' } = args
 
 	try {
@@ -22,7 +22,7 @@ export const getMetadata: GetMetadataArgs = async args => {
 	}
 }
 
-export const getAllMetadata: GetAllMetadataArgs = async args => {
+export const getAllMetadata: GetAllMetadata = async args => {
 	const { page = 1, count = 10, nonPaginated = false, where, orderBy, select } = args
 
 	try {

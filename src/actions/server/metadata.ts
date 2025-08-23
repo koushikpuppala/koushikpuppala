@@ -1,18 +1,18 @@
 'use server'
 
 import type {
-	CreateMetadataArgs,
-	DeleteMetadataArgs,
-	ForceDeleteMetadataArgs,
-	UpdateMetadataArgs,
+	CreateMetadata,
+	DeleteMetadata,
+	ForceDeleteMetadata,
+	UpdateMetadata,
 } from 'types/actions'
 
-import { verifySession } from 'lib/session'
+import { prisma } from 'prisma'
 import { logger } from 'lib/logger'
 import { Result } from 'lib/result'
-import { prisma } from 'prisma'
+import { verifySession } from 'lib/session'
 
-export const createMetadata: CreateMetadataArgs = async args => {
+export const createMetadata: CreateMetadata = async args => {
 	const { data } = args
 
 	try {
@@ -37,7 +37,7 @@ export const createMetadata: CreateMetadataArgs = async args => {
 	}
 }
 
-export const updateMetadata: UpdateMetadataArgs = async args => {
+export const updateMetadata: UpdateMetadata = async args => {
 	const { where, data } = args
 
 	try {
@@ -64,7 +64,7 @@ export const updateMetadata: UpdateMetadataArgs = async args => {
 	}
 }
 
-export const deleteMetadata: DeleteMetadataArgs = async args => {
+export const deleteMetadata: DeleteMetadata = async args => {
 	const { where } = args
 
 	try {
@@ -82,7 +82,7 @@ export const deleteMetadata: DeleteMetadataArgs = async args => {
 
 		await prisma.metadata.update({
 			where: { ...where, deletedAt: null },
-			data: { deletedAt: new Date() },
+			data: { deletedAt: new Date(), version: { increment: 0.1 } },
 		})
 
 		return Result.noContent('Metadata deleted successfully', 'deleteMetadata')
@@ -91,7 +91,7 @@ export const deleteMetadata: DeleteMetadataArgs = async args => {
 	}
 }
 
-export const forceDeleteMetadata: ForceDeleteMetadataArgs = async args => {
+export const forceDeleteMetadata: ForceDeleteMetadata = async args => {
 	const { where } = args
 
 	try {

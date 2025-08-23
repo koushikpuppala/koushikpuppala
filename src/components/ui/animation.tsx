@@ -2,8 +2,8 @@
 
 import type { AnimationProps } from 'types/components'
 
-import { AnimatePresence, motion } from 'motion/react'
 import { transition } from 'utils/animation'
+import { AnimatePresence, motion } from 'motion/react'
 
 const animation = (direction?: 'up' | 'down' | 'left' | 'right', delay?: number) =>
 	direction && delay

@@ -1,7 +1,7 @@
 'use server'
 
-import { cookies } from 'next/headers'
 import { logger } from './logger'
+import { cookies } from 'next/headers'
 
 export const setCookie = async (name: string, value: string, maxAge?: number) => {
 	const { set } = await cookies()

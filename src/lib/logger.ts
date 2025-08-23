@@ -2,9 +2,9 @@ import 'winston-daily-rotate-file'
 
 import type { LoggerType } from 'types/lib'
 
-import { createLogger, format, transports } from 'winston'
-import { existsSync, mkdirSync } from 'fs'
 import * as Sentry from '@sentry/nextjs'
+import { existsSync, mkdirSync } from 'fs'
+import { createLogger, format, transports } from 'winston'
 
 export class Logger implements LoggerType {
 	readonly _production: boolean = process.env.NODE_ENV === 'production'

@@ -2,12 +2,12 @@
 
 import type { DecodedIdToken } from 'firebase-admin/auth'
 
-import { COOKIE_NAME } from 'constants/cookies'
-import { adminAuth } from 'firebase/admin'
-import { getCookie } from './cookies'
-import { Result } from './result'
-import { logger } from './logger'
 import { prisma } from 'prisma'
+import { logger } from './logger'
+import { Result } from './result'
+import { getCookie } from './cookies'
+import { adminAuth } from 'firebase/admin'
+import { COOKIE_NAME } from 'constants/cookies'
 
 export const verifySession = async (functionName: string) => {
 	try {

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
-import { Animation } from 'components'
 import Link from 'next/link'
+import { Animation } from 'components'
 
 export const metadata: Metadata = {
 	title: '404 | Page Not Found',

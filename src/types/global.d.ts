@@ -1,5 +1,3 @@
-// types/global.d.ts
-
 import { PrismaClient } from 'prisma'
 import { withAccelerate } from '@prisma/extension-accelerate'
 

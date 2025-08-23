@@ -1,38 +1,69 @@
-const HomePage = async () => {
+'use client'
+
+import { DataTable } from 'components'
+import { useSearchParams } from 'next/navigation'
+import type { DataTableFilters } from 'types/components'
+
+const HomePage = () => {
+	const data = [
+		{ id: 'm5gr84i9', amount: 316, status: 'success', email: 'ken99@example.com' },
+		{ id: '3u1reuv4', amount: 242, status: 'success', email: 'Abe45@example.com' },
+		{ id: 'derv1ws0', amount: 837, status: 'processing', email: 'Monserrat44@example.com' },
+		{ id: '5kma53ae', amount: 874, status: 'success', email: 'Silas22@example.com' },
+		{ id: 'bhqecj4p', amount: 721, status: 'failed', email: 'carmella@example.com' },
+		{ id: 'm5gr84i91', amount: 316, status: 'success', email: 'ken99@example.com' },
+		{ id: '3u1reuv41', amount: 242, status: 'success', email: 'Abe45@example.com' },
+		{ id: 'derv1ws01', amount: 837, status: 'processing', email: 'Monserrat44@example.com' },
+		{ id: '5kma53ae1', amount: 874, status: 'success', email: 'Silas22@example.com' },
+		{ id: 'bhqecj4p1', amount: 721, status: 'failed', email: 'carmella@example.com' },
+		{ id: 'm5gr84i92', amount: 316, status: 'success', email: 'ken99@example.com' },
+		{ id: '3u1reuv42', amount: 242, status: 'success', email: 'Abe45@example.com' },
+		{ id: 'derv1ws02', amount: 837, status: 'processing', email: 'Monserrat44@example.com' },
+		{ id: '5kma53ae2', amount: 874, status: 'success', email: 'Silas22@example.com' },
+		{ id: 'bhqecj4p2', amount: 721, status: 'failed', email: 'carmella@example.com' },
+	]
+
+	const searchParams = useSearchParams()
+
+	const search = searchParams.get('search') || ''
+	const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
+	const pageSize = searchParams.get('pageSize') ? Number(searchParams.get('pageSize')) : 10
+	const status = searchParams.get('status') || ''
+
+	const filters: DataTableFilters[] = [
+		{ id: 'email', label: 'Search Email...', type: 'search' },
+		{
+			id: 'status',
+			label: 'Search Status',
+			type: 'search-select',
+			options: [
+				{ label: 'Success', value: 'success' },
+				{ label: 'Processing', value: 'processing' },
+				{ label: 'Failed', value: 'failed' },
+			],
+		},
+		// { id: 'range', label: 'Select Date Range', type: 'date-range' },
+	]
+
+	const filteredData = data
+		.filter(item => (status ? item.status.toLowerCase() === status.toLowerCase() : true))
+		.filter(item => item.email.toLowerCase().includes(search.toLowerCase()))
+
 	return (
-		<div className='bg-primary/50 h-full'>
-			{/* <div className='h-full w-full'>
-        <div className='container mx-auto flex h-full flex-col justify-center text-center lg:text-left'>
-          <Motion.h1 direction='down' delay={0.2} className='text-accent mb-4'>
-            {data.title} <span className='leading-relaxed font-light text-white/60'>{data.separator}</span>{' '}
-            <FlipWords words={data.subtitles} className='text-accent' />
-          </Motion.h1>
-          <Motion.p
-            direction='down'
-            delay={0.3}
-            className='mx-auto mb-2 max-w-sm lg:mx-0 lg:max-w-xl lg:text-justify'>
-            {data.description.content}
-            <TextGenerateEffect strings={data.description.extend} />
-            I'm always thinking about the next big thing.
-          </Motion.p>
-          <Motion.div direction='down' delay={0.4} className='mt-2 flex justify-center lg:justify-normal'>
-            {data.social.map(({ _id, ...social }) => (
-              <Link
-                key={_id}
-                href={social.url}
-                target='_blank'
-                rel='noreferrer'
-                className='hover:bg-accent/50 mr-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 align-middle text-base leading-none no-underline'>
-                <span className='sr-only'>{social.platform}</span>
-                <SocialMediaLogo
-                  platform={social.platform}
-                  className='leading-relaxed font-light text-white'
-                />
-              </Link>
-            ))}
-          </Motion.div>
-        </div>
-      </div> */}
+		<div className='flex h-full w-full flex-col items-center pt-24 text-white'>
+			<h1 className='text-4xl font-bold'>Welcome to the Admin Dashboard</h1>
+			<p className='mt-2 text-lg'>Manage your application settings and content here.</p>
+			<DataTable
+				filters={filters}
+				disableSearch={true}
+				totalCount={filteredData.length}
+				columns={[
+					{ accessorKey: 'status', header: 'Status' },
+					{ accessorKey: 'email', header: 'Email', enableHiding: false },
+					{ accessorKey: 'amount', header: 'Amount' },
+				]}
+				data={filteredData.slice((page - 1) * pageSize, page * pageSize)}
+			/>
 		</div>
 	)
 }

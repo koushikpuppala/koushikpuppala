@@ -104,6 +104,12 @@
 	::-webkit-scrollbar {
 		width: 0;
 	}
+	:-webkit-autofill {
+		-webkit-box-shadow: 0 0 0px 1000px content-box inset !important;
+		-webkit-text-fill-color: var(--color-text-primary) !important;
+		caret-color: var(--color-text-primary) !important;
+		background-clip: content-box !important;
+	}
 }
 
 @layer components {

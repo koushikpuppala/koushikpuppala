@@ -22,6 +22,6 @@ export type ServerActionResponse<T> = {
 	error: boolean
 	code: number
 	message: string
-	result: T | undefined
+	result?: T
 	totalCount?: number
 }
