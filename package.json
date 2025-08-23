@@ -7,9 +7,9 @@
 	"packageManager": "pnpm@10.15.0",
 	"scripts": {
 		"dev": "next dev --turbopack",
-		"build": "next build",
+		"build": "next build --turbopack",
 		"start": "next start",
-		"lint": "next lint",
+		"lint": "eslint .",
 		"prepare": "husky || true",
 		"postinstall": "prisma generate --schema=./src/prisma --no-engine",
 		"generate": "cross-env DOTENV_CONFIG_PATH=.env.development.local prisma generate --schema=./src/prisma --no-engine",
