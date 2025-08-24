@@ -18,6 +18,7 @@ const nextConfig = nextPWA.default({
 	reactStrictMode: process.env.NODE_ENV !== 'development',
 	output: process.env.ENVIRONMENT === 'production' ? 'standalone' : undefined,
 	images: { remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }] },
+	rewrites: async () => [{ source: '/__/auth/:params', destination: 'https://koushikpuppala.firebaseapp.com/__/auth/:params' }],
 	redirects: async () => [
 		{ source: '/github', destination: 'https://github.com/koushikpuppala', permanent: true },
 		{ source: '/github/:params', destination: 'https://github.com/koushikpuppala/:params', permanent: true },
