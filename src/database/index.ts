@@ -20,12 +20,7 @@ export class Database {
 	}
 
 	public async connect(): Promise<void> {
-		await connect(process.env.MONGO_URI!, {
-			minPoolSize: 10,
-			maxIdleTimeMS: 60000,
-			dbName: process.env.DATABASE!,
-			appName: process.env.APP_NAME!,
-		})
+		await connect(process.env.MONGO_URI!, { minPoolSize: 10, maxIdleTimeMS: 60000 })
 		this._client = connection
 		this._client.on('error', console.error.bind(console, 'connection error:'))
 		this._client.once(

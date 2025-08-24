@@ -30,8 +30,8 @@ COPY --from=dependencies /app/node_modules ./node_modules
 # Copy the rest of the application files to the working directory
 COPY . .
 
-# Set the environment variable to production
-ENV ENVIRONMENT=production
+# Set the environment variable of ENVIRONMENT to "docker"
+ENV ENVIRONMENT=docker
 
 # Build the application using pnpm
 RUN pnpm build && \

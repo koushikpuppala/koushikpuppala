@@ -53,7 +53,7 @@ export const AuthContextProvider = ({ children }: RootLayoutProps) => {
 		const provider = new GoogleAuthProvider()
 		const { user } = await signInWithPopup(auth, provider)
 
-		const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
+		const response = await fetch('/user', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

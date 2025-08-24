@@ -18,10 +18,10 @@ export const handleSubmit: handleFormSubmitType = async (prevState, form) => {
 	const message = form.get('message')!.toString()
 
 	const mailer = createTransport({
-		host: process.env.HOST,
+		host: process.env.MAIL_HOST,
 		port: 587,
 		secure: false,
-		auth: { user: process.env.USER, pass: process.env.PASS },
+		auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PASS },
 		tls: { ciphers: 'SSLv3', rejectUnauthorized: false },
 	})
 

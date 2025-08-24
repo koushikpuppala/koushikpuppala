@@ -3,7 +3,6 @@ import 'styles/globals.css'
 import type { Metadata, Viewport } from 'next'
 import type { RootLayoutProps } from 'types/app'
 
-import { config } from 'config'
 import Script from 'next/script'
 import { Sora } from 'next/font/google'
 import { classNames } from 'utils/classNames'
@@ -17,9 +16,9 @@ export const metadata: Metadata = {
 		"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
 	applicationName: 'Personal Website | Koushik Puppala | Software Engineer | Freelancer',
 	keywords: ['Koushik', 'Koushik Puppala', 'Puppala Koushik', 'Koushikpuppala', 'Puppalakoushik'],
-	authors: [{ name: 'Koushikpuppala', url: config.deployUrl }],
+	authors: [{ name: 'Koushikpuppala', url: process.env.NEXT_PUBLIC_DEPLOY_URL }],
 	creator: 'Koushikpuppala',
-	alternates: { canonical: config.deployUrl },
+	alternates: { canonical: process.env.NEXT_PUBLIC_DEPLOY_URL },
 	formatDetection: { email: true, address: true, telephone: true, date: true, url: true },
 	openGraph: {
 		title: {
@@ -28,7 +27,7 @@ export const metadata: Metadata = {
 		},
 		description:
 			"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
-		url: config.deployUrl,
+		url: process.env.NEXT_PUBLIC_DEPLOY_URL,
 		type: 'website',
 		locale: 'en_IN',
 		siteName: 'Koushik Puppala | Software Engineer | Freelancer',
@@ -56,7 +55,7 @@ export const metadata: Metadata = {
 		apple: { url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
 	},
 	manifest: '/manifest.webmanifest',
-	metadataBase: new URL(config.deployUrl),
+	metadataBase: new URL(process.env.NEXT_PUBLIC_DEPLOY_URL),
 	robots: {
 		index: true,
 		follow: true,
@@ -94,7 +93,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 					async={true}
 					id='google-analytics-g4'
 					strategy='afterInteractive'
-					src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalytics}`}
+					src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
 				/>
 				<Script
 					type='text/javascript'
@@ -105,7 +104,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 							window.dataLayer = window.dataLayer || []
 							function gtag() { dataLayer.push(arguments) }
 							gtag('js', new Date())
-							gtag('config', '${config.googleAnalytics}')
+							gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}')
 						`,
 					}}
 				/>
@@ -122,7 +121,7 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 								t.src = 'https://www.clarity.ms/tag/' + i
 								y = l.getElementsByTagName(r)[0]
 								y.parentNode.insertBefore(t, y)
-							})(window, document, 'clarity', 'script', '${config.microsoftClarity}')
+							})(window, document, 'clarity', 'script', '${process.env.NEXT_PUBLIC_MICROSOFT_CLARITY}')
 						`,
 					}}
 				/>
