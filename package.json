@@ -30,7 +30,7 @@
 		"@prisma/client": "~6.3.1",
 		"@sanity/asset-utils": "~2.2.1",
 		"@sanity/image-url": "~1.1.0",
-		"@sanity/vision": "~3.75.1",
+		"@sanity/vision": "~3.88.3",
 		"@sentry/nextjs": "~9.1.0",
 		"babel-plugin-react-compiler": "~19.0.0-beta-21e868a-20250216",
 		"classnames": "~2.5.1",
