@@ -1,10 +1,13 @@
 'use client'
 
 import { DataTable } from 'components'
+import { useAuth } from 'contexts'
 import { useSearchParams } from 'next/navigation'
 import type { DataTableFilters } from 'types/components'
 
 const HomePage = () => {
+	const { login } = useAuth()
+
 	const data = [
 		{ id: 'm5gr84i9', amount: 316, status: 'success', email: 'ken99@example.com' },
 		{ id: '3u1reuv4', amount: 242, status: 'success', email: 'Abe45@example.com' },
@@ -53,6 +56,12 @@ const HomePage = () => {
 		<div className='flex h-full w-full flex-col items-center pt-24 text-white'>
 			<h1 className='text-4xl font-bold'>Welcome to the Admin Dashboard</h1>
 			<p className='mt-2 text-lg'>Manage your application settings and content here.</p>
+			<button
+				onClick={() => {
+					login()
+				}}>
+				login
+			</button>
 			<DataTable
 				filters={filters}
 				disableSearch={true}

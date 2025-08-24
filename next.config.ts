@@ -19,6 +19,12 @@ const nextConfig = nextPWA.default({
 	images: {
 		remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }],
 	},
+	rewrites: async () => [
+		{
+			source: '/__/auth/:params',
+			destination: 'https://koushikpuppala.firebaseapp.com/__/auth/:params',
+		},
+	],
 	redirects: async () => [
 		{ source: '/github', destination: 'https://github.com/koushikpuppala', permanent: true },
 		{
