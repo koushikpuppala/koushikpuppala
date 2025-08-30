@@ -47,3 +47,6 @@ next-env.d.ts
 # Misc
 .DS_Store
 *.pem
+
+# Husky hooks
+.husky

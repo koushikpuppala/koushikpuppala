@@ -45,7 +45,6 @@ const HomePage = () => {
 				{ label: 'Failed', value: 'failed' },
 			],
 		},
-		// { id: 'range', label: 'Select Date Range', type: 'date-range' },
 	]
 
 	const filteredData = data

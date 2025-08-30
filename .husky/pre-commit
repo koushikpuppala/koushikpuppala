@@ -1,1 +1,2 @@
-pnpm lint && npx prettier --check .
+# Run lint, fix, and format staged files
+pnpm lint-staged

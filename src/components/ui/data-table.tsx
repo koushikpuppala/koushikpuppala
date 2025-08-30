@@ -148,7 +148,48 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 	return (
 		<div className='flex w-full flex-col gap-2'>
 			<div className='flex items-center justify-between gap-2 text-neutral-300'>
-				<div className='flex w-full items-center gap-2'>
+				<div className='flex w-full flex-wrap items-center gap-2'>
+					<Menu as='div' className={classNames({ hidden: disableDateRange })}>
+						<MenuButton
+							aria-label='Columns Visibility'
+							className='flex cursor-pointer items-center justify-center rounded-md border border-neutral-100/10 bg-neutral-100/0 px-3 py-2 text-sm font-medium shadow-md transition-all outline-none hover:bg-neutral-100/5'>
+							<span
+								className={classNames('truncate', {
+									'text-neutral-500': !date.from && !date.to,
+								})}>
+								{date.from && date.to
+									? `${dayjs(date.from).format('DD MMM YYYY')} to ${dayjs(date.to).format('DD MMM YYYY')}`
+									: 'Select Date Range'}
+							</span>
+						</MenuButton>
+						<MenuItems
+							transition={true}
+							anchor='bottom start'
+							className='mt-0.5 rounded-md border border-neutral-100/10 bg-neutral-800 p-1 shadow-2xl outline-none'>
+							<DateRange
+								onChange={item =>
+									setDate({
+										from: dayjs(item.selection.startDate).format('YYYY-MM-DD'),
+										to: dayjs(item.selection.endDate).format('YYYY-MM-DD'),
+									})
+								}
+								ranges={[
+									{
+										startDate: date.from ? new Date(date.from) : new Date(),
+										endDate: date.to ? new Date(date.to) : new Date(),
+										key: 'selection',
+									},
+								]}
+								maxDate={new Date()}
+								editableDateInputs={true}
+								dateDisplayFormat='dd MMM yyyy'
+								moveRangeOnFirstSelection={true}
+								retainEndDateOnFirstSelection={true}
+								rangeColors={['var(--color-accent)']}
+								minDate={new Date('2020-01-01')}
+							/>
+						</MenuItems>
+					</Menu>
 					<Input
 						type='text'
 						value={search}
@@ -269,46 +310,6 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 								return null
 						}
 					})}
-					<Menu as='div' className={classNames({ hidden: disableDateRange })}>
-						<MenuButton
-							aria-label='Columns Visibility'
-							className='flex cursor-pointer items-center justify-center rounded-md border border-neutral-100/10 bg-neutral-100/0 px-3 py-2 text-sm font-medium shadow-md transition-all outline-none hover:bg-neutral-100/5'>
-							<span
-								className={classNames('truncate', {
-									'text-neutral-500': !date.from && !date.to,
-								})}>
-								{date.from && date.to
-									? `${dayjs(date.from).format('DD MMM YYYY')} to ${dayjs(date.to).format('DD MMM YYYY')}`
-									: 'Select Date Range'}
-							</span>
-						</MenuButton>
-						<MenuItems
-							transition={true}
-							anchor='bottom start'
-							className='mt-0.5 rounded-md border border-neutral-100/10 bg-neutral-800 p-1 shadow-2xl outline-none'>
-							<DateRange
-								onChange={item =>
-									setDate({
-										from: dayjs(item.selection.startDate).format('YYYY-MM-DD'),
-										to: dayjs(item.selection.endDate).format('YYYY-MM-DD'),
-									})
-								}
-								ranges={[
-									{
-										startDate: date.from ? new Date(date.from) : new Date(),
-										endDate: date.to ? new Date(date.to) : new Date(),
-										key: 'selection',
-									},
-								]}
-								maxDate={new Date()}
-								editableDateInputs={true}
-								dateDisplayFormat='dd MMM yyyy'
-								moveRangeOnFirstSelection={true}
-								rangeColors={['var(--color-accent)']}
-								minDate={new Date('2020-01-01')}
-							/>
-						</MenuItems>
-					</Menu>
 				</div>
 				<div className='flex items-center justify-center gap-2'>
 					<button
