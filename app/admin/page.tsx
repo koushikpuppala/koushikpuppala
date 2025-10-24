@@ -1,12 +1,12 @@
 'use client'
 
 import { DataTable } from 'components'
-import { useAuth } from 'contexts'
+// import { useAuth } from 'contexts'
 import { useSearchParams } from 'next/navigation'
 import type { DataTableFilters } from 'types/components'
 
 const HomePage = () => {
-	const { login } = useAuth()
+	// const { login } = useAuth()
 
 	const data = [
 		{ id: 'm5gr84i9', amount: 316, status: 'success', email: 'ken99@example.com' },
@@ -28,13 +28,15 @@ const HomePage = () => {
 
 	const searchParams = useSearchParams()
 
-	const search = searchParams.get('search') || ''
+	// const search = searchParams.get('search') || ''
+	const email = searchParams.get('email') || ''
 	const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
 	const pageSize = searchParams.get('pageSize') ? Number(searchParams.get('pageSize')) : 10
 	const status = searchParams.get('status') || ''
 
 	const filters: DataTableFilters[] = [
 		{ id: 'email', label: 'Search Email...', type: 'search' },
+		{ id: 'amount', label: 'Search Amount...', type: 'search' },
 		{
 			id: 'status',
 			label: 'Search Status',
@@ -49,24 +51,24 @@ const HomePage = () => {
 
 	const filteredData = data
 		.filter(item => (status ? item.status.toLowerCase() === status.toLowerCase() : true))
-		.filter(item => item.email.toLowerCase().includes(search.toLowerCase()))
+		.filter(item => item.email.toLowerCase().includes(email.toLowerCase()))
 
 	return (
-		<div className='flex h-full w-full flex-col items-center pt-24 text-white'>
-			<h1 className='text-4xl font-bold'>Welcome to the Admin Dashboard</h1>
+		<div className='flex h-full w-full flex-col items-center justify-center text-white'>
+			{/* <h1 className='text-4xl font-bold'>Welcome to the Admin Dashboard</h1>
 			<p className='mt-2 text-lg'>Manage your application settings and content here.</p>
 			<button
 				onClick={() => {
 					login()
 				}}>
 				login
-			</button>
+			</button> */}
 			<DataTable
 				filters={filters}
 				disableSearch={true}
 				totalCount={filteredData.length}
 				columns={[
-					{ accessorKey: 'status', header: 'Status' },
+					{ accessorKey: 'status', header: 'Status', enableSorting: false },
 					{ accessorKey: 'email', header: 'Email', enableHiding: false },
 					{ accessorKey: 'amount', header: 'Amount' },
 				]}

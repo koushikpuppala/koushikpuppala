@@ -1,6 +1,12 @@
 'use server'
 
-import type { CreateAbout, DeleteAbout, ForceDeleteAbout, UpdateAbout } from 'types/actions'
+import type {
+	CreateAbout,
+	DeleteAbout,
+	ForceDeleteAbout,
+	PublishAbout,
+	UpdateAbout,
+} from 'types/actions'
 
 import { prisma } from 'prisma'
 import { logger } from 'lib/logger'
@@ -17,15 +23,9 @@ export const createAbout: CreateAbout = async args => {
 
 		logger.info('Creating about information', 'createAbout', { data })
 
-		const existingAbout = await prisma.about.findFirst({
-			where: { deletedAt: null },
-		})
+		const about = await prisma.about.create({ data })
 
-		if (existingAbout) return Result.conflict('About information already exists', 'createAbout')
-
-		const newAbout = await prisma.about.create({ data })
-
-		return Result.success('About information created successfully', 'createAbout', newAbout)
+		return Result.success('About information created successfully', 'createAbout', about)
 	} catch (error) {
 		return Result.internalServerError(
 			'Failed to create about information',
@@ -61,6 +61,49 @@ export const updateAbout: UpdateAbout = async args => {
 		return Result.internalServerError(
 			'Failed to update about information',
 			'updateAbout',
+			error as Error,
+		)
+	}
+}
+
+export const publishAbout: PublishAbout = async args => {
+	const { where } = args
+
+	try {
+		const authenticated = await verifySession('publishAbout')
+
+		if (authenticated.error) return authenticated
+
+		logger.info('Publishing about information', 'publishAbout', { where })
+
+		const existingAbout = await prisma.about.findFirst({
+			where: { ...where, deletedAt: null },
+		})
+		if (!existingAbout) return Result.notFound('About entry not found', 'publishAbout')
+
+		if (existingAbout.isPublished)
+			return Result.conflict('About entry is already published', 'publishAbout')
+
+		// Unpublish any other published about
+		await prisma.about.updateMany({
+			where: { isPublished: true, deletedAt: null, NOT: { ...where } },
+			data: { isPublished: false, publishedAt: null },
+		})
+
+		const publishedAbout = await prisma.about.update({
+			where: { ...where, deletedAt: null },
+			data: { isPublished: true, publishedAt: new Date(), version: { increment: 0.1 } },
+		})
+
+		return Result.success(
+			'About information published successfully',
+			'publishAbout',
+			publishedAbout,
+		)
+	} catch (error) {
+		return Result.internalServerError(
+			'Failed to publish about information',
+			'publishAbout',
 			error as Error,
 		)
 	}

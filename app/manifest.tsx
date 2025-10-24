@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next'
 const ManifestPage = (): MetadataRoute.Manifest => {
 	return {
 		id: process.env.npm_package_version,
-		name: 'Koushik Puppala | Software Engineer | Freelancer',
+		name: 'Koushik Puppala | Software Engineer | Full-Stack Developer',
 		short_name: 'Koushik Puppala',
 		description:
 			"Full-stack developer by day, dreamer by night. I believe that technology has the power to make the world a better place, and I'm committed to using my skills to make that happen.",

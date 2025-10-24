@@ -47,12 +47,10 @@ const DesktopSidebar = ({
 	return (
 		<Animation.div
 			className={classNames(
-				'hidden h-full w-72 flex-shrink-0 rounded-md bg-neutral-900 px-3.5 py-4 lg:flex lg:flex-col',
+				'hidden h-full w-60 flex-shrink-0 rounded-md bg-neutral-900 px-3.5 py-4 lg:flex lg:flex-col',
 				className,
 			)}
-			animate={{
-				width: animate ? (open ? '288px' : '60px') : '288px',
-			}}
+			animate={{ width: animate ? (open ? '240px' : '60px') : '240px' }}
 			onMouseEnter={() => setOpen(true)}
 			onMouseLeave={() => setOpen(false)}
 			{...props}>

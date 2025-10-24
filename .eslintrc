@@ -1,0 +1,18 @@
+{
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": "./tsconfig.json",
+	},
+	"extends": [
+		"next/core-web-vitals", // Next.js recommended
+		"plugin:@typescript-eslint/recommended", // TypeScript rules
+		"prettier", // Prettier last
+	],
+	"plugins": ["@typescript-eslint"],
+	"rules": {
+		"@typescript-eslint/no-unused-vars": "warn", // warn instead of error
+		"react/react-in-jsx-scope": "off", // Next.js doesn't need React import
+	},
+	"ignorePatterns": ["node_modules/", ".next/", "public/", "next-env.d.ts"],
+}

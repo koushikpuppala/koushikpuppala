@@ -44,6 +44,16 @@ export class Result<T> implements ServerActionResponse<T> {
 					totalCount: this.totalCount,
 				})
 
+	toJSON() {
+		return {
+			error: this.error,
+			code: this.code,
+			message: this.message,
+			result: this.result,
+			totalCount: this.totalCount,
+		}
+	}
+
 	static success: <T>(
 		message: string,
 		functionName: string,

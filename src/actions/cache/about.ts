@@ -8,7 +8,7 @@ import { Result } from 'lib/result'
 export const getAbout: GetAbout = async () => {
 	try {
 		const result = await prisma.about.findFirst({
-			where: { deletedAt: null },
+			where: { isPublished: true, deletedAt: null },
 			select: { title: true, introduction: true },
 		})
 

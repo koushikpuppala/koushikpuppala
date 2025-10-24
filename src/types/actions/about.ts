@@ -21,6 +21,10 @@ export type UpdateAbout = (args: {
 	data: Prisma.AboutUpdateInput
 }) => Promise<ServerActionResponse<About>>
 
+export type PublishAbout = (args: {
+	where: Prisma.AboutWhereUniqueInput
+}) => Promise<ServerActionResponse<About>>
+
 export type DeleteAbout = (args: {
 	where: Prisma.AboutWhereUniqueInput
 }) => Promise<ServerActionResponse<About>>

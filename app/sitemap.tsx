@@ -8,7 +8,7 @@ const SitemapPage = async (): Promise<MetadataRoute.Sitemap> => {
 		(await globby(['app/**/page.tsx', '!app/api/**/*'])).map(
 			path =>
 				path
-					.replace(/^app|\/page\.tsx$|\/\([^/]*\)|\[[^\]]*]|@[^/]+/g, '') // Remove app prefix, /page.tsx, (param), [id], @dealer
+					.replace(/^app|\/page\.tsx$|\/\([^/]*\)|\[[^\]]*]|@[^/]+/g, '') // Remove app prefix, /page.tsx, (param), [id], @segments
 					.replace(/\/{2,}/g, '/') // Replace multiple slashes with single
 					.replace(/\/$/, ''), // Remove trailing slash
 		),

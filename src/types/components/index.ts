@@ -62,11 +62,13 @@ export type DataTableFilters = {
 
 export type DataTableProps<TData, TValue> = {
 	data: TData[]
+	loading?: boolean
 	pageSize?: number
 	totalCount: number
 	disableSearch?: boolean
 	disableDateRange?: boolean
 	filters?: DataTableFilters[]
+	disableClearFilters?: boolean
 	disableColumnVisibility?: boolean
 	columns: ColumnDef<TData, TValue>[]
 } & DataTablePaginationProps

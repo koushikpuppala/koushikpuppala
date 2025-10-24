@@ -1,4 +1,5 @@
 export * from './about'
+export * from './home'
 export * from './metadata'
 
 export type prevStateType = { statusCode: number; statusMessage: string }

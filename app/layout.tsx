@@ -1,3 +1,4 @@
+import 'react-date-range/dist/styles.css'
 import 'styles/globals.css'
 
 import type { Metadata, Viewport } from 'next'
@@ -31,7 +32,12 @@ export const metadata: Metadata = {
 		type: 'website',
 		locale: 'en_IN',
 		siteName: 'Koushik Puppala | Software Engineer | Freelancer',
-		images: [{ url: '/favicon.ico', alt: 'Koushik Puppala | Software Engineer | Freelancer' }],
+		images: [
+			{
+				url: '/icons/android-chrome-512x512.png',
+				alt: 'Koushik Puppala | Software Engineer | Freelancer',
+			},
+		],
 	},
 	twitter: {
 		card: 'summary_large_image',
@@ -43,7 +49,10 @@ export const metadata: Metadata = {
 			"Full-stack developer by day, dreamer by night. Technology can improve the world, and I'm committed to using my skills to make that happen.",
 		creator: '@puppala_koushik',
 		site: '@puppala_koushik',
-		images: { url: '/favicon.ico', alt: 'Koushik Puppala | Software Engineer | Freelancer' },
+		images: {
+			url: '/icons/android-chrome-512x512.png',
+			alt: 'Koushik Puppala | Software Engineer | Freelancer',
+		},
 	},
 	category: 'Software Engineer',
 	icons: {
