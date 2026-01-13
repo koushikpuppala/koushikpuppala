@@ -1,13 +1,13 @@
 'use client'
 
 import type { Home } from 'prisma'
+import type { ColumnDef } from '@tanstack/react-table'
 
 import { DataTable } from 'components/ui'
 import { getAllHome } from 'actions/cache'
+import { formatDate } from 'utils/formatDate'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useState, useTransition } from 'react'
-import type { ColumnDef } from '@tanstack/react-table'
-import { formatDate } from 'utils/formatDate'
 
 export const AdminHomeViewComponent = () => {
 	const searchParams = useSearchParams()
@@ -18,7 +18,7 @@ export const AdminHomeViewComponent = () => {
 			count: Number(searchParams.get('count') || 10),
 			nonPaginated: searchParams.get('nonPaginated') === 'true' || false,
 		}),
-		[searchParams],
+		[searchParams]
 	)
 
 	const [isLoading, startLoadingTransition] = useTransition()
@@ -29,6 +29,8 @@ export const AdminHomeViewComponent = () => {
 	useEffect(() => {
 		startLoadingTransition(async () => {
 			try {
+				await new Promise((resolve) => setTimeout(resolve, 5000)) // Simulate loading delay
+
 				const { error, message, result, totalCount } = await getAllHome(filter)
 
 				if (error) throw new Error(message)
@@ -54,9 +56,9 @@ export const AdminHomeViewComponent = () => {
 			},
 			{
 				accessorKey: 'subtitle',
-				header: 'Subtitle',
+				header: 'Subtitles',
 				cell({ row: { original } }) {
-					return <span className='line-clamp-1 capitalize'>{original.subtitle}</span>
+					return <span className='line-clamp-1 capitalize'>{original.subtitles.join(', ')}</span>
 				},
 			},
 			{
@@ -84,6 +86,7 @@ export const AdminHomeViewComponent = () => {
 					return (
 						<div className='flex items-center gap-2'>
 							<button
+								type='button'
 								onClick={() => {
 									// Handle edit action
 								}}
@@ -95,7 +98,7 @@ export const AdminHomeViewComponent = () => {
 				},
 			},
 		],
-		[],
+		[]
 	)
 
 	return (

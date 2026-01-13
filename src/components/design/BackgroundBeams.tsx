@@ -81,8 +81,8 @@ export const BackgroundBeams = memo(({ className }: BackgroundBeamsProps) => {
 
 				{paths.map((path, index) => (
 					<Animation.path
-						key={`path-` + index}
 						d={path}
+						key={`path-${index}`}
 						stroke={`url(#linearGradient-${index})`}
 						strokeOpacity='0.4'
 						strokeWidth='0.5'></Animation.path>

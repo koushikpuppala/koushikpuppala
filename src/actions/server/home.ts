@@ -13,7 +13,7 @@ import { logger } from 'lib/logger'
 import { Result } from 'lib/result'
 import { verifySession } from 'lib/session'
 
-export const createHome: CreateHome = async args => {
+export const createHome: CreateHome = async (args) => {
 	const { data } = args
 
 	try {
@@ -31,7 +31,7 @@ export const createHome: CreateHome = async args => {
 	}
 }
 
-export const updateHome: UpdateHome = async args => {
+export const updateHome: UpdateHome = async (args) => {
 	const { where, data } = args
 
 	try {
@@ -58,7 +58,7 @@ export const updateHome: UpdateHome = async args => {
 	}
 }
 
-export const publishHome: PublishHome = async args => {
+export const publishHome: PublishHome = async (args) => {
 	const { where } = args
 
 	try {
@@ -93,7 +93,7 @@ export const publishHome: PublishHome = async args => {
 	}
 }
 
-export const deleteHome: DeleteHome = async args => {
+export const deleteHome: DeleteHome = async (args) => {
 	const { where } = args
 
 	try {
@@ -120,7 +120,7 @@ export const deleteHome: DeleteHome = async args => {
 	}
 }
 
-export const forceDeleteHome: ForceDeleteHome = async args => {
+export const forceDeleteHome: ForceDeleteHome = async (args) => {
 	const { where } = args
 
 	try {
@@ -141,7 +141,7 @@ export const forceDeleteHome: ForceDeleteHome = async args => {
 		return Result.internalServerError(
 			'Failed to force delete home entry',
 			'forceDeleteHome',
-			error as Error,
+			error as Error
 		)
 	}
 }

@@ -13,7 +13,7 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
 
 	return (
 		<main className='flex h-screen flex-col place-content-center place-items-center text-center'>
-			<Animation.h1 direction='down' delay={0.1} className='text-9xl font-black text-gray-700'>
+			<Animation.h1 direction='down' delay={0.1} className='text-9xl font-black text-neutral-700'>
 				500
 			</Animation.h1>
 
@@ -24,12 +24,13 @@ const GlobalError = ({ error, reset }: GlobalErrorProps) => {
 				Internal Server Error
 			</Animation.p>
 
-			<Animation.p direction='down' delay={0.3} className='text-gray-400'>
+			<Animation.p direction='down' delay={0.3} className='text-neutral-400'>
 				Something went wrong!
 			</Animation.p>
 
 			<Animation.div direction='down' delay={0.4}>
 				<button
+					type='button'
 					onClick={() => reset()}
 					className='mt-2 inline-block rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
 					Reload the page

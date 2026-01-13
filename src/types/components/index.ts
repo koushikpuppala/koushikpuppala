@@ -72,3 +72,7 @@ export type DataTableProps<TData, TValue> = {
 	disableColumnVisibility?: boolean
 	columns: ColumnDef<TData, TValue>[]
 } & DataTablePaginationProps
+
+export type FormError<T> = Partial<Record<keyof T, string>>
+
+export * from './admin'

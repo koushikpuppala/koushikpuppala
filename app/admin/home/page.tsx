@@ -10,7 +10,7 @@ const AdminHomePage = async () => {
 					<h1 className='text-accent text-xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight'>
 						Home Page Customization
 					</h1>
-					<span className='px-0.5 text-xs text-gray-400 sm:px-1 sm:text-sm'>
+					<span className='px-0.5 text-xs text-neutral-400 sm:px-1 sm:text-sm'>
 						Customize the content and layout of your application&apos;s home page.
 					</span>
 				</div>

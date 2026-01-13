@@ -26,11 +26,11 @@ const SidebarButton = ({ label, icon, className, ...props }: SidebarButtonProps)
 		<button
 			className={classNames(
 				className,
-				'group/sidebar flex cursor-pointer items-center justify-start gap-2 rounded-lg bg-neutral-100/0 px-1.5 py-2 hover:bg-neutral-100/5',
+				'group/sidebar flex cursor-pointer items-center justify-start gap-2 rounded-lg bg-neutral-100/0 px-1.5 py-2 hover:bg-neutral-100/5'
 			)}
 			{...props}>
 			{icon}
-			<span className='!m-0 inline-block !p-0 text-sm whitespace-pre transition duration-150 group-hover/sidebar:translate-x-1'>
+			<span className='m-0! inline-block p-0! text-sm whitespace-pre transition duration-150 group-hover/sidebar:translate-x-1'>
 				{label}
 			</span>
 		</button>
@@ -47,8 +47,8 @@ const DesktopSidebar = ({
 	return (
 		<Animation.div
 			className={classNames(
-				'hidden h-full w-60 flex-shrink-0 rounded-md bg-neutral-900 px-3.5 py-4 lg:flex lg:flex-col',
-				className,
+				'hidden h-full w-60 shrink-0 rounded-md bg-neutral-900 px-3.5 py-4 lg:flex lg:flex-col',
+				className
 			)}
 			animate={{ width: animate ? (open ? '240px' : '60px') : '240px' }}
 			onMouseEnter={() => setOpen(true)}
@@ -65,12 +65,12 @@ const MobileSidebar = ({ className, children, ...props }: React.ComponentProps<'
 	return (
 		<div
 			className={classNames(
-				'flex h-12 w-full flex-row items-center justify-between rounded-md bg-neutral-900 px-4 py-4 lg:hidden',
+				'flex h-12 w-full flex-row items-center justify-between rounded-md bg-neutral-900 px-4 py-4 lg:hidden'
 			)}
 			{...props}>
 			<div className='z-20 flex w-full justify-end'>
 				<TbMenu2
-					className='size-5 flex-shrink-0 cursor-pointer text-neutral-200'
+					className='size-5 shrink-0 cursor-pointer text-neutral-200'
 					onClick={() => setOpen(!open)}
 				/>
 			</div>
@@ -82,12 +82,13 @@ const MobileSidebar = ({ className, children, ...props }: React.ComponentProps<'
 						exit={{ x: '-100%', opacity: 0 }}
 						transition={{ duration: 0.3, ease: 'easeInOut' }}
 						className={classNames(
-							'fixed inset-0 z-[100] flex h-full w-full flex-col justify-between bg-neutral-900 px-4 py-4',
-							className,
+							'fixed inset-0 z-100 flex h-full w-full flex-col justify-between bg-neutral-900 px-4 py-4',
+							className
 						)}>
-						<div className='absolute top-5 right-5 z-50' onClick={() => setOpen(!open)}>
-							<TbX className='size-5 flex-shrink-0 cursor-pointer' />
-						</div>
+						<TbX
+							className='size-5 shrink-0 cursor-pointer absolute top-5 right-5 z-50'
+							onClick={() => setOpen(!open)}
+						/>
 						{children}
 					</Animation.div>
 				)}
@@ -106,7 +107,7 @@ const SidebarLink = ({ link, className, ...props }: SidebarLinkProps) => {
 			className={classNames(
 				className,
 				'group/sidebar flex items-center justify-start gap-2 rounded-lg bg-neutral-100/0 px-1.5 py-2 hover:bg-neutral-100/5',
-				{ 'bg-neutral-100/10 hover:bg-neutral-100/10': pathname === link.href },
+				{ 'bg-neutral-100/10 hover:bg-neutral-100/10': pathname === link.href }
 			)}
 			{...props}>
 			{link.icon}
@@ -117,7 +118,7 @@ const SidebarLink = ({ link, className, ...props }: SidebarLinkProps) => {
 				}}
 				className={classNames(
 					{ hidden: !open },
-					'!m-0 inline-block !p-0 text-sm whitespace-pre text-neutral-200 transition duration-150 group-hover/sidebar:translate-x-1',
+					'm-0! inline-block p-0! text-sm whitespace-pre text-neutral-200 transition duration-150 group-hover/sidebar:translate-x-1'
 				)}>
 				{link.label}
 			</Animation.span>

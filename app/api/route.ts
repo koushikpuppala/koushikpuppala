@@ -11,7 +11,7 @@ export const GET = async () => {
 
 		const result = Result.success('Server health check successful.', 'HealthCheck/GET', {
 			ping: typeof ping?.ok === 'number' && ping.ok === 1,
-			latency: latency.toFixed(2) + ' ms',
+			latency: `${latency.toFixed(2)} ms`,
 			timestamp: new Date().toISOString(),
 		})
 

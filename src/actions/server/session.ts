@@ -13,7 +13,7 @@ export const revokeSession = async (functionName: string) => {
 
 		if (!token) return Result.unauthorized('Session token is required', functionName)
 
-		logger.info('Revoking session', functionName, { token: token.slice(0, 10) + '...' })
+		logger.info('Revoking session', functionName, { token: `${token.slice(0, 10)}...` })
 
 		const decodedToken = await adminAuth.verifyIdToken(token, true)
 
@@ -48,7 +48,7 @@ export const revokeAllSessions = async (functionName: string) => {
 
 		if (!token) return Result.unauthorized('Session token is required', functionName)
 
-		logger.info('Revoking all sessions', functionName, { token: token.slice(0, 10) + '...' })
+		logger.info('Revoking all sessions', functionName, { token: `${token.slice(0, 10)}...` })
 
 		const decodedToken = await adminAuth.verifyIdToken(token, true)
 

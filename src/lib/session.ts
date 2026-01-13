@@ -50,7 +50,7 @@ export const verifySession = async (functionName: string) => {
 export const handleSession = async (
 	functionName: string,
 	token: string,
-	decodedToken: DecodedIdToken,
+	decodedToken: DecodedIdToken
 ) => {
 	try {
 		const { uid } = decodedToken

@@ -35,11 +35,18 @@ const HomePage = () => {
 	const status = searchParams.get('status') || ''
 
 	const filters: DataTableFilters[] = [
-		{ id: 'email', label: 'Search Email...', type: 'search' },
 		{ id: 'amount', label: 'Search Amount...', type: 'search' },
 		{
+			id: 'email',
+			label: 'Filter by Email',
+			type: 'select',
+			options: Array.from(new Set(data.map((item) => item.email)))
+				.sort((a, b) => a.localeCompare(b))
+				.map((email) => ({ label: email, value: email })),
+		},
+		{
 			id: 'status',
-			label: 'Search Status',
+			label: 'Filter by Status',
 			type: 'search-select',
 			options: [
 				{ label: 'Success', value: 'success' },
@@ -50,11 +57,11 @@ const HomePage = () => {
 	]
 
 	const filteredData = data
-		.filter(item => (status ? item.status.toLowerCase() === status.toLowerCase() : true))
-		.filter(item => item.email.toLowerCase().includes(email.toLowerCase()))
+		.filter((item) => (status ? item.status.toLowerCase() === status.toLowerCase() : true))
+		.filter((item) => item.email.toLowerCase().includes(email.toLowerCase()))
 
 	return (
-		<div className='flex h-full w-full flex-col items-center justify-center text-white'>
+		<div className='flex h-full w-full flex-col items-center bg-accent justify-center text-white'>
 			{/* <h1 className='text-4xl font-bold'>Welcome to the Admin Dashboard</h1>
 			<p className='mt-2 text-lg'>Manage your application settings and content here.</p>
 			<button
@@ -65,7 +72,6 @@ const HomePage = () => {
 			</button> */}
 			<DataTable
 				filters={filters}
-				disableSearch={true}
 				totalCount={filteredData.length}
 				columns={[
 					{ accessorKey: 'status', header: 'Status', enableSorting: false },

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Fragment } from 'react'
+import { AdminHomeCreateComponent } from 'components/admin'
 
 const AdminCreateHomePage = async () => {
 	return (
@@ -9,7 +10,7 @@ const AdminCreateHomePage = async () => {
 					<h1 className='text-accent text-xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight'>
 						Create New Home Page Entry
 					</h1>
-					<span className='px-0.5 text-xs text-gray-400 sm:px-1 sm:text-sm'>
+					<span className='px-0.5 text-xs text-neutral-400 sm:px-1 sm:text-sm'>
 						Add a new entry to customize your application&apos;s home page.
 					</span>
 				</div>
@@ -23,7 +24,9 @@ const AdminCreateHomePage = async () => {
 					</Link>
 				</div>
 			</div>
-			<div className='flex-1 overflow-y-auto py-2'></div>
+			<div className='flex-1 overflow-y-auto py-2'>
+				<AdminHomeCreateComponent />
+			</div>
 		</Fragment>
 	)
 }

@@ -137,3 +137,108 @@
 .grecaptcha-badge {
 	@apply invisible;
 }
+
+/* --- 1. DEFINE THE DYNAMIC VALUES --- */
+
+/* LIGHT MODE (Default) - "The Royal Court" */
+/* Crisp white/pale blue backgrounds with deep navy text */
+:root {
+	/* Primary Colors */
+	--bg-primary: oklch(97% 0.01 260); /* Pale Blue-White Base */
+	--bg-primary-dark: oklch(92% 0.02 260); /* Soft Blue-Grey Depth */
+	--bg-primary-light: oklch(100% 0 0); /* Pure White Surface */
+
+	/* Text Colors */
+	--text-main: oklch(18% 0.04 260); /* Deep Prussian Blue (Readable Text) */
+	--text-muted: oklch(50% 0.05 260); /* Mid-Tone Blue Grey */
+	--text-inverted: oklch(98% 0.01 260); /* White text for buttons */
+
+	/* The Sapphire Accent */
+	/* Slightly darker in light mode for better contrast against white */
+	--accent-main: oklch(55% 0.22 255); /* Deep Electric Sapphire */
+
+	/* Supporting */
+	--color-sec: oklch(40% 0.05 260); /* Secondary Text/Border */
+	--color-tert: oklch(94% 0.02 260); /* Lightest Blue surface */
+	--color-quat: oklch(88% 0.02 260); /* Darker surface variant */
+
+	/* Gradients */
+	--grad-black: linear-gradient(to right, oklch(92% 0.02 260), oklch(97% 0.01 260));
+	--grad-accent: linear-gradient(-90deg, oklch(55% 0.22 255) 0%, rgba(255, 255, 255, 0) 100%);
+	--grad-violet: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, oklch(65% 0.15 250) 100%);
+	--grad-gp: linear-gradient(90.13deg, oklch(65% 0.15 230) 1.9%, oklch(55% 0.22 255) 97.5%);
+}
+
+/* DARK MODE - "The Deep Ocean" */
+/* Your original Prussian Blue Deep Theme */
+.dark {
+	/* Primary Colors */
+	--bg-primary: oklch(18% 0.04 260); /* Deep Prussian Blue Base */
+	--bg-primary-dark: oklch(14% 0.035 260); /* Darker Navy Depth */
+	--bg-primary-light: oklch(24% 0.05 260); /* Lighter Navy Surface */
+
+	/* Text Colors */
+	--text-main: oklch(96% 0.01 250); /* Ice White */
+	--text-muted: oklch(65% 0.06 250); /* Cool Muted Blue Text */
+	--text-inverted: oklch(12% 0.03 260); /* Deep Blue-Black */
+
+	/* The Sapphire Accent */
+	/* Brighter/Neon in dark mode for glow effect */
+	--accent-main: oklch(62% 0.22 255); /* Bright Electric Sapphire */
+
+	/* Supporting */
+	--color-sec: oklch(75% 0.06 250); /* Readable Secondary Text */
+	--color-tert: oklch(22% 0.06 255); /* Deep Indigo-Blue */
+	--color-quat: oklch(15% 0.04 260); /* Darkest Blue Variant */
+
+	/* Gradients */
+	--grad-black: linear-gradient(to right, oklch(25% 0.05 260), oklch(14% 0.035 260));
+	--grad-accent: linear-gradient(-90deg, oklch(62% 0.22 255) 0%, rgba(10, 21, 46, 0) 100%);
+	--grad-violet: linear-gradient(to left, rgba(10, 21, 46, 0) 0%, oklch(45% 0.18 250) 100%);
+	--grad-gp: linear-gradient(90.13deg, oklch(75% 0.15 230) 1.9%, oklch(62% 0.22 255) 97.5%);
+}
+
+/* --- 2. MAP TO THEME FORMAT --- */
+
+@theme {
+	/* Primary Colors (Backgrounds) */
+	--color-primary: var(--bg-primary);
+	--color-primary-dark: var(--bg-primary-dark);
+	--color-primary-light: var(--bg-primary-light);
+
+	/* Secondary & Supporting Colors */
+	--color-secondary: var(--color-sec);
+	--color-tertiary: var(--color-tert);
+	--color-quaternary: var(--color-quat);
+
+	/* Accent */
+	--color-accent: var(--accent-main);
+
+	/* Text Colors (Mapped for clarity) */
+	--color-text-primary: var(--text-main);
+	--color-text-secondary: var(--color-sec);
+	--color-text-muted: var(--text-muted);
+	--color-text-inverted: var(--text-inverted);
+
+	/* Neutral Colors (Static Palette usually) */
+	--color-black-100: oklch(12% 0.03 260);
+	--color-black-200: oklch(10% 0.02 260);
+	--color-white-100: oklch(96% 0.01 250);
+	--color-gray-100: oklch(55% 0.04 255);
+
+	/* Breakpoints */
+	--breakpoint-xs: 450px;
+	--breakpoint-sm: 540px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 960px;
+	--breakpoint-xl: 1200px;
+
+	/* Animation */
+	--animation-spin-slow: spin 6s linear infinite;
+
+	/* Gradients */
+	--gradient-black: var(--grad-black);
+	--gradient-accent: var(--grad-accent);
+	--gradient-violet: var(--grad-violet);
+	--gradient-green-pink: var(--grad-gp);
+}

@@ -8,13 +8,13 @@ export type LoggerType = Readonly<{
 		message: string,
 		functionName: string,
 		error?: Error,
-		meta?: Record<string, unknown>,
+		meta?: Record<string, unknown>
 	) => void
 	fatal: (
 		message: string,
 		functionName: string,
 		error?: Error,
-		meta?: Record<string, unknown>,
+		meta?: Record<string, unknown>
 	) => void
 }>
 

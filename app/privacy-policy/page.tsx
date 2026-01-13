@@ -15,7 +15,7 @@ const PrivacyPolicyPage = () => {
 				<section className='flex max-w-3xl flex-col items-start justify-start space-y-3'>
 					<div className='flex w-full flex-col items-center justify-between pb-4 md:flex-row'>
 						<h1 className='text-3xl font-bold sm:text-4xl'>Privacy Policy</h1>
-						<p className='text-xs text-gray-400 sm:text-sm'>Effective Date: April 25, 2025</p>
+						<p className='text-xs text-neutral-400 sm:text-sm'>Effective Date: April 25, 2025</p>
 					</div>
 
 					<div className='flex w-full flex-col items-start justify-start space-y-2 pb-4'>

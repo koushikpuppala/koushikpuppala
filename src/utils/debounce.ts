@@ -1,7 +1,7 @@
 export const debounce = <T extends (...args: Parameters<T>) => ReturnType<T>>(
 	func: T,
 	wait = 0,
-	options: { leading?: boolean; trailing?: boolean; maxWait?: number } = {},
+	options: { leading?: boolean; trailing?: boolean; maxWait?: number } = {}
 ) => {
 	let timeout: ReturnType<typeof setTimeout> | null = null
 	let maxTimeout: ReturnType<typeof setTimeout> | null = null

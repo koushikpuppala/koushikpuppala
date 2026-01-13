@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const NotFoundPage = () => {
 	return (
 		<main className='flex h-screen flex-col place-content-center place-items-center text-center'>
-			<Animation.h1 direction='down' delay={0.1} className='text-9xl font-black text-gray-700'>
+			<Animation.h1 direction='down' delay={0.1} className='text-9xl font-black text-neutral-700'>
 				404
 			</Animation.h1>
 
@@ -23,7 +23,7 @@ const NotFoundPage = () => {
 				Page not found
 			</Animation.p>
 
-			<Animation.p direction='down' delay={0.3} className='text-gray-400'>
+			<Animation.p direction='down' delay={0.3} className='text-neutral-400'>
 				Sorry, we couldn&apos;t find the page you&apos;re looking for.
 			</Animation.p>
 

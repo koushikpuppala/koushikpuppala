@@ -13,12 +13,11 @@ const nextConfig = nextPWA.default({
 		cleanupOutdatedCaches: process.env.NODE_ENV !== 'development',
 	},
 })({
+	cacheComponents: true,
 	reactStrictMode: process.env.NODE_ENV !== 'development',
-	experimental: { useCache: true },
 	output: process.env.ENVIRONMENT === 'docker' ? 'standalone' : undefined,
-	images: {
-		remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io', port: '', pathname: '**' }],
-	},
+	experimental: { browserDebugInfoInTerminal: process.env.NODE_ENV !== 'production' },
+	images: { remotePatterns: [{ protocol: 'https', hostname: '**', port: '', pathname: '**' }] },
 	rewrites: async () => [
 		{
 			source: '/__/auth/:params',

@@ -1,14 +1,15 @@
-import type { PrismaConfig } from 'prisma/config'
+import { defineConfig, env } from 'prisma/config'
 
 import * as dotenv from 'dotenv'
 
 // Only load dotenv when not running on Vercel
 if (process.env.VERCEL !== '1')
-	dotenv.config({
-		path: [`.env.${process.env.NODE_ENV || 'development'}.local`, '.env'],
-	})
+	dotenv.config({ path: ['.env', `.env.${process.env.NODE_ENV}.local`] })
 
-export default {
+export default defineConfig({
+	engine: 'classic',
 	schema: 'src/prisma',
-	experimental: { adapter: true, studio: true, externalTables: true },
-} satisfies PrismaConfig
+	experimental: { externalTables: true },
+	datasource: { url: env('PRISMA_URI') },
+	migrations: { path: 'src/prisma/migrations' },
+})

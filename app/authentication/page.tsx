@@ -20,7 +20,7 @@ const AuthenticationPage = async () => {
 								<h1 className='text-accent text-xl/7 font-bold sm:truncate sm:text-2xl sm:tracking-tight'>
 									Welcome Back!
 								</h1>
-								<span className='px-0.5 text-xs text-gray-400 sm:px-1 sm:text-sm'>
+								<span className='px-0.5 text-xs text-neutral-400 sm:px-1 sm:text-sm'>
 									Sign in to continue to your account.
 								</span>
 							</div>

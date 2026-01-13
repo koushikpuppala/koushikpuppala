@@ -7,7 +7,7 @@ import { existsSync, mkdirSync } from 'fs'
 import { createLogger, format, transports } from 'winston'
 
 export class Logger implements LoggerType {
-	readonly _production: boolean = process.env.NODE_ENV === 'production'
+	readonly _production: boolean = process.env.NODE_ENV !== 'production'
 	readonly _isClient: boolean = typeof window !== 'undefined'
 	private _enableSentry: boolean = !!process.env.ENABLE_SENTRY && this._production
 	private _logDir: string = process.env.LOG_DIR ?? 'logs'
@@ -18,14 +18,14 @@ export class Logger implements LoggerType {
 		message: string,
 		functionName: string,
 		meta?: Record<string, unknown>,
-		error?: Error,
+		error?: Error
 	) => void
 	private _sentry: (
 		level: Sentry.SeverityLevel,
 		message: string,
 		functionName: string,
 		meta?: Record<string, unknown>,
-		error?: Error,
+		error?: Error
 	) => void
 
 	constructor() {
@@ -37,10 +37,10 @@ export class Logger implements LoggerType {
 			: createLogger({
 					level: this._production ? 'info' : 'debug',
 					format: format.combine(
-						this._production ? format.uncolorize() : format.colorize(),
+						format.colorize(),
 						format.timestamp({ format: this._production ? 'DD MMM YYYY hh:mm:ss A' : 'hh:mm A' }),
 						this._production ? format.prettyPrint({ colorize: true, depth: 3 }) : format.simple(),
-						this._production ? format.errors({ stack: true }) : format.errors({ stack: false }),
+						this._production ? format.errors({ stack: true }) : format.errors({ stack: false })
 					),
 					handleExceptions: true,
 					transports: [
@@ -53,12 +53,12 @@ export class Logger implements LoggerType {
 									maxSize: '10m',
 									maxFiles: '7d',
 									json: true,
-								})
+							  })
 							: new transports.Console(),
 					],
-				})
+			  })
 
-		this._normalizeError = error => {
+		this._normalizeError = (error) => {
 			if (!error) return undefined
 			return this._production
 				? error
@@ -69,16 +69,9 @@ export class Logger implements LoggerType {
 			const data = { functionName, ...meta, timestamp: new Date().toISOString() }
 
 			if (this._isClient) {
-				if (error) console.error(message, { error: this._normalizeError(error), ...data })
-				else console.log(message, data)
-			} else {
-				if (error)
-					this._logger.log(level, message, {
-						error: this._normalizeError(error),
-						...data,
-					})
-				else this._logger.log(level, message, data)
-			}
+				if (error) console.error({ error: this._normalizeError(error), ...data })
+				else console.log(data)
+			} else this._logger.log(level, data)
 		}
 
 		this._sentry = (level, message, functionName, meta, error) => {

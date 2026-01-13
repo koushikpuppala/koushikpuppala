@@ -9,22 +9,22 @@ export const getHome: GetHome = async () => {
 	try {
 		const result = await prisma.home.findFirst({
 			where: { isPublished: true, deletedAt: null },
-			select: { title: true, subtitle: true, separator: true, content: true, extension: true },
+			select: { title: true, subtitles: true, separator: true, content: true },
 		})
 
-		if (!result) return Result.notFound('Home information not found', 'getHome').toJSON()
+		if (!result) return Result.notFound('Home information not found', 'getHome')
 
-		return Result.success('Home information retrieved successfully', 'getHome', result).toJSON()
+		return Result.success('Home information retrieved successfully', 'getHome', result)
 	} catch (error) {
 		return Result.internalServerError(
 			'Failed to retrieve home information',
 			'getHome',
-			error as Error,
-		).toJSON()
+			error as Error
+		)
 	}
 }
 
-export const getAllHome: GetAllHome = async args => {
+export const getAllHome: GetAllHome = async (args) => {
 	const { page = 1, count = 10, nonPaginated = false, where, orderBy, select } = args
 
 	console.log('getAllHome args:', args)
@@ -46,14 +46,14 @@ export const getAllHome: GetAllHome = async args => {
 			'All home information retrieved successfully',
 			'getAllHome',
 			result,
-			totalCount,
-		).toJSON()
+			totalCount
+		)
 	} catch (error) {
 		console.log('getAllHome error:', error)
 		return Result.internalServerError(
 			'Failed to retrieve all home information',
 			'getAllHome',
-			error as Error,
-		).toJSON()
+			error as Error
+		)
 	}
 }

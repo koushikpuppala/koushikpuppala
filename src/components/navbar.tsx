@@ -43,7 +43,8 @@ export const NavbarComponent = () => {
 						</div>
 
 						<button
-							className='text-gray-500 transition hover:text-gray-600'
+							type='button'
+							className='text-neutral-500 transition hover:text-neutral-600'
 							onClick={() => setOnline(false)}>
 							<span className='sr-only'>Dismiss popup</span>
 							<HiXMark />
