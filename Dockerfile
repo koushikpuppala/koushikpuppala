@@ -1,5 +1,5 @@
 # Use the node:lts-alpine image as the base image for the build
-FROM node:lts-alpine AS base
+FROM node:24.13.0-alpine3.23 AS base
 
 # Enable Corepack, which provides a consistent way to manage package managers
 RUN corepack enable && \
