@@ -1,8 +1,13 @@
 import { AdminHomeViewComponent } from 'components/admin'
 import Link from 'next/link'
 import { Fragment } from 'react'
+import type { SearchParamsProps } from 'types/app'
 
-const AdminHomePage = async () => {
+const AdminHomePage = async ({ searchParams }: SearchParamsProps) => {
+	const params = await searchParams
+
+	const filter = { page: Number(params.page || 1) }
+
 	return (
 		<Fragment>
 			<div className='lg:flex lg:items-center lg:justify-between'>
@@ -25,7 +30,7 @@ const AdminHomePage = async () => {
 				</div>
 			</div>
 			<div className='flex-1 overflow-y-auto py-2'>
-				<AdminHomeViewComponent />
+				<AdminHomeViewComponent filter={filter} />
 			</div>
 		</Fragment>
 	)

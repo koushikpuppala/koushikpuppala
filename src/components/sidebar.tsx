@@ -1,14 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { useAuth } from 'contexts'
+import { useAuthContext } from 'contexts'
 import { SIDEBAR_LINKS } from './sidebar-links'
 import { IoLogOutOutline } from 'react-icons/io5'
 import { SidebarBody, SidebarButton, SidebarLink, SidebarLogo } from './ui'
 
 export const Sidebar = () => {
 	const [open, setOpen] = useState(false)
-	const { logout } = useAuth()
+
+	const { logout } = useAuthContext()
 
 	return (
 		<SidebarBody
@@ -18,7 +19,7 @@ export const Sidebar = () => {
 			<div className='relative flex flex-1 flex-col gap-4 overflow-hidden'>
 				<SidebarLogo open={open} />
 				<div className='mb-12 flex flex-col gap-2 overflow-hidden overflow-y-auto'>
-					{SIDEBAR_LINKS.map((link) => (
+					{SIDEBAR_LINKS.map(link => (
 						<SidebarLink key={link.href} link={link} />
 					))}
 				</div>

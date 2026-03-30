@@ -19,12 +19,12 @@ export const getHome: GetHome = async () => {
 		return Result.internalServerError(
 			'Failed to retrieve home information',
 			'getHome',
-			error as Error
+			error as Error,
 		)
 	}
 }
 
-export const getAllHome: GetAllHome = async (args) => {
+export const getAllHome: GetAllHome = async args => {
 	const { page = 1, count = 10, nonPaginated = false, where, orderBy, select } = args
 
 	console.log('getAllHome args:', args)
@@ -46,14 +46,14 @@ export const getAllHome: GetAllHome = async (args) => {
 			'All home information retrieved successfully',
 			'getAllHome',
 			result,
-			totalCount
+			totalCount,
 		)
 	} catch (error) {
 		console.log('getAllHome error:', error)
 		return Result.internalServerError(
 			'Failed to retrieve all home information',
 			'getAllHome',
-			error as Error
+			error as Error,
 		)
 	}
 }

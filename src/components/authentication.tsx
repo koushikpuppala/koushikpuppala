@@ -4,12 +4,12 @@ import { useState } from 'react'
 import { Input } from '@headlessui/react'
 import { FcGoogle } from 'react-icons/fc'
 import { classNames } from 'utils/classNames'
-import { useAuth } from 'contexts/AuthContext'
+import { useAuthContext } from 'contexts/AuthContext'
 import { FaArrowRight } from 'react-icons/fa6'
 import { TbEye, TbEyeOff } from 'react-icons/tb'
 
 export const AuthenticationComponent = () => {
-	const { login } = useAuth()
+	const { login } = useAuthContext()
 
 	const [showPassword, setShowPassword] = useState(false)
 

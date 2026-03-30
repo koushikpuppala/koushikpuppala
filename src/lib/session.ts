@@ -7,15 +7,15 @@ import { logger } from './logger'
 import { Result } from './result'
 import { getCookie } from './cookies'
 import { adminAuth } from 'firebase/admin'
-import { COOKIE_NAME } from 'constants/cookies'
+import { SESSION_COOKIE_NAME } from 'constants/cookies'
 
-export const verifySession = async (functionName: string) => {
+export const verifySession = async (functionName: string, idToken?: string) => {
 	try {
-		const token = await getCookie(COOKIE_NAME)
+		const token = idToken ?? (await getCookie(SESSION_COOKIE_NAME))
 
 		if (!token) return Result.unauthorized('Session token is required', functionName)
 
-		logger.info('Verifying session', functionName, { token: token.slice(0, 10) + '...' })
+		logger.info('Verifying session', functionName, { token: `${token.slice(0, 10)}...` })
 
 		const decodedToken = await adminAuth.verifyIdToken(token, true)
 
@@ -50,7 +50,7 @@ export const verifySession = async (functionName: string) => {
 export const handleSession = async (
 	functionName: string,
 	token: string,
-	decodedToken: DecodedIdToken
+	decodedToken: DecodedIdToken,
 ) => {
 	try {
 		const { uid } = decodedToken
@@ -71,7 +71,7 @@ export const handleSession = async (
 		})
 
 		if (!session) {
-			logger.warn('Session invalid', functionName, { token: token.slice(0, 10) + '...' })
+			logger.warn('Session invalid', functionName, { token: `${token.slice(0, 10)}...` })
 			return Result.unauthorized('Session is expired or revoked', functionName)
 		}
 

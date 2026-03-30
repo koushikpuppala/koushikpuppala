@@ -5,29 +5,55 @@ import type { RootLayoutProps } from 'types/app'
 import type { AuthContextProps } from 'types/contexts'
 
 import { auth } from 'firebase'
-import { usePathname, useRouter } from 'next/navigation'
 import { LoadingComponent } from 'components/loading'
 import { removeCookie, setCookie } from 'lib/cookies'
-import { COOKIE_NAME, EXPIRES_IN } from 'constants/cookies'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { SESSION_COOKIE_NAME, EXPIRES_IN } from 'constants/cookies'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { GoogleAuthProvider, onIdTokenChanged, signInWithPopup } from 'firebase/auth'
+import {
+	GoogleAuthProvider,
+	onAuthStateChanged,
+	onIdTokenChanged,
+	signInWithPopup,
+} from 'firebase/auth'
+import { perf } from 'lib/performance'
+import { AppFirebaseError } from 'classes/error'
 
-const AuthContext = createContext<AuthContextProps>({
-	currentUser: null,
-	token: null,
-	userAuthLoading: true,
-	login: () => new Promise<User>(() => {}),
-	logout: () => new Promise<void>(() => {}),
-})
+const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuthContext = () => {
+	const context = useContext(AuthContext)
+
+	if (!context) throw new Error('useAuthContext must be used within a AuthProvider')
+
+	return context
+}
 
 export const AuthContextProvider = ({ children }: RootLayoutProps) => {
 	const pathname = usePathname()
 	const router = useRouter()
+	const searchParams = useSearchParams()
+
 	const [token, setToken] = useState<string | null>(null)
 	const [userAuthLoading, setUserAuthLoading] = useState(true)
 	const [currentUser, setCurrentUser] = useState<User | null>(null)
+
+	const hydrateSession = async (user: User | null) => {
+		perf.start('session-hydration')
+
+		try {
+			if (!user)
+				throw new AppFirebaseError(
+					'auth/user-token-expired',
+					'Session expired. Please sign in again.',
+				)
+
+			const token = await user?.getIdToken()
+		} catch (error) {
+		} finally {
+			perf.end('session-hydration')
+		}
+	}
 
 	useEffect(() => {
 		const unsubscribe = onIdTokenChanged(auth, async user => {
@@ -37,8 +63,8 @@ export const AuthContextProvider = ({ children }: RootLayoutProps) => {
 				setCurrentUser(user)
 				setToken(token ?? null)
 
-				if (token) setCookie(COOKIE_NAME, token, EXPIRES_IN)
-				else removeCookie(COOKIE_NAME)
+				if (token) setCookie(SESSION_COOKIE_NAME, token, EXPIRES_IN)
+				else removeCookie(SESSION_COOKIE_NAME)
 
 				if (pathname?.startsWith('/admin') && !user) router.replace('/authentication')
 
@@ -48,7 +74,7 @@ export const AuthContextProvider = ({ children }: RootLayoutProps) => {
 			} catch (error) {
 				setToken(null)
 				setCurrentUser(null)
-				removeCookie(COOKIE_NAME)
+				removeCookie(SESSION_COOKIE_NAME)
 
 				console.error(
 					'Failed to get user token',
@@ -92,7 +118,7 @@ export const AuthContextProvider = ({ children }: RootLayoutProps) => {
 
 			setToken(null)
 			setCurrentUser(null)
-			removeCookie(COOKIE_NAME)
+			removeCookie(SESSION_COOKIE_NAME)
 		} catch (error) {
 			console.error('Logout failed', 'AuthContextProvider/logout', error as Error)
 			throw error

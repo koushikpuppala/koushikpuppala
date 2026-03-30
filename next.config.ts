@@ -66,18 +66,37 @@ const nextConfig = nextPWA.default({
 const sentryBuildOptions: SentryBuildOptions = {
 	org: 'koushikpuppala',
 	project: 'koushikpuppala',
-	authToken: process.env.SENTRY_AUTH_TOKEN,
-	debug: process.env.NODE_ENV !== 'production',
-	silent: process.env.NODE_ENV === 'production',
-	release: { name: process.env.npm_package_version },
-	disableLogger: process.env.NODE_ENV === 'production',
-	widenClientFileUpload: process.env.NODE_ENV !== 'production',
-	automaticVercelMonitors: process.env.NODE_ENV === 'production',
-	reactComponentAnnotation: { enabled: process.env.NODE_ENV === 'production' },
+	authToken: process.env.NODE_ENV === 'production' ? process.env.SENTRY_AUTH_TOKEN : undefined,
+
+	// Logging
+	debug: false,
+	silent: process.env.NODE_ENV !== 'production',
+
+	// Release tracking
+	release:
+		process.env.NODE_ENV === 'production' ? { name: process.env.npm_package_version } : undefined,
+
+	// Client bundle upload
+	widenClientFileUpload: process.env.NODE_ENV === 'production',
+
+	// Ad-blocker avoidance (prod only)
 	tunnelRoute: process.env.NODE_ENV === 'production' ? '/monitoring' : undefined,
+
+	// Sourcemaps (BEST PRACTICE)
 	sourcemaps: {
-		disable: process.env.NODE_ENV === 'production',
+		disable: process.env.NODE_ENV !== 'production',
 		deleteSourcemapsAfterUpload: process.env.NODE_ENV === 'production',
+	},
+
+	webpack: {
+		// Vercel Cron monitoring (prod only)
+		automaticVercelMonitors: process.env.NODE_ENV === 'production',
+
+		// Tree-shaking + bundle hygiene
+		treeshake: { removeDebugLogging: process.env.NODE_ENV === 'production' },
+
+		// Better React stack traces
+		reactComponentAnnotation: { enabled: process.env.NODE_ENV === 'production' },
 	},
 }
 

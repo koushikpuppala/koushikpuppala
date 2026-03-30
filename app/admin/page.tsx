@@ -1,11 +1,10 @@
-'use client'
-
 import { DataTable } from 'components'
 // import { useAuth } from 'contexts'
-import { useSearchParams } from 'next/navigation'
+import type { SearchParamsProps } from 'types/app'
 import type { DataTableFilters } from 'types/components'
 
-const HomePage = () => {
+const HomePage = async ({ searchParams }: SearchParamsProps) => {
+	const params = await searchParams
 	// const { login } = useAuth()
 
 	const data = [
@@ -26,28 +25,26 @@ const HomePage = () => {
 		{ id: 'bhqecj4p2', amount: 721, status: 'failed', email: 'carmella@example.com' },
 	]
 
-	const searchParams = useSearchParams()
-
 	// const search = searchParams.get('search') || ''
-	const email = searchParams.get('email') || ''
-	const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
-	const pageSize = searchParams.get('pageSize') ? Number(searchParams.get('pageSize')) : 10
-	const status = searchParams.get('status') || ''
+	const email = params.email?.toString() || ''
+	const status = params.status?.toString() || ''
+	const page = params.page ? Number(params.page) : 1
+	const pageSize = params.pageSize ? Number(params.pageSize) : 10
 
 	const filters: DataTableFilters[] = [
 		{ id: 'amount', label: 'Search Amount...', type: 'search' },
 		{
 			id: 'email',
 			label: 'Filter by Email',
-			type: 'select',
-			options: Array.from(new Set(data.map((item) => item.email)))
+			type: 'search-select',
+			options: Array.from(new Set(data.map(item => item.email)))
 				.sort((a, b) => a.localeCompare(b))
-				.map((email) => ({ label: email, value: email })),
+				.map(email => ({ label: email, value: email })),
 		},
 		{
 			id: 'status',
 			label: 'Filter by Status',
-			type: 'search-select',
+			type: 'select',
 			options: [
 				{ label: 'Success', value: 'success' },
 				{ label: 'Processing', value: 'processing' },
@@ -57,11 +54,11 @@ const HomePage = () => {
 	]
 
 	const filteredData = data
-		.filter((item) => (status ? item.status.toLowerCase() === status.toLowerCase() : true))
-		.filter((item) => item.email.toLowerCase().includes(email.toLowerCase()))
+		.filter(item => (status ? item.status.toLowerCase() === status.toLowerCase() : true))
+		.filter(item => item.email.toLowerCase().includes(email.toLowerCase()))
 
 	return (
-		<div className='flex h-full w-full flex-col items-center bg-accent justify-center text-white'>
+		<div className='flex h-full w-full flex-col items-center justify-center text-white'>
 			{/* <h1 className='text-4xl font-bold'>Welcome to the Admin Dashboard</h1>
 			<p className='mt-2 text-lg'>Manage your application settings and content here.</p>
 			<button
@@ -78,6 +75,7 @@ const HomePage = () => {
 					{ accessorKey: 'email', header: 'Email', enableHiding: false },
 					{ accessorKey: 'amount', header: 'Amount' },
 				]}
+				disablePageSizeOptions
 				data={filteredData.slice((page - 1) * pageSize, page * pageSize)}
 			/>
 		</div>

@@ -7,12 +7,25 @@ import * as Sentry from '@sentry/nextjs'
 
 if (process.env.NODE_ENV !== 'development')
 	Sentry.init({
-		debug: false,
-		spotlight: false,
-		tracesSampleRate: 0.1,
-		replaysSessionSampleRate: 0.1,
-		replaysOnErrorSampleRate: 1.0,
 		environment: process.env.NODE_ENV,
 		dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 		release: process.env.npm_package_version,
+
+		debug: false,
+		spotlight: false,
+		enableLogs: true,
+
+		tracesSampler: ({ transactionContext, parentSampled }) => {
+			if (parentSampled) return 1.0
+
+			const name = transactionContext?.name ?? ''
+
+			if (name === '/health' || name.startsWith('/_next')) return 0
+
+			if (name.includes('auth') || name.includes('session')) return 0.05
+
+			return 0
+		},
+
+		ignoreTransactions: ['/favicon.ico', '/robots.txt', '/sitemap.xml'],
 	})

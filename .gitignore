@@ -10,7 +10,7 @@ node_modules
 coverage
 
 # Build Outputs
-**/prisma/client
+**/prisma/generated
 .next
 out
 build

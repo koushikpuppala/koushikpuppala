@@ -26,3 +26,5 @@ export type SidebarButtonProps = {
 } & React.ComponentProps<'button'>
 
 export type SidebarProviderProps = RootLayoutProps & Partial<SidebarContextProps>
+
+export type SessionStatus = 'booting' | 'ready' | 'refreshing'

@@ -15,8 +15,8 @@ WORKDIR /app
 # Copy package management files to the working directory
 COPY package.json pnpm-lock.yaml .npmrc ./
 
-# Install project dependencies using Yarn
-RUN pnpm install
+# Install project dependencies using pnpm with a frozen lockfile to ensure consistency
+RUN pnpm install --frozen-lockfile
 
 # Create a new stage called "builder" based on the "base" image
 FROM base AS builder

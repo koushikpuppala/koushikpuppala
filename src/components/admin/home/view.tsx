@@ -6,21 +6,9 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { DataTable } from 'components/ui'
 import { getAllHome } from 'actions/cache'
 import { formatDate } from 'utils/formatDate'
-import { useSearchParams } from 'next/navigation'
 import { useEffect, useMemo, useState, useTransition } from 'react'
 
-export const AdminHomeViewComponent = () => {
-	const searchParams = useSearchParams()
-
-	const filter = useMemo(
-		() => ({
-			page: Number(searchParams.get('page') || 1),
-			count: Number(searchParams.get('count') || 10),
-			nonPaginated: searchParams.get('nonPaginated') === 'true' || false,
-		}),
-		[searchParams]
-	)
-
+export const AdminHomeViewComponent = ({ filter }: { filter: { page: number } }) => {
 	const [isLoading, startLoadingTransition] = useTransition()
 
 	const [data, setData] = useState<Home[]>([])
@@ -29,8 +17,6 @@ export const AdminHomeViewComponent = () => {
 	useEffect(() => {
 		startLoadingTransition(async () => {
 			try {
-				await new Promise((resolve) => setTimeout(resolve, 5000)) // Simulate loading delay
-
 				const { error, message, result, totalCount } = await getAllHome(filter)
 
 				if (error) throw new Error(message)
@@ -98,7 +84,7 @@ export const AdminHomeViewComponent = () => {
 				},
 			},
 		],
-		[]
+		[],
 	)
 
 	return (
@@ -107,7 +93,6 @@ export const AdminHomeViewComponent = () => {
 			columns={columns}
 			loading={isLoading}
 			disableSearch={true}
-			pageSize={filter.count}
 			disableDateRange={true}
 			totalCount={totalCount}
 			disableClearFilters={true}

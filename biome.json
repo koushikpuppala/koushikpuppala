@@ -1,10 +1,6 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.0/schema.json",
-	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"useIgnoreFile": true
-	},
+	"$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
 	"files": {
 		"ignoreUnknown": true,
 		"includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
@@ -20,16 +16,8 @@
 	},
 	"linter": {
 		"enabled": true,
-		"rules": {
-			"recommended": true,
-			"suspicious": {
-				"noUnknownAtRules": "off"
-			}
-		},
-		"domains": {
-			"next": "recommended",
-			"react": "recommended"
-		}
+		"domains": { "next": "recommended", "react": "recommended" },
+		"rules": { "recommended": true, "suspicious": { "noUnknownAtRules": "off" } }
 	},
 	"javascript": {
 		"formatter": {
@@ -41,16 +29,6 @@
 		}
 	},
 	"html": { "formatter": { "indentScriptAndStyle": true, "selfCloseVoidElements": "always" } },
-	"css": {
-		"parser": { "tailwindDirectives": true },
-		"formatter": { "quoteStyle": "single" }
-	},
-	"assist": {
-		"actions": {
-			"source": {
-				"recommended": true,
-				"organizeImports": "off"
-			}
-		}
-	}
+	"css": { "parser": { "tailwindDirectives": true }, "formatter": { "quoteStyle": "single" } },
+	"assist": { "actions": { "source": { "recommended": true, "organizeImports": "off" } } }
 }

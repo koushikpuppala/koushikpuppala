@@ -11,7 +11,7 @@ export class Result<T> implements ServerActionResponse<T> {
 		private functionName: string,
 		public result?: T,
 		public totalCount?: number,
-		private errorStack?: Error
+		private errorStack?: Error,
 	) {
 		Object.defineProperty(this, 'functionName', {
 			value: functionName,
@@ -35,14 +35,14 @@ export class Result<T> implements ServerActionResponse<T> {
 					message: this.message,
 					result: this.result,
 					totalCount: this.totalCount,
-			  })
+				})
 			: logger.info(this.message, this.functionName, {
 					error: this.error,
 					code: this.code,
 					message: this.message,
 					result: this.result,
 					totalCount: this.totalCount,
-			  })
+				})
 
 	private toJSON() {
 		return {
@@ -58,7 +58,7 @@ export class Result<T> implements ServerActionResponse<T> {
 		message: string,
 		functionName: string,
 		result: T,
-		totalCount?: number
+		totalCount?: number,
 	) => ServerActionResponse<T> = (message, functionName, result, totalCount) =>
 		new Result(false, RESPONSE_CODES.SUCCESS, message, functionName, result, totalCount).toJSON()
 
@@ -66,15 +66,15 @@ export class Result<T> implements ServerActionResponse<T> {
 		(message, functionName, result) =>
 			new Result(false, RESPONSE_CODES.CREATED, message, functionName, result).toJSON()
 
-	static noContent: (message: string, functionName: string) => ServerActionResponse<unknown> = (
+	static noContent: (message: string, functionName: string) => ServerActionResponse<undefined> = (
 		message,
-		functionName
-	) => new Result(false, RESPONSE_CODES.NO_CONTENT, message, functionName).toJSON()
+		functionName,
+	) => new Result(false, RESPONSE_CODES.NO_CONTENT, message, functionName, undefined).toJSON()
 
 	static badRequest: (
 		message: string,
 		functionName: string,
-		errorStack?: Error
+		errorStack?: Error,
 	) => ServerActionResponse<undefined> = (message, functionName, errorStack) =>
 		new Result(
 			true,
@@ -83,13 +83,13 @@ export class Result<T> implements ServerActionResponse<T> {
 			functionName,
 			undefined,
 			undefined,
-			errorStack
+			errorStack,
 		).toJSON()
 
 	static unauthorized: (
 		message: string,
 		functionName: string,
-		errorStack?: Error
+		errorStack?: Error,
 	) => ServerActionResponse<undefined> = (message, functionName, errorStack) =>
 		new Result(
 			true,
@@ -98,13 +98,13 @@ export class Result<T> implements ServerActionResponse<T> {
 			functionName,
 			undefined,
 			undefined,
-			errorStack
+			errorStack,
 		).toJSON()
 
 	static forbidden: (
 		message: string,
 		functionName: string,
-		errorStack?: Error
+		errorStack?: Error,
 	) => ServerActionResponse<undefined> = (message, functionName, errorStack) =>
 		new Result(
 			true,
@@ -113,13 +113,13 @@ export class Result<T> implements ServerActionResponse<T> {
 			functionName,
 			undefined,
 			undefined,
-			errorStack
+			errorStack,
 		).toJSON()
 
 	static notFound: (
 		message: string,
 		functionName: string,
-		errorStack?: Error
+		errorStack?: Error,
 	) => ServerActionResponse<undefined> = (message, functionName, errorStack) =>
 		new Result(
 			true,
@@ -128,13 +128,13 @@ export class Result<T> implements ServerActionResponse<T> {
 			functionName,
 			undefined,
 			undefined,
-			errorStack
+			errorStack,
 		).toJSON()
 
 	static conflict: (
 		message: string,
 		functionName: string,
-		errorStack?: Error
+		errorStack?: Error,
 	) => ServerActionResponse<undefined> = (message, functionName, errorStack) =>
 		new Result(
 			true,
@@ -143,13 +143,13 @@ export class Result<T> implements ServerActionResponse<T> {
 			functionName,
 			undefined,
 			undefined,
-			errorStack
+			errorStack,
 		).toJSON()
 
 	static internalServerError: (
 		message: string,
 		functionName: string,
-		errorStack?: Error
+		errorStack?: Error,
 	) => ServerActionResponse<undefined> = (message, functionName, errorStack) =>
 		new Result(
 			true,
@@ -158,13 +158,13 @@ export class Result<T> implements ServerActionResponse<T> {
 			functionName,
 			undefined,
 			undefined,
-			errorStack
+			errorStack,
 		).toJSON()
 
 	static serviceUnavailable: (
 		message: string,
 		functionName: string,
-		errorStack?: Error
+		errorStack?: Error,
 	) => ServerActionResponse<undefined> = (message, functionName, errorStack) =>
 		new Result(
 			true,
@@ -173,6 +173,6 @@ export class Result<T> implements ServerActionResponse<T> {
 			functionName,
 			undefined,
 			undefined,
-			errorStack
+			errorStack,
 		).toJSON()
 }

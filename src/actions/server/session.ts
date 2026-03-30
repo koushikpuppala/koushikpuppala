@@ -5,11 +5,11 @@ import { logger } from 'lib/logger'
 import { Result } from 'lib/result'
 import { getCookie } from 'lib/cookies'
 import { adminAuth } from 'firebase/admin'
-import { COOKIE_NAME } from 'constants/cookies'
+import { SESSION_COOKIE_NAME } from 'constants/cookies'
 
 export const revokeSession = async (functionName: string) => {
 	try {
-		const token = await getCookie(COOKIE_NAME)
+		const token = await getCookie(SESSION_COOKIE_NAME)
 
 		if (!token) return Result.unauthorized('Session token is required', functionName)
 
@@ -44,7 +44,7 @@ export const revokeSession = async (functionName: string) => {
 
 export const revokeAllSessions = async (functionName: string) => {
 	try {
-		const token = await getCookie(COOKIE_NAME)
+		const token = await getCookie(SESSION_COOKIE_NAME)
 
 		if (!token) return Result.unauthorized('Session token is required', functionName)
 

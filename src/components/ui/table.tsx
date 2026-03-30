@@ -13,7 +13,7 @@ const Table = ({ className, ...props }: React.ComponentProps<'table'>) => (
 const TableHeader = ({ className, ...props }: React.ComponentProps<'thead'>) => (
 	<thead
 		data-slot='table-header'
-		className={classNames('border-neutral-100/10 [&_tr]:border-b', className)}
+		className={classNames('border-neutral-900/10 [&_tr]:border-b', className)}
 		{...props}
 	/>
 )
@@ -30,8 +30,8 @@ const TableFooter = ({ className, ...props }: React.ComponentProps<'tfoot'>) => 
 	<tfoot
 		data-slot='table-footer'
 		className={classNames(
-			'bg-muted/50 border-t border-neutral-100/10 font-medium [&>tr]:last:border-b-0',
-			className
+			'bg-muted/50 border-t border-neutral-900/10 font-medium [&>tr]:last:border-b-0',
+			className,
 		)}
 		{...props}
 	/>
@@ -41,8 +41,8 @@ const TableRow = ({ className, ...props }: React.ComponentProps<'tr'>) => (
 	<tr
 		data-slot='table-row'
 		className={classNames(
-			'hover:bg-text-muted/15 data-[state=selected]:bg-text-muted border-b border-neutral-100/10 transition-colors',
-			className
+			'data-[state=selected]:bg-text-muted even:bg-text-muted/15 hover:bg-text-muted/10 even:hover:bg-text-muted/25 border-b border-neutral-900/10 transition-colors',
+			className,
 		)}
 		{...props}
 	/>
@@ -52,8 +52,8 @@ const TableHead = ({ className, ...props }: React.ComponentProps<'th'>) => (
 	<th
 		data-slot='table-head'
 		className={classNames(
-			'h-10 border-neutral-100/10 bg-neutral-900/75 px-2 py-4 text-left align-middle font-semibold whitespace-nowrap not-last:border-r [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
-			className
+			'h-10 border-neutral-900/10 bg-neutral-900/75 px-2 py-4 text-left align-middle font-semibold whitespace-nowrap not-last:border-r [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+			className,
 		)}
 		{...props}
 	/>
@@ -63,8 +63,8 @@ const TableCell = ({ className, ...props }: React.ComponentProps<'td'>) => (
 	<td
 		data-slot='table-cell'
 		className={classNames(
-			'border-neutral-100/10 px-2 py-2.5 align-middle whitespace-nowrap not-last:border-r [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
-			className
+			'border-neutral-900/10 px-2 py-3 align-middle whitespace-nowrap not-last:border-r [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+			className,
 		)}
 		{...props}
 	/>

@@ -1,4 +1,4 @@
-export const COOKIE_NAME = '__session_token'
+export const SESSION_COOKIE_NAME = '__session_token'
 
 export const REFRESH_COOKIE_NAME = '__refresh_token'
 
