@@ -52,7 +52,7 @@
 	},
 	"devDependencies": {
 		"@commitlint/cli": "~19.7.1",
-		"@commitlint/config-conventional": "~19.7.1",
+		"@commitlint/config-conventional": "~21.0.1",
 		"@commitlint/types": "~19.5.0",
 		"@sanity/icons": "~3.6.0",
 		"@sanity/types": "~3.75.1",
