@@ -10,7 +10,7 @@ node_modules
 coverage
 
 # Build Outputs
-**/prisma/generated
+**/prisma/**/generated
 .next
 out
 build
@@ -28,8 +28,9 @@ lerna-debug.log*
 # Yarn Integrity file
 .yarn-integrity
 
-# Local dotenv environment variable files
-**/.env*.local
+# dotenv environment variable files
+**/.env*
+
 
 # TypeScript cache
 *.tsbuildinfo
@@ -49,3 +50,6 @@ next-env.d.ts
 
 # Biome cache
 .biome/
+
+# Turbo Repo cache
+.turbo/

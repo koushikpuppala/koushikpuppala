@@ -1,0 +1,11 @@
+{
+	"extends": "@repo/config/tsconfig.next",
+	"include": [
+		"**/*.ts",
+		"**/*.tsx",
+		"**/*.mjs",
+		"next-env.d.ts",
+		".next/types/**/*.ts",
+		".next/dev/types/**/*.ts"
+	]
+}

@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
 	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
 	"files": {
 		"ignoreUnknown": true,
@@ -16,8 +16,8 @@
 	},
 	"linter": {
 		"enabled": true,
-		"domains": { "next": "recommended", "react": "recommended" },
-		"rules": { "recommended": true, "suspicious": { "noUnknownAtRules": "off" } }
+		"domains": { "project": "recommended", "types": "recommended" },
+		"rules": { "suspicious": { "noUnknownAtRules": "off" } }
 	},
 	"javascript": {
 		"formatter": {
@@ -26,9 +26,25 @@
 			"semicolons": "asNeeded",
 			"arrowParentheses": "asNeeded",
 			"quoteStyle": "single"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
 		}
 	},
 	"html": { "formatter": { "indentScriptAndStyle": true, "selfCloseVoidElements": "always" } },
 	"css": { "parser": { "tailwindDirectives": true }, "formatter": { "quoteStyle": "single" } },
-	"assist": { "actions": { "source": { "recommended": true, "organizeImports": "off" } } }
+	"assist": { "actions": { "source": { "recommended": true, "organizeImports": "off" } } },
+	"overrides": [
+		{
+			"includes": ["apps/client/**/*", "packages/ui/**/*"],
+			"linter": { "domains": { "react": "recommended", "next": "recommended" } }
+		},
+		{
+			"includes": ["apps/server/**/*"],
+			"linter": {
+				"domains": { "react": "none", "next": "none" },
+				"rules": { "style": { "useImportType": "off" } }
+			}
+		}
+	]
 }

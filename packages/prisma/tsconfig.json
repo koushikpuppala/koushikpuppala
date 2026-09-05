@@ -1,0 +1,14 @@
+{
+	"extends": "@repo/config/tsconfig.node",
+	"compilerOptions": {
+		"outDir": "dist" /* Specify an output folder for all emitted files. */,
+		"rootDir": "src" /* Specify the root folder within your source files. */,
+
+		/* Modules */
+		"paths": {
+			"*": ["./src/*"]
+		} /* Specify a set of entries that re-map imports to additional lookup locations. */
+	},
+	"include": ["src/client.ts", "src/generated/**/*.ts"],
+	"exclude": ["src/seed.ts", "node_modules", "dist"]
+}

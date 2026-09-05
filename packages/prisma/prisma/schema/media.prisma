@@ -1,0 +1,54 @@
+model Media {
+  id      String @id @default(uuid()) @db.Uuid
+  version Int    @default(1)
+
+  type         MediaType @default(IMAGE)
+  fileName     String    @map("file_name")
+  originalName String    @map("original_name")
+
+  size      Int
+  mimeType  String @map("mime_type")
+  extension String
+
+  bucket     String
+  folder     String?
+  storageKey String  @unique @map("storage_key")
+
+  url String?
+
+  width  Int?
+  height Int?
+
+  altText String? @map("alt_text")
+  caption String?
+
+  uploadedById String? @map("uploaded_by_id") @db.Uuid
+  uploadedBy   User?   @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  homes             Home[]
+  about             About[]
+  resume            Resume?
+  projectsThumbnail Project[]        @relation("ProjectThumbnail")
+  projectsHero      Project[]        @relation("ProjectHeroImage")
+  services          Service[]
+  education         Education[]
+  experiences       Experience[]
+  skills            Skill[]
+  projectGalleries  ProjectGallery[]
+
+  @@index([type], map: "media_type_index")
+  @@index([uploadedById], map: "media_uploaded_by_id_index")
+  @@map("media")
+}
+
+enum MediaType {
+  IMAGE    @map("image")
+  VIDEO    @map("video")
+  AUDIO    @map("audio")
+  DOCUMENT @map("document")
+  OTHER    @map("other")
+}

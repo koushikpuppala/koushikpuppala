@@ -1,0 +1,53 @@
+model User {
+  id      String @id @default(uuid()) @db.Uuid
+  version Int    @default(1)
+
+  firebaseUid String @unique @map("firebase_uid")
+
+  email String @unique
+
+  displayName String  @map("display_name")
+  firstName   String  @map("first_name")
+  lastName    String? @map("last_name")
+
+  photoUrl String? @map("photo_url")
+
+  provider AuthProvider
+
+  role   UserRole   @default(USER)
+  status UserStatus @default(ACTIVE)
+
+  emailVerified Boolean @default(false) @map("email_verified")
+
+  lastLoginAt    DateTime? @map("last_login_at")
+  lastActivityAt DateTime? @map("last_activity_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  medias           Media[]
+  sessions         Session[]
+  assignedContacts Contact[]
+
+  @@index([role], map: "user_role_index")
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN  @map("admin")
+  EDITOR @map("editor")
+  USER   @map("user")
+}
+
+enum UserStatus {
+  ACTIVE    @map("active")
+  INACTIVE  @map("inactive")
+  SUSPENDED @map("suspended")
+}
+
+enum AuthProvider {
+  GOOGLE   @map("google")
+  GITHUB   @map("github")
+  PASSWORD @map("password")
+}

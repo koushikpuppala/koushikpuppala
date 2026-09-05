@@ -1,0 +1,15 @@
+{
+	"extends": "@repo/config/tsconfig.nest",
+	"compilerOptions": {
+		"outDir": "dist" /* Specify an output folder for all emitted files. */,
+		"rootDir": "src" /* Specify the root folder within your source files. */,
+
+		"tsBuildInfoFile": "./dist/.tsbuildinfo" /* Specify the folder for .tsbuildinfo incremental compilation files. */,
+
+		/* Modules */
+		"paths": {
+			"*": ["./src/*"]
+		} /* Specify a set of entries that re-map imports to additional lookup locations. */
+	},
+	"include": ["src/**/*"]
+}

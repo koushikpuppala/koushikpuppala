@@ -50,3 +50,6 @@ next-env.d.ts
 
 # Biome cache
 .biome/
+
+# Turbo Repo cache
+.turbo/

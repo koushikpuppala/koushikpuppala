@@ -1,0 +1,52 @@
+model Contact {
+  id      String @id @default(uuid()) @db.Uuid
+  version Int    @default(1)
+
+  name    String
+  email   String
+  subject String
+  message String @db.Text
+
+  url String?
+
+  status   ContactStatus   @default(UNREAD)
+  priority ContactPriority @default(NORMAL)
+  source   String?         @default("website")
+
+  internalNotes String? @map("internal_notes") @db.Text
+
+  assignedToId String? @map("assigned_to_id") @db.Uuid
+  assignedTo   User?   @relation(fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  readAt     DateTime? @map("read_at")
+  resolvedAt DateTime? @map("resolved_at")
+
+  ipAddress String? @map("ip_address")
+  userAgent String? @map("user_agent")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@index([email], map: "contact_email_index")
+  @@index([priority], map: "contact_priority_index")
+  @@index([createdAt], map: "contact_created_at_index")
+  @@index([assignedToId], map: "contact_assigned_to_id_index")
+  @@index([status, deletedAt], map: "contact_status_deleted_index")
+  @@map("contact")
+}
+
+enum ContactStatus {
+  UNREAD   @map("unread")
+  READ     @map("read")
+  RESOLVED @map("resolved")
+  ARCHIVED @map("archived")
+  SPAM     @map("spam")
+}
+
+enum ContactPriority {
+  LOW    @map("low")
+  NORMAL @map("normal")
+  HIGH   @map("high")
+  URGENT @map("urgent")
+}

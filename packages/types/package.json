@@ -1,0 +1,23 @@
+{
+	"name": "types",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./api": "./src/api/index.ts",
+		"./models": "./src/models/index.ts",
+		"./components": "./src/components/index.ts",
+		"./*": "./src/*/index.ts"
+	},
+	"scripts": {
+		"build": "tsc"
+	},
+	"devDependencies": {
+		"@repo/config": "workspace:*",
+		"typescript": "6.0.3"
+	},
+	"dependencies": {
+		"@tanstack/react-table": "~9.1.2"
+	}
+}

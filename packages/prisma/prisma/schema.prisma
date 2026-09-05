@@ -1,0 +1,11 @@
+generator client {
+  runtime         = "nodejs"
+  provider        = "prisma-client"
+  output          = "../src/generated"
+  previewFeatures = ["strictUndefinedChecks"]
+}
+
+datasource db {
+  provider     = "postgresql"
+  relationMode = "prisma"
+}

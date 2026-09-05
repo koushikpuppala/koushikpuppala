@@ -1,0 +1,24 @@
+model ProjectGallery {
+  projectId String @map("project_id") @db.Uuid
+  mediaId   String @map("media_id") @db.Uuid
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  media   Media   @relation(fields: [mediaId], references: [id], onDelete: Restrict)
+
+  title       String?
+  description String?
+  caption     String?
+  altText     String? @map("alt_text")
+
+  isFeatured Boolean @default(false) @map("is_featured")
+  isVisible  Boolean @default(true) @map("is_visible")
+
+  sortOrder Int @default(0) @map("sort_order")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([projectId, mediaId])
+  @@index([mediaId], map: "project_gallery_media_id_index")
+  @@index([projectId, sortOrder], map: "project_gallery_sort_order_index")
+  @@map("project_gallery")
+}

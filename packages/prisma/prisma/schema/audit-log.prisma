@@ -1,0 +1,35 @@
+model AuditLog {
+  id String @id @default(uuid()) @db.Uuid
+
+  action AuditAction
+
+  entity   String
+  entityId String @map("entity_id")
+
+  oldData Json? @map("old_data")
+  newData Json? @map("new_data")
+
+  actor     String
+  actorId   String? @map("actor_id")
+  ipAddress String? @map("ip_address")
+  userAgent String? @map("user_agent")
+  requestId String? @map("request_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([actorId], map: "audit_actor_id_index")
+  @@index([createdAt], map: "audit_created_at_index")
+  @@index([entity, entityId], map: "audit_entity_index")
+  @@map("audit_logs")
+}
+
+enum AuditAction {
+  CREATE    @map("create")
+  UPDATE    @map("update")
+  DELETE    @map("delete")
+  PUBLISH   @map("publish")
+  UNPUBLISH @map("unpublish")
+  UPLOAD    @map("upload")
+  LOGIN     @map("login")
+  LOGOUT    @map("logout")
+}

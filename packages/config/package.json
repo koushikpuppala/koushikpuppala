@@ -1,0 +1,12 @@
+{
+	"name": "@repo/config",
+	"version": "0.0.1",
+	"private": true,
+	"exports": {
+		"./tsconfig": "./tsconfig.json",
+		"./tsconfig.node": "./tsconfig.node.json",
+		"./tsconfig.react": "./tsconfig.react.json",
+		"./tsconfig.next": "./tsconfig.next.json",
+		"./tsconfig.nest": "./tsconfig.nest.json"
+	}
+}

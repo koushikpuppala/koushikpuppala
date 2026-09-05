@@ -1,0 +1,30 @@
+model About {
+  id      String @id @default(uuid()) @db.Uuid
+  version Int    @default(1)
+
+  title     String
+  content   String  @db.Text
+  biography String? @db.Text
+
+  profileImageId String? @map("profile_image_id") @db.Uuid
+  profileImage   Media?  @relation(fields: [profileImageId], references: [id], onDelete: SetNull)
+
+  highlights String[]
+  skills     String[]
+
+  ctaLabel String? @map("cta_label")
+  ctaUrl   String? @map("cta_url")
+
+  sortOrder Int @default(0) @map("sort_order")
+
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@index([profileImageId], map: "about_profile_image_id_index")
+  @@index([isPublished, deletedAt, sortOrder], map: "about_published_deleted_sort_index")
+  @@map("about")
+}

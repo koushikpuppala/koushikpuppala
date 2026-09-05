@@ -1,0 +1,35 @@
+model Home {
+  id      String @id @default(uuid()) @db.Uuid
+  version Int    @default(1)
+
+  title     String
+  separator String @default("|")
+
+  subtitles String[]
+
+  content String @db.Text
+
+  ctaLabel          String  @default("View Projects") @map("cta_label")
+  ctaUrl            String  @default("/projects") @map("cta_url")
+  secondaryCtaLabel String? @map("secondary_cta_label")
+  secondaryCtaUrl   String? @map("secondary_cta_url")
+
+  stats          Json?
+  featuredSkills String[] @map("featured_skills")
+
+  profileImageId String? @map("profile_image_id") @db.Uuid
+  profileImage   Media?  @relation(fields: [profileImageId], references: [id], onDelete: SetNull)
+
+  sortOrder Int @default(0) @map("sort_order")
+
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@index([profileImageId], map: "home_profile_image_id_index")
+  @@index([isPublished, deletedAt, sortOrder], map: "home_published_deleted_sort_index")
+  @@map("home")
+}

@@ -1,0 +1,56 @@
+model Project {
+  id      String @id @default(uuid()) @db.Uuid
+  version Int    @default(1)
+
+  slug     String @unique
+  title    String
+  subtitle String
+
+  category    String
+  projectType String?       @map("project_type")
+  featured    Boolean       @default(false)
+  status      ProjectStatus @default(COMPLETED)
+
+  shortDescription String?  @map("short_description")
+  descriptions     String[]
+  caseStudy        String?  @map("case_study") @db.Text
+  tags             String[]
+  technologies     String[]
+  metrics          Json?
+
+  startDate DateTime? @map("start_date")
+  endDate   DateTime? @map("end_date")
+
+  github  String?
+  liveUrl String? @map("live_url")
+
+  thumbnailId String? @map("thumbnail_id") @db.Uuid
+  thumbnail   Media?  @relation("ProjectThumbnail", fields: [thumbnailId], references: [id], onDelete: SetNull)
+
+  heroImageId String? @map("hero_image_id") @db.Uuid
+  heroImage   Media?  @relation("ProjectHeroImage", fields: [heroImageId], references: [id], onDelete: SetNull)
+
+  gallery ProjectGallery[]
+
+  sortOrder Int @default(0) @map("sort_order")
+
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@index([category], map: "project_category_index")
+  @@index([featured], map: "project_featured_index")
+  @@index([thumbnailId], map: "project_thumbnail_id_index")
+  @@index([heroImageId], map: "project_hero_image_id_index")
+  @@index([isPublished, deletedAt, sortOrder], map: "project_published_deleted_sort_index")
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  COMPLETED   @map("completed")
+  IN_PROGRESS @map("in_progress")
+  ARCHIVED    @map("archived")
+}

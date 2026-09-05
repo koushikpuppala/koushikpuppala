@@ -1,0 +1,35 @@
+model Education {
+  id      String @id @default(uuid()) @db.Uuid
+  version Int    @default(1)
+
+  degree       String
+  fieldOfStudy String   @map("field_of_study")
+  university   String
+  location     String
+  description  String[]
+  achievements String[]
+
+  startDate    DateTime  @map("start_date")
+  endDate      DateTime? @map("end_date")
+  expectedDate DateTime? @map("expected_date")
+
+  isCurrent Boolean @default(false) @map("is_current")
+
+  website String?
+
+  logoId String? @map("logo_id") @db.Uuid
+  logo   Media?  @relation(fields: [logoId], references: [id], onDelete: SetNull)
+
+  sortOrder Int @default(0) @map("sort_order")
+
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@index([logoId], map: "education_logo_id_index")
+  @@index([isPublished, deletedAt, sortOrder], map: "education_published_deleted_sort_index")
+  @@map("education")
+}

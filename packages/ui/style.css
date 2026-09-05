@@ -1,0 +1,410 @@
+@import 'tailwindcss';
+@import './react-date-range-dark.css';
+
+/* ==========================================================================
+   Signal Design System — Token Definitions & Theme Configuration
+   Lovable Portfolio "Signal" Aesthetic (Dark-First)
+   ========================================================================== */
+
+:root,
+[data-theme="dark"],
+.dark {
+	/* Backgrounds & Surfaces (Near-black / deep cool charcoal) */
+	--background: #090a0c;
+	--foreground: #f1f3f5;
+	--surface: #111317;
+	--surface-strong: #16191e;
+	--surface-subtle: #0d0f13;
+	--surface-card: #12141a;
+
+	/* Borders (Crisp, hairline borders over heavy shadows) */
+	--border: rgba(255, 255, 255, 0.08);
+	--border-subtle: rgba(255, 255, 255, 0.04);
+	--border-strong: rgba(255, 255, 255, 0.16);
+
+	/* Muted & Technical Content */
+	--muted: #181b21;
+	--muted-foreground: #8b939e;
+	--muted-subtle: #565d68;
+
+	/* Brand Signal Accent (Restrained, signature engineering pink) */
+	--signal: #ff3366;
+	--signal-hover: #ff4d7a;
+	--signal-soft: rgba(255, 51, 102, 0.12);
+	--signal-glow: rgba(255, 51, 102, 0.25);
+	--signal-border: rgba(255, 51, 102, 0.35);
+
+	/* Accessibility & Focus */
+	--focus-ring: rgba(255, 51, 102, 0.6);
+
+	/* Status indicators */
+	--status-live: #10b981;
+	--status-live-soft: rgba(16, 185, 129, 0.12);
+
+	color-scheme: dark;
+}
+
+[data-theme="light"],
+.light {
+	/* Backgrounds & Surfaces (Near-white / crisp editorial) */
+	--background: #f7f8f9;
+	--foreground: #0e1013;
+	--surface: #ffffff;
+	--surface-strong: #eff1f4;
+	--surface-subtle: #fbfbfc;
+	--surface-card: #ffffff;
+
+	/* Borders */
+	--border: rgba(0, 0, 0, 0.08);
+	--border-subtle: rgba(0, 0, 0, 0.04);
+	--border-strong: rgba(0, 0, 0, 0.16);
+
+	/* Muted & Technical Content */
+	--muted: #f0f2f5;
+	--muted-foreground: #656d76;
+	--muted-subtle: #959da5;
+
+	/* Brand Signal Accent (High contrast on light mode) */
+	--signal: #e11d48;
+	--signal-hover: #be123c;
+	--signal-soft: rgba(225, 29, 72, 0.08);
+	--signal-glow: rgba(225, 29, 72, 0.18);
+	--signal-border: rgba(225, 29, 72, 0.3);
+
+	/* Accessibility & Focus */
+	--focus-ring: rgba(225, 29, 72, 0.5);
+
+	/* Status indicators */
+	--status-live: #059669;
+	--status-live-soft: rgba(5, 150, 105, 0.1);
+
+	color-scheme: light;
+}
+
+@theme {
+	/* Semantic Colors */
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-surface: var(--surface);
+	--color-surface-strong: var(--surface-strong);
+	--color-surface-subtle: var(--surface-subtle);
+	--color-surface-card: var(--surface-card);
+	--color-border: var(--border);
+	--color-border-subtle: var(--border-subtle);
+	--color-border-strong: var(--border-strong);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted-subtle: var(--muted-subtle);
+	--color-signal: var(--signal);
+	--color-accent: var(--signal);
+	--color-signal-hover: var(--signal-hover);
+	--color-signal-soft: var(--signal-soft);
+	--color-signal-glow: var(--signal-glow);
+	--color-signal-border: var(--signal-border);
+	--color-focus-ring: var(--focus-ring);
+	--color-status-live: var(--status-live);
+	--color-status-live-soft: var(--status-live-soft);
+
+	/* Typography Families */
+	--font-display: var(--font-bricolage), system-ui, -apple-system, sans-serif;
+	--font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+	--font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+	/* Interaction & Easing Tokens */
+	--ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-quart-out: cubic-bezier(0.25, 1, 0.5, 1);
+	--ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+	/* Breakpoints */
+	--breakpoint-xs: 450px;
+	--breakpoint-sm: 640px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+	--breakpoint-2xl: 1440px;
+	--breakpoint-3xl: 1600px;
+}
+
+/* ==========================================================================
+   Background & Texture Utilities
+   ========================================================================== */
+
+@utility bg-fine-grid {
+	background-image:
+		linear-gradient(to right, var(--border) 1px, transparent 1px),
+		linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+	background-size: 48px 48px;
+}
+
+@utility bg-micro-grid {
+	background-image:
+		linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
+		linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
+	background-size: 16px 16px;
+}
+
+@utility bg-dot-grid {
+	background-image: radial-gradient(var(--border) 1px, transparent 1px);
+	background-size: 24px 24px;
+}
+
+@utility bg-noise {
+	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* Fade Masks */
+@utility mask-radial-fade {
+	mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 85%);
+	-webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 85%);
+}
+
+@utility mask-b-fade {
+	mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+	-webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+@utility mask-t-fade {
+	mask-image: linear-gradient(to top, black 50%, transparent 100%);
+	-webkit-mask-image: linear-gradient(to top, black 50%, transparent 100%);
+}
+
+@utility mask-edges-fade {
+	mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 50%, transparent 100%);
+	-webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 50%, transparent 100%);
+}
+
+/* ==========================================================================
+   Brand Motifs
+   ========================================================================== */
+
+@utility signal-rule {
+	height: 1px;
+	width: 100%;
+	background: linear-gradient(90deg, var(--signal) 0%, rgba(255, 51, 102, 0.4) 30%, transparent 100%);
+}
+
+@utility signal-rule-centered {
+	height: 1px;
+	width: 100%;
+	background: linear-gradient(90deg, transparent 0%, var(--signal) 50%, transparent 100%);
+}
+
+@utility ambient-bloom {
+	background: radial-gradient(circle at center, var(--signal-glow) 0%, rgba(255, 51, 102, 0.04) 40%, transparent 70%);
+	filter: blur(48px);
+	pointer-events: none;
+}
+
+@utility beam-glow {
+	box-shadow: 0 0 12px 1px var(--signal);
+}
+
+/* ==========================================================================
+   Typography Utilities
+   ========================================================================== */
+
+@utility text-display-hero {
+	font-family: var(--font-display);
+	font-weight: 500;
+	letter-spacing: -0.035em;
+	line-height: 0.94;
+}
+
+@utility text-display-title {
+	font-family: var(--font-display);
+	font-weight: 500;
+	letter-spacing: -0.025em;
+	line-height: 1.05;
+}
+
+@utility text-display-sub {
+	font-family: var(--font-display);
+	font-weight: 500;
+	letter-spacing: -0.015em;
+	line-height: 1.2;
+}
+
+@utility text-technical-label {
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	line-height: 1rem;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	font-weight: 500;
+	color: var(--muted-foreground);
+}
+
+@utility text-mono-meta {
+	font-family: var(--font-mono);
+	font-size: 0.8125rem;
+	line-height: 1.25rem;
+	color: var(--muted-foreground);
+}
+
+@utility focus-ring {
+	outline: none;
+	ring-width: 2px;
+	ring-color: var(--focus-ring);
+	ring-offset-width: 2px;
+	ring-offset-color: var(--background);
+}
+
+/* ==========================================================================
+   Keyframe Animations
+   ========================================================================== */
+
+@keyframes beam-h {
+	0% {
+		transform: translateX(-100%);
+		opacity: 0;
+	}
+	15% {
+		opacity: 1;
+	}
+	85% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateX(250%);
+		opacity: 0;
+	}
+}
+
+@keyframes beam-v {
+	0% {
+		transform: translateY(-100%);
+		opacity: 0;
+	}
+	15% {
+		opacity: 1;
+	}
+	85% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(250%);
+		opacity: 0;
+	}
+}
+
+@keyframes float-slow {
+	0%, 100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-6px);
+	}
+}
+
+@keyframes pulse-slow {
+	0%, 100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.5;
+		transform: scale(0.96);
+	}
+}
+
+@keyframes orbit-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes orbit-spin-reverse {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(-360deg);
+	}
+}
+
+@utility animate-beam-horizontal {
+	animation: beam-h 4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@utility animate-beam-vertical {
+	animation: beam-v 4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@utility animate-float-slow {
+	animation: float-slow 6s ease-in-out infinite;
+}
+
+@utility animate-pulse-slow {
+	animation: pulse-slow 3s ease-in-out infinite;
+}
+
+@utility animate-orbit-spin {
+	animation: orbit-spin 48s linear infinite;
+}
+
+@utility animate-orbit-spin-reverse {
+	animation: orbit-spin-reverse 48s linear infinite;
+}
+
+/* ==========================================================================
+   Base & Accessibility Layer
+   ========================================================================== */
+
+::selection {
+	background-color: var(--signal);
+	color: #ffffff;
+}
+
+:focus-visible {
+	outline: 2px solid var(--signal);
+	outline-offset: 2px;
+}
+
+@layer components {
+	body {
+		@apply bg-background text-foreground antialiased min-h-screen font-sans leading-relaxed;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	::before,
+	::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	:root {
+		scroll-behavior: smooth;
+	}
+	::-webkit-scrollbar {
+		width: 6px;
+	}
+	::-webkit-scrollbar-track {
+		background: var(--background);
+	}
+	::-webkit-scrollbar-thumb {
+		background: var(--border-strong);
+		border-radius: 3px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--muted-foreground);
+	}
+}
+
+@layer utilities {
+	.scrollbar-none {
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+	.scrollbar-none::-webkit-scrollbar {
+		display: none;
+	}
+}
