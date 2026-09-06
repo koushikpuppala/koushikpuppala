@@ -1,10 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common'
+import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { AuditLogService } from './audit-log.service'
+import { Controller, Get, Query } from '@nestjs/common'
+import { Roles } from 'common/decorators/roles.decorator'
 import { QueryAuditLogDto } from './dto/query-audit-log.dto'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
 
 @ApiTags('Audit Logs')
 @Controller('audit-logs')

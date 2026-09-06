@@ -15,7 +15,7 @@ import { ResponseInterceptor } from 'common/interceptors/response.interceptor'
 import { RequestIdMiddleware } from 'common/middlewares/request-id.middleware'
 import { RequestContextMiddleware } from 'common/middlewares/request-context.middleware'
 
-async function main() {
+const bootstrap = async () => {
 	const app = await NestFactory.create(AppModule, { rawBody: true })
 
 	const express = app.getHttpAdapter().getInstance()
@@ -31,8 +31,8 @@ async function main() {
 
 	app.enableCors({
 		credentials: true,
-		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
 		origin: settings.origin,
+		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
 	})
 
 	app.setGlobalPrefix('api')
@@ -75,13 +75,13 @@ async function main() {
 
 	const config = new DocumentBuilder()
 		.setTitle('Koushik Puppala (Individual Contributor)')
-		.setDescription('API Documentation')
 		.setVersion('1.0.0')
+		.setDescription('API Documentation')
 		.addServer('/', 'Default API endpoints')
 		.addBearerAuth(
 			{
 				type: 'http',
-				scheme: 'bearer',
+				scheme: 'Bearer',
 				bearerFormat: 'JWT',
 				description: 'Provide a Firebase ID Token in the format: Bearer <Firebase ID Token>',
 			},
@@ -107,18 +107,21 @@ async function main() {
 
 		app.use(
 			'/api/docs/v2',
-			redoc({ title: 'Koushik Puppala (Individual Contributor)', specUrl: '/api/docs/openapi.json' }),
+			redoc({
+				title: 'Koushik Puppala (Individual Contributor)',
+				specUrl: '/api/docs/openapi.json',
+			}),
 		)
 	}
 
 	await app.listen(settings.port)
 
 	logger.info('Server started', 'Bootstrap', {
+		pid: process.pid,
+		version: '1.0.0',
 		port: settings.port,
 		environment: settings.environment,
-		version: '1.0.0',
-		pid: process.pid,
 	})
 }
 
-void main()
+void bootstrap()

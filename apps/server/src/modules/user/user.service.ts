@@ -1,25 +1,22 @@
 import type { Prisma, User } from '@repo/prisma'
 import type { AuthenticatedUser } from 'types/express'
 
-import { DatabaseService } from 'database'
-import { UserRole, UserStatus } from '@repo/prisma'
-import { LoggerService } from 'common/logger/logger.service'
 import {
 	ConflictException,
 	Injectable,
 	NotFoundException,
 	BadRequestException,
 } from '@nestjs/common'
-import { FirebaseService } from 'firebase/firebase.service'
-import { AuthProvider } from '@repo/prisma'
-import { withPrismaRetry } from 'database/prisma-retry'
-import { AdminCreateUserDto, AdminUpdateUserDto } from './user.dto'
+import { DatabaseService } from 'database'
 import { UserRecord } from 'firebase-admin/auth'
 import { QueryUserDto } from './dto/query-user.dto'
-
+import { UserRole, UserStatus } from '@repo/prisma'
+import { withPrismaRetry } from 'database/prisma-retry'
+import { AuthProvider, AuditAction } from '@repo/prisma'
+import { FirebaseService } from 'firebase/firebase.service'
+import { LoggerService } from 'common/logger/logger.service'
+import { AdminCreateUserDto, AdminUpdateUserDto } from './user.dto'
 import { AuditLogService } from 'modules/audit-log/audit-log.service'
-import { AuditAction } from '@repo/prisma'
-
 import { ApiResponse, successResponse } from 'common/interfaces/api-response.interface'
 
 @Injectable()
@@ -62,13 +59,13 @@ export class UserService {
 		if (role) where.role = role
 		if (status) where.status = status
 
-		if (search) {
-			const keyword = search.trim()
+		const keyword = search?.trim()
+
+		if (keyword)
 			where.OR = [
 				{ email: { contains: keyword, mode: 'insensitive' } },
 				{ displayName: { contains: keyword, mode: 'insensitive' } },
 			]
-		}
 
 		const [users, total] = await this.prisma.$transaction([
 			this.prisma.user.findMany({

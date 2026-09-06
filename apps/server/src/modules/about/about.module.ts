@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { AboutController } from './about.controller'
 import { AboutService } from './about.service'
+import { AboutController } from './about.controller'
 import { DatabaseModule } from 'database/database.module'
 import { AuditLogModule } from 'modules/audit-log/audit-log.module'
 

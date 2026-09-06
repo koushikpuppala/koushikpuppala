@@ -1,4 +1,3 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
 import {
 	IsArray,
 	IsBoolean,
@@ -14,6 +13,7 @@ import {
 import { Type } from 'class-transformer'
 import { ProjectStatus } from '@repo/prisma'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
 
 export class CreateProjectDto {
 	@ApiProperty({ example: 'koushikpuppala-portfolio' })
@@ -64,19 +64,26 @@ export class CreateProjectDto {
 	descriptions!: string[]
 
 	@ApiPropertyOptional({
-		example: 'Comprehensive case study detailing architecture decisions, CI/CD pipeline, and caching strategy.',
+		example:
+			'Comprehensive case study detailing architecture decisions, CI/CD pipeline, and caching strategy.',
 	})
 	@IsString()
 	@IsOptional()
 	caseStudy?: string
 
-	@ApiPropertyOptional({ example: ['Next.js', 'NestJS', 'PostgreSQL', 'AWS S3', 'Redis'], type: [String] })
+	@ApiPropertyOptional({
+		example: ['Next.js', 'NestJS', 'PostgreSQL', 'AWS S3', 'Redis'],
+		type: [String],
+	})
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
 	tags?: string[] = []
 
-	@ApiPropertyOptional({ example: ['TypeScript', 'Tailwind CSS', 'Docker', 'Prisma'], type: [String] })
+	@ApiPropertyOptional({
+		example: ['TypeScript', 'Tailwind CSS', 'Docker', 'Prisma'],
+		type: [String],
+	})
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()

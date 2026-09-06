@@ -13,7 +13,7 @@ const Table = ({ className, ...props }: React.ComponentProps<'table'>) => (
 const TableHeader = ({ className, ...props }: React.ComponentProps<'thead'>) => (
 	<thead
 		data-slot='table-header'
-		className={classNames('border-neutral-900/10 [&_tr]:border-b', className)}
+		className={classNames('border-b border-border bg-surface-strong/50 font-mono text-xs uppercase tracking-wider text-muted-foreground', className)}
 		{...props}
 	/>
 )
@@ -21,7 +21,7 @@ const TableHeader = ({ className, ...props }: React.ComponentProps<'thead'>) => 
 const TableBody = ({ className, ...props }: React.ComponentProps<'tbody'>) => (
 	<tbody
 		data-slot='table-body'
-		className={classNames('[&_tr:last-child]:border-0', className)}
+		className={classNames('divide-y divide-border font-mono text-xs [&_tr:last-child]:border-0', className)}
 		{...props}
 	/>
 )
@@ -30,7 +30,7 @@ const TableFooter = ({ className, ...props }: React.ComponentProps<'tfoot'>) => 
 	<tfoot
 		data-slot='table-footer'
 		className={classNames(
-			'bg-muted/50 border-t border-neutral-900/10 font-medium [&>tr]:last:border-b-0',
+			'bg-surface/50 border-t border-border font-mono text-xs text-muted-foreground [&>tr]:last:border-b-0',
 			className,
 		)}
 		{...props}
@@ -41,7 +41,7 @@ const TableRow = ({ className, ...props }: React.ComponentProps<'tr'>) => (
 	<tr
 		data-slot='table-row'
 		className={classNames(
-			'data-[state=selected]:bg-text-muted even:bg-text-muted/15 hover:bg-text-muted/10 even:hover:bg-text-muted/25 border-b border-neutral-900/10 transition-colors',
+			'border-b border-border/60 transition-colors hover:bg-accent/40 data-[state=selected]:bg-accent/50',
 			className,
 		)}
 		{...props}
@@ -52,7 +52,7 @@ const TableHead = ({ className, ...props }: React.ComponentProps<'th'>) => (
 	<th
 		data-slot='table-head'
 		className={classNames(
-			'h-10 border-neutral-900/10 bg-neutral-900/75 px-2 py-4 text-left align-middle font-semibold whitespace-nowrap not-last:border-r has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+			'h-10 px-4 py-3 text-left align-middle font-mono text-xs uppercase tracking-wider font-medium text-muted-foreground whitespace-nowrap has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
 			className,
 		)}
 		{...props}
@@ -63,7 +63,7 @@ const TableCell = ({ className, ...props }: React.ComponentProps<'td'>) => (
 	<td
 		data-slot='table-cell'
 		className={classNames(
-			'border-neutral-900/10 px-2 py-3 align-middle whitespace-nowrap not-last:border-r has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+			'px-4 py-3 align-middle font-sans text-xs whitespace-nowrap text-foreground has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
 			className,
 		)}
 		{...props}
@@ -71,7 +71,7 @@ const TableCell = ({ className, ...props }: React.ComponentProps<'td'>) => (
 )
 
 const TableCaption = ({ className, ...props }: React.ComponentProps<'caption'>) => (
-	<caption data-slot='table-caption' className={classNames('mt-4 text-sm', className)} {...props} />
+	<caption data-slot='table-caption' className={classNames('mt-4 text-sm text-muted-foreground', className)} {...props} />
 )
 
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption }

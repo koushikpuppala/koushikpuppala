@@ -22,7 +22,7 @@ export const DEFAULT_KEYWORDS = [
 	'AI Systems',
 ]
 
-export interface AuthoritativeMetadataRecord {
+export type AuthoritativeMetadataRecord = {
 	key: string
 	title: string
 	description: string

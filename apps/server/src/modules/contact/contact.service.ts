@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
+import { BaseService } from 'common/services/base-cms.service'
 import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { AuditAction, ContactPriority, ContactStatus, Prisma } from '@repo/prisma'
 import { CreateContactDto, QueryContactDto, UpdateContactDto } from './contact.dto'
 
 @Injectable()
-export class ContactService extends BaseCmsService {
+export class ContactService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,

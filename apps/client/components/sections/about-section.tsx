@@ -7,7 +7,7 @@ import { AboutContent } from './about-content'
 import { SectionPlaceholder } from './section-placeholder'
 import { getAboutData, type PortfolioAbout } from '../../lib/about-data'
 
-export interface AboutSectionProps {
+export type AboutSectionProps = {
 	data?: PortfolioAbout
 	className?: string
 }

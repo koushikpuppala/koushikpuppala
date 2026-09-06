@@ -16,7 +16,7 @@ const nextConfig = nextPWA.default({
 	cacheComponents: true,
 	reactStrictMode: process.env.NODE_ENV !== 'development',
 	output: process.env.ENVIRONMENT === 'docker' ? 'standalone' : undefined,
-	logging: { browserToTerminal: process.env.NODE_ENV !== 'production' },
+	// logging: { browserToTerminal: process.env.NODE_ENV !== 'production' },
 	images: {
 		formats: ['image/avif', 'image/webp'],
 		minimumCacheTTL: 86400,

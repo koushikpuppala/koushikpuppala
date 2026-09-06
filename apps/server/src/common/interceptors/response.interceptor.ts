@@ -60,6 +60,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<un
 				// If data is already an object containing result/message
 				if (data && typeof data === 'object' && ('result' in data || 'message' in data)) {
 					const record = data as Record<string, unknown>
+
 					if ('message' in record && typeof record.message === 'string') message = record.message
 
 					if ('error' in record && typeof record.error === 'boolean') isError = record.error

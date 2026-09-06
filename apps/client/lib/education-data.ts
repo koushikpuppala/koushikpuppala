@@ -2,7 +2,7 @@ import { cache } from 'react'
 import type { EducationModel } from 'types/models'
 import { fetchApi } from './api-client'
 
-export interface PortfolioEducation {
+export type PortfolioEducation = {
 	id: string
 	degree: string
 	fieldOfStudy: string

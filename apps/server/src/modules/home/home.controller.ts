@@ -1,3 +1,5 @@
+import type { Request } from 'express'
+
 import {
 	Body,
 	Controller,
@@ -10,14 +12,13 @@ import {
 	Query,
 	Req,
 } from '@nestjs/common'
+import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { HomeService } from './home.service'
-import { CreateHomeDto, QueryHomeDto, UpdateHomeDto } from './home.dto'
-import { Public } from 'common/decorators/public.decorator'
 import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
+import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import type { Request } from 'express'
+import { CreateHomeDto, QueryHomeDto, UpdateHomeDto } from './home.dto'
 
 @ApiTags('Home')
 @Controller('home')
@@ -37,7 +38,7 @@ export class HomeController {
 	}
 
 	@Get()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'List all homepage entries (Admin)',
 		method: 'GET',
@@ -49,7 +50,7 @@ export class HomeController {
 	}
 
 	@Get(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Get homepage entry by ID (Admin)',
 		method: 'GET',
@@ -60,7 +61,7 @@ export class HomeController {
 	}
 
 	@Post()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Create homepage entry (Admin)',
 		method: 'POST',
@@ -73,7 +74,7 @@ export class HomeController {
 	}
 
 	@Patch(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update homepage entry (Admin)',
 		method: 'PATCH',
@@ -90,7 +91,7 @@ export class HomeController {
 	}
 
 	@Patch(':id/publish')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Toggle publish status of homepage entry (Admin)',
 		method: 'PATCH',
@@ -103,7 +104,7 @@ export class HomeController {
 	}
 
 	@Delete(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Soft-delete homepage entry (Admin)',
 		method: 'DELETE',

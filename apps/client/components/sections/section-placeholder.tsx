@@ -10,7 +10,7 @@ export type PlaceholderLayoutVariant =
 	| 'resume'
 	| 'contact'
 
-export interface SectionPlaceholderProps {
+export type SectionPlaceholderProps = {
 	variant: PlaceholderLayoutVariant
 	className?: string
 }

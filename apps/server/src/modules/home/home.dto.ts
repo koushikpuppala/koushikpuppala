@@ -1,15 +1,7 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import {
-	IsArray,
-	IsBoolean,
-	IsInt,
-	IsObject,
-	IsOptional,
-	IsString,
-	IsUUID,
-} from 'class-validator'
 import { Type } from 'class-transformer'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
+import { IsArray, IsBoolean, IsInt, IsObject, IsOptional, IsString, IsUUID } from 'class-validator'
 
 export class CreateHomeDto {
 	@ApiProperty({ example: 'Koushik Puppala' })
@@ -30,7 +22,8 @@ export class CreateHomeDto {
 	subtitles!: string[]
 
 	@ApiProperty({
-		example: 'Passionate software engineer focused on building scalable, reliable full-stack applications.',
+		example:
+			'Passionate software engineer focused on building scalable, reliable full-stack applications.',
 	})
 	@IsString()
 	content!: string

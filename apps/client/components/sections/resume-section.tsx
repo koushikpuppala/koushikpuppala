@@ -6,7 +6,7 @@ import { SectionPlaceholder } from './section-placeholder'
 import { ResumeCard } from './resume-card'
 import { getPublishedResume, type PortfolioResume } from '../../lib/resume-data'
 
-export interface ResumeSectionProps {
+export type ResumeSectionProps = {
 	resume?: PortfolioResume
 	className?: string
 }

@@ -21,7 +21,7 @@ export function getApiBaseUrl(): string {
 	return raw.replace(/\/+$/, '')
 }
 
-export interface FetchApiResult<T> {
+export type FetchApiResult<T> = {
 	data: T | null
 	error: Error | null
 	count?: number

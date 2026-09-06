@@ -1,4 +1,4 @@
-export interface UserModel {
+export type UserModel = {
 	id: string
 	firebaseUid: string
 	email: string
@@ -16,7 +16,7 @@ export interface UserModel {
 	updatedAt: Date | string
 }
 
-export interface SessionModel {
+export type SessionModel = {
 	id: string
 	userId: string
 	tokenHash: string
@@ -32,7 +32,7 @@ export interface SessionModel {
 	updatedAt: Date | string
 }
 
-export interface MediaModel {
+export type MediaModel = {
 	id: string
 	type: 'IMAGE' | 'VIDEO' | 'AUDIO' | 'DOCUMENT' | 'OTHER'
 	fileName: string
@@ -53,7 +53,7 @@ export interface MediaModel {
 	updatedAt: Date | string
 }
 
-export interface HomeModel {
+export type HomeModel = {
 	id: string
 	title: string
 	separator: string
@@ -74,7 +74,7 @@ export interface HomeModel {
 	updatedAt: Date | string
 }
 
-export interface AboutModel {
+export type AboutModel = {
 	id: string
 	title: string
 	content: string
@@ -92,7 +92,7 @@ export interface AboutModel {
 	updatedAt: Date | string
 }
 
-export interface ExperienceModel {
+export type ExperienceModel = {
 	id: string
 	title: string
 	company: string
@@ -115,7 +115,7 @@ export interface ExperienceModel {
 	updatedAt: Date | string
 }
 
-export interface EducationModel {
+export type EducationModel = {
 	id: string
 	degree: string
 	fieldOfStudy: string
@@ -137,7 +137,7 @@ export interface EducationModel {
 	updatedAt: Date | string
 }
 
-export interface ProjectModel {
+export type ProjectModel = {
 	id: string
 	slug: string
 	title: string
@@ -168,7 +168,7 @@ export interface ProjectModel {
 	updatedAt: Date | string
 }
 
-export interface ProjectGalleryModel {
+export type ProjectGalleryModel = {
 	projectId: string
 	mediaId: string
 	title?: string | null
@@ -182,7 +182,7 @@ export interface ProjectGalleryModel {
 	createdAt: Date | string
 }
 
-export interface SkillModel {
+export type SkillModel = {
 	id: string
 	name: string
 	category: string
@@ -199,7 +199,7 @@ export interface SkillModel {
 	updatedAt: Date | string
 }
 
-export interface ServiceModel {
+export type ServiceModel = {
 	id: string
 	title: string
 	description: string
@@ -213,10 +213,11 @@ export interface ServiceModel {
 	updatedAt: Date | string
 }
 
-export interface ResumeModel {
+export type ResumeModel = {
 	id: string
 	title: string
 	versionName?: string | null
+	summary?: string | null
 	mediaId: string
 	media?: MediaModel
 	fileSize?: number | null
@@ -230,7 +231,7 @@ export interface ResumeModel {
 	updatedAt: Date | string
 }
 
-export interface SocialModel {
+export type SocialModel = {
 	id: string
 	platform:
 		| 'LINKEDIN'
@@ -244,6 +245,7 @@ export interface SocialModel {
 		| 'WEBSITE'
 	url: string
 	label?: string | null
+	handle?: string | null
 	icon?: string | null
 	featured: boolean
 	isVisible: boolean
@@ -252,7 +254,7 @@ export interface SocialModel {
 	updatedAt: Date | string
 }
 
-export interface ContactModel {
+export type ContactModel = {
 	id: string
 	name: string
 	email: string
@@ -271,7 +273,7 @@ export interface ContactModel {
 	updatedAt: Date | string
 }
 
-export interface MetadataModel {
+export type MetadataModel = {
 	id: string
 	type: 'PAGE' | 'LAYOUT'
 	key: string
@@ -280,6 +282,7 @@ export interface MetadataModel {
 	description?: string | null
 	ogImage?: string | null
 	canonicalUrl?: string | null
+	robots?: string | null
 	keywords: string[]
 	isPublished: boolean
 	publishedAt?: Date | string | null
@@ -287,7 +290,7 @@ export interface MetadataModel {
 	updatedAt: Date | string
 }
 
-export interface AuditLogModel {
+export type AuditLogModel = {
 	id: string
 	action:
 		| 'CREATE'
@@ -310,7 +313,7 @@ export interface AuditLogModel {
 	createdAt: Date | string
 }
 
-export interface ApiMetricModel {
+export type ApiMetricModel = {
 	id: string
 	ip: string
 	method: string
@@ -323,3 +326,4 @@ export interface ApiMetricModel {
 	error?: string | null
 	createdAt: Date | string
 }
+

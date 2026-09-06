@@ -2,7 +2,7 @@ import { cache } from 'react'
 import type { ExperienceModel } from 'types/models'
 import { fetchApi } from './api-client'
 
-export interface PortfolioExperience {
+export type PortfolioExperience = {
 	id: string
 	title: string
 	company: string

@@ -1,8 +1,3 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
-import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
-import { AuditAction, Prisma, ProjectStatus } from '@repo/prisma'
 import {
 	AddGalleryMediaDto,
 	CreateProjectDto,
@@ -10,9 +5,14 @@ import {
 	UpdateGalleryMediaDto,
 	UpdateProjectDto,
 } from './project.dto'
+import { DatabaseService } from 'database'
+import { BaseService } from 'common/services/base-cms.service'
+import { AuditAction, Prisma, ProjectStatus } from '@repo/prisma'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 
 @Injectable()
-export class ProjectService extends BaseCmsService {
+export class ProjectService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
@@ -21,12 +21,10 @@ export class ProjectService extends BaseCmsService {
 	}
 
 	async getPublished(query?: { category?: string; featured?: boolean }) {
-		const where: Prisma.ProjectWhereInput = {
-			isPublished: true,
-			deletedAt: null,
-		}
+		const where: Prisma.ProjectWhereInput = { isPublished: true, deletedAt: null }
 
 		if (query?.category) where.category = query.category
+
 		if (query?.featured !== undefined) where.featured = query.featured
 
 		const items = await this.prisma.project.findMany({
@@ -49,14 +47,7 @@ export class ProjectService extends BaseCmsService {
 				github: true,
 				sortOrder: true,
 				thumbnail: {
-					select: {
-						id: true,
-						url: true,
-						fileName: true,
-						altText: true,
-						width: true,
-						height: true,
-					},
+					select: { id: true, url: true, fileName: true, altText: true, width: true, height: true },
 				},
 				createdAt: true,
 			},
@@ -74,9 +65,7 @@ export class ProjectService extends BaseCmsService {
 				gallery: {
 					where: { isVisible: true },
 					orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
-					include: {
-						media: true,
-					},
+					include: { media: true },
 				},
 			},
 		})
@@ -88,18 +77,20 @@ export class ProjectService extends BaseCmsService {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
 		const where: Prisma.ProjectWhereInput = { deletedAt: null }
 
-		if (query.search) {
+		if (query.search)
 			where.OR = [
 				{ title: { contains: query.search, mode: 'insensitive' } },
 				{ subtitle: { contains: query.search, mode: 'insensitive' } },
 				{ slug: { contains: query.search, mode: 'insensitive' } },
 				{ category: { contains: query.search, mode: 'insensitive' } },
 			]
-		}
 
 		if (query.category) where.category = query.category
+
 		if (query.status) where.status = query.status
+
 		if (query.featured !== undefined) where.featured = query.featured
+
 		if (query.isPublished !== undefined) where.isPublished = query.isPublished
 
 		const [items, total] = await Promise.all([
@@ -109,12 +100,8 @@ export class ProjectService extends BaseCmsService {
 				take,
 				orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
 				include: {
-					thumbnail: {
-						select: { id: true, url: true, fileName: true, altText: true },
-					},
-					_count: {
-						select: { gallery: true },
-					},
+					thumbnail: { select: { id: true, url: true, fileName: true, altText: true } },
+					_count: { select: { gallery: true } },
 				},
 			}),
 			this.prisma.project.count({ where }),
@@ -144,9 +131,7 @@ export class ProjectService extends BaseCmsService {
 			where: { slug: dto.slug },
 		})
 
-		if (existing) {
-			throw new ConflictException(`Project with slug '${dto.slug}' already exists`)
-		}
+		if (existing) throw new ConflictException(`Project with slug '${dto.slug}' already exists`)
 
 		const project = await this.prisma.project.create({
 			data: {
@@ -195,9 +180,7 @@ export class ProjectService extends BaseCmsService {
 				where: { slug: dto.slug },
 			})
 
-			if (slugExists) {
-				throw new ConflictException(`Project with slug '${dto.slug}' already exists`)
-			}
+			if (slugExists) throw new ConflictException(`Project with slug '${dto.slug}' already exists`)
 		}
 
 		const project = await this.prisma.project.update({
@@ -229,7 +212,7 @@ export class ProjectService extends BaseCmsService {
 				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
 				...(dto.isPublished !== undefined && {
 					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? existing.publishedAt ?? new Date() : null,
+					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
 				}),
 			},
 			include: { thumbnail: true, heroImage: true },
@@ -253,10 +236,7 @@ export class ProjectService extends BaseCmsService {
 
 		const project = await this.prisma.project.update({
 			where: { id },
-			data: {
-				isPublished: nextState,
-				publishedAt: nextState ? new Date() : null,
-			},
+			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
 		})
 
 		await this.auditLog.create({
@@ -273,10 +253,7 @@ export class ProjectService extends BaseCmsService {
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.project.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		await this.prisma.project.update({ where: { id }, data: { deletedAt: new Date() } })
 
 		await this.auditLog.create({
 			action: AuditAction.DELETE,
@@ -294,12 +271,7 @@ export class ProjectService extends BaseCmsService {
 		await this.findOne(projectId)
 
 		const galleryItem = await this.prisma.projectGallery.upsert({
-			where: {
-				projectId_mediaId: {
-					projectId,
-					mediaId: dto.mediaId,
-				},
-			},
+			where: { projectId_mediaId: { projectId, mediaId: dto.mediaId } },
 			update: {
 				title: dto.title,
 				description: dto.description,
@@ -344,9 +316,7 @@ export class ProjectService extends BaseCmsService {
 			where: { projectId_mediaId: { projectId, mediaId } },
 		})
 
-		if (!existing) {
-			throw new NotFoundException('Gallery media item not found')
-		}
+		if (!existing) throw new NotFoundException('Gallery media item not found')
 
 		const updated = await this.prisma.projectGallery.update({
 			where: { projectId_mediaId: { projectId, mediaId } },
@@ -379,9 +349,7 @@ export class ProjectService extends BaseCmsService {
 			where: { projectId_mediaId: { projectId, mediaId } },
 		})
 
-		if (!existing) {
-			throw new NotFoundException('Gallery media item not found')
-		}
+		if (!existing) throw new NotFoundException('Gallery media item not found')
 
 		await this.prisma.projectGallery.delete({
 			where: { projectId_mediaId: { projectId, mediaId } },

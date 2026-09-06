@@ -1,9 +1,9 @@
 .rdrCalendarWrapper {
-	@apply bg-neutral-800 text-xs text-neutral-100;
+	@apply bg-surface text-xs text-foreground;
 }
 
 .rdrDateDisplayWrapper {
-	@apply bg-neutral-800;
+	@apply bg-surface;
 }
 
 .rdrDateDisplay {
@@ -11,11 +11,11 @@
 }
 
 .rdrDateDisplayItem {
-	@apply rounded-md border border-neutral-100/10 bg-neutral-800 text-neutral-100 shadow-md;
+	@apply rounded-md border border-border bg-surface text-foreground shadow-md;
 }
 
 .rdrDateDisplayItem input {
-	@apply h-8 w-full cursor-pointer border-0 bg-transparent leading-8 text-neutral-100/50;
+	@apply h-8 w-full cursor-pointer border-0 bg-transparent leading-8 text-muted-foreground;
 }
 
 .rdrDateDisplayItemActive {
@@ -23,7 +23,7 @@
 }
 
 .rdrDateDisplayItemActive input {
-	@apply text-neutral-100;
+	@apply text-foreground;
 }
 
 .rdrMonthAndYearWrapper {
@@ -35,21 +35,21 @@
 }
 
 .rdrMonthAndYearPickers select {
-	@apply appearance-none rounded text-neutral-100 hover:bg-neutral-900;
+	@apply appearance-none rounded text-foreground hover:bg-accent;
 
 	border: 0;
 	padding: 10px 30px 10px 10px;
 	outline: 0;
 	background: url("data:image/svg+xml;utf8,<svg width='9px' height='6px' viewBox='0 0 9 6' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><g id='Artboard' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' transform='translate(-636.000000, -171.000000)' fill-opacity='0.568716033'><g id='input' transform='translate(172.000000, 37.000000)' fill='%23FFFFFF' fill-rule='nonzero'><g id='Group-9' transform='translate(323.000000, 127.000000)'><path d='M142.280245,7.23952813 C141.987305,6.92353472 141.512432,6.92361662 141.219585,7.23971106 C140.926739,7.5558055 140.926815,8.06821394 141.219755,8.38420735 L145.498801,13 L149.780245,8.38162071 C150.073185,8.0656273 150.073261,7.55321886 149.780415,7.23712442 C149.487568,6.92102998 149.012695,6.92094808 148.719755,7.23694149 L145.498801,10.7113732 L142.280245,7.23952813 Z' id='arrow'></path></g></g></g></svg>")
 		no-repeat;
-	background-color: var(--color-neutral-800);
+	background-color: var(--surface);
 	background-position: right 8px center;
 	cursor: pointer;
 	text-align: center;
 }
 
 .rdrMonthAndYearPickers select option {
-	@apply bg-neutral-800 text-neutral-100 hover:text-neutral-900;
+	@apply bg-surface text-foreground hover:bg-accent;
 }
 
 .rdrMonthPicker,
@@ -58,7 +58,7 @@
 }
 
 .rdrNextPrevButton {
-	@apply mx-2 block h-6 w-6 rounded border-0 bg-neutral-700 p-0 hover:bg-neutral-700/80;
+	@apply mx-2 block h-6 w-6 rounded border-0 bg-surface-strong p-0 hover:bg-accent;
 }
 
 .rdrNextPrevButton i {
@@ -73,12 +73,12 @@
 }
 
 .rdrPprevButton i {
-	@apply border-4 border-transparent border-r-neutral-100;
+	@apply border-4 border-transparent border-r-foreground;
 	transform: translate(-3px, 0);
 }
 
 .rdrNextButton i {
-	@apply border-4 border-transparent border-l-neutral-100;
+	@apply border-4 border-transparent border-l-foreground;
 	transform: translate(3px, 0px);
 }
 
@@ -99,11 +99,11 @@
 }
 
 .rdrWeekDay {
-	@apply text-sm leading-6 font-normal text-neutral-100;
+	@apply text-sm leading-6 font-normal text-muted-foreground;
 }
 
 .rdrDay {
-	@apply h-10 border-0 bg-transparent p-0 text-center leading-10 text-neutral-100 select-none;
+	@apply h-10 border-0 bg-transparent p-0 text-center leading-10 text-foreground select-none;
 }
 
 .rdrDay:focus {
@@ -115,7 +115,7 @@
 }
 
 .rdrDayNumber span {
-	@apply text-neutral-100;
+	@apply text-foreground;
 }
 
 .rdrDayToday .rdrDayNumber span {
@@ -124,29 +124,29 @@
 
 .rdrDayToday .rdrDayNumber span:after {
 	background-color: var(--signal);
-	@apply absolute bottom-1 left-1/2 h-1 w-4 -translate-x-1/2 rounded text-neutral-100 content-[''];
+	@apply absolute bottom-1 left-1/2 h-1 w-4 -translate-x-1/2 rounded text-foreground content-[''];
 }
 
 .rdrDayToday:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span:after,
 .rdrDayToday:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span:after,
 .rdrDayToday:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span:after,
 .rdrDayToday:not(.rdrDayPassive) .rdrSelected ~ .rdrDayNumber span:after {
-	@apply bg-neutral-100/10;
-	@apply text-neutral-100;
+	@apply bg-accent;
+	@apply text-foreground;
 }
 
 .rdrDay:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span,
 .rdrDay:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span,
 .rdrDay:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span,
 .rdrDay:not(.rdrDayPassive) .rdrSelected ~ .rdrDayNumber span {
-	@apply text-neutral-100;
+	@apply text-foreground;
 }
 
 .rdrSelected,
 .rdrInRange,
 .rdrStartEdge,
 .rdrEndEdge {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	background: currentColor;
 	position: absolute;
 	top: 5px;
@@ -156,31 +156,31 @@
 }
 
 .rdrSelected {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	left: 2px;
 	right: 2px;
 }
 
 .rdrInRange {
-	@apply bg-neutral-100/10;
+	@apply bg-accent;
 }
 
 .rdrStartEdge {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border-top-left-radius: 1.042em;
 	border-bottom-left-radius: 1.042em;
 	left: 2px;
 }
 
 .rdrEndEdge {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border-top-right-radius: 1.042em;
 	border-bottom-right-radius: 1.042em;
 	right: 2px;
 }
 
 .rdrSelected {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border-radius: 1.042em;
 }
 
@@ -188,7 +188,7 @@
 .rdrDayStartOfMonth .rdrEndEdge,
 .rdrDayStartOfWeek .rdrInRange,
 .rdrDayStartOfWeek .rdrEndEdge {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border-top-left-radius: 1.042em;
 	border-bottom-left-radius: 1.042em;
 	left: 2px;
@@ -198,7 +198,7 @@
 .rdrDayEndOfMonth .rdrStartEdge,
 .rdrDayEndOfWeek .rdrInRange,
 .rdrDayEndOfWeek .rdrStartEdge {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border-top-right-radius: 1.042em;
 	border-bottom-right-radius: 1.042em;
 	right: 2px;
@@ -208,7 +208,7 @@
 .rdrDayStartOfMonth .rdrDayEndPreview,
 .rdrDayStartOfWeek .rdrDayInPreview,
 .rdrDayStartOfWeek .rdrDayEndPreview {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border-top-left-radius: 1.333em;
 	border-bottom-left-radius: 1.333em;
 	border-left-width: 1px;
@@ -219,7 +219,7 @@
 .rdrDayEndOfMonth .rdrDayStartPreview,
 .rdrDayEndOfWeek .rdrDayInPreview,
 .rdrDayEndOfWeek .rdrDayStartPreview {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border-top-right-radius: 1.333em;
 	border-bottom-right-radius: 1.333em;
 	border-right-width: 1px;
@@ -229,8 +229,8 @@
 .rdrDayStartPreview,
 .rdrDayInPreview,
 .rdrDayEndPreview {
-	@apply text-neutral-100;
-	background: rgba(255, 255, 255, 0.09);
+	@apply text-foreground;
+	background: rgba(255, 255, 255, 0.05);
 	position: absolute;
 	top: 3px;
 	left: 0px;
@@ -242,7 +242,7 @@
 }
 
 .rdrDayStartPreview {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border-top-width: 1px;
 	border-left-width: 1px;
 	border-bottom-width: 1px;
@@ -252,7 +252,7 @@
 }
 
 .rdrDayInPreview {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border-top-width: 1px;
 	border-bottom-width: 1px;
 }
@@ -267,33 +267,32 @@
 }
 
 .rdrDefinedRangesWrapper {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	font-size: 12px;
 	width: 226px;
-	border-right: solid 1px #eff2f7;
-	background: #fff;
+	border-right: solid 1px var(--border);
+	background: var(--surface);
 }
 
 .rdrDefinedRangesWrapper .rdrStaticRangeSelected {
-	@apply text-neutral-100;
-	/* color: currentColor; */
+	@apply text-foreground;
 	font-weight: 600;
 }
 
 .rdrStaticRange {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	border: 0;
 	cursor: pointer;
 	display: block;
 	outline: 0;
-	border-bottom: 1px solid #eff2f7;
+	border-bottom: 1px solid var(--border);
 	padding: 0;
-	background: #fff;
+	background: var(--surface);
 }
 
 .rdrStaticRange:hover .rdrStaticRangeLabel,
 .rdrStaticRange:focus .rdrStaticRangeLabel {
-	background: #eff2f7;
+	background: var(--accent);
 }
 
 .rdrStaticRangeLabel {
@@ -314,21 +313,20 @@
 }
 
 .rdrInputRangeInput {
-	@apply text-neutral-100;
+	@apply text-foreground;
 	width: 30px;
 	height: 30px;
 	line-height: 30px;
 	border-radius: 4px;
 	text-align: center;
-	border: solid 1px rgb(222, 231, 235);
+	border: solid 1px var(--border);
 	margin-right: 10px;
 }
 
 .rdrInputRangeInput:focus,
 .rdrInputRangeInput:hover {
-	@apply text-neutral-100;
-
-	border-color: rgb(180, 191, 196);
+	@apply text-foreground;
+	border-color: var(--border-strong);
 	outline: 0;
 }
 

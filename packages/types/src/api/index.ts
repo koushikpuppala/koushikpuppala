@@ -1,4 +1,4 @@
-export interface ApiResponseDto<T = unknown> {
+export type ApiResponseDto<T = unknown> = {
 	result?: T
 	message: string
 	error?: boolean
@@ -10,19 +10,19 @@ export interface ApiResponseDto<T = unknown> {
 	endpoint?: string
 }
 
-export interface PaginationMetaDto {
+export type PaginationMetaDto = {
 	page: number
 	limit: number
 	total: number
 	totalPages: number
 }
 
-export interface PaginatedResultDto<T> {
+export type PaginatedResultDto<T> = {
 	items: T[]
 	pagination: PaginationMetaDto
 }
 
-export interface BaseQueryDto {
+export type BaseQueryDto = {
 	page?: number
 	limit?: number
 	search?: string

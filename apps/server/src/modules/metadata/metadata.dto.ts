@@ -1,15 +1,7 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import {
-	IsArray,
-	IsBoolean,
-	IsEnum,
-	IsObject,
-	IsOptional,
-	IsString,
-	IsUrl,
-} from 'class-validator'
 import { MetadataType } from '@repo/prisma'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
+import { IsArray, IsBoolean, IsEnum, IsObject, IsOptional, IsString, IsUrl } from 'class-validator'
 
 export class CreateMetadataDto {
 	@ApiProperty({ enum: MetadataType, example: MetadataType.PAGE })
@@ -49,6 +41,15 @@ export class CreateMetadataDto {
 	@IsUrl()
 	@IsOptional()
 	canonicalUrl?: string
+
+	@ApiPropertyOptional({
+		example: 'index,follow',
+		default: 'index,follow',
+		description: 'Robots meta directive',
+	})
+	@IsString()
+	@IsOptional()
+	robots?: string = 'index,follow'
 
 	@ApiPropertyOptional({
 		example: ['Software Engineer', 'Full Stack', 'NestJS', 'Next.js', 'PostgreSQL'],

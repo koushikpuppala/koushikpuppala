@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { SignalArrow, ScrollReveal } from 'ui/motion'
 import type { PortfolioProject } from '../../lib/projects-data'
 
-export interface ProjectHeroProps {
+export type ProjectHeroProps = {
 	project: PortfolioProject
 	className?: string
 }

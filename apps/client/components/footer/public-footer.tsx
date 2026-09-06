@@ -45,7 +45,7 @@ const FOOTER_NETWORKS = [
 	},
 ]
 
-export interface PublicFooterProps {
+export type PublicFooterProps = {
 	className?: string
 	socials?: PortfolioSocial[]
 }

@@ -10,7 +10,7 @@ import {
 	type PortfolioSocial,
 } from '../../lib/social-data'
 
-export interface ContactSectionProps {
+export type ContactSectionProps = {
 	className?: string
 	socials?: PortfolioSocial[]
 }

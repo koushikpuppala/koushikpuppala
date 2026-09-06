@@ -8,7 +8,7 @@ import { ExperienceCard } from './experience-card'
 import { SectionPlaceholder } from './section-placeholder'
 import { getPublishedExperiences, type PortfolioExperience } from '../../lib/experience-data'
 
-export interface ExperienceSectionProps {
+export type ExperienceSectionProps = {
 	experiences?: PortfolioExperience[]
 	className?: string
 }

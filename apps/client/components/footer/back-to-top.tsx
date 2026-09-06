@@ -2,7 +2,7 @@
 
 import { useReducedMotion } from 'ui/motion'
 
-export interface BackToTopProps {
+export type BackToTopProps = {
 	className?: string
 }
 

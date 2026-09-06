@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { BrandGlyph } from 'ui/brand'
 import { classNames } from '../../lib/utils'
 
-export interface HeaderLogoProps {
+export type HeaderLogoProps = {
 	className?: string
 	isScrolled?: boolean
 }

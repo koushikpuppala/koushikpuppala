@@ -1,13 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { AuditAction, Prisma } from '@repo/prisma'
-import { CreateResumeDto, QueryResumeDto, UpdateResumeDto } from './resume.dto'
 import { S3Service } from 'common/storage/s3.service'
+import { BaseService } from 'common/services/base-cms.service'
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CreateResumeDto, QueryResumeDto, UpdateResumeDto } from './resume.dto'
 
 @Injectable()
-export class ResumeService extends BaseCmsService {
+export class ResumeService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
@@ -38,6 +38,7 @@ export class ResumeService extends BaseCmsService {
 		if (!resume) throw new NotFoundException('No active resume published')
 
 		let downloadUrl = resume.media.url
+
 		if (!downloadUrl && resume.media.storageKey) {
 			try {
 				downloadUrl = await this.s3Service.getSignedUrl(resume.media.storageKey)
@@ -46,10 +47,7 @@ export class ResumeService extends BaseCmsService {
 			}
 		}
 
-		return {
-			...resume,
-			downloadUrl,
-		}
+		return { ...resume, downloadUrl }
 	}
 
 	async trackDownloadAndGetUrl() {
@@ -68,6 +66,7 @@ export class ResumeService extends BaseCmsService {
 		})
 
 		let downloadUrl = resume.media.url
+
 		if (!downloadUrl && resume.media.storageKey) {
 			try {
 				downloadUrl = await this.s3Service.getSignedUrl(resume.media.storageKey)
@@ -76,28 +75,20 @@ export class ResumeService extends BaseCmsService {
 			}
 		}
 
-		return {
-			id: resume.id,
-			title: resume.title,
-			downloads: resume.downloads + 1,
-			downloadUrl,
-		}
+		return { ...resume, downloads: resume.downloads + 1, downloadUrl }
 	}
 
 	async adminFindAll(query: QueryResumeDto) {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
 		const where: Prisma.ResumeWhereInput = { deletedAt: null }
 
-		if (query.search) {
+		if (query.search)
 			where.OR = [
 				{ title: { contains: query.search, mode: 'insensitive' } },
 				{ versionName: { contains: query.search, mode: 'insensitive' } },
 			]
-		}
 
-		if (query.isPublished !== undefined) {
-			where.isPublished = query.isPublished
-		}
+		if (query.isPublished !== undefined) where.isPublished = query.isPublished
 
 		const [items, total] = await Promise.all([
 			this.prisma.resume.findMany({
@@ -133,6 +124,7 @@ export class ResumeService extends BaseCmsService {
 			data: {
 				title: dto.title,
 				versionName: dto.versionName,
+				summary: dto.summary,
 				mediaId: dto.mediaId,
 				fileSize: dto.fileSize ?? media.size,
 				fileType: dto.fileType ?? media.mimeType,
@@ -163,6 +155,7 @@ export class ResumeService extends BaseCmsService {
 			data: {
 				...(dto.title !== undefined && { title: dto.title }),
 				...(dto.versionName !== undefined && { versionName: dto.versionName }),
+				...(dto.summary !== undefined && { summary: dto.summary }),
 				...(dto.mediaId !== undefined && { mediaId: dto.mediaId }),
 				...(dto.fileSize !== undefined && { fileSize: dto.fileSize }),
 				...(dto.fileType !== undefined && { fileType: dto.fileType }),
@@ -170,7 +163,7 @@ export class ResumeService extends BaseCmsService {
 				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
 				...(dto.isPublished !== undefined && {
 					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? existing.publishedAt ?? new Date() : null,
+					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
 				}),
 			},
 			include: { media: true },
@@ -194,10 +187,7 @@ export class ResumeService extends BaseCmsService {
 
 		const resume = await this.prisma.resume.update({
 			where: { id },
-			data: {
-				isPublished: nextState,
-				publishedAt: nextState ? new Date() : null,
-			},
+			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
 		})
 
 		await this.auditLog.create({
@@ -214,10 +204,7 @@ export class ResumeService extends BaseCmsService {
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.resume.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		await this.prisma.resume.update({ where: { id }, data: { deletedAt: new Date() } })
 
 		await this.auditLog.create({
 			action: AuditAction.DELETE,

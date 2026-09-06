@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 import { classNames } from 'utils/classNames'
 
-export interface GridProps extends HTMLAttributes<HTMLDivElement> {
+export type GridProps = HTMLAttributes<HTMLDivElement> & {
 	className?: string
 	mask?: 'radial' | 'top' | 'bottom' | 'edges' | 'none'
 	opacity?: number
@@ -116,7 +116,7 @@ export const Noise = ({ className, ...props }: HTMLAttributes<HTMLDivElement>) =
 	)
 }
 
-export interface FadeMaskProps extends HTMLAttributes<HTMLDivElement> {
+export type FadeMaskProps = HTMLAttributes<HTMLDivElement> & {
 	children: ReactNode
 	type?: 'radial' | 'top' | 'bottom' | 'edges'
 	className?: string

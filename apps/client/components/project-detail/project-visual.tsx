@@ -3,7 +3,7 @@ import { MicroGrid } from 'ui/background'
 import { ScrollReveal } from 'ui/motion'
 import type { PortfolioProject } from '../../lib/projects-data'
 
-export interface ProjectVisualProps {
+export type ProjectVisualProps = {
 	project: PortfolioProject
 	className?: string
 }

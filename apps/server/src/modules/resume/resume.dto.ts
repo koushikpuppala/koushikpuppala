@@ -1,13 +1,7 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import {
-	IsBoolean,
-	IsInt,
-	IsOptional,
-	IsString,
-	IsUUID,
-} from 'class-validator'
 import { Type } from 'class-transformer'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
+import { IsBoolean, IsInt, IsOptional, IsString, IsUUID } from 'class-validator'
 
 export class CreateResumeDto {
 	@ApiProperty({ example: 'Koushik Puppala - Resume 2026' })
@@ -18,6 +12,14 @@ export class CreateResumeDto {
 	@IsString()
 	@IsOptional()
 	versionName?: string
+
+	@ApiPropertyOptional({
+		example: 'Senior Full Stack Engineer specializing in scalable NestJS and Next.js applications.',
+		description: 'Executive resume narrative and summary',
+	})
+	@IsString()
+	@IsOptional()
+	summary?: string
 
 	@ApiProperty({ example: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' })
 	@IsUUID()
@@ -33,7 +35,9 @@ export class CreateResumeDto {
 	@IsOptional()
 	fileType?: string = 'application/pdf'
 
-	@ApiPropertyOptional({ example: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855' })
+	@ApiPropertyOptional({
+		example: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+	})
 	@IsString()
 	@IsOptional()
 	checksum?: string

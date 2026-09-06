@@ -1,3 +1,5 @@
+import type { Request } from 'express'
+
 import {
 	Body,
 	Controller,
@@ -10,14 +12,13 @@ import {
 	Query,
 	Req,
 } from '@nestjs/common'
+import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { ServiceService } from './service.service'
-import { CreateServiceDto, QueryServiceDto, UpdateServiceDto } from './service.dto'
-import { Public } from 'common/decorators/public.decorator'
 import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
+import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import type { Request } from 'express'
+import { CreateServiceDto, QueryServiceDto, UpdateServiceDto } from './service.dto'
 
 @ApiTags('Services')
 @Controller('services')
@@ -38,7 +39,7 @@ export class ServiceController {
 	}
 
 	@Get()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'List all services (Admin)',
 		method: 'GET',
@@ -50,7 +51,7 @@ export class ServiceController {
 	}
 
 	@Get(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Get service by ID (Admin)',
 		method: 'GET',
@@ -61,7 +62,7 @@ export class ServiceController {
 	}
 
 	@Post()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Create service (Admin)',
 		method: 'POST',
@@ -74,7 +75,7 @@ export class ServiceController {
 	}
 
 	@Patch(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update service (Admin)',
 		method: 'PATCH',
@@ -91,7 +92,7 @@ export class ServiceController {
 	}
 
 	@Patch(':id/publish')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Toggle publish status of service (Admin)',
 		method: 'PATCH',
@@ -104,7 +105,7 @@ export class ServiceController {
 	}
 
 	@Delete(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Soft-delete service (Admin)',
 		method: 'DELETE',

@@ -2,18 +2,18 @@ import { cache } from 'react'
 import type { ResumeModel } from 'types/models'
 import { fetchApi } from './api-client'
 
-export interface ResumeHighlight {
+export type ResumeHighlight = {
 	number: string
 	title: string
 	description: string
 }
 
-export interface ResumeStat {
+export type ResumeStat = {
 	label: string
 	value: string
 }
 
-export interface PortfolioResume {
+export type PortfolioResume = {
 	id: string
 	title: string
 	versionName: string

@@ -6,7 +6,7 @@ import { motion, useReducedMotion, EASING } from 'ui/motion'
 import { classNames } from '../../lib/utils'
 import { BrandGlyph } from 'ui/brand'
 
-export interface QuickNavItem {
+export type QuickNavItem = {
 	id: string
 	title: string
 	category: 'Navigation' | 'External'
@@ -75,7 +75,7 @@ const QUICK_ITEMS: QuickNavItem[] = [
 	},
 ]
 
-export interface QuickNavigationProps {
+export type QuickNavigationProps = {
 	isOpen: boolean
 	onClose: () => void
 }

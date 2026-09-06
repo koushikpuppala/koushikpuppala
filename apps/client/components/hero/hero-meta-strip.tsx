@@ -1,12 +1,12 @@
 import { classNames } from '../../lib/utils'
 
-export interface HeroMetaItem {
+export type HeroMetaItem = {
 	label: string
 	value: string
 	subtext?: string
 }
 
-export interface HeroMetaStripProps {
+export type HeroMetaStripProps = {
 	className?: string
 	items?: HeroMetaItem[]
 }

@@ -5,6 +5,8 @@ model Resume {
   title       String  @default("Resume")
   versionName String? @map("version_name")
 
+  summary String? @db.Text
+
   mediaId String @unique @map("media_id") @db.Uuid
   media   Media  @relation(fields: [mediaId], references: [id], onDelete: Restrict)
 

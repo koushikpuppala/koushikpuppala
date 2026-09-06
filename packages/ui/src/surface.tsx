@@ -1,7 +1,7 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react'
 import { classNames } from 'utils/classNames'
 
-export interface SurfaceProps extends HTMLAttributes<HTMLElement> {
+export type SurfaceProps = HTMLAttributes<HTMLElement> & {
 	children: ReactNode
 	className?: string
 	as?: ElementType

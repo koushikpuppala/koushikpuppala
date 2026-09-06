@@ -30,16 +30,16 @@ import { ApiMetricModule } from 'modules/api-metric/api-metric.module'
 // CMS & Portfolio Features
 import { HomeModule } from 'modules/home/home.module'
 import { AboutModule } from 'modules/about/about.module'
-import { ExperienceModule } from 'modules/experience/experience.module'
-import { EducationModule } from 'modules/education/education.module'
-import { ProjectModule } from 'modules/project/project.module'
 import { SkillModule } from 'modules/skill/skill.module'
-import { ServiceModule } from 'modules/service/service.module'
+import { MediaModule } from 'modules/media/media.module'
 import { ResumeModule } from 'modules/resume/resume.module'
 import { SocialModule } from 'modules/social/social.module'
-import { MediaModule } from 'modules/media/media.module'
+import { ProjectModule } from 'modules/project/project.module'
+import { ServiceModule } from 'modules/service/service.module'
 import { ContactModule } from 'modules/contact/contact.module'
 import { MetadataModule } from 'modules/metadata/metadata.module'
+import { EducationModule } from 'modules/education/education.module'
+import { ExperienceModule } from 'modules/experience/experience.module'
 
 @Module({
 	imports: [
@@ -59,16 +59,16 @@ import { MetadataModule } from 'modules/metadata/metadata.module'
 		// CMS & Portfolio Modules
 		HomeModule,
 		AboutModule,
-		ExperienceModule,
-		EducationModule,
-		ProjectModule,
 		SkillModule,
-		ServiceModule,
-		ResumeModule,
-		SocialModule,
 		MediaModule,
+		SocialModule,
+		ResumeModule,
+		ProjectModule,
+		ServiceModule,
 		ContactModule,
 		MetadataModule,
+		EducationModule,
+		ExperienceModule,
 
 		// Framework Providers
 		SentryModule.forRoot(),

@@ -1,3 +1,5 @@
+import type { Request } from 'express'
+
 import {
 	Body,
 	Controller,
@@ -10,14 +12,13 @@ import {
 	Query,
 	Req,
 } from '@nestjs/common'
+import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { SkillService } from './skill.service'
-import { CreateSkillDto, QuerySkillDto, UpdateSkillDto } from './skill.dto'
-import { Public } from 'common/decorators/public.decorator'
 import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
+import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import type { Request } from 'express'
+import { CreateSkillDto, QuerySkillDto, UpdateSkillDto } from './skill.dto'
 
 @ApiTags('Skills')
 @Controller('skills')
@@ -38,7 +39,7 @@ export class SkillController {
 	}
 
 	@Get()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'List all skills (Admin)',
 		method: 'GET',
@@ -50,7 +51,7 @@ export class SkillController {
 	}
 
 	@Get(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Get skill by ID (Admin)',
 		method: 'GET',
@@ -61,7 +62,7 @@ export class SkillController {
 	}
 
 	@Post()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Create skill (Admin)',
 		method: 'POST',
@@ -74,7 +75,7 @@ export class SkillController {
 	}
 
 	@Patch(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update skill (Admin)',
 		method: 'PATCH',
@@ -91,7 +92,7 @@ export class SkillController {
 	}
 
 	@Patch(':id/publish')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Toggle publish status of skill (Admin)',
 		method: 'PATCH',
@@ -104,7 +105,7 @@ export class SkillController {
 	}
 
 	@Delete(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Soft-delete skill (Admin)',
 		method: 'DELETE',

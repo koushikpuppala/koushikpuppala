@@ -1,14 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import {
-	IsEnum,
-	IsInt,
-	IsOptional,
-	IsString,
-	Max,
-	Min,
-} from 'class-validator'
 import { MediaType } from '@repo/prisma'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
+import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
 
 export class RequestPresignedUploadDto {
 	@ApiProperty({ example: 'portfolio-hero.webp' })

@@ -3,7 +3,7 @@
 import { useTheme } from './theme-provider'
 import { classNames } from '../../lib/utils'
 
-export interface ThemeToggleProps {
+export type ThemeToggleProps = {
 	className?: string
 	compact?: boolean
 }

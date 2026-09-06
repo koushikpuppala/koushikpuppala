@@ -1,15 +1,8 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import {
-	IsBoolean,
-	IsEnum,
-	IsInt,
-	IsOptional,
-	IsString,
-	IsUrl,
-} from 'class-validator'
 import { Type } from 'class-transformer'
 import { SocialPlatform } from '@repo/prisma'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
+import { IsBoolean, IsEnum, IsInt, IsOptional, IsString, IsUrl } from 'class-validator'
 
 export class CreateSocialDto {
 	@ApiProperty({ enum: SocialPlatform, example: SocialPlatform.GITHUB })
@@ -24,6 +17,14 @@ export class CreateSocialDto {
 	@IsString()
 	@IsOptional()
 	label?: string
+
+	@ApiPropertyOptional({
+		example: '@koushikpuppala',
+		description: 'Social platform handle / username',
+	})
+	@IsString()
+	@IsOptional()
+	handle?: string
 
 	@ApiPropertyOptional({ example: 'si:github' })
 	@IsString()

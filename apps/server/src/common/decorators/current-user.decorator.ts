@@ -1,7 +1,7 @@
 import type { ExecutionContext } from '@nestjs/common'
+import type { DecodedIdToken } from 'firebase-admin/auth'
 
 import { createParamDecorator } from '@nestjs/common'
-import type { DecodedIdToken } from 'firebase-admin/auth'
 
 export const CurrentUser = createParamDecorator(
 	(data: keyof DecodedIdToken | undefined, context: ExecutionContext) => {

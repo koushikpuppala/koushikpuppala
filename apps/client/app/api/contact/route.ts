@@ -4,7 +4,14 @@ import { validateContactForm, type ContactFormPayload } from '../../../lib/conta
 
 export async function POST(req: Request) {
 	try {
-		const body: ContactFormPayload = await req.json()
+		const rawBody = await req.json()
+		const body: ContactFormPayload = {
+			...rawBody,
+			name: (rawBody.name || '').trim(),
+			email: (rawBody.email || '').trim(),
+			subject: (rawBody.subject || '').trim() || 'Portfolio Inquiry',
+			message: (rawBody.message || '').trim(),
+		}
 
 		// 1. Strict input validation
 		const { isValid, errors } = validateContactForm(body)

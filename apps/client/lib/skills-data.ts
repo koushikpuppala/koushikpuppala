@@ -2,7 +2,7 @@ import { cache } from 'react'
 import type { SkillModel, ServiceModel } from 'types/models'
 import { fetchApi } from './api-client'
 
-export interface PortfolioSkill {
+export type PortfolioSkill = {
 	id: string
 	name: string
 	category: string
@@ -12,7 +12,7 @@ export interface PortfolioSkill {
 	sortOrder: number
 }
 
-export interface SkillCluster {
+export type SkillCluster = {
 	id: string
 	index: string
 	title: string
@@ -293,7 +293,7 @@ export const getSkillClusters = cache(async (): Promise<SkillCluster[]> => {
 	return SKILL_CLUSTERS
 })
 
-export interface PortfolioService {
+export type PortfolioService = {
 	id: string
 	title: string
 	description: string

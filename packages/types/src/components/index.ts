@@ -1,4 +1,4 @@
-import type { ColumnDef, RowData, TableFeatures } from '@tanstack/react-table'
+import type { ColumnDef, RowData } from '@tanstack/react-table'
 
 export type DataTablePaginationProps =
 	{ disablePagination?: false; pageSize?: number } | { disablePagination: true; pageSize: number }
@@ -10,7 +10,7 @@ export type DataTableFilters = { id: string; label: string } & (
 	| { type: 'select' | 'search-select'; options: DataTableFilterOptions[] }
 )
 
-export type DataTableProps<TFeatures extends TableFeatures, TData extends RowData, TValue> = {
+export type DataTableProps<TData extends RowData = any, TValue = any> = {
 	data: TData[]
 	loading?: boolean
 	pageSize?: number
@@ -23,5 +23,5 @@ export type DataTableProps<TFeatures extends TableFeatures, TData extends RowDat
 	disableClearFilters?: boolean
 	disablePageSizeOptions?: boolean
 	disableColumnVisibility?: boolean
-	columns: ColumnDef<TFeatures, TData, TValue>[]
+	columns: ColumnDef<TData, TValue>[]
 } & DataTablePaginationProps

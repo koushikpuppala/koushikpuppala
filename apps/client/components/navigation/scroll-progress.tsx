@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import { useReducedMotion } from 'ui/motion'
 import { classNames } from '../../lib/utils'
 
-export interface ScrollProgressProps {
+export type ScrollProgressProps = {
 	className?: string
 }
 

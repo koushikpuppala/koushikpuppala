@@ -7,7 +7,7 @@ import { SkillClusterCard } from './skill-cluster-card'
 import { SectionPlaceholder } from './section-placeholder'
 import { getSkillClusters, type SkillCluster } from '../../lib/skills-data'
 
-export interface SkillsSectionProps {
+export type SkillsSectionProps = {
 	clusters?: SkillCluster[]
 	className?: string
 }

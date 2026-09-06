@@ -1,4 +1,3 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
 import {
 	IsArray,
 	IsBoolean,
@@ -13,6 +12,7 @@ import {
 import { Type } from 'class-transformer'
 import { EmploymentType } from '@repo/prisma'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
 
 export class CreateExperienceDto {
 	@ApiProperty({ example: 'Software Engineer' })

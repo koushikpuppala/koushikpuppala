@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 
 export type Theme = 'dark' | 'light'
 
-interface ThemeContextValue {
+type ThemeContextValue = {
 	theme: Theme
 	toggleTheme: () => void
 	setTheme: (theme: Theme) => void
@@ -15,7 +15,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 const THEME_STORAGE_KEY = 'kp-theme-preference'
 
-export interface ThemeProviderProps {
+export type ThemeProviderProps = {
 	children: ReactNode
 	defaultTheme?: Theme
 }

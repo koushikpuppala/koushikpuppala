@@ -1,3 +1,5 @@
+import type { Request } from 'express'
+
 import {
 	Body,
 	Controller,
@@ -10,14 +12,13 @@ import {
 	Query,
 	Req,
 } from '@nestjs/common'
+import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { ExperienceService } from './experience.service'
-import { CreateExperienceDto, QueryExperienceDto, UpdateExperienceDto } from './experience.dto'
-import { Public } from 'common/decorators/public.decorator'
 import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
+import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import type { Request } from 'express'
+import { CreateExperienceDto, QueryExperienceDto, UpdateExperienceDto } from './experience.dto'
 
 @ApiTags('Experience')
 @Controller('experience')
@@ -38,7 +39,7 @@ export class ExperienceController {
 	}
 
 	@Get()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'List all experience records (Admin)',
 		method: 'GET',
@@ -50,7 +51,7 @@ export class ExperienceController {
 	}
 
 	@Get(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Get experience record by ID (Admin)',
 		method: 'GET',
@@ -61,7 +62,7 @@ export class ExperienceController {
 	}
 
 	@Post()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Create experience entry (Admin)',
 		method: 'POST',
@@ -74,7 +75,7 @@ export class ExperienceController {
 	}
 
 	@Patch(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update experience entry (Admin)',
 		method: 'PATCH',
@@ -91,7 +92,7 @@ export class ExperienceController {
 	}
 
 	@Patch(':id/publish')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Toggle publish status of experience entry (Admin)',
 		method: 'PATCH',
@@ -104,7 +105,7 @@ export class ExperienceController {
 	}
 
 	@Delete(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Soft-delete experience entry (Admin)',
 		method: 'DELETE',

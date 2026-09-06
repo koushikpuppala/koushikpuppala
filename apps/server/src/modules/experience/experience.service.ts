@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { AuditAction, Prisma } from '@repo/prisma'
+import { BaseService } from 'common/services/base-cms.service'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { CreateExperienceDto, QueryExperienceDto, UpdateExperienceDto } from './experience.dto'
 
 @Injectable()
-export class ExperienceService extends BaseCmsService {
+export class ExperienceService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
@@ -18,11 +18,7 @@ export class ExperienceService extends BaseCmsService {
 		const items = await this.prisma.experience.findMany({
 			where: { isPublished: true, deletedAt: null },
 			orderBy: [{ sortOrder: 'asc' }, { startDate: 'desc' }],
-			include: {
-				logo: {
-					select: { id: true, url: true, fileName: true, altText: true },
-				},
-			},
+			include: { logo: { select: { id: true, url: true, fileName: true, altText: true } } },
 		})
 
 		return items
@@ -32,25 +28,18 @@ export class ExperienceService extends BaseCmsService {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
 		const where: Prisma.ExperienceWhereInput = { deletedAt: null }
 
-		if (query.search) {
+		if (query.search)
 			where.OR = [
 				{ title: { contains: query.search, mode: 'insensitive' } },
 				{ company: { contains: query.search, mode: 'insensitive' } },
 				{ location: { contains: query.search, mode: 'insensitive' } },
 			]
-		}
 
-		if (query.employmentType) {
-			where.employmentType = query.employmentType
-		}
+		if (query.employmentType) where.employmentType = query.employmentType
 
-		if (query.featured !== undefined) {
-			where.featured = query.featured
-		}
+		if (query.featured !== undefined) where.featured = query.featured
 
-		if (query.isPublished !== undefined) {
-			where.isPublished = query.isPublished
-		}
+		if (query.isPublished !== undefined) where.isPublished = query.isPublished
 
 		const [items, total] = await Promise.all([
 			this.prisma.experience.findMany({
@@ -131,7 +120,7 @@ export class ExperienceService extends BaseCmsService {
 				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
 				...(dto.isPublished !== undefined && {
 					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? existing.publishedAt ?? new Date() : null,
+					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
 				}),
 			},
 			include: { logo: true },
@@ -155,10 +144,7 @@ export class ExperienceService extends BaseCmsService {
 
 		const experience = await this.prisma.experience.update({
 			where: { id },
-			data: {
-				isPublished: nextState,
-				publishedAt: nextState ? new Date() : null,
-			},
+			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
 		})
 
 		await this.auditLog.create({
@@ -175,10 +161,7 @@ export class ExperienceService extends BaseCmsService {
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.experience.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		await this.prisma.experience.update({ where: { id }, data: { deletedAt: new Date() } })
 
 		await this.auditLog.create({
 			action: AuditAction.DELETE,

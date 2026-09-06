@@ -4,13 +4,12 @@ import type { DecodedIdToken } from 'firebase-admin/auth'
 import type { CanActivate, ExecutionContext } from '@nestjs/common'
 
 import { Reflector } from '@nestjs/core'
-import { Injectable, UnauthorizedException, HttpException } from '@nestjs/common'
-
 import { UserService } from 'modules/user'
+import { AuthProvider, UserStatus } from '@repo/prisma'
 import { FirebaseService } from 'firebase/firebase.service'
 import { SessionService } from 'modules/auth/session.service'
 import { IS_PUBLIC_KEY } from 'common/decorators/public.decorator'
-import { AuthProvider, UserStatus } from '@repo/prisma'
+import { Injectable, UnauthorizedException, HttpException } from '@nestjs/common'
 import { ALLOW_UNREGISTERED_USER_KEY } from 'common/decorators/allow-unregistered-user.decorator'
 
 @Injectable()

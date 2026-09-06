@@ -27,29 +27,29 @@ export class LoggerService {
 				new transports.Console(),
 
 				new transports.DailyRotateFile({
+					maxSize: '20m',
+					maxFiles: '30d',
+					datePattern: 'YYYY-MM-DD',
+					dirname: this.config.logger.dir,
 					filename: 'application-%DATE%.log',
-					datePattern: 'YYYY-MM-DD',
-					dirname: this.config.logger.dir,
-					maxFiles: '30d',
-					maxSize: '20m',
 				}),
 
 				new transports.DailyRotateFile({
-					filename: 'error-%DATE%.log',
-					datePattern: 'YYYY-MM-DD',
-					dirname: this.config.logger.dir,
-					maxFiles: '30d',
-					maxSize: '20m',
 					level: 'error',
+					maxSize: '20m',
+					maxFiles: '30d',
+					datePattern: 'YYYY-MM-DD',
+					filename: 'error-%DATE%.log',
+					dirname: this.config.logger.dir,
 				}),
 
 				new transports.DailyRotateFile({
-					filename: 'audit-%DATE%.log',
-					datePattern: 'YYYY-MM-DD',
-					dirname: this.config.logger.dir,
-					maxFiles: '90d',
-					maxSize: '20m',
 					level: 'info',
+					maxSize: '20m',
+					maxFiles: '90d',
+					datePattern: 'YYYY-MM-DD',
+					filename: 'audit-%DATE%.log',
+					dirname: this.config.logger.dir,
 				}),
 			],
 		})

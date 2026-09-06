@@ -1,21 +1,21 @@
-import { extname } from 'node:path'
-import { randomUUID } from 'node:crypto'
-import { BadRequestException, Injectable } from '@nestjs/common'
-import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
-import { AuditAction, Prisma } from '@repo/prisma'
-import { Configuration } from 'config/configuration'
-import { S3Service } from 'common/storage/s3.service'
 import {
 	CompleteMediaUploadDto,
 	QueryMediaDto,
 	RequestPresignedUploadDto,
 	UpdateMediaDto,
 } from './media.dto'
+import { extname } from 'node:path'
+import { randomUUID } from 'node:crypto'
+import { DatabaseService } from 'database'
+import { AuditAction, Prisma } from '@repo/prisma'
+import { Configuration } from 'config/configuration'
+import { S3Service } from 'common/storage/s3.service'
+import { BaseService } from 'common/services/base-cms.service'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
 
 @Injectable()
-export class MediaService extends BaseCmsService {
+export class MediaService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
@@ -27,16 +27,20 @@ export class MediaService extends BaseCmsService {
 
 	async requestPresignedUpload(dto: RequestPresignedUploadDto) {
 		const extension = extname(dto.originalName).toLowerCase() || '.bin'
+
 		// Sanitize folder path: eliminate path traversal ('..') and illegal characters
 		const folder =
 			(dto.folder ?? 'general')
 				.replace(/[^a-zA-Z0-9_\-/]/g, '')
 				.replace(/\.{2,}/g, '')
 				.replace(/^\/+|\/+$/g, '') || 'general'
+
 		const fileId = randomUUID()
+
 		const storageKey = `${folder}/${fileId}${extension}`
 
 		let uploadUrl = ''
+
 		try {
 			uploadUrl = await this.s3Service.getPresignedUploadUrl(storageKey, dto.mimeType, 900)
 		} catch {
@@ -45,21 +49,24 @@ export class MediaService extends BaseCmsService {
 			)
 		}
 
-		const cdnUrl = this.config.aws.cdnUrl || `${this.config.aws.s3Bucket}.s3.${this.config.aws.region}.amazonaws.com`
+		const cdnUrl =
+			this.config.aws.cdnUrl ||
+			`${this.config.aws.s3Bucket}.s3.${this.config.aws.region}.amazonaws.com`
+
 		const fileUrl = `https://${cdnUrl}/${storageKey}`
 
-		return {
-			uploadUrl,
-			storageKey,
-			url: fileUrl,
-		}
+		return { uploadUrl, storageKey, url: fileUrl }
 	}
 
 	async completeUpload(dto: CompleteMediaUploadDto, userId?: string, actor = 'admin') {
 		const extension = extname(dto.originalName).toLowerCase().replace('.', '')
+
 		const fileName = dto.storageKey.split('/').pop() ?? dto.originalName
 
-		const cdnUrl = this.config.aws.cdnUrl || `${this.config.aws.s3Bucket}.s3.${this.config.aws.region}.amazonaws.com`
+		const cdnUrl =
+			this.config.aws.cdnUrl ||
+			`${this.config.aws.s3Bucket}.s3.${this.config.aws.region}.amazonaws.com`
+
 		const fileUrl = `https://${cdnUrl}/${dto.storageKey}`
 
 		const media = await this.prisma.media.create({
@@ -95,18 +102,19 @@ export class MediaService extends BaseCmsService {
 
 	async adminFindAll(query: QueryMediaDto) {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
+
 		const where: Prisma.MediaWhereInput = { deletedAt: null }
 
-		if (query.search) {
+		if (query.search)
 			where.OR = [
 				{ originalName: { contains: query.search, mode: 'insensitive' } },
 				{ fileName: { contains: query.search, mode: 'insensitive' } },
 				{ altText: { contains: query.search, mode: 'insensitive' } },
 				{ caption: { contains: query.search, mode: 'insensitive' } },
 			]
-		}
 
 		if (query.type) where.type = query.type
+
 		if (query.folder) where.folder = query.folder
 
 		const [items, total] = await Promise.all([
@@ -156,11 +164,7 @@ export class MediaService extends BaseCmsService {
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		// Soft delete in database
-		await this.prisma.media.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		await this.prisma.media.update({ where: { id }, data: { deletedAt: new Date() } })
 
 		// Also delete from S3 storage if available
 		try {

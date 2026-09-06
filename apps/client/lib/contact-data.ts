@@ -1,4 +1,4 @@
-export interface ContactFormPayload {
+export type ContactFormPayload = {
 	name: string
 	email: string
 	subject: string
@@ -7,7 +7,7 @@ export interface ContactFormPayload {
 	source?: string
 }
 
-export interface ContactValidationErrors {
+export type ContactValidationErrors = {
 	name?: string
 	email?: string
 	subject?: string
@@ -15,14 +15,14 @@ export interface ContactValidationErrors {
 	general?: string
 }
 
-export interface ContactSubmissionResult {
+export type ContactSubmissionResult = {
 	success: boolean
 	message: string
 	id?: string
 	errors?: ContactValidationErrors
 }
 
-export interface DirectChannel {
+export type DirectChannel = {
 	id: string
 	platform: string
 	label: string
@@ -33,7 +33,7 @@ export interface DirectChannel {
 	description: string
 }
 
-export interface ContactTelemetry {
+export type ContactTelemetry = {
 	responseTime: string
 	timezone: string
 	location: string
@@ -128,12 +128,11 @@ export function validateContactForm(payload: ContactFormPayload): {
 		errors.email = 'Please enter a valid email address (e.g. name@domain.com).'
 	}
 
-	// 3. Subject validation (min 3, max 200)
-	if (!subject) {
-		errors.subject = 'Please provide an inquiry subject.'
-	} else if (subject.length < 3) {
+	// 3. Subject validation (defaults to 'Portfolio Inquiry' if blank, min 3, max 200)
+	const resolvedSubject = subject || 'Portfolio Inquiry'
+	if (resolvedSubject.length < 3) {
 		errors.subject = 'Subject must be at least 3 characters.'
-	} else if (subject.length > 200) {
+	} else if (resolvedSubject.length > 200) {
 		errors.subject = 'Subject cannot exceed 200 characters.'
 	}
 

@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { SignalArrow } from 'ui/motion'
 import { classNames } from '../../lib/utils'
 
-export interface ResumeCtaProps {
+export type ResumeCtaProps = {
 	className?: string
 	compact?: boolean
 }

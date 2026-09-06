@@ -1,3 +1,5 @@
+import type { Request } from 'express'
+
 import {
 	Body,
 	Controller,
@@ -10,18 +12,17 @@ import {
 	Query,
 	Req,
 } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
-import { MediaService } from './media.service'
 import {
 	CompleteMediaUploadDto,
 	QueryMediaDto,
 	RequestPresignedUploadDto,
 	UpdateMediaDto,
 } from './media.dto'
-import { Roles } from 'common/decorators/roles.decorator'
 import { UserRole } from '@repo/prisma'
+import { ApiTags } from '@nestjs/swagger'
+import { MediaService } from './media.service'
+import { Roles } from 'common/decorators/roles.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import type { Request } from 'express'
 
 @ApiTags('Media')
 @Controller('media')
@@ -29,7 +30,7 @@ export class MediaController {
 	constructor(private readonly mediaService: MediaService) {}
 
 	@Post('presigned-url')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Generate AWS S3 presigned PUT URL for direct client upload (Admin)',
 		method: 'POST',
@@ -40,7 +41,7 @@ export class MediaController {
 	}
 
 	@Post('complete')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Register completed upload metadata into database (Admin)',
 		method: 'POST',
@@ -54,7 +55,7 @@ export class MediaController {
 	}
 
 	@Get()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'List all media files (Admin)',
 		method: 'GET',
@@ -66,7 +67,7 @@ export class MediaController {
 	}
 
 	@Get(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Get media file metadata by ID (Admin)',
 		method: 'GET',
@@ -77,7 +78,7 @@ export class MediaController {
 	}
 
 	@Patch(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update media altText and caption metadata (Admin)',
 		method: 'PATCH',
@@ -94,7 +95,7 @@ export class MediaController {
 	}
 
 	@Delete(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Delete media file from storage and database (Admin)',
 		method: 'DELETE',

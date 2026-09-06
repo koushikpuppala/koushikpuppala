@@ -2,13 +2,13 @@ import { cache } from 'react'
 import type { AboutModel } from 'types/models'
 import { fetchApi } from './api-client'
 
-export interface AboutMetric {
+export type AboutMetric = {
 	label: string
 	value: string
 	detail?: string
 }
 
-export interface PortfolioAbout {
+export type PortfolioAbout = {
 	title: string
 	leadStatement: string
 	content: string

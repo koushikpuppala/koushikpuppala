@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 
-interface ButtonProps {
+type ButtonProps = {
 	children: ReactNode
 	className?: string
 	appName: string

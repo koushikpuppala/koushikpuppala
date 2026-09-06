@@ -1,7 +1,7 @@
 import type { HTMLAttributes, SVGProps } from 'react'
 import { classNames } from 'utils/classNames'
 
-export interface SignalRuleProps extends HTMLAttributes<HTMLDivElement> {
+export type SignalRuleProps = HTMLAttributes<HTMLDivElement> & {
 	variant?: 'left' | 'centered' | 'full'
 	glow?: boolean
 	dot?: boolean
@@ -38,7 +38,7 @@ export const SignalRule = ({
 	)
 }
 
-export interface AmbientBloomProps extends HTMLAttributes<HTMLDivElement> {
+export type AmbientBloomProps = HTMLAttributes<HTMLDivElement> & {
 	size?: 'sm' | 'md' | 'lg' | 'xl'
 	position?: 'top-center' | 'top-right' | 'center' | 'bottom-left'
 	intensity?: 'subtle' | 'normal' | 'vivid'
@@ -158,7 +158,7 @@ export const BrandGlyph = ({
 	)
 }
 
-export interface BrandWatermarkProps extends HTMLAttributes<HTMLDivElement> {
+export type BrandWatermarkProps = HTMLAttributes<HTMLDivElement> & {
 	size?: number
 	opacity?: number
 }
@@ -213,7 +213,7 @@ export const BrandWatermark = ({
 	)
 }
 
-export interface AnimatedBeamProps extends HTMLAttributes<HTMLDivElement> {
+export type AnimatedBeamProps = HTMLAttributes<HTMLDivElement> & {
 	orientation?: 'horizontal' | 'vertical'
 	duration?: number
 }

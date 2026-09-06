@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { motion, useReducedMotion } from 'ui/motion'
 import { classNames } from '../../lib/utils'
 
-export interface NavItem {
+export type NavItem = {
 	label: string
 	href: string
 }
@@ -19,7 +19,7 @@ export const NAV_ITEMS: NavItem[] = [
 	{ label: 'Contact', href: '/contact' },
 ]
 
-export interface DesktopNavigationProps {
+export type DesktopNavigationProps = {
 	className?: string
 	isScrolled?: boolean
 }

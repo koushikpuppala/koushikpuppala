@@ -1,6 +1,6 @@
 import { NotFoundException } from '@nestjs/common'
 
-export abstract class BaseCmsService {
+export abstract class BaseService {
 	protected ensureExists<T>(entity: T | null, message = 'Resource not found'): T {
 		if (!entity) throw new NotFoundException(message)
 

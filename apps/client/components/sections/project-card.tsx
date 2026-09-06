@@ -7,7 +7,7 @@ import { SignalArrow } from 'ui/motion'
 import { classNames } from '../../lib/utils'
 import type { PortfolioProject } from '../../lib/projects-data'
 
-export interface ProjectCardProps {
+export type ProjectCardProps = {
 	project: PortfolioProject
 	className?: string
 }

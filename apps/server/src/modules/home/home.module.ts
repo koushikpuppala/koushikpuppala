@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { HomeController } from './home.controller'
 import { HomeService } from './home.service'
+import { HomeController } from './home.controller'
 import { DatabaseModule } from 'database/database.module'
 import { AuditLogModule } from 'modules/audit-log/audit-log.module'
 

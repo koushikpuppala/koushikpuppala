@@ -2,7 +2,7 @@ import { cache } from 'react'
 import type { ProjectModel } from 'types/models'
 import { fetchApi } from './api-client'
 
-export interface ProjectGalleryItem {
+export type ProjectGalleryItem = {
 	id: string
 	url: string
 	altText?: string | null
@@ -12,7 +12,7 @@ export interface ProjectGalleryItem {
 	sortOrder: number
 }
 
-export interface PortfolioProject {
+export type PortfolioProject = {
 	id: string
 	slug: string
 	title: string

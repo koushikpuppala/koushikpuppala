@@ -1,7 +1,7 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react'
 import { classNames } from 'utils/classNames'
 
-export interface TypographyBaseProps extends HTMLAttributes<HTMLElement> {
+export type TypographyBaseProps = HTMLAttributes<HTMLElement> & {
 	children: ReactNode
 	className?: string
 	as?: ElementType
@@ -79,7 +79,7 @@ export const SubsectionTitle = ({
 	)
 }
 
-export interface TechnicalLabelProps extends TypographyBaseProps {
+export type TechnicalLabelProps = TypographyBaseProps & {
 	dot?: boolean
 	pulsing?: boolean
 	variant?: 'default' | 'signal' | 'live'

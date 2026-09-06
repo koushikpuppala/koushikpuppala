@@ -1,3 +1,5 @@
+import type { Request } from 'express'
+
 import {
 	Body,
 	Controller,
@@ -10,8 +12,6 @@ import {
 	Query,
 	Req,
 } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
-import { ProjectService } from './project.service'
 import {
 	AddGalleryMediaDto,
 	CreateProjectDto,
@@ -19,11 +19,12 @@ import {
 	UpdateGalleryMediaDto,
 	UpdateProjectDto,
 } from './project.dto'
-import { Public } from 'common/decorators/public.decorator'
-import { Roles } from 'common/decorators/roles.decorator'
 import { UserRole } from '@repo/prisma'
+import { ApiTags } from '@nestjs/swagger'
+import { ProjectService } from './project.service'
+import { Roles } from 'common/decorators/roles.decorator'
+import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import type { Request } from 'express'
 
 @ApiTags('Projects')
 @Controller('projects')
@@ -39,10 +40,7 @@ export class ProjectController {
 		isArray: true,
 		endpoint: 'GET /api/v1/projects/published',
 	})
-	async getPublished(
-		@Query('category') category?: string,
-		@Query('featured') featured?: boolean,
-	) {
+	async getPublished(@Query('category') category?: string, @Query('featured') featured?: boolean) {
 		return this.projectService.getPublished({ category, featured })
 	}
 
@@ -59,7 +57,7 @@ export class ProjectController {
 	}
 
 	@Get()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'List all projects (Admin)',
 		method: 'GET',
@@ -71,7 +69,7 @@ export class ProjectController {
 	}
 
 	@Get(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Get project by ID (Admin)',
 		method: 'GET',
@@ -82,7 +80,7 @@ export class ProjectController {
 	}
 
 	@Post()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Create project (Admin)',
 		method: 'POST',
@@ -95,7 +93,7 @@ export class ProjectController {
 	}
 
 	@Patch(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update project (Admin)',
 		method: 'PATCH',
@@ -112,7 +110,7 @@ export class ProjectController {
 	}
 
 	@Patch(':id/publish')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Toggle publish status of project (Admin)',
 		method: 'PATCH',
@@ -125,7 +123,7 @@ export class ProjectController {
 	}
 
 	@Delete(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Soft-delete project (Admin)',
 		method: 'DELETE',
@@ -139,7 +137,7 @@ export class ProjectController {
 
 	// --- Gallery Endpoints ---
 	@Post(':id/gallery')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Add media asset to project gallery (Admin)',
 		method: 'POST',
@@ -156,7 +154,7 @@ export class ProjectController {
 	}
 
 	@Patch(':id/gallery/:mediaId')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update gallery media metadata/order (Admin)',
 		method: 'PATCH',
@@ -174,7 +172,7 @@ export class ProjectController {
 	}
 
 	@Delete(':id/gallery/:mediaId')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Remove media asset from project gallery (Admin)',
 		method: 'DELETE',

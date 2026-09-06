@@ -1,3 +1,5 @@
+import type { Request } from 'express'
+
 import {
 	Body,
 	Controller,
@@ -10,14 +12,13 @@ import {
 	Query,
 	Req,
 } from '@nestjs/common'
+import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { MetadataService } from './metadata.service'
-import { CreateMetadataDto, QueryMetadataDto, UpdateMetadataDto } from './metadata.dto'
-import { Public } from 'common/decorators/public.decorator'
 import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
+import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import type { Request } from 'express'
+import { CreateMetadataDto, QueryMetadataDto, UpdateMetadataDto } from './metadata.dto'
 
 @ApiTags('Metadata')
 @Controller('metadata')
@@ -50,7 +51,7 @@ export class MetadataController {
 	}
 
 	@Get()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'List all metadata entries (Admin)',
 		method: 'GET',
@@ -62,7 +63,7 @@ export class MetadataController {
 	}
 
 	@Get(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Get metadata entry by ID (Admin)',
 		method: 'GET',
@@ -73,7 +74,7 @@ export class MetadataController {
 	}
 
 	@Post()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Create metadata entry (Admin)',
 		method: 'POST',
@@ -86,7 +87,7 @@ export class MetadataController {
 	}
 
 	@Patch(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update metadata entry (Admin)',
 		method: 'PATCH',
@@ -103,7 +104,7 @@ export class MetadataController {
 	}
 
 	@Patch(':id/publish')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Toggle publish status of metadata entry (Admin)',
 		method: 'PATCH',
@@ -116,7 +117,7 @@ export class MetadataController {
 	}
 
 	@Delete(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Soft-delete metadata entry (Admin)',
 		method: 'DELETE',

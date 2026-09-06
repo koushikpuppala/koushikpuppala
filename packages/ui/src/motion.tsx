@@ -18,7 +18,7 @@ export const EASING = {
 	spring: [0.2, 0.8, 0.2, 1] as const,
 }
 
-export interface MotionBaseProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
+export type MotionBaseProps = Omit<HTMLMotionProps<'div'>, 'children'> & {
 	children: ReactNode
 	className?: string
 	delay?: number
@@ -177,7 +177,7 @@ export const FadeEntrance = ({
 	)
 }
 
-export interface ScrollRevealProps extends MotionBaseProps {
+export type ScrollRevealProps = MotionBaseProps & {
 	yOffset?: number
 	once?: boolean
 	margin?: string

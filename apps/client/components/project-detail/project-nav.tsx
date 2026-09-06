@@ -3,7 +3,7 @@ import { Surface } from 'ui/surface'
 import { SignalArrow, ScrollReveal } from 'ui/motion'
 import type { PortfolioProject } from '../../lib/projects-data'
 
-export interface ProjectNavProps {
+export type ProjectNavProps = {
 	prev: PortfolioProject | null
 	next: PortfolioProject | null
 	className?: string

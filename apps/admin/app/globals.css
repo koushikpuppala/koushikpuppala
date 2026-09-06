@@ -1,0 +1,148 @@
+@import 'tailwindcss' source(none);
+@source '../app';
+@source '../components';
+@source '../lib';
+@source '../../packages/ui/src';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+	--font-sans:
+		ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, 'JetBrains Mono', Menlo, monospace;
+
+	--radius-xs: 0.25rem;
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--radius-2xl: calc(var(--radius) + 10px);
+
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-destructive-foreground: var(--destructive-foreground);
+	--color-success: var(--success);
+	--color-success-foreground: var(--success-foreground);
+	--color-warning: var(--warning);
+	--color-warning-foreground: var(--warning-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--color-surface: var(--surface);
+	--color-surface-strong: var(--surface-strong);
+
+	--color-signal: var(--signal);
+	--color-signal-ink: var(--signal-ink);
+	--color-signal-foreground: var(--signal-foreground);
+	--color-signal-soft: var(--signal-soft);
+
+	--color-sidebar: var(--sidebar);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent: var(--sidebar-accent);
+}
+
+:root {
+	--radius: 0.625rem;
+
+	--background: #f8fafc;
+	--foreground: #0f172a;
+	--surface: #ffffff;
+	--surface-strong: #f1f5f9;
+
+	--card: #ffffff;
+	--card-foreground: #0f172a;
+	--popover: #ffffff;
+	--popover-foreground: #0f172a;
+
+	--primary: #0f172a;
+	--primary-foreground: #ffffff;
+	--secondary: #f1f5f9;
+	--secondary-foreground: #1e293b;
+	--muted: #f1f5f9;
+	--muted-foreground: #64748b;
+	--accent: #f1f5f9;
+	--accent-foreground: #0f172a;
+
+	--signal: #e11d48;
+	--signal-ink: #be123c;
+	--signal-foreground: #ffffff;
+	--signal-soft: rgba(225, 29, 72, 0.1);
+
+	--destructive: #ef4444;
+	--destructive-foreground: #ffffff;
+	--success: #10b981;
+	--success-foreground: #ffffff;
+	--warning: #f59e0b;
+	--warning-foreground: #ffffff;
+
+	--border: #e2e8f0;
+	--input: #e2e8f0;
+	--ring: #e11d48;
+
+	--sidebar: #ffffff;
+	--sidebar-foreground: #0f172a;
+	--sidebar-border: #e2e8f0;
+	--sidebar-accent: #f1f5f9;
+}
+
+.dark {
+	--background: #090a0f;
+	--foreground: #f8fafc;
+	--surface: #11131a;
+	--surface-strong: #171923;
+
+	--card: #12141c;
+	--card-foreground: #f8fafc;
+	--popover: #171923;
+	--popover-foreground: #f8fafc;
+
+	--primary: #f8fafc;
+	--primary-foreground: #090a0f;
+	--secondary: #1e2230;
+	--secondary-foreground: #f8fafc;
+	--muted: #1e2230;
+	--muted-foreground: #94a3b8;
+	--accent: #1e2230;
+	--accent-foreground: #f8fafc;
+
+	--signal: #ff3366;
+	--signal-ink: #ff4d7a;
+	--signal-foreground: #ffffff;
+	--signal-soft: rgba(255, 51, 102, 0.14);
+
+	--destructive: #f87171;
+	--destructive-foreground: #090a0f;
+	--success: #34d399;
+	--success-foreground: #090a0f;
+	--warning: #fbbf24;
+	--warning-foreground: #090a0f;
+
+	--border: rgba(255, 255, 255, 0.08);
+	--input: rgba(255, 255, 255, 0.12);
+	--ring: #ff3366;
+
+	--sidebar: #0d0f15;
+	--sidebar-foreground: #f8fafc;
+	--sidebar-border: rgba(255, 255, 255, 0.08);
+	--sidebar-accent: #171923;
+}
+
+body {
+	background-color: var(--background);
+	color: var(--foreground);
+	font-family: var(--font-sans);
+}

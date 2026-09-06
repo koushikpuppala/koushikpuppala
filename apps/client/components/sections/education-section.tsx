@@ -7,7 +7,7 @@ import { EducationCard } from './education-card'
 import { SectionPlaceholder } from './section-placeholder'
 import { getPublishedEducation, type PortfolioEducation } from '../../lib/education-data'
 
-export interface EducationSectionProps {
+export type EducationSectionProps = {
 	educations?: PortfolioEducation[]
 	className?: string
 }

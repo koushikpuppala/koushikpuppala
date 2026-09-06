@@ -11,7 +11,7 @@ import { classNames } from '../../lib/utils'
 import { AUTHORITATIVE_HOME, type PortfolioHome } from '../../lib/home-data'
 import { AUTHORITATIVE_SOCIALS, type PortfolioSocial } from '../../lib/social-data'
 
-export interface HeroClientViewProps {
+export type HeroClientViewProps = {
 	className?: string
 	homeData?: PortfolioHome
 	socials?: PortfolioSocial[]

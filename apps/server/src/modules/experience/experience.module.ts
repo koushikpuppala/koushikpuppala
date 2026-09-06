@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
-import { ExperienceController } from './experience.controller'
 import { ExperienceService } from './experience.service'
 import { DatabaseModule } from 'database/database.module'
+import { ExperienceController } from './experience.controller'
 import { AuditLogModule } from 'modules/audit-log/audit-log.module'
 
 @Module({

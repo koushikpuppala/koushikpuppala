@@ -1,13 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Req, Query } from '@nestjs/common'
-import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'
-import { Request } from 'express'
-import { UserService } from './user.service'
-import { AdminCreateUserDto, AdminUpdateUserDto, UserResponseDto } from './user.dto'
-import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
-import { QueryUserDto } from './dto/query-user.dto'
-import { CurrentUser } from 'common/decorators/current-user.decorator'
 import type { AuthenticatedUser } from 'types/express'
+
+import { Request } from 'express'
+import { UserRole } from '@repo/prisma'
+import { UserService } from './user.service'
+import { QueryUserDto } from './dto/query-user.dto'
+import { Roles } from 'common/decorators/roles.decorator'
+import { CurrentUser } from 'common/decorators/current-user.decorator'
+import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'
+import { AdminCreateUserDto, AdminUpdateUserDto, UserResponseDto } from './user.dto'
+import { Controller, Get, Post, Body, Patch, Param, Req, Query } from '@nestjs/common'
 
 @ApiTags('User Management')
 @ApiBearerAuth()
@@ -24,10 +25,8 @@ export class UserController {
 		@Req() req: Request,
 		@CurrentUser() currentUser: AuthenticatedUser,
 	) {
-		const meta = {
-			requestId: req.requestId,
-			endpoint: req.originalUrl,
-		}
+		const meta = { requestId: req.requestId, endpoint: req.originalUrl }
+
 		return this.userService.adminCreate(createUserDto, meta, currentUser.id)
 	}
 
@@ -54,10 +53,8 @@ export class UserController {
 		@Req() req: Request,
 		@CurrentUser() currentUser: AuthenticatedUser,
 	) {
-		const meta = {
-			requestId: req.requestId,
-			endpoint: req.originalUrl,
-		}
+		const meta = { requestId: req.requestId, endpoint: req.originalUrl }
+
 		return this.userService.adminUpdate(id, updateUserDto, meta, currentUser.id)
 	}
 }

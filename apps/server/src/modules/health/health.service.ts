@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common'
-import { DatabaseService } from 'database/database.service'
 import { RedisService } from 'redis/redis.service'
+import { DatabaseService } from 'database/database.service'
 import { ApiResponse, successResponse } from 'common/interfaces/api-response.interface'
 
 export type HealthStatusData = {
 	uptime: number
-	services: { database: string; redis: string }
 	timestamp: string
 	responseTime: string
 	status: 'ok' | 'degraded'
+	services: { database: string; redis: string }
 }
 
 @Injectable()

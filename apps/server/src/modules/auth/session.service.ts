@@ -1,11 +1,12 @@
-import { createHash } from 'node:crypto'
-import { DatabaseService } from 'database/database.service'
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
-import { DecodedIdToken } from 'firebase-admin/auth'
 import type { AuthenticatedUser } from 'types/express'
-import { ApiResponse, successResponse } from 'common/interfaces/api-response.interface'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+
+import { createHash } from 'node:crypto'
+import { DecodedIdToken } from 'firebase-admin/auth'
 import { AuditAction, UserRole } from '@repo/prisma'
+import { DatabaseService } from 'database/database.service'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
+import { ApiResponse, successResponse } from 'common/interfaces/api-response.interface'
 
 @Injectable()
 export class SessionService {
@@ -96,14 +97,7 @@ export class SessionService {
 		const sessions = await this.prisma.session.findMany({
 			where: isElevated ? {} : { userId: user.id },
 			orderBy: { lastActivityAt: 'desc' },
-			include: {
-				user: {
-					select: {
-						email: true,
-						displayName: true,
-					},
-				},
-			},
+			include: { user: { select: { email: true, displayName: true } } },
 		})
 
 		return successResponse(sessions, 'Sessions fetched successfully.', sessions.length)

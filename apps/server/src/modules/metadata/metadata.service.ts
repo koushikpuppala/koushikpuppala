@@ -1,12 +1,12 @@
-import { ConflictException, Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { AuditAction, Prisma } from '@repo/prisma'
+import { BaseService } from 'common/services/base-cms.service'
+import { ConflictException, Injectable } from '@nestjs/common'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { CreateMetadataDto, QueryMetadataDto, UpdateMetadataDto } from './metadata.dto'
 
 @Injectable()
-export class MetadataService extends BaseCmsService {
+export class MetadataService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
@@ -35,15 +35,15 @@ export class MetadataService extends BaseCmsService {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
 		const where: Prisma.MetadataWhereInput = { deletedAt: null }
 
-		if (query.search) {
+		if (query.search)
 			where.OR = [
 				{ key: { contains: query.search, mode: 'insensitive' } },
 				{ title: { contains: query.search, mode: 'insensitive' } },
 				{ description: { contains: query.search, mode: 'insensitive' } },
 			]
-		}
 
 		if (query.type) where.type = query.type
+
 		if (query.isPublished !== undefined) where.isPublished = query.isPublished
 
 		const [items, total] = await Promise.all([
@@ -72,9 +72,7 @@ export class MetadataService extends BaseCmsService {
 			where: { key: dto.key },
 		})
 
-		if (existing) {
-			throw new ConflictException(`Metadata key '${dto.key}' already exists`)
-		}
+		if (existing) throw new ConflictException(`Metadata key '${dto.key}' already exists`)
 
 		const metadata = await this.prisma.metadata.create({
 			data: {
@@ -85,6 +83,7 @@ export class MetadataService extends BaseCmsService {
 				description: dto.description,
 				ogImage: dto.ogImage,
 				canonicalUrl: dto.canonicalUrl,
+				robots: dto.robots ?? 'index,follow',
 				keywords: dto.keywords ?? [],
 				isPublished: dto.isPublished ?? false,
 				publishedAt: dto.isPublished ? new Date() : null,
@@ -110,9 +109,8 @@ export class MetadataService extends BaseCmsService {
 				where: { key: dto.key },
 			})
 
-			if (duplicate && duplicate.id !== id) {
+			if (duplicate && duplicate.id !== id)
 				throw new ConflictException(`Metadata key '${dto.key}' already exists`)
-			}
 		}
 
 		const metadata = await this.prisma.metadata.update({
@@ -125,10 +123,11 @@ export class MetadataService extends BaseCmsService {
 				...(dto.description !== undefined && { description: dto.description }),
 				...(dto.ogImage !== undefined && { ogImage: dto.ogImage }),
 				...(dto.canonicalUrl !== undefined && { canonicalUrl: dto.canonicalUrl }),
+				...(dto.robots !== undefined && { robots: dto.robots }),
 				...(dto.keywords !== undefined && { keywords: dto.keywords }),
 				...(dto.isPublished !== undefined && {
 					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? existing.publishedAt ?? new Date() : null,
+					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
 				}),
 			},
 		})
@@ -151,10 +150,7 @@ export class MetadataService extends BaseCmsService {
 
 		const metadata = await this.prisma.metadata.update({
 			where: { id },
-			data: {
-				isPublished: nextState,
-				publishedAt: nextState ? new Date() : null,
-			},
+			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
 		})
 
 		await this.auditLog.create({
@@ -171,10 +167,7 @@ export class MetadataService extends BaseCmsService {
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.metadata.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		await this.prisma.metadata.update({ where: { id }, data: { deletedAt: new Date() } })
 
 		await this.auditLog.create({
 			action: AuditAction.DELETE,

@@ -5,7 +5,7 @@ import { SignalArrow } from 'ui/motion'
 import { classNames } from '../../lib/utils'
 import { type PortfolioExperience, formatEmploymentType } from '../../lib/experience-data'
 
-export interface ExperienceCardProps {
+export type ExperienceCardProps = {
 	experience: PortfolioExperience
 	className?: string
 }

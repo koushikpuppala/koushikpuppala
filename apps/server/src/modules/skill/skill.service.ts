@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { Injectable } from '@nestjs/common'
 import { AuditAction, Prisma } from '@repo/prisma'
+import { BaseService } from 'common/services/base-cms.service'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { CreateSkillDto, QuerySkillDto, UpdateSkillDto } from './skill.dto'
 
 @Injectable()
-export class SkillService extends BaseCmsService {
+export class SkillService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
@@ -15,21 +15,14 @@ export class SkillService extends BaseCmsService {
 	}
 
 	async getPublished(category?: string) {
-		const where: Prisma.SkillWhereInput = {
-			isPublished: true,
-			deletedAt: null,
-		}
+		const where: Prisma.SkillWhereInput = { isPublished: true, deletedAt: null }
 
 		if (category) where.category = category
 
 		const items = await this.prisma.skill.findMany({
 			where,
 			orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
-			include: {
-				media: {
-					select: { id: true, url: true, fileName: true, altText: true },
-				},
-			},
+			include: { media: { select: { id: true, url: true, fileName: true, altText: true } } },
 		})
 
 		return items
@@ -39,16 +32,17 @@ export class SkillService extends BaseCmsService {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
 		const where: Prisma.SkillWhereInput = { deletedAt: null }
 
-		if (query.search) {
+		if (query.search)
 			where.OR = [
 				{ name: { contains: query.search, mode: 'insensitive' } },
 				{ category: { contains: query.search, mode: 'insensitive' } },
 				{ description: { contains: query.search, mode: 'insensitive' } },
 			]
-		}
 
 		if (query.category) where.category = query.category
+
 		if (query.featured !== undefined) where.featured = query.featured
+
 		if (query.isPublished !== undefined) where.isPublished = query.isPublished
 
 		const [items, total] = await Promise.all([
@@ -118,7 +112,7 @@ export class SkillService extends BaseCmsService {
 				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
 				...(dto.isPublished !== undefined && {
 					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? existing.publishedAt ?? new Date() : null,
+					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
 				}),
 			},
 			include: { media: true },
@@ -142,10 +136,7 @@ export class SkillService extends BaseCmsService {
 
 		const skill = await this.prisma.skill.update({
 			where: { id },
-			data: {
-				isPublished: nextState,
-				publishedAt: nextState ? new Date() : null,
-			},
+			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
 		})
 
 		await this.auditLog.create({
@@ -162,10 +153,7 @@ export class SkillService extends BaseCmsService {
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.skill.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		await this.prisma.skill.update({ where: { id }, data: { deletedAt: new Date() } })
 
 		await this.auditLog.create({
 			action: AuditAction.DELETE,

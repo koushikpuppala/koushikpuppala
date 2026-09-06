@@ -11,7 +11,7 @@ import { ThemeToggle } from './theme-toggle'
 import { EASING } from 'ui/motion'
 import { AUTHORITATIVE_SOCIALS, type PortfolioSocial } from '../../lib/social-data'
 
-export interface MobileMenuProps {
+export type MobileMenuProps = {
 	isOpen: boolean
 	onClose: () => void
 	socials?: PortfolioSocial[]

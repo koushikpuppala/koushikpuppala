@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { Injectable } from '@nestjs/common'
 import { AuditAction, Prisma } from '@repo/prisma'
+import { BaseService } from 'common/services/base-cms.service'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { CreateEducationDto, QueryEducationDto, UpdateEducationDto } from './education.dto'
 
 @Injectable()
-export class EducationService extends BaseCmsService {
+export class EducationService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,

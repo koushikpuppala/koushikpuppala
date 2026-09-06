@@ -2,7 +2,7 @@ import { Surface } from 'ui/surface'
 import { SignalArrow, ScrollReveal } from 'ui/motion'
 import type { PortfolioResume } from '../../lib/resume-data'
 
-export interface ResumeCardProps {
+export type ResumeCardProps = {
 	resume: PortfolioResume
 	className?: string
 }

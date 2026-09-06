@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useReducedMotion } from 'ui/motion'
 import { classNames } from '../../lib/utils'
 
-export interface RailSection {
+export type RailSection = {
 	id: string
 	number: string
 	shortLabel: string
@@ -21,7 +21,7 @@ export const RAIL_SECTIONS: RailSection[] = [
 	{ id: 'contact', number: '07', shortLabel: 'CONTACT', fullLabel: 'Inquiries & Contact' },
 ]
 
-export interface SectionRailProps {
+export type SectionRailProps = {
 	className?: string
 }
 

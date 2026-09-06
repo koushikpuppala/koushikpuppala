@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common'
-import { DatabaseService } from 'database/database.service'
-import { AuditAction, AuditLog, Prisma } from '@repo/prisma'
-import { QueryAuditLogDto } from './dto/query-audit-log.dto'
-import { ApiResponse, successResponse } from 'common/interfaces/api-response.interface'
 import { getDateRange } from 'common/utils/date-range.util'
+import { DatabaseService } from 'database/database.service'
+import { QueryAuditLogDto } from './dto/query-audit-log.dto'
+import { AuditAction, AuditLog, Prisma } from '@repo/prisma'
 import { requestContextStorage } from 'common/context/request-context'
+import { ApiResponse, successResponse } from 'common/interfaces/api-response.interface'
 
 const isValidUuid = (id?: string): boolean => {
 	if (!id) return false
+
 	return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
 }
 
@@ -95,20 +96,18 @@ export class AuditLogService {
 
 		if (from || to) {
 			const { from: startDate, to: endDate } = getDateRange({ from, to })
-			where.createdAt = {
-				...(from && { gte: startDate }),
-				...(to && { lte: endDate }),
-			}
+
+			where.createdAt = { ...(from && { gte: startDate }), ...(to && { lte: endDate }) }
 		}
 
-		if (search) {
-			const keyword = search.trim()
+		const keyword = search?.trim()
+
+		if (keyword)
 			where.OR = [
 				{ entity: { contains: keyword, mode: 'insensitive' } },
 				{ entityId: { contains: keyword, mode: 'insensitive' } },
 				{ actor: { contains: keyword, mode: 'insensitive' } },
 			]
-		}
 
 		const [logs, total] = await this.prisma.$transaction([
 			this.prisma.auditLog.findMany({

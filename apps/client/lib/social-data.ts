@@ -3,7 +3,7 @@ import type { SocialModel } from 'types/models'
 import { fetchApi } from './api-client'
 import type { DirectChannel } from './contact-data'
 
-export interface PortfolioSocial {
+export type PortfolioSocial = {
 	id: string
 	platform: string
 	url: string

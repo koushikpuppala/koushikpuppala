@@ -7,7 +7,7 @@ import { ProjectCard } from './project-card'
 import { SectionPlaceholder } from './section-placeholder'
 import { getFeaturedProjects, type PortfolioProject } from '../../lib/projects-data'
 
-export interface ProjectsSectionProps {
+export type ProjectsSectionProps = {
 	projects?: PortfolioProject[]
 	className?: string
 }

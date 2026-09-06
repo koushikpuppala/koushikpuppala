@@ -1,7 +1,7 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react'
 import { classNames } from 'utils/classNames'
 
-export interface PageContainerProps extends HTMLAttributes<HTMLDivElement> {
+export type PageContainerProps = HTMLAttributes<HTMLDivElement> & {
 	children: ReactNode
 	className?: string
 	as?: ElementType
@@ -32,7 +32,7 @@ export const PageContainer = ({
 	)
 }
 
-export interface ContentContainerProps extends HTMLAttributes<HTMLDivElement> {
+export type ContentContainerProps = HTMLAttributes<HTMLDivElement> & {
 	children: ReactNode
 	className?: string
 	as?: ElementType
@@ -64,7 +64,7 @@ export const ContentContainer = ({
 	)
 }
 
-export interface SectionContainerProps extends HTMLAttributes<HTMLElement> {
+export type SectionContainerProps = HTMLAttributes<HTMLElement> & {
 	children: ReactNode
 	className?: string
 	as?: ElementType

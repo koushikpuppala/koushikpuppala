@@ -12,7 +12,7 @@ export type SectionBackgroundVariant =
 	| 'bloom-top'
 	| 'bloom-bottom'
 
-export interface SectionFrameProps {
+export type SectionFrameProps = {
 	id: string
 	children: ReactNode
 	background?: SectionBackgroundVariant

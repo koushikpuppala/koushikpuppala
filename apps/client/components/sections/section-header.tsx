@@ -4,7 +4,7 @@ import { SignalRule } from 'ui/brand'
 import { ScrollReveal } from 'ui/motion'
 import { classNames } from '../../lib/utils'
 
-export interface SectionHeaderProps {
+export type SectionHeaderProps = {
 	index: string
 	tag: string
 	title: string

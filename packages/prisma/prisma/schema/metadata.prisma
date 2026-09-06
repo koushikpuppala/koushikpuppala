@@ -11,6 +11,7 @@ model Metadata {
   description  String?
   ogImage      String?  @map("og_image")
   canonicalUrl String?  @map("canonical_url")
+  robots       String?  @default("index,follow")
   keywords     String[]
 
   isPublished Boolean   @default(false) @map("is_published")

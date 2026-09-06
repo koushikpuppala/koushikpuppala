@@ -1,22 +1,17 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import {
-	IsBoolean,
-	IsInt,
-	IsOptional,
-	IsString,
-	IsUUID,
-	Max,
-	Min,
-} from 'class-validator'
 import { Type } from 'class-transformer'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
+import { IsBoolean, IsInt, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator'
 
 export class CreateSkillDto {
 	@ApiProperty({ example: 'TypeScript' })
 	@IsString()
 	name!: string
 
-	@ApiProperty({ example: 'Languages', description: 'Category e.g. Frontend, Backend, Database, Cloud & DevOps, Tools' })
+	@ApiProperty({
+		example: 'Languages',
+		description: 'Category e.g. Frontend, Backend, Database, Cloud & DevOps, Tools',
+	})
 	@IsString()
 	category!: string
 

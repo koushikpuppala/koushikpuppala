@@ -1,3 +1,5 @@
+import type { Request } from 'express'
+
 import {
 	Body,
 	Controller,
@@ -10,14 +12,13 @@ import {
 	Query,
 	Req,
 } from '@nestjs/common'
+import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { ResumeService } from './resume.service'
-import { CreateResumeDto, QueryResumeDto, UpdateResumeDto } from './resume.dto'
-import { Public } from 'common/decorators/public.decorator'
 import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
+import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import type { Request } from 'express'
+import { CreateResumeDto, QueryResumeDto, UpdateResumeDto } from './resume.dto'
 
 @ApiTags('Resume')
 @Controller('resume')
@@ -49,7 +50,7 @@ export class ResumeController {
 	}
 
 	@Get()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'List all resume versions (Admin)',
 		method: 'GET',
@@ -61,7 +62,7 @@ export class ResumeController {
 	}
 
 	@Get(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Get resume record by ID (Admin)',
 		method: 'GET',
@@ -72,7 +73,7 @@ export class ResumeController {
 	}
 
 	@Post()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Upload/register new resume version (Admin)',
 		method: 'POST',
@@ -85,7 +86,7 @@ export class ResumeController {
 	}
 
 	@Patch(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update resume version (Admin)',
 		method: 'PATCH',
@@ -102,7 +103,7 @@ export class ResumeController {
 	}
 
 	@Patch(':id/publish')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Toggle publish status of resume version (Admin)',
 		method: 'PATCH',
@@ -115,7 +116,7 @@ export class ResumeController {
 	}
 
 	@Delete(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Soft-delete resume version (Admin)',
 		method: 'DELETE',

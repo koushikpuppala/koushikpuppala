@@ -31,7 +31,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 	async onModuleInit() {
 		try {
 			if (this.redis.status === 'wait') await this.redis.connect()
+
 			await this.redis.ping()
+
 			this.logger.info('Redis connection established', RedisService.name)
 		} catch (err: unknown) {
 			this.logger.warn(

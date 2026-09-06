@@ -17,7 +17,7 @@ const QuickNavigation = dynamic(
 	{ ssr: false },
 )
 
-export interface PublicHeaderProps {
+export type PublicHeaderProps = {
 	className?: string
 	socials?: PortfolioSocial[]
 }

@@ -1,4 +1,3 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import {
 	IsEmail,
 	IsEnum,
@@ -8,8 +7,9 @@ import {
 	MaxLength,
 	MinLength,
 } from 'class-validator'
-import { ContactPriority, ContactStatus } from '@repo/prisma'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ContactPriority, ContactStatus } from '@repo/prisma'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class CreateContactDto {
 	@ApiProperty({ example: 'John Doe' })
@@ -28,7 +28,9 @@ export class CreateContactDto {
 	@MaxLength(200)
 	subject!: string
 
-	@ApiProperty({ example: 'Hello Koushik, I would love to discuss a full-stack project opportunity with you.' })
+	@ApiProperty({
+		example: 'Hello Koushik, I would love to discuss a full-stack project opportunity with you.',
+	})
 	@IsString()
 	@MinLength(10)
 	@MaxLength(5000)

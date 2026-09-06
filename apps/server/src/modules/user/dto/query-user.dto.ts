@@ -1,6 +1,6 @@
-import { ApiPropertyOptional } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
 import { UserRole, UserStatus } from '@repo/prisma'
+import { ApiPropertyOptional } from '@nestjs/swagger'
 import { IsEnum, IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
 
 export class QueryUserDto {

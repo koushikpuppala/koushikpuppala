@@ -5,8 +5,8 @@ import { UserRole } from '@repo/prisma'
 import { Reflector } from '@nestjs/core'
 import { LoggerService } from 'common/logger/logger.service'
 import { ROLES_KEY } from 'common/decorators/roles.decorator'
-import { IS_PUBLIC_KEY } from 'common/decorators/public.decorator'
 import { ForbiddenException, Injectable } from '@nestjs/common'
+import { IS_PUBLIC_KEY } from 'common/decorators/public.decorator'
 
 @Injectable()
 export class RolesGuard implements CanActivate {

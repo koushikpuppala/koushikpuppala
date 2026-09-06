@@ -10,7 +10,7 @@ import {
 	type ContactValidationErrors,
 } from '../../lib/contact-data'
 
-export interface ContactFormProps {
+export type ContactFormProps = {
 	className?: string
 }
 

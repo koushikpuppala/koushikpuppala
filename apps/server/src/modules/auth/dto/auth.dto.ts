@@ -1,5 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { AuthProvider, UserRole, UserStatus } from '@repo/prisma'
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 
 export class AuthenticatedUserResponse {
 	@ApiProperty({

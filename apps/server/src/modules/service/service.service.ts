@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { Injectable } from '@nestjs/common'
 import { AuditAction, Prisma } from '@repo/prisma'
+import { BaseService } from 'common/services/base-cms.service'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { CreateServiceDto, QueryServiceDto, UpdateServiceDto } from './service.dto'
 
 @Injectable()
-export class ServiceService extends BaseCmsService {
+export class ServiceService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
@@ -18,11 +18,7 @@ export class ServiceService extends BaseCmsService {
 		const items = await this.prisma.service.findMany({
 			where: { isPublished: true, deletedAt: null },
 			orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
-			include: {
-				image: {
-					select: { id: true, url: true, fileName: true, altText: true },
-				},
-			},
+			include: { image: { select: { id: true, url: true, fileName: true, altText: true } } },
 		})
 
 		return items
@@ -32,16 +28,13 @@ export class ServiceService extends BaseCmsService {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
 		const where: Prisma.ServiceWhereInput = { deletedAt: null }
 
-		if (query.search) {
+		if (query.search)
 			where.OR = [
 				{ title: { contains: query.search, mode: 'insensitive' } },
 				{ description: { contains: query.search, mode: 'insensitive' } },
 			]
-		}
 
-		if (query.isPublished !== undefined) {
-			where.isPublished = query.isPublished
-		}
+		if (query.isPublished !== undefined) where.isPublished = query.isPublished
 
 		const [items, total] = await Promise.all([
 			this.prisma.service.findMany({
@@ -104,7 +97,7 @@ export class ServiceService extends BaseCmsService {
 				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
 				...(dto.isPublished !== undefined && {
 					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? existing.publishedAt ?? new Date() : null,
+					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
 				}),
 			},
 			include: { image: true },
@@ -128,10 +121,7 @@ export class ServiceService extends BaseCmsService {
 
 		const service = await this.prisma.service.update({
 			where: { id },
-			data: {
-				isPublished: nextState,
-				publishedAt: nextState ? new Date() : null,
-			},
+			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
 		})
 
 		await this.auditLog.create({
@@ -148,10 +138,7 @@ export class ServiceService extends BaseCmsService {
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.service.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		await this.prisma.service.update({ where: { id }, data: { deletedAt: new Date() } })
 
 		await this.auditLog.create({
 			action: AuditAction.DELETE,

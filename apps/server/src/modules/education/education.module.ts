@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
-import { EducationController } from './education.controller'
 import { EducationService } from './education.service'
 import { DatabaseModule } from 'database/database.module'
+import { EducationController } from './education.controller'
 import { AuditLogModule } from 'modules/audit-log/audit-log.module'
 
 @Module({

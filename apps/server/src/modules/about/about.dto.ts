@@ -1,14 +1,7 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import {
-	IsArray,
-	IsBoolean,
-	IsInt,
-	IsOptional,
-	IsString,
-	IsUUID,
-} from 'class-validator'
 import { Type } from 'class-transformer'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
+import { IsArray, IsBoolean, IsInt, IsOptional, IsString, IsUUID } from 'class-validator'
 
 export class CreateAboutDto {
 	@ApiProperty({ example: 'About Me' })
@@ -22,7 +15,8 @@ export class CreateAboutDto {
 	content!: string
 
 	@ApiPropertyOptional({
-		example: 'Detailed background, engineering philosophies, problem-solving journey, and technical leadership experience.',
+		example:
+			'Detailed background, engineering philosophies, problem-solving journey, and technical leadership experience.',
 	})
 	@IsString()
 	@IsOptional()

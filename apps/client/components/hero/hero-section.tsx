@@ -7,7 +7,7 @@ import {
 	type PortfolioSocial,
 } from '../../lib/social-data'
 
-export interface HeroSectionProps {
+export type HeroSectionProps = {
 	className?: string
 	homeData?: PortfolioHome
 	socials?: PortfolioSocial[]

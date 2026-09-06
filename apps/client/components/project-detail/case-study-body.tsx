@@ -3,7 +3,7 @@ import { Surface } from 'ui/surface'
 import { ScrollReveal } from 'ui/motion'
 import type { PortfolioProject } from '../../lib/projects-data'
 
-export interface CaseStudyBodyProps {
+export type CaseStudyBodyProps = {
 	project: PortfolioProject
 	className?: string
 }

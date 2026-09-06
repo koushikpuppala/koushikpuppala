@@ -6,7 +6,7 @@ import { SignalArrow } from 'ui/motion'
 import { DIRECT_CHANNELS, CONTACT_TELEMETRY, type DirectChannel } from '../../lib/contact-data'
 import { socialsToDirectChannels, type PortfolioSocial } from '../../lib/social-data'
 
-export interface ContactChannelsProps {
+export type ContactChannelsProps = {
 	className?: string
 	channels?: DirectChannel[]
 	socials?: PortfolioSocial[]

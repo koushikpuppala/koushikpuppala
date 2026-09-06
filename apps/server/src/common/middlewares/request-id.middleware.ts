@@ -1,8 +1,8 @@
 import type { NestMiddleware } from '@nestjs/common'
 import type { NextFunction, Request, Response } from 'express'
 
-import { Injectable } from '@nestjs/common'
 import { nanoid } from 'nanoid'
+import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class RequestIdMiddleware implements NestMiddleware {
@@ -11,7 +11,7 @@ export class RequestIdMiddleware implements NestMiddleware {
 
 		req.startTime = Date.now()
 
-		res.setHeader('X-Request-Id', req.requestId)
+		res.setHeader('x-request-id', req.requestId)
 
 		next()
 	}

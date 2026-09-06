@@ -1,21 +1,17 @@
 {
 	"name": "server",
 	"version": "0.0.0-alpha.0",
-	"type": "module",
 	"private": true,
 	"main": "dist/main.js",
 	"description": "The backend server for the application.",
 	"scripts": {
-		"dev": "nest start --watch",
-		"build": "nest build",
+		"lint": "biome lint",
 		"start": "nest start",
-		"start:debug": "nest start --debug --watch",
+		"build": "nest build",
+		"dev": "nest start --watch",
 		"start:prod": "node dist/main",
-		"test": "jest",
-		"test:watch": "jest --watch",
-		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-		"test:e2e": "jest --config ./test/jest-e2e.json",
-		"lint": "biome lint"
+		"test": "echo \"No test specified\"",
+		"start:debug": "nest start --debug --watch"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "~3.1116.0",

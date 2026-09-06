@@ -1,12 +1,12 @@
-import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { Injectable } from '@nestjs/common'
 import { AuditAction, Prisma } from '@repo/prisma'
+import { BaseService } from 'common/services/base-cms.service'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { CreateHomeDto, QueryHomeDto, UpdateHomeDto } from './home.dto'
 
 @Injectable()
-export class HomeService extends BaseCmsService {
+export class HomeService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
@@ -40,16 +40,13 @@ export class HomeService extends BaseCmsService {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
 		const where: Prisma.HomeWhereInput = { deletedAt: null }
 
-		if (query.search) {
+		if (query.search)
 			where.OR = [
 				{ title: { contains: query.search, mode: 'insensitive' } },
 				{ content: { contains: query.search, mode: 'insensitive' } },
 			]
-		}
 
-		if (query.isPublished !== undefined) {
-			where.isPublished = query.isPublished
-		}
+		if (query.isPublished !== undefined) where.isPublished = query.isPublished
 
 		const [items, total] = await Promise.all([
 			this.prisma.home.findMany({
@@ -58,9 +55,7 @@ export class HomeService extends BaseCmsService {
 				take,
 				orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
 				include: {
-					profileImage: {
-						select: { id: true, url: true, fileName: true, altText: true },
-					},
+					profileImage: { select: { id: true, url: true, fileName: true, altText: true } },
 				},
 			}),
 			this.prisma.home.count({ where }),
@@ -130,7 +125,7 @@ export class HomeService extends BaseCmsService {
 				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
 				...(dto.isPublished !== undefined && {
 					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? existing.publishedAt ?? new Date() : null,
+					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
 				}),
 			},
 			include: { profileImage: true },
@@ -154,10 +149,7 @@ export class HomeService extends BaseCmsService {
 
 		const home = await this.prisma.home.update({
 			where: { id },
-			data: {
-				isPublished: nextState,
-				publishedAt: nextState ? new Date() : null,
-			},
+			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
 		})
 
 		await this.auditLog.create({
@@ -174,10 +166,7 @@ export class HomeService extends BaseCmsService {
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.home.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		await this.prisma.home.update({ where: { id }, data: { deletedAt: new Date() } })
 
 		await this.auditLog.create({
 			action: AuditAction.DELETE,

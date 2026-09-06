@@ -5,7 +5,7 @@ import { useReducedMotion } from 'ui/motion'
 import { classNames } from '../../lib/utils'
 import { BrandGlyph } from 'ui/brand'
 
-export interface OrbitNode {
+export type OrbitNode = {
 	id: string
 	category: string
 	tech: string
@@ -21,7 +21,7 @@ const NODES: OrbitNode[] = [
 	{ id: 'data', category: 'DATA', tech: 'POSTGRESQL', angle: 315, radius: 46 },
 ]
 
-export interface BrandOrbitProps {
+export type BrandOrbitProps = {
 	className?: string
 }
 

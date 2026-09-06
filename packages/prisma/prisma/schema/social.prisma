@@ -5,6 +5,7 @@ model Social {
   url      String
   platform SocialPlatform @unique
   label    String?
+  handle   String?
   icon     String?
 
   featured  Boolean @default(false)

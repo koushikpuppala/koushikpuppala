@@ -45,14 +45,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 				exception instanceof Error ? exception : undefined,
 				{ ip, status, request },
 			)
-		else {
+		else
 			this.logger.warn(message, GlobalExceptionFilter.name, {
 				ip,
 				status,
 				request,
 				errors: exceptionResponse,
 			})
-		}
 
 		// Security hardening: Never leak internal database/system errors or stack traces to clients on 500s
 		const isHttpException = exception instanceof HttpException
@@ -64,9 +63,9 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
 		const errorPayload: ApiResponse<undefined> = {
 			ip,
-			message: clientMessage,
 			error: true,
 			statusCode: status,
+			message: clientMessage,
 			requestId: request.requestId,
 			timestamp: new Date().toISOString(),
 			endpoint: `${request.method} ${request.originalUrl}`,

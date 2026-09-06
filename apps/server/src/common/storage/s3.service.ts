@@ -1,5 +1,4 @@
-import { extname } from 'node:path'
-import { randomUUID } from 'node:crypto'
+import type { StorageService, UploadFileOptions, UploadFileResponse } from './storage.interface'
 
 import {
 	DeleteObjectCommand,
@@ -8,12 +7,11 @@ import {
 	PutObjectCommand,
 	S3Client,
 } from '@aws-sdk/client-s3'
+import { extname } from 'node:path'
+import { randomUUIDv7 } from 'node:crypto'
+import { Configuration } from 'config/configuration'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { Injectable, NotFoundException } from '@nestjs/common'
-
-import { Configuration } from 'config/configuration'
-
-import type { StorageService, UploadFileOptions, UploadFileResponse } from './storage.interface'
 
 @Injectable()
 export class S3Service implements StorageService {
@@ -28,7 +26,7 @@ export class S3Service implements StorageService {
 
 		const folder = options.folder?.replace(/^\/|\/$/g, '')
 
-		const fileName = `${randomUUID()}${extension}`
+		const fileName = `${randomUUIDv7()}${extension}`
 
 		const key = folder ? `${folder}/${fileName}` : fileName
 

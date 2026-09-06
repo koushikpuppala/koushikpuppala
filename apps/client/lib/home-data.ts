@@ -2,7 +2,7 @@ import { cache } from 'react'
 import type { HomeModel } from 'types/models'
 import { fetchApi } from './api-client'
 
-export interface PortfolioHome {
+export type PortfolioHome = {
 	title: string
 	separator: string
 	subtitles: string[]

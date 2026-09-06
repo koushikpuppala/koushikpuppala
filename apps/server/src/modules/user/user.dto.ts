@@ -1,7 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
 import { UserRole, UserStatus } from '@repo/prisma'
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator'
 
 export class UserResponseDto {
 	@ApiProperty({ example: 'usr_01J123ABCDEF' })

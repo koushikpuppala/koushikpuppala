@@ -1,3 +1,5 @@
+import type { Request } from 'express'
+
 import {
 	Body,
 	Controller,
@@ -10,14 +12,13 @@ import {
 	Query,
 	Req,
 } from '@nestjs/common'
+import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { EducationService } from './education.service'
-import { CreateEducationDto, QueryEducationDto, UpdateEducationDto } from './education.dto'
-import { Public } from 'common/decorators/public.decorator'
 import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
+import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import type { Request } from 'express'
+import { CreateEducationDto, QueryEducationDto, UpdateEducationDto } from './education.dto'
 
 @ApiTags('Education')
 @Controller('education')
@@ -38,7 +39,7 @@ export class EducationController {
 	}
 
 	@Get()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'List all education records (Admin)',
 		method: 'GET',
@@ -50,7 +51,7 @@ export class EducationController {
 	}
 
 	@Get(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Get education record by ID (Admin)',
 		method: 'GET',
@@ -61,7 +62,7 @@ export class EducationController {
 	}
 
 	@Post()
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Create education entry (Admin)',
 		method: 'POST',
@@ -74,7 +75,7 @@ export class EducationController {
 	}
 
 	@Patch(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Update education entry (Admin)',
 		method: 'PATCH',
@@ -91,7 +92,7 @@ export class EducationController {
 	}
 
 	@Patch(':id/publish')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Toggle publish status of education entry (Admin)',
 		method: 'PATCH',
@@ -104,7 +105,7 @@ export class EducationController {
 	}
 
 	@Delete(':id')
-	@Roles(UserRole.ADMIN, UserRole.EDITOR)
+	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
 		summary: 'Soft-delete education entry (Admin)',
 		method: 'DELETE',

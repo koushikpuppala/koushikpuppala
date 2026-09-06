@@ -1,12 +1,12 @@
-import { ConflictException, Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { BaseCmsService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { AuditAction, Prisma } from '@repo/prisma'
+import { BaseService } from 'common/services/base-cms.service'
+import { ConflictException, Injectable } from '@nestjs/common'
+import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { CreateSocialDto, QuerySocialDto, UpdateSocialDto } from './social.dto'
 
 @Injectable()
-export class SocialService extends BaseCmsService {
+export class SocialService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
@@ -25,10 +25,13 @@ export class SocialService extends BaseCmsService {
 
 	async adminFindAll(query: QuerySocialDto) {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
+
 		const where: Prisma.SocialWhereInput = { deletedAt: null }
 
 		if (query.platform) where.platform = query.platform
+
 		if (query.featured !== undefined) where.featured = query.featured
+
 		if (query.isVisible !== undefined) where.isVisible = query.isVisible
 
 		const [items, total] = await Promise.all([
@@ -45,9 +48,7 @@ export class SocialService extends BaseCmsService {
 	}
 
 	async findOne(id: string) {
-		const social = await this.prisma.social.findFirst({
-			where: { id, deletedAt: null },
-		})
+		const social = await this.prisma.social.findFirst({ where: { id, deletedAt: null } })
 
 		return this.ensureExists(social, 'Social link not found')
 	}
@@ -65,6 +66,7 @@ export class SocialService extends BaseCmsService {
 				platform: dto.platform,
 				url: dto.url,
 				label: dto.label,
+				handle: dto.handle,
 				icon: dto.icon,
 				featured: dto.featured ?? false,
 				isVisible: dto.isVisible ?? true,
@@ -101,6 +103,7 @@ export class SocialService extends BaseCmsService {
 				...(dto.platform !== undefined && { platform: dto.platform }),
 				...(dto.url !== undefined && { url: dto.url }),
 				...(dto.label !== undefined && { label: dto.label }),
+				...(dto.handle !== undefined && { handle: dto.handle }),
 				...(dto.icon !== undefined && { icon: dto.icon }),
 				...(dto.featured !== undefined && { featured: dto.featured }),
 				...(dto.isVisible !== undefined && { isVisible: dto.isVisible }),
@@ -123,10 +126,7 @@ export class SocialService extends BaseCmsService {
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.social.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		await this.prisma.social.update({ where: { id }, data: { deletedAt: new Date() } })
 
 		await this.auditLog.create({
 			action: AuditAction.DELETE,

@@ -4,7 +4,7 @@ import { Surface } from 'ui/surface'
 import { classNames } from '../../lib/utils'
 import type { SkillCluster } from '../../lib/skills-data'
 
-export interface SkillClusterCardProps {
+export type SkillClusterCardProps = {
 	cluster: SkillCluster
 	className?: string
 }

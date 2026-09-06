@@ -1,4 +1,3 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
 import {
 	IsArray,
 	IsBoolean,
@@ -11,6 +10,7 @@ import {
 } from 'class-validator'
 import { Type } from 'class-transformer'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
 
 export class CreateEducationDto {
 	@ApiProperty({ example: 'Bachelor of Technology (B.Tech)' })

@@ -1,13 +1,12 @@
 import type { App } from 'firebase-admin/app'
-import type { DecodedIdToken, UserRecord } from 'firebase-admin/auth'
 import type { OnModuleInit } from '@nestjs/common'
+import type { DecodedIdToken, UserRecord } from 'firebase-admin/auth'
 
 import { Injectable } from '@nestjs/common'
-import { cert, getApps, initializeApp } from 'firebase-admin/app'
 import { getAuth } from 'firebase-admin/auth'
-
 import { Configuration } from 'config/configuration'
 import { LoggerService } from 'common/logger/logger.service'
+import { cert, getApps, initializeApp } from 'firebase-admin/app'
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {

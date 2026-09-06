@@ -1,3 +1,5 @@
+import type { AuthenticatedUser } from 'types/express'
+
 import {
 	Controller,
 	Get,
@@ -9,18 +11,16 @@ import {
 	HttpStatus,
 	UnauthorizedException,
 } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
 import { Request } from 'express'
-
+import { UserRole } from '@repo/prisma'
+import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { SessionService } from './session.service'
+import { Roles } from 'common/decorators/roles.decorator'
 import { AuthenticatedUserResponse } from './dto/auth.dto'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
-import { AllowUnregisteredUser } from 'common/decorators/allow-unregistered-user.decorator'
 import { CurrentUser } from 'common/decorators/current-user.decorator'
-import { Roles } from 'common/decorators/roles.decorator'
-import { UserRole } from '@repo/prisma'
-import type { AuthenticatedUser } from 'types/express'
+import { AllowUnregisteredUser } from 'common/decorators/allow-unregistered-user.decorator'
 
 @ApiTags('Authentication')
 @Controller('auth')

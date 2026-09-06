@@ -1,137 +1,175 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Suspense } from 'react'
-import { SignalArrow, PageEntrance } from 'ui/motion'
-import { getPublishedResume, AUTHORITATIVE_RESUME } from '../../lib/resume-data'
-import { PublicFooter } from '../../components/footer'
+import { ArrowRight, Download } from '@/components/icons'
+import { SiteShell } from '@/components/site-shell'
+import { Chip, Reveal, Section, SectionHeader } from '@/components/primitives'
+import { PageHero } from '@/components/portfolio/page-hero'
+import { ContactCTA } from '@/components/portfolio/home-sections'
+import { Button } from '@/components/ui/button'
+import {
+	getEducation,
+	getExperience,
+	getResume,
+	getServices,
+	getSocials,
+} from '@/lib/portfolio-data'
+import { formatRange, splitList } from '@/lib/format'
 
-import { getPageMetadata } from '../../lib/metadata-data'
+export const metadata: Metadata = {
+	title: 'Resume',
+	description:
+		'Resume of Koushik Puppala, Software Engineer – Full Stack: roles, education and the technologies behind them.',
+	openGraph: {
+		title: 'Resume — Koushik Puppala',
+		description: 'Roles, education and technologies at a glance.',
+		type: 'website',
+	},
+	twitter: {
+		card: 'summary_large_image',
+	},
+}
 
-export const metadata: Metadata = getPageMetadata('resume')
-
-async function AsyncResumeViewer() {
-	const resume = await getPublishedResume()
-
+function RecordRow({
+	period,
+	title,
+	meta,
+	detail,
+}: {
+	period: string
+	title: string
+	meta: string
+	detail?: string | null
+}) {
 	return (
-		<>
-			{/* Sub Navigation & Actions Bar */}
-			<div className='w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 flex flex-wrap items-center justify-between gap-3'>
-				<Link
-					href='/'
-					className='inline-flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-signal transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-signal rounded py-1'>
-					<span aria-hidden='true'>←</span>
-					<span>RETURN TO PORTFOLIO</span>
-				</Link>
-
-				<div className='flex items-center gap-3'>
-					<span className='hidden sm:inline-block font-mono text-xs text-muted-foreground'>
-						{resume.formatLabel} • {resume.fileSizeFormatted}
-					</span>
-					<a
-						href={resume.downloadUrl}
-						download='Koushik_Puppala_Resume.pdf'
-						className='group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-signal text-signal-foreground font-mono text-xs font-semibold uppercase tracking-wider hover:opacity-90 active:scale-[0.98] transition-all shadow-md shadow-signal/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal'>
-						<span>DOWNLOAD PDF</span>
-						<SignalArrow size={12} />
-					</a>
-				</div>
+		<div className='grid gap-1.5 border-t border-border py-6 last:border-b sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:gap-10'>
+			<p className='numeric font-mono text-[0.75rem] text-muted-foreground'>{period}</p>
+			<div className='min-w-0'>
+				<h3 className='font-display text-lg font-medium tracking-tight'>{title}</h3>
+				<p className='mt-1 text-sm text-foreground/85'>{meta}</p>
+				{detail ? <p className='mt-1 text-sm text-muted-foreground'>{detail}</p> : null}
 			</div>
-
-			{/* PDF Viewer Frame with Mobile Helper */}
-			<PageEntrance
-				delay={0.05}
-				className='flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 flex flex-col space-y-4'>
-				{/* Mobile Download Helper Banner */}
-				<div className='block sm:hidden p-3.5 rounded-xl border border-border/80 bg-surface/60 text-xs font-mono text-muted-foreground space-y-2'>
-					<div className='flex items-center justify-between'>
-						<span className='text-signal font-semibold uppercase tracking-wider'>
-							MOBILE PDF PREVIEW
-						</span>
-						<span>{resume.fileSizeFormatted}</span>
-					</div>
-					<p className='text-[11px] leading-relaxed'>
-						For optimal formatting on mobile devices, you can download the authentic PDF directly to
-						your device storage.
-					</p>
-				</div>
-
-				<div className='w-full flex-1 min-h-[65vh] sm:min-h-[80vh] rounded-xl border border-border/80 bg-surface/40 overflow-hidden shadow-2xl relative'>
-					<iframe
-						src={`${resume.previewUrl}#toolbar=0`}
-						title='Koushik Puppala Authoritative Resume'
-						className='w-full h-full min-h-[65vh] sm:min-h-[80vh] rounded-xl border-0'
-						loading='eager'
-					/>
-				</div>
-			</PageEntrance>
-		</>
+		</div>
 	)
 }
 
-function StaticResumeViewerFallback() {
-	const resume = AUTHORITATIVE_RESUME
+export default async function ResumePage() {
+	const [resume, experiences, education, services, socials] = await Promise.all([
+		getResume(),
+		getExperience(),
+		getEducation(),
+		getServices(),
+		getSocials(),
+	])
+
+	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
+	const downloadable = Boolean(resume.fileUrl && resume.fileUrl !== '#')
+	const updated = new Date(resume.updatedAt).toLocaleDateString('en-US', { dateStyle: 'medium' })
+
 	return (
-		<>
-			<div className='w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 flex flex-wrap items-center justify-between gap-3'>
-				<Link
-					href='/'
-					className='inline-flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-signal transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-signal rounded py-1'>
-					<span aria-hidden='true'>←</span>
-					<span>RETURN TO PORTFOLIO</span>
-				</Link>
+		<SiteShell socials={socials}>
+			<PageHero
+				eyebrow='Resume'
+				title={resume.title}
+				lead={resume.summary}
+				meta={[resume.version, `Updated ${updated}`]}
+				actions={
+					downloadable ? (
+						<>
+							<Button asChild size='lg' variant='signal'>
+								<a href={resume.fileUrl} target='_blank' rel='noreferrer noopener'>
+									<Download className='size-4' /> Download {resume.version}
+								</a>
+							</Button>
+							<Button asChild size='lg' variant='outline' className='group'>
+								<Link href='/contact'>
+									Request a copy <ArrowRight className='arrow-slide size-4' />
+								</Link>
+							</Button>
+						</>
+					) : (
+						<>
+							<Button asChild size='lg' variant='signal' className='group'>
+								<Link href='/contact'>
+									Request a copy <ArrowRight className='arrow-slide size-4' />
+								</Link>
+							</Button>
+							<Button asChild size='lg' variant='outline' className='group'>
+								<Link href='/experience'>
+									See the timeline <ArrowRight className='arrow-slide size-4' />
+								</Link>
+							</Button>
+						</>
+					)
+				}
+			/>
 
-				<div className='flex items-center gap-3'>
-					<span className='hidden sm:inline-block font-mono text-xs text-muted-foreground'>
-						{resume.formatLabel} • {resume.fileSizeFormatted}
-					</span>
-					<a
-						href={resume.downloadUrl}
-						download='Koushik_Puppala_Resume.pdf'
-						className='group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-signal text-signal-foreground font-mono text-xs font-semibold uppercase tracking-wider hover:opacity-90 active:scale-[0.98] transition-all shadow-md shadow-signal/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal'>
-						<span>DOWNLOAD PDF</span>
-						<SignalArrow size={12} />
-					</a>
-				</div>
-			</div>
-
-			<PageEntrance
-				delay={0.05}
-				className='flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 flex flex-col space-y-4'>
-				<div className='block sm:hidden p-3.5 rounded-xl border border-border/80 bg-surface/60 text-xs font-mono text-muted-foreground space-y-2'>
-					<div className='flex items-center justify-between'>
-						<span className='text-signal font-semibold uppercase tracking-wider'>
-							MOBILE PDF PREVIEW
-						</span>
-						<span>{resume.fileSizeFormatted}</span>
-					</div>
-					<p className='text-[11px] leading-relaxed'>
-						For optimal formatting on mobile devices, you can download the authentic PDF directly to
-						your device storage.
+			{!downloadable ? (
+				<div className='border-b border-border bg-surface/50'>
+					<p className='container-page py-4 font-mono text-[0.75rem] text-muted-foreground'>
+						The resume file hasn&apos;t been published yet — the record below stays current.
 					</p>
 				</div>
+			) : null}
 
-				<div className='w-full flex-1 min-h-[65vh] sm:min-h-[80vh] rounded-xl border border-border/80 bg-surface/40 overflow-hidden shadow-2xl relative'>
-					<iframe
-						src={`${resume.previewUrl}#toolbar=0`}
-						title='Koushik Puppala Authoritative Resume'
-						className='w-full h-full min-h-[65vh] sm:min-h-[80vh] rounded-xl border-0'
-						loading='eager'
-					/>
+			<Section className='pt-16 lg:pt-20'>
+				<div className='container-page'>
+					<SectionHeader index='01' eyebrow='Experience' title='Professional record' size='md' />
+					<div className='mt-12'>
+						{experiences.map(item => (
+							<Reveal key={item.id}>
+								<RecordRow
+									period={formatRange(item.startDate, item.endDate)}
+									title={item.role}
+									meta={item.organization}
+									detail={item.location}
+								/>
+							</Reveal>
+						))}
+					</div>
 				</div>
-			</PageEntrance>
-		</>
-	)
-}
+			</Section>
 
-export default function ResumePage() {
-	return (
-		<main className='min-h-screen bg-background text-foreground flex flex-col pt-24 sm:pt-28'>
-			<Suspense fallback={<StaticResumeViewerFallback />}>
-				<AsyncResumeViewer />
-			</Suspense>
+			<Section className='border-t border-border pt-16 lg:pt-20'>
+				<div className='container-page'>
+					<SectionHeader index='02' eyebrow='Education' title='Academic record' size='md' />
+					<div className='mt-12'>
+						{education.map(item => (
+							<Reveal key={item.id}>
+								<RecordRow
+									period={formatRange(item.startDate, item.endDate)}
+									title={`${item.degree}${item.field ? ` · ${item.field}` : ''}`}
+									meta={item.institution}
+									detail={item.description}
+								/>
+							</Reveal>
+						))}
+					</div>
+				</div>
+			</Section>
 
-			{/* Site Footer */}
-			<PublicFooter />
-		</main>
+			<Section className='border-t border-border pt-16 lg:pt-20'>
+				<div className='container-page'>
+					<SectionHeader index='03' eyebrow='Skills' title='Technologies' size='md' />
+					<div className='mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
+						{services.map((service, i) => (
+							<Reveal key={service.id} delay={i * 50}>
+								<div>
+									<p className='text-eyebrow'>{service.title}</p>
+									<div className='mt-3 flex flex-wrap gap-1.5'>
+										{splitList(service.description).map(item => (
+											<Chip key={item} tone='outline'>
+												{item}
+											</Chip>
+										))}
+									</div>
+								</div>
+							</Reveal>
+						))}
+					</div>
+				</div>
+			</Section>
+
+			<ContactCTA socials={socials} email={email} />
+		</SiteShell>
 	)
 }

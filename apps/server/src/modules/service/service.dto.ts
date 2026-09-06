@@ -1,14 +1,7 @@
-import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import {
-	IsArray,
-	IsBoolean,
-	IsInt,
-	IsOptional,
-	IsString,
-	IsUUID,
-} from 'class-validator'
 import { Type } from 'class-transformer'
 import { PaginationDto } from 'common/dto/pagination.dto'
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
+import { IsArray, IsBoolean, IsInt, IsOptional, IsString, IsUUID } from 'class-validator'
 
 export class CreateServiceDto {
 	@ApiProperty({ example: 'Full-Stack Web Development' })
@@ -16,13 +9,18 @@ export class CreateServiceDto {
 	title!: string
 
 	@ApiProperty({
-		example: 'End-to-end web application development using modern frameworks, responsive designs, and robust architectures.',
+		example:
+			'End-to-end web application development using modern frameworks, responsive designs, and robust architectures.',
 	})
 	@IsString()
 	description!: string
 
 	@ApiPropertyOptional({
-		example: ['Modern Frontend (Next.js / React)', 'Scalable RESTful Backend (NestJS)', 'PostgreSQL & Redis Integration'],
+		example: [
+			'Modern Frontend (Next.js / React)',
+			'Scalable RESTful Backend (NestJS)',
+			'PostgreSQL & Redis Integration',
+		],
 		type: [String],
 	})
 	@IsArray()
