@@ -70,6 +70,7 @@ export class EducationService extends BaseService {
 				location: dto.location,
 				description: dto.description,
 				achievements: dto.achievements ?? [],
+				focusAreas: dto.focusAreas ?? [],
 				startDate: new Date(dto.startDate),
 				endDate: dto.endDate ? new Date(dto.endDate) : null,
 				expectedDate: dto.expectedDate ? new Date(dto.expectedDate) : null,
@@ -106,6 +107,7 @@ export class EducationService extends BaseService {
 				...(dto.location !== undefined && { location: dto.location }),
 				...(dto.description !== undefined && { description: dto.description }),
 				...(dto.achievements !== undefined && { achievements: dto.achievements }),
+				...(dto.focusAreas !== undefined && { focusAreas: dto.focusAreas }),
 				...(dto.startDate !== undefined && { startDate: new Date(dto.startDate) }),
 				...(dto.endDate !== undefined && { endDate: dto.endDate ? new Date(dto.endDate) : null }),
 				...(dto.expectedDate !== undefined && {

@@ -1,14 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight } from '@/components/icons'
-import { SiteShell } from '@/components/site-shell'
-import { EmptyState, Reveal, Section, SectionHeader } from '@/components/primitives'
-import { PageHero } from '@/components/portfolio/page-hero'
-import { ExperienceTimeline } from '@/components/portfolio/experience-timeline'
-import { ContactCTA } from '@/components/portfolio/home-sections'
-import { Button } from '@/components/ui/button'
-import { getExperience, getSocials } from '@/lib/portfolio-data'
-import { formatYear } from '@/lib/format'
+import { ArrowRight } from 'components/icons'
+import { SiteShell } from 'components/site-shell'
+import { EmptyState, Reveal, Section, SectionHeader } from 'components/primitives'
+import { PageHero } from 'components/home/page-hero'
+import { ExperienceTimeline } from 'components/portfolio/experience-timeline'
+import { ContactCTA } from 'components/home/home-sections'
+import { Button } from 'components/ui/button'
+import { formatYear } from 'lib/format'
+import { getExperienceData } from 'lib/experience-data'
+import { getSocialsData } from 'lib/social-data'
 
 export const metadata: Metadata = {
 	title: 'Experience',
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ExperiencePage() {
-	const [experiences, socials] = await Promise.all([getExperience(), getSocials()])
+	const [experiences, socials] = await Promise.all([getExperienceData(), getSocialsData()])
 
 	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
 	const current = experiences.find(item => !item.endDate)
@@ -59,7 +60,7 @@ export default async function ExperiencePage() {
 
 			<Section className='pt-14 lg:pt-16'>
 				<div className='container-page'>
-					<Reveal className='grid gap-px overflow-hidden border-y border-border bg-border sm:grid-cols-3'>
+					<Reveal className='border-border bg-border grid gap-px overflow-hidden border-y sm:grid-cols-3'>
 						{[
 							{ label: 'Positions', value: String(experiences.length) },
 							{ label: 'Organizations', value: String(organizations) },

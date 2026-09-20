@@ -17,16 +17,7 @@ import { Label } from '@/components/ui/label'
 import { CollectionManager, type ColumnDef } from '@/components/cms/collection-manager'
 import { adminFetch } from '@/lib/api-client'
 
-export type Skill = {
-	id: string
-	name: string
-	category: string
-	proficiency?: number
-	icon?: string | null
-	featured?: boolean
-	status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
-	sortOrder?: number
-}
+import type { Skill } from 'types/models'
 
 export const SkillModal = ({
 	open,
@@ -66,7 +57,15 @@ export const SkillModal = ({
 		e.preventDefault()
 		setSaving(true)
 		try {
-			await onSave(formData)
+			const payload: Partial<Skill> = {
+				name: formData.name || '',
+				category: formData.category || 'Frontend',
+				proficiency: formData.proficiency ?? 90,
+				icon: formData.icon || undefined,
+				featured: Boolean(formData.featured),
+				isPublished: formData.status === 'PUBLISHED',
+			}
+			await onSave(payload)
 			onOpenChange(false)
 		} finally {
 			setSaving(false)
@@ -170,7 +169,12 @@ export const SkillsContentClientView = () => {
 			const res = await adminFetch<{ items?: Skill[] } | Skill[]>('/api/v1/skills')
 			if (res.data) {
 				const items = Array.isArray(res.data) ? res.data : (res.data.items || [])
-				setSkills(items)
+				setSkills(
+					items.map(s => ({
+						...s,
+						status: s.isPublished || (s as { status?: string }).status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
+					})),
+				)
 			}
 		} catch (err) {
 			console.error('Failed to load skills:', err)

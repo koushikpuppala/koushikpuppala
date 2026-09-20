@@ -8,6 +8,7 @@ model Education {
   location     String
   description  String[]
   achievements String[]
+  focusAreas   String[] @map("focus_areas")
 
   startDate    DateTime  @map("start_date")
   endDate      DateTime? @map("end_date")

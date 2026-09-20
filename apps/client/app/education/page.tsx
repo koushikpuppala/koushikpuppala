@@ -1,12 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, GraduationCap } from '@/components/icons'
-import { SiteShell } from '@/components/site-shell'
-import { EmptyState, Section, SectionHeader } from '@/components/primitives'
-import { PageHero } from '@/components/portfolio/page-hero'
-import { ContactCTA, EducationBlock, LeadershipStrip } from '@/components/portfolio/home-sections'
-import { Button } from '@/components/ui/button'
-import { getEducation, getExperience, getSocials } from '@/lib/portfolio-data'
+import { ArrowRight, GraduationCap } from 'components/icons'
+import { SiteShell } from 'components/site-shell'
+import { EmptyState, Section, SectionHeader } from 'components/primitives'
+import { PageHero } from 'components/home/page-hero'
+import { ContactCTA, EducationBlock, LeadershipStrip } from 'components/home/home-sections'
+import { Button } from 'components/ui/button'
+import { getEducationData } from 'lib/education-data'
+import { getExperienceData } from 'lib/experience-data'
+import { getSocialsData } from 'lib/social-data'
 
 export const metadata: Metadata = {
 	title: 'Education',
@@ -24,9 +26,9 @@ export const metadata: Metadata = {
 
 export default async function EducationPage() {
 	const [education, experience, socials] = await Promise.all([
-		getEducation(),
-		getExperience(),
-		getSocials(),
+		getEducationData(),
+		getExperienceData(),
+		getSocialsData(),
 	])
 
 	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
@@ -69,7 +71,7 @@ export default async function EducationPage() {
 				</div>
 			</Section>
 
-			<Section className='border-t border-border pt-16 lg:pt-20'>
+			<Section className='border-border border-t pt-16 lg:pt-20'>
 				<div className='container-page'>
 					<SectionHeader index='02' eyebrow='Leadership' title='Beyond coursework' size='md' />
 					<div className='mt-12'>

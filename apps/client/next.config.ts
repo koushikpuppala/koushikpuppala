@@ -58,6 +58,7 @@ const nextConfig = nextPWA.default({
 			source: '/__/auth/:params',
 			destination: 'https://koushikpuppala.firebaseapp.com/__/auth/:params',
 		},
+		// { source: '/api/:path*', destination: `${process.env.BACKEND_URL}/api/:path*` },
 	],
 	redirects: async () => [
 		{ source: '/github', destination: 'https://github.com/koushikpuppala', permanent: true },

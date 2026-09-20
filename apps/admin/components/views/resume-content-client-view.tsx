@@ -10,17 +10,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { SingletonEditor } from '@/components/cms/singleton-editor'
 import { adminFetch, uploadMediaToS3 } from '@/lib/api-client'
 
-export type ResumeRecord = {
-	id?: string
-	title: string
-	version: string
-	fileUrl: string
-	fileId?: string
-	summary?: string
-	downloads?: number
-	status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
-	updatedAt?: string
-}
+import type { ResumeRecord } from 'types/models'
 
 export const ResumeContentClientView = () => {
 	const [resume, setResume] = useState<ResumeRecord>({
@@ -84,15 +74,22 @@ export const ResumeContentClientView = () => {
 		setSaving(true)
 		setNotice(null)
 		try {
+			const payload = {
+				title: resume.title || 'Koushik Puppala Resume',
+				versionName: resume.version || '2026.1',
+				summary: resume.summary || undefined,
+				...(resume.fileId && { mediaId: resume.fileId }),
+				isPublished: true,
+			}
 			const res = await adminFetch<ResumeRecord>(
 				resume.id ? `/api/v1/resume/${resume.id}` : '/api/v1/resume',
 				{
 					method: resume.id ? 'PATCH' : 'POST',
-					body: JSON.stringify(resume),
+					body: JSON.stringify(payload),
 				},
 			)
 			if (res.data) {
-				setResume(res.data)
+				setResume(prev => ({ ...prev, ...res.data }))
 				setIsDirty(false)
 				setNotice('Resume version and download reference updated successfully.')
 			} else {
@@ -186,10 +183,10 @@ export const ResumeContentClientView = () => {
 							</div>
 							<div className='min-w-0'>
 								<p className='font-mono text-xs font-semibold text-foreground truncate'>
-									{resume.fileUrl.split('/').pop() || 'resume.pdf'}
+									{(resume.fileUrl || '').split('/').pop() || 'resume.pdf'}
 								</p>
 								<p className='font-mono text-[0.6875rem] text-muted-foreground truncate'>
-									{resume.fileUrl}
+									{resume.fileUrl || 'No file URL'}
 								</p>
 							</div>
 						</div>

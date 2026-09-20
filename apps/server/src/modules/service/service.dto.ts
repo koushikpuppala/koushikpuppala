@@ -8,12 +8,22 @@ export class CreateServiceDto {
 	@IsString()
 	title!: string
 
+	@ApiPropertyOptional({ example: 'End-to-end Web Applications' })
+	@IsString()
+	@IsOptional()
+	subtitle?: string
+
 	@ApiProperty({
 		example:
 			'End-to-end web application development using modern frameworks, responsive designs, and robust architectures.',
 	})
 	@IsString()
 	description!: string
+
+	@ApiPropertyOptional({ example: 'si:code' })
+	@IsString()
+	@IsOptional()
+	icon?: string
 
 	@ApiPropertyOptional({
 		example: [

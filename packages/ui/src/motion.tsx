@@ -1,11 +1,6 @@
 'use client'
 
-import {
-	type HTMLMotionProps,
-	motion,
-	useReducedMotion,
-	AnimatePresence,
-} from 'motion/react'
+import { type HTMLMotionProps, motion, useReducedMotion, AnimatePresence } from 'motion/react'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { classNames } from 'utils/classNames'
 
@@ -29,12 +24,7 @@ export type MotionBaseProps = Omit<HTMLMotionProps<'div'>, 'children'> & {
  * StaggerContainer
  * Container that staggers the reveal of child elements sequentially.
  */
-export const StaggerContainer = ({
-	children,
-	className,
-	delay = 0,
-	...props
-}: MotionBaseProps) => {
+export const StaggerContainer = ({ children, className, delay = 0, ...props }: MotionBaseProps) => {
 	const shouldReduceMotion = useReducedMotion()
 
 	if (shouldReduceMotion) {
@@ -125,7 +115,9 @@ export const MaskedText = ({
 	}
 
 	return (
-		<div className={classNames('overflow-hidden', className)} {...(props as HTMLAttributes<HTMLDivElement>)}>
+		<div
+			className={classNames('overflow-hidden', className)}
+			{...(props as HTMLAttributes<HTMLDivElement>)}>
 			<motion.div
 				initial={{ y: '105%' }}
 				animate={{ y: '0%' }}

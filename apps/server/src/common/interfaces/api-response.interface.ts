@@ -1,14 +1,6 @@
-export interface ApiResponse<T = unknown> {
-	result?: T
-	message: string
-	error?: boolean
-	count?: number
-	statusCode?: number
-	ip?: string
-	requestId?: string
-	timestamp?: string
-	endpoint?: string
-}
+import { ApiResponse } from 'types/src/api'
+
+export type { ApiResponse }
 
 export function successResponse<T>(
 	result?: T,

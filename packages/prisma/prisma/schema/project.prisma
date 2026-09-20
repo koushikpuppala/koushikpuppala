@@ -8,6 +8,7 @@ model Project {
 
   category    String
   projectType String?       @map("project_type")
+  role        String?
   featured    Boolean       @default(false)
   status      ProjectStatus @default(COMPLETED)
 

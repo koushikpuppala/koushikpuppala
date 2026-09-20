@@ -1,35 +1,30 @@
+import 'styles/globals.css'
+
 import type { Metadata, Viewport } from 'next'
-import localFont from 'next/font/local'
-import './globals.css'
-import { ThemeProvider } from '@/lib/theme'
+
 import {
 	DEFAULT_KEYWORDS,
 	DEFAULT_OG_IMAGE,
 	SITE_DOMAIN,
 	TWITTER_HANDLE,
-} from '../lib/metadata-data'
+} from 'constants/api-fallback'
 
-const bricolageGrotesque = localFont({
-	src: './fonts/BricolageGrotesqueVF.woff2',
-	variable: '--font-bricolage',
-	display: 'swap',
-})
-const geistSans = localFont({
-	src: './fonts/GeistVF.woff',
-	variable: '--font-geist-sans',
-	display: 'swap',
-})
-const geistMono = localFont({
-	src: './fonts/GeistMonoVF.woff',
-	variable: '--font-geist-mono',
-	display: 'swap',
-})
+import Script from 'next/script'
+import { classNames } from 'utils/classNames'
+import { Geist, Geist_Mono, Bricolage_Grotesque } from 'next/font/google'
+
+const geistSans = Geist({ variable: '--font-geist-sans', display: 'swap' })
+const geistMono = Geist_Mono({ variable: '--font-geist-mono', display: 'swap' })
+const bricolageGrotesque = Bricolage_Grotesque({ variable: '--font-bricolage', display: 'swap' })
 
 export const viewport: Viewport = {
-	themeColor: '#0a0a0c',
-	colorScheme: 'dark',
-	width: 'device-width',
 	initialScale: 1,
+	width: 'device-width',
+	colorScheme: 'light dark',
+	themeColor: [
+		{ media: '(prefers-color-scheme: dark)', color: '#090a0c' },
+		{ media: '(prefers-color-scheme: light)', color: '#f7f8f9' },
+	],
 }
 
 export const metadata: Metadata = {
@@ -91,28 +86,41 @@ export const metadata: Metadata = {
 	},
 }
 
-/**
- * Runs before first paint: applies the stored theme (no dark-mode flash) and
- * marks the document as JS-capable so the scroll-reveal system may hide
- * content. Without JS nothing is ever hidden, so SEO and no-JS reading are safe.
- */
-const themeBootstrap = `(function(){var e=document.documentElement;e.classList.add("js");try{var s=localStorage.getItem("kp.theme");var d=s?s==="dark":!window.matchMedia("(prefers-color-scheme: light)").matches;e.classList.toggle("dark",d);e.style.colorScheme=d?"dark":"light";var p=localStorage.getItem("kp.palette");e.setAttribute("data-palette",p==="old"?"old":"new");}catch(x){}})();`
-
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode
-}>) {
+const RootLayout = ({ children }: LayoutProps<'/'>) => {
 	return (
 		<html lang='en' className='dark' data-palette='new' suppressHydrationWarning>
 			<head>
-				{/* biome-ignore lint/security/noDangerouslySetInnerHtml: static inline theme and JS detection bootstrap script */}
-				<script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
+				<Script id='theme-init' strategy='beforeInteractive'>
+					{`(() => {
+						const e = document.documentElement
+
+						e.classList.add('js')
+
+						try {
+							const s = localStorage.getItem('theme')
+
+							const d = s
+								? s === 'dark'
+								: !window.matchMedia('(prefers-color-scheme: light)').matches
+
+							e.classList.toggle('dark', d)
+
+							e.style.colorScheme = d ? 'dark' : 'light'
+						} catch {}
+					})()`}
+				</Script>
 			</head>
 			<body
-				className={`${bricolageGrotesque.variable} ${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-background text-foreground selection:bg-signal selection:text-white min-h-screen`}>
-				<ThemeProvider>{children}</ThemeProvider>
+				className={classNames(
+					geistSans.variable,
+					geistMono.variable,
+					bricolageGrotesque.variable,
+					'bg-background text-foreground selection:bg-signal min-h-screen font-sans antialiased selection:text-white',
+				)}>
+				{children}
 			</body>
 		</html>
 	)
 }
+
+export default RootLayout

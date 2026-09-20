@@ -19,17 +19,16 @@ export const SignalRule = ({
 	...props
 }: SignalRuleProps) => {
 	return (
-		<div className={classNames('relative w-full flex items-center', className)} {...props}>
+		<div className={classNames('relative flex w-full items-center', className)} {...props}>
 			{dot && variant === 'left' && (
-				<span className='h-1.5 w-1.5 rounded-full bg-signal shadow-[0_0_8px_rgba(255,51,102,0.8)] mr-2 shrink-0' />
+				<span className='bg-signal mr-2 h-1.5 w-1.5 shrink-0 rounded-full shadow-[0_0_8px_rgba(255,51,102,0.8)]' />
 			)}
 			<div
 				className={classNames(
 					'h-[1px] w-full',
-					variant === 'left' &&
-						'bg-gradient-to-r from-signal via-signal/40 to-transparent',
+					variant === 'left' && 'from-signal via-signal/40 bg-gradient-to-r to-transparent',
 					variant === 'centered' &&
-						'bg-gradient-to-r from-transparent via-signal/60 to-transparent',
+						'via-signal/60 bg-gradient-to-r from-transparent to-transparent',
 					variant === 'full' && 'bg-border',
 					glow && 'shadow-[0_0_10px_rgba(255,51,102,0.4)]',
 				)}
@@ -78,7 +77,7 @@ export const AmbientBloom = ({
 	return (
 		<div
 			className={classNames(
-				'pointer-events-none absolute -z-10 rounded-full ambient-bloom select-none',
+				'ambient-bloom pointer-events-none absolute -z-10 rounded-full select-none',
 				sizeMap[size],
 				positionMap[position],
 				intensityMap[intensity],
@@ -177,7 +176,7 @@ export const BrandWatermark = ({
 	return (
 		<div
 			className={classNames(
-				'pointer-events-none absolute select-none text-foreground/5 dark:text-foreground/[0.03]',
+				'text-foreground/5 dark:text-foreground/[0.03] pointer-events-none absolute select-none',
 				className,
 			)}
 			style={{
@@ -231,16 +230,16 @@ export const AnimatedBeam = ({
 		<div
 			className={classNames(
 				'pointer-events-none absolute overflow-hidden',
-				orientation === 'horizontal' ? 'h-[1px] w-full inset-x-0' : 'w-[1px] h-full inset-y-0',
+				orientation === 'horizontal' ? 'inset-x-0 h-[1px] w-full' : 'inset-y-0 h-full w-[1px]',
 				className,
 			)}
 			{...props}>
 			<div
 				className={classNames(
-					'absolute from-transparent via-signal to-transparent',
+					'via-signal absolute from-transparent to-transparent',
 					orientation === 'horizontal'
-						? 'bg-gradient-to-r h-full w-48 animate-beam-horizontal'
-						: 'bg-gradient-to-b w-full h-48 animate-beam-vertical',
+						? 'animate-beam-horizontal h-full w-48 bg-gradient-to-r'
+						: 'animate-beam-vertical h-48 w-full bg-gradient-to-b',
 				)}
 			/>
 		</div>

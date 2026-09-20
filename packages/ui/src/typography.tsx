@@ -20,7 +20,7 @@ export const DisplayHero = ({
 	return (
 		<Component
 			className={classNames(
-				'font-display font-medium text-foreground tracking-[-0.035em]',
+				'font-display text-foreground font-medium tracking-[-0.035em]',
 				'text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[96px]',
 				'leading-[0.98] sm:leading-[0.94] md:leading-[0.92]',
 				className,
@@ -44,7 +44,7 @@ export const SectionTitle = ({
 	return (
 		<Component
 			className={classNames(
-				'font-display font-medium text-foreground tracking-[-0.025em]',
+				'font-display text-foreground font-medium tracking-[-0.025em]',
 				'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
 				'leading-[1.06]',
 				className,
@@ -68,7 +68,7 @@ export const SubsectionTitle = ({
 	return (
 		<Component
 			className={classNames(
-				'font-display font-medium text-foreground tracking-[-0.015em]',
+				'font-display text-foreground font-medium tracking-[-0.015em]',
 				'text-xl sm:text-2xl md:text-3xl',
 				'leading-snug',
 				className,
@@ -107,7 +107,7 @@ export const TechnicalLabel = ({
 	return (
 		<Component
 			className={classNames(
-				'font-mono text-xs uppercase tracking-[0.16em] font-medium inline-flex items-center gap-2',
+				'inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.16em] uppercase',
 				variant === 'signal' ? 'text-signal' : 'text-muted-foreground',
 				className,
 			)}
@@ -115,7 +115,7 @@ export const TechnicalLabel = ({
 			{dot && (
 				<span
 					className={classNames(
-						'inline-block h-1.5 w-1.5 rounded-full shrink-0',
+						'inline-block h-1.5 w-1.5 shrink-0 rounded-full',
 						dotVariantMap[variant],
 						pulsing && 'animate-pulse',
 					)}
@@ -140,7 +140,7 @@ export const MonoMeta = ({
 	return (
 		<Component
 			className={classNames(
-				'font-mono text-xs sm:text-sm text-muted-foreground tracking-tight',
+				'text-muted-foreground font-mono text-xs tracking-tight sm:text-sm',
 				className,
 			)}
 			{...props}>
@@ -162,7 +162,7 @@ export const BodyText = ({
 	return (
 		<Component
 			className={classNames(
-				'font-sans text-base sm:text-lg text-muted-foreground leading-relaxed',
+				'text-muted-foreground font-sans text-base leading-relaxed sm:text-lg',
 				className,
 			)}
 			{...props}>

@@ -14,24 +14,10 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import { CollectionManager, type ColumnDef } from '@/components/cms/collection-manager'
 import { adminFetch } from '@/lib/api-client'
 
-export type Education = {
-	id: string
-	institution: string
-	degree: string
-	field?: string | null
-	startDate: string
-	endDate?: string | null
-	grade?: string | null
-	mentor?: string | null
-	description?: string | null
-	achievements: string[]
-	status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
-	sortOrder?: number
-}
+import type { Education } from 'types/models'
 
 export const EducationModal = ({
 	open,
@@ -45,16 +31,20 @@ export const EducationModal = ({
 	onSave: (edu: Partial<Education>) => Promise<void>
 }) => {
 	const [formData, setFormData] = useState<Partial<Education>>({
-		institution: '',
+		university: '',
 		degree: '',
-		field: '',
+		fieldOfStudy: '',
+		location: '',
 		startDate: '',
 		endDate: '',
+		isCurrent: false,
 		grade: '',
-		description: '',
+		description: [],
 		achievements: [],
+		website: '',
 		status: 'PUBLISHED',
 	})
+	const [descInput, setDescInput] = useState('')
 	const [newAch, setNewAch] = useState('')
 	const [saving, setSaving] = useState(false)
 
@@ -62,18 +52,28 @@ export const EducationModal = ({
 		if (education) {
 			setFormData({
 				...education,
+				university: education.university || (education as { institution?: string }).institution || '',
+				fieldOfStudy: education.fieldOfStudy || (education as { field?: string }).field || '',
+				description: Array.isArray(education.description)
+					? education.description
+					: typeof education.description === 'string' && education.description
+						? [education.description]
+						: [],
 				achievements: Array.isArray(education.achievements) ? education.achievements : [],
 			})
 		} else {
 			setFormData({
-				institution: '',
-				degree: 'Bachelor of Technology',
-				field: 'Computer Science',
+				university: '',
+				degree: 'Bachelor of Technology (B.Tech)',
+				fieldOfStudy: 'Computer Science and Engineering',
+				location: '',
 				startDate: '',
 				endDate: '',
+				isCurrent: false,
 				grade: '',
-				description: '',
+				description: [],
 				achievements: [],
+				website: '',
 				status: 'PUBLISHED',
 			})
 		}
@@ -83,11 +83,34 @@ export const EducationModal = ({
 		e.preventDefault()
 		setSaving(true)
 		try {
-			await onSave(formData)
+			const payload: Partial<Education> = {
+				...formData,
+				degree: formData.degree || '',
+				fieldOfStudy: formData.fieldOfStudy || '',
+				university: formData.university || '',
+				location: formData.location || '',
+				startDate: formData.startDate || new Date().toISOString(),
+				endDate: formData.isCurrent ? null : formData.endDate || null,
+				isCurrent: Boolean(formData.isCurrent),
+				description: Array.isArray(formData.description) ? formData.description : [],
+				achievements: Array.isArray(formData.achievements) ? formData.achievements : [],
+				website: formData.website || null,
+				isPublished: formData.status === 'PUBLISHED',
+			}
+			await onSave(payload)
 			onOpenChange(false)
 		} finally {
 			setSaving(false)
 		}
+	}
+
+	const addDescription = () => {
+		if (!descInput.trim()) return
+		setFormData(prev => ({
+			...prev,
+			description: [...(prev.description || []), descInput.trim()],
+		}))
+		setDescInput('')
 	}
 
 	const addAchievement = () => {
@@ -113,12 +136,12 @@ export const EducationModal = ({
 
 				<form onSubmit={handleSubmit} className='flex-1 overflow-y-auto space-y-4 pr-1'>
 					<div className='space-y-1'>
-						<Label className='text-xs'>Institution Name</Label>
+						<Label className='text-xs'>University / Institution Name</Label>
 						<Input
-							value={formData.institution || ''}
-							onChange={e => setFormData(prev => ({ ...prev, institution: e.target.value }))}
+							value={formData.university || ''}
+							onChange={e => setFormData(prev => ({ ...prev, university: e.target.value }))}
 							required
-							placeholder='e.g. IIIT Raichur'
+							placeholder='e.g. Indian Institute of Information Technology Raichur'
 						/>
 					</div>
 
@@ -129,55 +152,92 @@ export const EducationModal = ({
 								value={formData.degree || ''}
 								onChange={e => setFormData(prev => ({ ...prev, degree: e.target.value }))}
 								required
-								placeholder='B.Tech in Computer Science'
+								placeholder='Bachelor of Technology (B.Tech)'
 							/>
 						</div>
 						<div className='space-y-1'>
-							<Label className='text-xs'>Major / Field</Label>
+							<Label className='text-xs'>Major / Field of Study</Label>
 							<Input
-								value={formData.field || ''}
-								onChange={e => setFormData(prev => ({ ...prev, field: e.target.value }))}
+								value={formData.fieldOfStudy || ''}
+								onChange={e => setFormData(prev => ({ ...prev, fieldOfStudy: e.target.value }))}
 								placeholder='Computer Science and Engineering'
 							/>
 						</div>
 					</div>
 
-					<div className='grid gap-4 sm:grid-cols-3'>
+					<div className='grid gap-4 sm:grid-cols-2'>
+						<div className='space-y-1'>
+							<Label className='text-xs'>Location</Label>
+							<Input
+								value={formData.location || ''}
+								onChange={e => setFormData(prev => ({ ...prev, location: e.target.value }))}
+								placeholder='Raichur, Karnataka, India'
+							/>
+						</div>
+						<div className='space-y-1'>
+							<Label className='text-xs'>Website URL</Label>
+							<Input
+								value={formData.website || ''}
+								onChange={e => setFormData(prev => ({ ...prev, website: e.target.value }))}
+								placeholder='https://iiitr.ac.in'
+							/>
+						</div>
+					</div>
+
+					<div className='grid gap-4 sm:grid-cols-2'>
 						<div className='space-y-1'>
 							<Label className='text-xs'>Start Date</Label>
 							<Input
 								type='date'
-								value={formData.startDate ? formData.startDate.slice(0, 10) : ''}
+								value={formData.startDate ? String(formData.startDate).slice(0, 10) : ''}
 								onChange={e => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
 								required
 							/>
 						</div>
 						<div className='space-y-1'>
-							<Label className='text-xs'>Graduation Date</Label>
+							<Label className='text-xs'>Graduation / End Date</Label>
 							<Input
 								type='date'
-								value={formData.endDate ? formData.endDate.slice(0, 10) : ''}
+								value={formData.endDate ? String(formData.endDate).slice(0, 10) : ''}
 								onChange={e => setFormData(prev => ({ ...prev, endDate: e.target.value }))}
-							/>
-						</div>
-						<div className='space-y-1'>
-							<Label className='text-xs'>Grade / Honors</Label>
-							<Input
-								value={formData.grade || ''}
-								onChange={e => setFormData(prev => ({ ...prev, grade: e.target.value }))}
-								placeholder='First Class Distinction'
 							/>
 						</div>
 					</div>
 
-					<div className='space-y-1'>
-						<Label className='text-xs'>Coursework &amp; Overview</Label>
-						<Textarea
-							value={formData.description || ''}
-							onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
-							rows={3}
-							placeholder='Key courses, academic thesis, or research projects…'
-						/>
+					{/* Coursework & Overview */}
+					<div className='space-y-2'>
+						<Label className='text-xs'>Coursework &amp; Overview Bullets</Label>
+						<div className='space-y-1.5'>
+							{(Array.isArray(formData.description) ? formData.description : []).map((desc: string, i: number) => (
+								<div
+									key={i}
+									className='flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-strong/50 p-2 text-xs'>
+									<span>{desc}</span>
+									<button
+										type='button'
+										onClick={() =>
+											setFormData(prev => ({
+												...prev,
+												description: (Array.isArray(prev.description) ? prev.description : []).filter((_: string, idx: number) => idx !== i),
+											}))
+										}
+										className='text-muted-foreground hover:text-destructive'>
+										<Trash2 className='size-3.5' />
+									</button>
+								</div>
+							))}
+						</div>
+						<div className='flex gap-2'>
+							<Input
+								value={descInput}
+								onChange={e => setDescInput(e.target.value)}
+								placeholder='Add coursework bullet…'
+								className='h-8 text-xs'
+							/>
+							<Button type='button' variant='outline' size='sm' onClick={addDescription}>
+								Add
+							</Button>
+						</div>
 					</div>
 
 					{/* Honors & Achievements */}
@@ -242,7 +302,14 @@ export const EducationContentClientView = () => {
 			const res = await adminFetch<{ items?: Education[] } | Education[]>('/api/v1/education')
 			if (res.data) {
 				const items = Array.isArray(res.data) ? res.data : (res.data.items || [])
-				setEducations(items)
+				setEducations(
+					items.map(item => ({
+						...item,
+						university: item.university || (item as { institution?: string }).institution || '',
+						fieldOfStudy: item.fieldOfStudy || (item as { field?: string }).field || '',
+						status: item.isPublished || (item as { status?: string }).status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
+					})),
+				)
 			}
 		} catch (err) {
 			console.error('Failed to load education:', err)
@@ -292,7 +359,7 @@ export const EducationContentClientView = () => {
 					</div>
 					<div>
 						<p className='font-semibold text-foreground'>{edu.degree}</p>
-						<p className='text-xs text-muted-foreground'>{edu.institution}</p>
+						<p className='text-xs text-muted-foreground'>{edu.university}</p>
 					</div>
 				</div>
 			),
@@ -302,16 +369,9 @@ export const EducationContentClientView = () => {
 			header: 'Class Of',
 			render: edu => (
 				<span className='font-mono text-xs text-muted-foreground'>
-					{new Date(edu.startDate).getFullYear()} —{' '}
+					{edu.startDate ? new Date(edu.startDate).getFullYear() : ''} —{' '}
 					{edu.endDate ? new Date(edu.endDate).getFullYear() : 'Present'}
 				</span>
-			),
-		},
-		{
-			key: 'grade',
-			header: 'Honors',
-			render: edu => (
-				<span className='text-xs font-mono text-foreground/80'>{edu.grade || '—'}</span>
 			),
 		},
 		{
@@ -331,7 +391,7 @@ export const EducationContentClientView = () => {
 				items={educations}
 				columns={columns}
 				loading={loading}
-				searchKey={e => `${e.institution} ${e.degree} ${e.field}`}
+				searchKey={e => `${e.university} ${e.degree} ${e.fieldOfStudy}`}
 				createLabel='Add Education'
 				onCreate={() => {
 					setEditingEdu(null)

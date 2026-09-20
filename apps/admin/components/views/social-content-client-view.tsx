@@ -17,15 +17,7 @@ import { Label } from '@/components/ui/label'
 import { CollectionManager, type ColumnDef } from '@/components/cms/collection-manager'
 import { adminFetch } from '@/lib/api-client'
 
-export type Social = {
-	id: string
-	platform: string
-	label: string
-	url: string
-	handle?: string | null
-	status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
-	sortOrder?: number
-}
+import type { Social } from 'types/models'
 
 export const SocialModal = ({
 	open,
@@ -39,7 +31,7 @@ export const SocialModal = ({
 	onSave: (soc: Partial<Social>) => Promise<void>
 }) => {
 	const [formData, setFormData] = useState<Partial<Social>>({
-		platform: 'github',
+		platform: 'GITHUB',
 		label: '',
 		url: '',
 		handle: '',
@@ -49,10 +41,13 @@ export const SocialModal = ({
 
 	useEffect(() => {
 		if (social) {
-			setFormData(social)
+			setFormData({
+				...social,
+				platform: (social.platform || 'GITHUB').toUpperCase(),
+			})
 		} else {
 			setFormData({
-				platform: 'github',
+				platform: 'GITHUB',
 				label: '',
 				url: '',
 				handle: '',
@@ -65,7 +60,15 @@ export const SocialModal = ({
 		e.preventDefault()
 		setSaving(true)
 		try {
-			await onSave(formData)
+			const payload: Partial<Social> = {
+				...formData,
+				platform: (formData.platform || 'GITHUB').toUpperCase(),
+				label: formData.label || formData.platform || 'Link',
+				url: formData.url || '',
+				handle: formData.handle || undefined,
+				isPublished: formData.status === 'PUBLISHED',
+			}
+			await onSave(payload)
 			onOpenChange(false)
 		} finally {
 			setSaving(false)
@@ -84,22 +87,24 @@ export const SocialModal = ({
 					<div className='space-y-1'>
 						<Label className='text-xs'>Platform</Label>
 						<select
-							value={formData.platform || 'github'}
+							value={(formData.platform || 'GITHUB').toUpperCase()}
 							onChange={e =>
 								setFormData(prev => ({
 									...prev,
 									platform: e.target.value,
-									label: prev.label || e.target.value.toUpperCase(),
+									label: prev.label || e.target.value,
 								}))
 							}
 							className='h-9 w-full rounded-lg border border-border bg-surface px-3 text-xs'>
-							<option value='github'>GitHub</option>
-							<option value='linkedin'>LinkedIn</option>
-							<option value='twitter'>Twitter / X</option>
-							<option value='discord'>Discord</option>
-							<option value='email'>Official Email</option>
-							<option value='youtube'>YouTube</option>
-							<option value='other'>Other / External</option>
+							<option value='GITHUB'>GitHub</option>
+							<option value='LINKEDIN'>LinkedIn</option>
+							<option value='TWITTER'>Twitter / X</option>
+							<option value='DISCORD'>Discord</option>
+							<option value='EMAIL'>Official Email</option>
+							<option value='YOUTUBE'>YouTube</option>
+							<option value='WEBSITE'>Official Website</option>
+							<option value='INSTAGRAM'>Instagram</option>
+							<option value='FACEBOOK'>Facebook</option>
 						</select>
 					</div>
 
@@ -171,7 +176,12 @@ export const SocialContentClientView = () => {
 			const res = await adminFetch<{ items?: Social[] } | Social[]>('/api/v1/socials')
 			if (res.data) {
 				const items = Array.isArray(res.data) ? res.data : (res.data.items || [])
-				setSocials(items)
+				setSocials(
+					items.map(s => ({
+						...s,
+						status: s.isPublished || (s as { status?: string }).status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
+					})),
+				)
 			}
 		} catch (err) {
 			console.error('Failed to load socials:', err)

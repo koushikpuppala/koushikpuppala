@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Image as ImageIcon, Sparkles } from '@/components/icons'
+import { Image as ImageIcon, Plus, Sparkles, Trash2 } from '@/components/icons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,46 +10,69 @@ import { SingletonEditor } from '@/components/cms/singleton-editor'
 import { MediaPickerModal } from '@/components/cms/media-picker-modal'
 import { adminFetch } from '@/lib/api-client'
 
-export type HomeContent = {
-	id?: string
-	title: string
-	subtitle?: string
-	heroHeadline: string
-	heroBio: string
-	ctaLabel: string
-	ctaUrl: string
-	secondaryCtaLabel?: string
-	secondaryCtaUrl?: string
-	profileImageUrl?: string
-	profileImageId?: string
-	status?: string
-}
+import type { HomeContent } from 'types/models'
 
 export const HomeContentClientView = () => {
 	const [content, setContent] = useState<HomeContent>({
-		title: '',
-		subtitle: '',
-		heroHeadline: '',
-		heroBio: '',
-		ctaLabel: '',
-		ctaUrl: '',
-		secondaryCtaLabel: '',
-		secondaryCtaUrl: '',
+		title: 'KOUSHIK PUPPALA',
+		separator: '|',
+		subtitles: [
+			'Senior Full-Stack & AI Systems Engineer',
+			'Software Engineer at Upraised®',
+			'Team Lead & Mentor — IIIT Raichur Web Systems',
+			'Former Google Developer Student Clubs (GDSC) Lead',
+		],
+		content:
+			'Architecting resilient distributed platforms, high-throughput web systems, and AI-enabled digital experiences. Engineering with TypeScript, Next.js 16, NestJS, and PostgreSQL.',
+		ctaLabel: 'Explore Selected Work',
+		ctaUrl: '#projects',
+		secondaryCtaLabel: 'Get In Touch',
+		secondaryCtaUrl: '#contact',
+		featuredSkills: ['TypeScript', 'Next.js 16', 'NestJS 11', 'PostgreSQL', 'Redis', 'AWS'],
+		stats: {
+			yearsOfExperience: '3+',
+			projectsDelivered: '20+',
+			openSourceCommits: '1.8k+',
+			menteesGuided: '50+',
+		},
 		profileImageUrl: '',
-		status: 'PUBLISHED',
+		isPublished: true,
 	})
 	const [loading, setLoading] = useState(true)
 	const [saving, setSaving] = useState(false)
 	const [isDirty, setIsDirty] = useState(false)
 	const [mediaModalOpen, setMediaModalOpen] = useState(false)
 	const [notice, setNotice] = useState<string | null>(null)
+	const [newSubtitle, setNewSubtitle] = useState('')
+	const [newSkill, setNewSkill] = useState('')
 
 	useEffect(() => {
 		const loadHome = async () => {
 			try {
-				const res = await adminFetch<HomeContent>('/api/v1/home/published')
+				const res = await adminFetch<HomeContent & { profileImage?: { url?: string } }>(
+					'/api/v1/home/published',
+				)
 				if (res.data) {
-					setContent(res.data)
+					const d = res.data
+					setContent(prev => ({
+						...prev,
+						...d,
+						title: d.title || prev.title,
+						separator: d.separator || prev.separator,
+						subtitles:
+							Array.isArray(d.subtitles) && d.subtitles.length > 0 ? d.subtitles : prev.subtitles,
+						content: d.content || prev.content,
+						ctaLabel: d.ctaLabel || prev.ctaLabel,
+						ctaUrl: d.ctaUrl || prev.ctaUrl,
+						secondaryCtaLabel: d.secondaryCtaLabel || prev.secondaryCtaLabel,
+						secondaryCtaUrl: d.secondaryCtaUrl || prev.secondaryCtaUrl,
+						featuredSkills:
+							Array.isArray(d.featuredSkills) && d.featuredSkills.length > 0
+								? d.featuredSkills
+								: prev.featuredSkills,
+						stats: d.stats || prev.stats,
+						profileImageUrl: d.profileImageUrl || d.profileImage?.url || prev.profileImageUrl,
+					}))
 				}
 			} catch (err) {
 				console.error('Failed to load homepage content:', err)
@@ -65,6 +88,42 @@ export const HomeContentClientView = () => {
 		setIsDirty(true)
 	}
 
+	const handleAddSubtitle = () => {
+		if (!newSubtitle.trim()) return
+		setContent(prev => ({
+			...prev,
+			subtitles: [...prev.subtitles, newSubtitle.trim()],
+		}))
+		setNewSubtitle('')
+		setIsDirty(true)
+	}
+
+	const handleRemoveSubtitle = (index: number) => {
+		setContent(prev => ({
+			...prev,
+			subtitles: prev.subtitles.filter((_, i) => i !== index),
+		}))
+		setIsDirty(true)
+	}
+
+	const handleAddSkill = () => {
+		if (!newSkill.trim()) return
+		setContent(prev => ({
+			...prev,
+			featuredSkills: [...(prev.featuredSkills || []), newSkill.trim()],
+		}))
+		setNewSkill('')
+		setIsDirty(true)
+	}
+
+	const handleRemoveSkill = (index: number) => {
+		setContent(prev => ({
+			...prev,
+			featuredSkills: (prev.featuredSkills || []).filter((_, i) => i !== index),
+		}))
+		setIsDirty(true)
+	}
+
 	const handleSave = async () => {
 		setSaving(true)
 		setNotice(null)
@@ -77,9 +136,9 @@ export const HomeContentClientView = () => {
 				},
 			)
 			if (res.data) {
-				setContent(res.data)
+				setContent(prev => ({ ...prev, ...res.data }))
 				setIsDirty(false)
-				setNotice('Homepage content published successfully to production.')
+				setNotice('Homepage content published successfully.')
 			} else {
 				setIsDirty(false)
 				setNotice('Homepage draft saved locally.')
@@ -96,7 +155,7 @@ export const HomeContentClientView = () => {
 	return (
 		<SingletonEditor
 			title='Homepage Editorial Studio'
-			description='Authoritative copy, hero headlines, call-to-action routing, and profile visuals displayed on the public landing page.'
+			description='Authoritative display title, subtitles, separator, hero bio narrative, CTA routes, and featured skills.'
 			isDirty={isDirty}
 			loading={loading}
 			saving={saving}
@@ -110,53 +169,130 @@ export const HomeContentClientView = () => {
 			)}
 
 			<div className='space-y-6'>
-				{/* Title & Subtitle */}
-				<div className='grid gap-6 sm:grid-cols-2'>
-					<div className='space-y-1.5'>
+				<div className='grid gap-6 sm:grid-cols-3'>
+					<div className='space-y-1.5 sm:col-span-2'>
 						<Label className='text-xs font-mono uppercase text-muted-foreground'>
-							Site Display Title
+							Hero Display Name / Title
 						</Label>
 						<Input
 							value={content.title}
 							onChange={e => handleChange('title', e.target.value)}
-							placeholder='e.g. Koushik Puppala — Software Engineer'
+							placeholder='e.g. KOUSHIK PUPPALA'
 						/>
 					</div>
 					<div className='space-y-1.5'>
 						<Label className='text-xs font-mono uppercase text-muted-foreground'>
-							SEO Subtitle
+							Status Separator
 						</Label>
 						<Input
-							value={content.subtitle ?? ''}
-							onChange={e => handleChange('subtitle', e.target.value)}
-							placeholder='e.g. Full-Stack Developer & Systems Architect'
+							value={content.separator ?? '|'}
+							onChange={e => handleChange('separator', e.target.value)}
+							placeholder='|'
 						/>
 					</div>
 				</div>
 
-				{/* Hero Headline */}
-				<div className='space-y-1.5'>
-					<Label className='text-xs font-mono uppercase text-muted-foreground'>
-						Hero Main Headline
+				{/* Subtitles Management */}
+				<div className='space-y-3 pt-2 border-t border-border'>
+					<Label className='text-xs font-mono uppercase text-muted-foreground block'>
+						Role Subtitles / Rotating Badges
 					</Label>
-					<Input
-						value={content.heroHeadline}
-						onChange={e => handleChange('heroHeadline', e.target.value)}
-						placeholder='e.g. Full-Stack Software Engineer'
+					<div className='space-y-2'>
+						{content.subtitles.map((sub, i) => (
+							<div
+								key={`sub-${i}`}
+								className='flex items-center justify-between gap-3 rounded-xl border border-border bg-surface-strong/50 p-3 text-xs'>
+								<span className='font-mono text-foreground'>{sub}</span>
+								<button
+									type='button'
+									onClick={() => handleRemoveSubtitle(i)}
+									className='text-muted-foreground hover:text-destructive p-1'>
+									<Trash2 className='size-3.5' />
+								</button>
+							</div>
+						))}
+					</div>
+					<div className='flex items-center gap-2 pt-1'>
+						<Input
+							value={newSubtitle}
+							onChange={e => setNewSubtitle(e.target.value)}
+							placeholder='Add a new role subtitle…'
+							className='h-9 text-xs font-mono'
+							onKeyDown={e => {
+								if (e.key === 'Enter') {
+									e.preventDefault()
+									handleAddSubtitle()
+								}
+							}}
+						/>
+						<Button
+							type='button'
+							variant='secondary'
+							size='sm'
+							onClick={handleAddSubtitle}
+							className='shrink-0'>
+							<Plus className='size-3.5' />
+							<span>Add Subtitle</span>
+						</Button>
+					</div>
+				</div>
+
+				{/* Hero Bio Content */}
+				<div className='space-y-1.5 pt-2 border-t border-border'>
+					<Label className='text-xs font-mono uppercase text-muted-foreground'>
+						Hero Main Bio / Systems Philosophy Content
+					</Label>
+					<Textarea
+						value={content.content}
+						onChange={e => handleChange('content', e.target.value)}
+						rows={4}
+						placeholder='Architecting resilient distributed platforms…'
 					/>
 				</div>
 
-				{/* Hero Biography */}
-				<div className='space-y-1.5'>
-					<Label className='text-xs font-mono uppercase text-muted-foreground'>
-						Hero Lead Narrative / Bio
+				{/* Featured Skills Badges */}
+				<div className='space-y-3 pt-2 border-t border-border'>
+					<Label className='text-xs font-mono uppercase text-muted-foreground block'>
+						Featured Stack Badges
 					</Label>
-					<Textarea
-						value={content.heroBio}
-						onChange={e => handleChange('heroBio', e.target.value)}
-						rows={4}
-						placeholder='Lead introduction text displayed above the fold…'
-					/>
+					<div className='flex flex-wrap gap-2'>
+						{(content.featuredSkills || []).map((skill, i) => (
+							<span
+								key={`sk-${i}`}
+								className='inline-flex items-center gap-2 rounded-lg border border-border bg-surface-strong/70 px-3 py-1 text-xs font-mono'>
+								<span>{skill}</span>
+								<button
+									type='button'
+									onClick={() => handleRemoveSkill(i)}
+									className='text-muted-foreground hover:text-destructive'>
+									&times;
+								</button>
+							</span>
+						))}
+					</div>
+					<div className='flex items-center gap-2 pt-1'>
+						<Input
+							value={newSkill}
+							onChange={e => setNewSkill(e.target.value)}
+							placeholder='Add featured skill (e.g. Next.js 16)…'
+							className='h-9 text-xs font-mono'
+							onKeyDown={e => {
+								if (e.key === 'Enter') {
+									e.preventDefault()
+									handleAddSkill()
+								}
+							}}
+						/>
+						<Button
+							type='button'
+							variant='secondary'
+							size='sm'
+							onClick={handleAddSkill}
+							className='shrink-0'>
+							<Plus className='size-3.5' />
+							<span>Add Skill</span>
+						</Button>
+					</div>
 				</div>
 
 				{/* Profile Visual Selection */}
@@ -187,7 +323,7 @@ export const HomeContentClientView = () => {
 								<span>Select from S3 Media Library</span>
 							</Button>
 							<p className='font-mono text-[0.6875rem] text-muted-foreground'>
-								Recommended: Square aspect ratio (min 512x512 PNG/WebP)
+								Square aspect ratio (PNG / WebP)
 							</p>
 						</div>
 					</div>
@@ -204,7 +340,7 @@ export const HomeContentClientView = () => {
 							<Input
 								value={content.ctaLabel}
 								onChange={e => handleChange('ctaLabel', e.target.value)}
-								placeholder='View Projects'
+								placeholder='Explore Selected Work'
 							/>
 						</div>
 						<div className='space-y-2'>
@@ -212,7 +348,7 @@ export const HomeContentClientView = () => {
 							<Input
 								value={content.ctaUrl}
 								onChange={e => handleChange('ctaUrl', e.target.value)}
-								placeholder='/projects'
+								placeholder='#projects'
 							/>
 						</div>
 					</div>
@@ -226,7 +362,7 @@ export const HomeContentClientView = () => {
 							<Input
 								value={content.secondaryCtaLabel ?? ''}
 								onChange={e => handleChange('secondaryCtaLabel', e.target.value)}
-								placeholder='Contact Me'
+								placeholder='Get In Touch'
 							/>
 						</div>
 						<div className='space-y-2'>
@@ -234,7 +370,7 @@ export const HomeContentClientView = () => {
 							<Input
 								value={content.secondaryCtaUrl ?? ''}
 								onChange={e => handleChange('secondaryCtaUrl', e.target.value)}
-								placeholder='/contact'
+								placeholder='#contact'
 							/>
 						</div>
 					</div>

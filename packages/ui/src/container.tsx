@@ -90,9 +90,7 @@ export const SectionContainer = ({
 	}
 
 	return (
-		<Component
-			className={classNames('relative w-full', spacingMap[spacing], className)}
-			{...props}>
+		<Component className={classNames('relative w-full', spacingMap[spacing], className)} {...props}>
 			{children}
 		</Component>
 	)

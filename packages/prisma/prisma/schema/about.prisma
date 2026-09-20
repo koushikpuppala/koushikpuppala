@@ -2,15 +2,25 @@ model About {
   id      String @id @default(uuid()) @db.Uuid
   version Int    @default(1)
 
-  title     String
-  content   String  @db.Text
-  biography String? @db.Text
+  title         String
+  leadStatement String? @map("lead_statement") @db.Text
+  content       String  @db.Text
+  biography     String? @db.Text
+
+  location    String?
+  coordinates String?
+  timezone    String?
+  status      String?
 
   profileImageId String? @map("profile_image_id") @db.Uuid
   profileImage   Media?  @relation(fields: [profileImageId], references: [id], onDelete: SetNull)
 
   highlights String[]
   skills     String[]
+
+  stats   Json?
+  values  Json?
+  pillars Json?
 
   ctaLabel String? @map("cta_label")
   ctaUrl   String? @map("cta_url")

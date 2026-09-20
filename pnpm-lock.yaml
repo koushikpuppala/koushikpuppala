@@ -380,6 +380,9 @@ importers:
       tsx:
         specifier: ~4.23.12
         version: 4.23.12
+      types:
+        specifier: workspace:*
+        version: link:../../packages/types
       typescript:
         specifier: ~6.0.3
         version: 6.0.3
@@ -508,6 +511,9 @@ importers:
       react-icons:
         specifier: ~5.7.0
         version: 5.7.0(react@19.2.8)
+      types:
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@repo/config':
         specifier: workspace:*

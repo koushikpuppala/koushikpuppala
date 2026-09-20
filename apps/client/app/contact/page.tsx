@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { ContactView } from '@/components/portfolio/contact-view'
-import { getSocials } from '@/lib/portfolio-data'
+import { ContactView } from 'components/contact/contact-view'
+import { getSocialsData } from 'lib/social-data'
 
 export const metadata: Metadata = {
 	title: 'Contact',
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactPage() {
-	const socials = await getSocials()
+	const socials = await getSocialsData()
 
 	return <ContactView socials={socials} />
 }

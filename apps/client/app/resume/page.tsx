@@ -1,19 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Download } from '@/components/icons'
-import { SiteShell } from '@/components/site-shell'
-import { Chip, Reveal, Section, SectionHeader } from '@/components/primitives'
-import { PageHero } from '@/components/portfolio/page-hero'
-import { ContactCTA } from '@/components/portfolio/home-sections'
-import { Button } from '@/components/ui/button'
-import {
-	getEducation,
-	getExperience,
-	getResume,
-	getServices,
-	getSocials,
-} from '@/lib/portfolio-data'
-import { formatRange, splitList } from '@/lib/format'
+import { ArrowRight, Download } from 'components/icons'
+import { SiteShell } from 'components/site-shell'
+import { Chip, Reveal, Section, SectionHeader } from 'components/primitives'
+import { PageHero } from 'components/home/page-hero'
+import { ContactCTA } from 'components/home/home-sections'
+import { Button } from 'components/ui/button'
+import { formatRange, splitList } from 'lib/format'
+import { getResumeData } from 'lib/resume-data'
+import { getExperienceData } from 'lib/experience-data'
+import { getEducationData } from 'lib/education-data'
+import { getServicesData } from 'lib/skills-data'
+import { getSocialsData } from 'lib/social-data'
 
 export const metadata: Metadata = {
 	title: 'Resume',
@@ -41,12 +39,12 @@ function RecordRow({
 	detail?: string | null
 }) {
 	return (
-		<div className='grid gap-1.5 border-t border-border py-6 last:border-b sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:gap-10'>
-			<p className='numeric font-mono text-[0.75rem] text-muted-foreground'>{period}</p>
+		<div className='border-border grid gap-1.5 border-t py-6 last:border-b sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:gap-10'>
+			<p className='numeric text-muted-foreground font-mono text-[0.75rem]'>{period}</p>
 			<div className='min-w-0'>
 				<h3 className='font-display text-lg font-medium tracking-tight'>{title}</h3>
-				<p className='mt-1 text-sm text-foreground/85'>{meta}</p>
-				{detail ? <p className='mt-1 text-sm text-muted-foreground'>{detail}</p> : null}
+				<p className='text-foreground/85 mt-1 text-sm'>{meta}</p>
+				{detail ? <p className='text-muted-foreground mt-1 text-sm'>{detail}</p> : null}
 			</div>
 		</div>
 	)
@@ -54,30 +52,35 @@ function RecordRow({
 
 export default async function ResumePage() {
 	const [resume, experiences, education, services, socials] = await Promise.all([
-		getResume(),
-		getExperience(),
-		getEducation(),
-		getServices(),
-		getSocials(),
+		getResumeData(),
+		getExperienceData(),
+		getEducationData(),
+		getServicesData(),
+		getSocialsData(),
 	])
 
 	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
 	const downloadable = Boolean(resume.fileUrl && resume.fileUrl !== '#')
-	const updated = new Date(resume.updatedAt).toLocaleDateString('en-US', { dateStyle: 'medium' })
+	const updated = resume.updatedAt
+		? new Date(resume.updatedAt).toLocaleDateString('en-US', { dateStyle: 'medium' })
+		: '2026'
+	const title = resume.title || 'Resume'
+	const summary = resume.summary || ''
+	const version = String(resume.version || '1.0')
 
 	return (
 		<SiteShell socials={socials}>
 			<PageHero
 				eyebrow='Resume'
-				title={resume.title}
-				lead={resume.summary}
-				meta={[resume.version, `Updated ${updated}`]}
+				title={title}
+				lead={summary}
+				meta={[version, `Updated ${updated}`]}
 				actions={
 					downloadable ? (
 						<>
 							<Button asChild size='lg' variant='signal'>
 								<a href={resume.fileUrl} target='_blank' rel='noreferrer noopener'>
-									<Download className='size-4' /> Download {resume.version}
+									<Download className='size-4' /> Download {version}
 								</a>
 							</Button>
 							<Button asChild size='lg' variant='outline' className='group'>
@@ -104,8 +107,8 @@ export default async function ResumePage() {
 			/>
 
 			{!downloadable ? (
-				<div className='border-b border-border bg-surface/50'>
-					<p className='container-page py-4 font-mono text-[0.75rem] text-muted-foreground'>
+				<div className='border-border bg-surface/50 border-b'>
+					<p className='container-page text-muted-foreground py-4 font-mono text-[0.75rem]'>
 						The resume file hasn&apos;t been published yet — the record below stays current.
 					</p>
 				</div>
@@ -119,8 +122,8 @@ export default async function ResumePage() {
 							<Reveal key={item.id}>
 								<RecordRow
 									period={formatRange(item.startDate, item.endDate)}
-									title={item.role}
-									meta={item.organization}
+									title={item.role || item.title || ''}
+									meta={item.organization || item.company || ''}
 									detail={item.location}
 								/>
 							</Reveal>
@@ -129,7 +132,7 @@ export default async function ResumePage() {
 				</div>
 			</Section>
 
-			<Section className='border-t border-border pt-16 lg:pt-20'>
+			<Section className='border-border border-t pt-16 lg:pt-20'>
 				<div className='container-page'>
 					<SectionHeader index='02' eyebrow='Education' title='Academic record' size='md' />
 					<div className='mt-12'>
@@ -137,9 +140,11 @@ export default async function ResumePage() {
 							<Reveal key={item.id}>
 								<RecordRow
 									period={formatRange(item.startDate, item.endDate)}
-									title={`${item.degree}${item.field ? ` · ${item.field}` : ''}`}
-									meta={item.institution}
-									detail={item.description}
+									title={`${item.degree}${item.field || item.fieldOfStudy ? ` · ${item.field || item.fieldOfStudy}` : ''}`}
+									meta={item.institution || item.university || ''}
+									detail={
+										Array.isArray(item.description) ? item.description.join(' ') : item.description
+									}
 								/>
 							</Reveal>
 						))}
@@ -147,7 +152,7 @@ export default async function ResumePage() {
 				</div>
 			</Section>
 
-			<Section className='border-t border-border pt-16 lg:pt-20'>
+			<Section className='border-border border-t pt-16 lg:pt-20'>
 				<div className='container-page'>
 					<SectionHeader index='03' eyebrow='Skills' title='Technologies' size='md' />
 					<div className='mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>

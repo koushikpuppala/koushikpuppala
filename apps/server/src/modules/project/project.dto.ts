@@ -37,6 +37,11 @@ export class CreateProjectDto {
 	@IsOptional()
 	projectType?: string
 
+	@ApiPropertyOptional({ example: 'Lead Architect & Engineer' })
+	@IsString()
+	@IsOptional()
+	role?: string
+
 	@ApiPropertyOptional({ example: true, default: false })
 	@IsBoolean()
 	@IsOptional()

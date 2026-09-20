@@ -20,25 +20,7 @@ import { MediaPickerModal } from '@/components/cms/media-picker-modal'
 import { adminFetch } from '@/lib/api-client'
 import { saveProjectAction, deleteProjectAction } from '@/actions/server/admin-server-actions'
 
-export type Project = {
-	id: string
-	title: string
-	slug: string
-	shortDescription?: string
-	summary?: string
-	content?: string
-	caseStudy?: string
-	projectType?: string
-	category?: string
-	technologies: string[]
-	repoUrl?: string | null
-	liveUrl?: string | null
-	coverImageUrl?: string | null
-	featured: boolean
-	status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
-	gallery?: Array<{ id: string; url: string; caption?: string | null }>
-	updatedAt?: string
-}
+import type { Project } from 'types/models'
 
 export const ProjectEditorModal = ({
 	open,
@@ -54,14 +36,21 @@ export const ProjectEditorModal = ({
 	const [formData, setFormData] = useState<Partial<Project>>({
 		title: '',
 		slug: '',
-		shortDescription: '',
+		subtitle: '',
+		category: 'Full Stack',
 		projectType: 'Web Application',
+		shortDescription: '',
+		descriptions: [],
+		caseStudy: '',
+		tags: [],
 		technologies: [],
 		repoUrl: '',
 		liveUrl: '',
 		featured: false,
 		status: 'PUBLISHED',
 	})
+	const [descInput, setDescInput] = useState('')
+	const [tagInput, setTagInput] = useState('')
 	const [techInput, setTechInput] = useState('')
 	const [mediaModalOpen, setMediaModalOpen] = useState(false)
 	const [saving, setSaving] = useState(false)
@@ -70,14 +59,29 @@ export const ProjectEditorModal = ({
 		if (project) {
 			setFormData({
 				...project,
+				subtitle: project.subtitle || '',
+				category: project.category || 'Full Stack',
+				projectType: project.projectType || 'Web Application',
+				descriptions: Array.isArray(project.descriptions)
+					? project.descriptions
+					: typeof (project as { summary?: string }).summary === 'string'
+						? [(project as { summary?: string }).summary!]
+						: [],
+				tags: Array.isArray(project.tags) ? project.tags : [],
 				technologies: Array.isArray(project.technologies) ? project.technologies : [],
+				repoUrl: project.github || project.repoUrl || '',
 			})
 		} else {
 			setFormData({
 				title: '',
 				slug: '',
-				shortDescription: '',
+				subtitle: '',
+				category: 'Full Stack',
 				projectType: 'Web Application',
+				shortDescription: '',
+				descriptions: [],
+				caseStudy: '',
+				tags: ['Next.js', 'NestJS', 'PostgreSQL'],
 				technologies: ['React', 'Next.js', 'TypeScript', 'PostgreSQL'],
 				repoUrl: '',
 				liveUrl: '',
@@ -86,6 +90,38 @@ export const ProjectEditorModal = ({
 			})
 		}
 	}, [project])
+
+	const addDescription = () => {
+		if (!descInput.trim()) return
+		setFormData(prev => ({
+			...prev,
+			descriptions: [...(prev.descriptions || []), descInput.trim()],
+		}))
+		setDescInput('')
+	}
+
+	const removeDescription = (index: number) => {
+		setFormData(prev => ({
+			...prev,
+			descriptions: (prev.descriptions || []).filter((_, i) => i !== index),
+		}))
+	}
+
+	const addTag = () => {
+		if (!tagInput.trim()) return
+		setFormData(prev => ({
+			...prev,
+			tags: [...(prev.tags || []), tagInput.trim()],
+		}))
+		setTagInput('')
+	}
+
+	const removeTag = (index: number) => {
+		setFormData(prev => ({
+			...prev,
+			tags: (prev.tags || []).filter((_, i) => i !== index),
+		}))
+	}
 
 	const addTechnology = () => {
 		if (!techInput.trim()) return
@@ -107,7 +143,27 @@ export const ProjectEditorModal = ({
 		e.preventDefault()
 		setSaving(true)
 		try {
-			await onSave(formData)
+			const payload: Partial<Project> = {
+				title: formData.title || '',
+				slug: formData.slug || (formData.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+				subtitle: formData.subtitle || formData.title || '',
+				category: formData.category || 'Full Stack',
+				projectType: formData.projectType || 'Web Application',
+				shortDescription: formData.shortDescription || '',
+				descriptions:
+					Array.isArray(formData.descriptions) && formData.descriptions.length > 0
+						? formData.descriptions
+						: [formData.shortDescription || formData.title || 'Project showcase.'],
+				caseStudy: formData.caseStudy || undefined,
+				tags: Array.isArray(formData.tags) ? formData.tags : [],
+				technologies: Array.isArray(formData.technologies) ? formData.technologies : [],
+				github: formData.repoUrl || formData.github || undefined,
+				liveUrl: formData.liveUrl || undefined,
+				featured: Boolean(formData.featured),
+				isPublished: formData.status === 'PUBLISHED',
+				status: formData.status || 'PUBLISHED',
+			}
+			await onSave(payload)
 			onOpenChange(false)
 		} finally {
 			setSaving(false)
@@ -160,6 +216,33 @@ export const ProjectEditorModal = ({
 						</div>
 					</div>
 
+					<div className='grid gap-4 sm:grid-cols-3'>
+						<div className='space-y-1'>
+							<Label className='text-xs'>Subtitle</Label>
+							<Input
+								value={formData.subtitle || ''}
+								onChange={e => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
+								placeholder='AI-Powered Financial Intelligence'
+							/>
+						</div>
+						<div className='space-y-1'>
+							<Label className='text-xs'>Category</Label>
+							<Input
+								value={formData.category || ''}
+								onChange={e => setFormData(prev => ({ ...prev, category: e.target.value }))}
+								placeholder='FULL STACK & AI'
+							/>
+						</div>
+						<div className='space-y-1'>
+							<Label className='text-xs'>Project Type</Label>
+							<Input
+								value={formData.projectType || ''}
+								onChange={e => setFormData(prev => ({ ...prev, projectType: e.target.value }))}
+								placeholder='Financial Platform'
+							/>
+						</div>
+					</div>
+
 					<div className='space-y-1'>
 						<Label className='text-xs'>Short Summary</Label>
 						<Input
@@ -169,14 +252,50 @@ export const ProjectEditorModal = ({
 						/>
 					</div>
 
+					{/* Description Bullets */}
+					<div className='space-y-2'>
+						<Label className='text-xs'>Detailed Overview Bullets</Label>
+						<div className='space-y-1.5'>
+							{(formData.descriptions || []).map((desc, idx) => (
+								<div
+									key={idx}
+									className='flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-strong/50 p-2 text-xs'>
+									<span>{desc}</span>
+									<button
+										type='button'
+										onClick={() => removeDescription(idx)}
+										className='text-muted-foreground hover:text-destructive'>
+										×
+									</button>
+								</div>
+							))}
+						</div>
+						<div className='flex gap-2'>
+							<Input
+								value={descInput}
+								onChange={e => setDescInput(e.target.value)}
+								onKeyDown={e => {
+									if (e.key === 'Enter') {
+										e.preventDefault()
+										addDescription()
+									}
+								}}
+								placeholder='Add feature/architecture description bullet…'
+								className='h-8 text-xs'
+							/>
+							<Button type='button' variant='outline' size='sm' onClick={addDescription}>
+								Add
+							</Button>
+						</div>
+					</div>
+
 					<div className='space-y-1'>
 						<Label className='text-xs'>Case Study Narrative</Label>
 						<Textarea
-							value={formData.content || formData.caseStudy || ''}
+							value={formData.caseStudy || ''}
 							onChange={e =>
 								setFormData(prev => ({
 									...prev,
-									content: e.target.value,
 									caseStudy: e.target.value,
 								}))
 							}
@@ -185,9 +304,44 @@ export const ProjectEditorModal = ({
 						/>
 					</div>
 
+					{/* Tags */}
+					<div className='space-y-2'>
+						<Label className='text-xs'>Search &amp; Filter Tags</Label>
+						<div className='flex flex-wrap gap-1.5'>
+							{(formData.tags || []).map((t, idx) => (
+								<Badge key={`tag-${idx}`} variant='outline' className='gap-1 pr-1'>
+									<span>{t}</span>
+									<button
+										type='button'
+										onClick={() => removeTag(idx)}
+										className='text-muted-foreground hover:text-destructive'>
+										×
+									</button>
+								</Badge>
+							))}
+						</div>
+						<div className='flex gap-2'>
+							<Input
+								value={tagInput}
+								onChange={e => setTagInput(e.target.value)}
+								onKeyDown={e => {
+									if (e.key === 'Enter') {
+										e.preventDefault()
+										addTag()
+									}
+								}}
+								placeholder='Add filter tag (e.g. Next.js 16, Redis)…'
+								className='h-8 text-xs'
+							/>
+							<Button type='button' variant='outline' size='sm' onClick={addTag}>
+								Add
+							</Button>
+						</div>
+					</div>
+
 					{/* Technologies Tags */}
 					<div className='space-y-2'>
-						<Label className='text-xs'>Tech Stack</Label>
+						<Label className='text-xs'>Tech Stack Badges</Label>
 						<div className='flex flex-wrap gap-1.5'>
 							{(formData.technologies || []).map((t, idx) => (
 								<Badge key={`t-${idx}`} variant='secondary' className='gap-1 pr-1'>

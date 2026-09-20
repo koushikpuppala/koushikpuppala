@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { ProjectsView } from '@/components/portfolio/projects-view'
-import { getProjects, getSocials } from '@/lib/portfolio-data'
+import { ProjectsView } from 'components/projects/projects-view'
+import { getProjectsData } from 'lib/projects-data'
+import { getSocialsData } from 'lib/social-data'
 
 export const metadata: Metadata = {
 	title: 'Projects',
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ProjectsPage() {
-	const [projects, socials] = await Promise.all([getProjects(), getSocials()])
+	const [projects, socials] = await Promise.all([getProjectsData(), getSocialsData()])
 
 	return <ProjectsView projects={projects} socials={socials} />
 }

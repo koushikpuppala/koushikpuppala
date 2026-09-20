@@ -3,8 +3,10 @@ model Service {
   version Int    @default(1)
 
   title       String
+  subtitle    String?
   description String   @db.Text
   features    String[]
+  icon        String?
 
   imageId String? @map("image_id") @db.Uuid
   image   Media?  @relation(fields: [imageId], references: [id], onDelete: SetNull)

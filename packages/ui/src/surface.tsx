@@ -37,7 +37,7 @@ export const Surface = ({
 				'relative rounded-lg transition-colors duration-200',
 				variantMap[variant],
 				interactive &&
-					'hover:border-border-strong hover:bg-surface/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer',
+					'hover:border-border-strong hover:bg-surface/90 focus-visible:ring-signal focus-visible:ring-offset-background cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
 				glow && 'hover:border-signal/50 hover:shadow-[0_0_20px_rgba(255,51,102,0.12)]',
 				className,
 			)}

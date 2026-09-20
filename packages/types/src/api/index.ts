@@ -1,4 +1,4 @@
-export type ApiResponseDto<T = unknown> = {
+export type ApiResponse<T = unknown> = {
 	result?: T
 	message: string
 	error?: boolean
@@ -8,24 +8,4 @@ export type ApiResponseDto<T = unknown> = {
 	requestId?: string
 	timestamp?: string
 	endpoint?: string
-}
-
-export type PaginationMetaDto = {
-	page: number
-	limit: number
-	total: number
-	totalPages: number
-}
-
-export type PaginatedResultDto<T> = {
-	items: T[]
-	pagination: PaginationMetaDto
-}
-
-export type BaseQueryDto = {
-	page?: number
-	limit?: number
-	search?: string
-	sortBy?: string
-	sortOrder?: 'asc' | 'desc'
 }

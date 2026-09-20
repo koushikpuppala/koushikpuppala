@@ -124,7 +124,11 @@ export class ResumeService extends BaseService {
 			data: {
 				title: dto.title,
 				versionName: dto.versionName,
+				headline: dto.headline,
 				summary: dto.summary,
+				highlights: dto.highlights,
+				competencies: dto.competencies ?? [],
+				stats: dto.stats,
 				mediaId: dto.mediaId,
 				fileSize: dto.fileSize ?? media.size,
 				fileType: dto.fileType ?? media.mimeType,
@@ -155,7 +159,11 @@ export class ResumeService extends BaseService {
 			data: {
 				...(dto.title !== undefined && { title: dto.title }),
 				...(dto.versionName !== undefined && { versionName: dto.versionName }),
+				...(dto.headline !== undefined && { headline: dto.headline }),
 				...(dto.summary !== undefined && { summary: dto.summary }),
+				...(dto.highlights !== undefined && { highlights: dto.highlights }),
+				...(dto.competencies !== undefined && { competencies: dto.competencies }),
+				...(dto.stats !== undefined && { stats: dto.stats }),
 				...(dto.mediaId !== undefined && { mediaId: dto.mediaId }),
 				...(dto.fileSize !== undefined && { fileSize: dto.fileSize }),
 				...(dto.fileType !== undefined && { fileType: dto.fileType }),

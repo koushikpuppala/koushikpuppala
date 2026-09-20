@@ -48,6 +48,15 @@ export class CreateEducationDto {
 	@IsOptional()
 	achievements?: string[] = []
 
+	@ApiPropertyOptional({
+		example: ['Data Structures & Algorithms', 'Distributed Systems', 'Database Management'],
+		type: [String],
+	})
+	@IsArray()
+	@IsString({ each: true })
+	@IsOptional()
+	focusAreas?: string[] = []
+
 	@ApiProperty({ example: '2021-08-01T00:00:00.000Z' })
 	@IsDateString()
 	startDate!: string

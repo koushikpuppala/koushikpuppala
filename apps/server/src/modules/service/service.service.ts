@@ -63,8 +63,10 @@ export class ServiceService extends BaseService {
 		const service = await this.prisma.service.create({
 			data: {
 				title: dto.title,
+				subtitle: dto.subtitle,
 				description: dto.description,
 				features: dto.features ?? [],
+				icon: dto.icon,
 				imageId: dto.imageId,
 				sortOrder: dto.sortOrder ?? 0,
 				isPublished: dto.isPublished ?? false,
@@ -91,8 +93,10 @@ export class ServiceService extends BaseService {
 			where: { id },
 			data: {
 				...(dto.title !== undefined && { title: dto.title }),
+				...(dto.subtitle !== undefined && { subtitle: dto.subtitle }),
 				...(dto.description !== undefined && { description: dto.description }),
 				...(dto.features !== undefined && { features: dto.features }),
+				...(dto.icon !== undefined && { icon: dto.icon }),
 				...(dto.imageId !== undefined && { imageId: dto.imageId }),
 				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
 				...(dto.isPublished !== undefined && {

@@ -18,14 +18,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { CollectionManager, type ColumnDef } from '@/components/cms/collection-manager'
 import { adminFetch } from '@/lib/api-client'
 
-export type Service = {
-	id: string
-	title: string
-	description: string
-	icon?: string | null
-	status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
-	sortOrder?: number
-}
+import type { Service } from 'types/models'
 
 export const ServiceModal = ({
 	open,
@@ -41,27 +34,55 @@ export const ServiceModal = ({
 	const [formData, setFormData] = useState<Partial<Service>>({
 		title: '',
 		description: '',
+		features: [],
 		status: 'PUBLISHED',
 	})
+	const [featureInput, setFeatureInput] = useState('')
 	const [saving, setSaving] = useState(false)
 
 	useEffect(() => {
 		if (service) {
-			setFormData(service)
+			setFormData({
+				...service,
+				features: Array.isArray(service.features) ? service.features : [],
+			})
 		} else {
 			setFormData({
 				title: '',
 				description: '',
+				features: [],
 				status: 'PUBLISHED',
 			})
 		}
 	}, [service])
 
+	const addFeature = () => {
+		if (!featureInput.trim()) return
+		setFormData(prev => ({
+			...prev,
+			features: [...(prev.features || []), featureInput.trim()],
+		}))
+		setFeatureInput('')
+	}
+
+	const removeFeature = (index: number) => {
+		setFormData(prev => ({
+			...prev,
+			features: (prev.features || []).filter((_, i) => i !== index),
+		}))
+	}
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		setSaving(true)
 		try {
-			await onSave(formData)
+			const payload: Partial<Service> = {
+				title: formData.title || '',
+				description: formData.description || '',
+				features: Array.isArray(formData.features) ? formData.features : [],
+				isPublished: formData.status === 'PUBLISHED',
+			}
+			await onSave(payload)
 			onOpenChange(false)
 		} finally {
 			setSaving(false)
@@ -73,7 +94,7 @@ export const ServiceModal = ({
 			<DialogContent className='max-w-md flex flex-col p-6' onClose={() => onOpenChange(false)}>
 				<DialogHeader>
 					<DialogTitle>{service?.id ? 'Edit Service' : 'Add Competency / Service'}</DialogTitle>
-					<DialogDescription>Define service title, description, and visibility.</DialogDescription>
+					<DialogDescription>Define service title, description, features, and visibility.</DialogDescription>
 				</DialogHeader>
 
 				<form onSubmit={handleSubmit} className='space-y-4'>
@@ -92,10 +113,47 @@ export const ServiceModal = ({
 						<Textarea
 							value={formData.description || ''}
 							onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
-							rows={4}
+							rows={3}
 							required
 							placeholder='Scope of work, deliverables, and engineering practices…'
 						/>
+					</div>
+
+					{/* Service Key Feature Highlights */}
+					<div className='space-y-2'>
+						<Label className='text-xs'>Key Feature Deliverables</Label>
+						<div className='space-y-1.5'>
+							{(formData.features || []).map((feat, i) => (
+								<div
+									key={i}
+									className='flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-strong/50 p-2 text-xs'>
+									<span>{feat}</span>
+									<button
+										type='button'
+										onClick={() => removeFeature(i)}
+										className='text-muted-foreground hover:text-destructive'>
+										×
+									</button>
+								</div>
+							))}
+						</div>
+						<div className='flex gap-2'>
+							<Input
+								value={featureInput}
+								onChange={e => setFeatureInput(e.target.value)}
+								onKeyDown={e => {
+									if (e.key === 'Enter') {
+										e.preventDefault()
+										addFeature()
+									}
+								}}
+								placeholder='Add feature highlight…'
+								className='h-8 text-xs'
+							/>
+							<Button type='button' variant='outline' size='sm' onClick={addFeature}>
+								Add
+							</Button>
+						</div>
 					</div>
 
 					<div className='space-y-1'>
@@ -138,7 +196,12 @@ export const ServicesContentClientView = () => {
 			const res = await adminFetch<{ items?: Service[] } | Service[]>('/api/v1/services')
 			if (res.data) {
 				const items = Array.isArray(res.data) ? res.data : (res.data.items || [])
-				setServices(items)
+				setServices(
+					items.map(s => ({
+						...s,
+						status: s.isPublished || (s as { status?: string }).status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
+					})),
+				)
 			}
 		} catch (err) {
 			console.error('Failed to load services:', err)

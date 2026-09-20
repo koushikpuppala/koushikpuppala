@@ -1,14 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight } from '@/components/icons'
-import { SiteShell } from '@/components/site-shell'
-import { EmptyState, Section, SectionHeader } from '@/components/primitives'
-import { PageHero } from '@/components/portfolio/page-hero'
-import { StackClusters } from '@/components/portfolio/stack-clusters'
-import { ContactCTA, TechTicker } from '@/components/portfolio/home-sections'
-import { Button } from '@/components/ui/button'
-import { splitList } from '@/lib/format'
-import { getServices, getSocials } from '@/lib/portfolio-data'
+import { ArrowRight } from 'components/icons'
+import { SiteShell } from 'components/site-shell'
+import { EmptyState, Section, SectionHeader } from 'components/primitives'
+import { PageHero } from 'components/home/page-hero'
+import { StackClusters } from 'components/portfolio/stack-clusters'
+import { ContactCTA, TechTicker } from 'components/home/home-sections'
+import { Button } from 'components/ui/button'
+import { splitList } from 'lib/format'
+import { getServicesData } from 'lib/skills-data'
+import { getSocialsData } from 'lib/social-data'
 
 export const metadata: Metadata = {
 	title: 'Skills',
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ServicesPage() {
-	const [services, socials] = await Promise.all([getServices(), getSocials()])
+	const [services, socials] = await Promise.all([getServicesData(), getSocialsData()])
 
 	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
 	const total = services.reduce((acc, service) => acc + splitList(service.description).length, 0)

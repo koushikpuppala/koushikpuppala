@@ -8,6 +8,14 @@ export class CreateAboutDto {
 	@IsString()
 	title!: string
 
+	@ApiPropertyOptional({
+		example:
+			'Bridging intuitive, high-performance user interfaces with resilient distributed backend systems.',
+	})
+	@IsString()
+	@IsOptional()
+	leadStatement?: string
+
 	@ApiProperty({
 		example: 'I am a software engineer focused on building robust full-stack applications.',
 	})
@@ -21,6 +29,26 @@ export class CreateAboutDto {
 	@IsString()
 	@IsOptional()
 	biography?: string
+
+	@ApiPropertyOptional({ example: 'Bengaluru, Karnataka, India' })
+	@IsString()
+	@IsOptional()
+	location?: string
+
+	@ApiPropertyOptional({ example: '12.9716° N, 77.5946° E' })
+	@IsString()
+	@IsOptional()
+	coordinates?: string
+
+	@ApiPropertyOptional({ example: 'UTC+5:30 (IST)' })
+	@IsString()
+	@IsOptional()
+	timezone?: string
+
+	@ApiPropertyOptional({ example: 'AVAILABLE FOR WORK // GLOBAL REMOTE' })
+	@IsString()
+	@IsOptional()
+	status?: string
 
 	@ApiPropertyOptional({ example: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' })
 	@IsUUID()
@@ -44,6 +72,24 @@ export class CreateAboutDto {
 	@IsString({ each: true })
 	@IsOptional()
 	skills?: string[] = []
+
+	@ApiPropertyOptional({
+		example: [{ label: 'EXPERIENCE', value: '3+', detail: 'Years of Production Engineering' }],
+	})
+	@IsOptional()
+	stats?: any
+
+	@ApiPropertyOptional({
+		example: [{ title: 'Simplicity over Cleverness', description: 'Favor transparent architecture' }],
+	})
+	@IsOptional()
+	values?: any
+
+	@ApiPropertyOptional({
+		example: [{ index: '01', title: 'Clean Boundaries', description: 'Strict module boundaries' }],
+	})
+	@IsOptional()
+	pillars?: any
 
 	@ApiPropertyOptional({ example: 'Download Resume' })
 	@IsString()

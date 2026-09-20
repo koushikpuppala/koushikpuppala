@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { getApiBaseUrl } from '../../../lib/api-client'
-import { validateContactForm, type ContactFormPayload } from '../../../lib/contact-data'
+import { getApiBaseUrl } from '../../../src/lib/api-client'
+import { validateContactForm, type ContactFormPayload } from '../../../src/lib/contact-data'
 
 export async function POST(req: Request) {
 	try {

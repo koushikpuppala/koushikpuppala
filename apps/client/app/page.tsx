@@ -1,30 +1,28 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight } from '@/components/icons'
-import { SiteShell } from '@/components/site-shell'
-import { Reveal, Section, SectionHeader } from '@/components/primitives'
-import { Hero } from '@/components/portfolio/hero'
-import { SectionRail } from '@/components/portfolio/section-rail'
-import { FeaturedProjectRow, SupportingProjects } from '@/components/portfolio/work-showcase'
-import { ExperienceTimeline } from '@/components/portfolio/experience-timeline'
-import { StackClusters } from '@/components/portfolio/stack-clusters'
+import { ArrowRight } from 'components/icons'
+import { SiteShell } from 'components/site-shell'
+import { Reveal, Section, SectionHeader } from 'components/primitives'
+import { Hero } from 'components/home/hero'
+import { SectionRail } from 'components/portfolio/section-rail'
+import { FeaturedProjectRow, SupportingProjects } from 'components/portfolio/work-showcase'
+import { ExperienceTimeline } from 'components/portfolio/experience-timeline'
+import { StackClusters } from 'components/portfolio/stack-clusters'
 import {
 	AboutBlock,
 	ContactCTA,
 	EducationBlock,
 	LeadershipStrip,
 	TechTicker,
-} from '@/components/portfolio/home-sections'
-import { Button } from '@/components/ui/button'
-import {
-	getAbout,
-	getEducation,
-	getExperience,
-	getHome,
-	getProjects,
-	getServices,
-	getSocials,
-} from '@/lib/portfolio-data'
+} from 'components/home/home-sections'
+import { Button } from 'components/ui/button'
+import { getHomeData } from 'lib/home-data'
+import { getAboutData } from 'lib/about-data'
+import { getExperienceData } from 'lib/experience-data'
+import { getProjectsData } from 'lib/projects-data'
+import { getEducationData } from 'lib/education-data'
+import { getServicesData } from 'lib/skills-data'
+import { getSocialsData } from 'lib/social-data'
 
 export const metadata: Metadata = {
 	title: 'Koushik Puppala — Software Engineer, Full Stack',
@@ -52,13 +50,13 @@ const sections = [
 
 export default async function HomePage() {
 	const [home, about, experience, projects, education, services, socials] = await Promise.all([
-		getHome(),
-		getAbout(),
-		getExperience(),
-		getProjects(),
-		getEducation(),
-		getServices(),
-		getSocials(),
+		getHomeData(),
+		getAboutData(),
+		getExperienceData(),
+		getProjectsData(),
+		getEducationData(),
+		getServicesData(),
+		getSocialsData(),
 	])
 
 	const featured = projects.filter(project => project.featured)
@@ -113,12 +111,12 @@ export default async function HomePage() {
 						<div className='mt-20 lg:mt-28'>
 							<Reveal className='flex items-center gap-4'>
 								<span className='text-eyebrow whitespace-nowrap'>Also built</span>
-								<span className='h-px flex-1 bg-border' />
+								<span className='bg-border h-px flex-1' />
 							</Reveal>
 							<SupportingProjects
 								projects={supporting}
 								startIndex={featured.length + 1}
-								className='mt-6 border-t border-border'
+								className='border-border mt-6 border-t'
 							/>
 						</div>
 					) : null}
@@ -126,7 +124,7 @@ export default async function HomePage() {
 			</Section>
 
 			{/* ----------------------------------------------------------- stack */}
-			<Section id='stack' labelledBy='stack-title' className='border-t border-border bg-surface/30'>
+			<Section id='stack' labelledBy='stack-title' className='border-border bg-surface/30 border-t'>
 				<div className='container-page'>
 					<SectionHeader
 						index='02'
@@ -147,9 +145,9 @@ export default async function HomePage() {
 			</Section>
 
 			{/* ------------------------------------------------------ experience */}
-			<Section id='experience' labelledBy='experience-title' className='border-t border-border'>
+			<Section id='experience' labelledBy='experience-title' className='border-border border-t'>
 				<div
-					className='pointer-events-none absolute top-0 -left-40 size-[34rem] rounded-full opacity-40 blur-3xl'
+					className='pointer-events-none absolute top-0 -left-40 size-136 rounded-full opacity-40 blur-3xl'
 					style={{ background: 'var(--glow-cool)' }}
 					aria-hidden
 				/>
@@ -175,7 +173,7 @@ export default async function HomePage() {
 			</Section>
 
 			{/* ------------------------------------------------------- education */}
-			<Section id='education' labelledBy='education-title' className='border-t border-border'>
+			<Section id='education' labelledBy='education-title' className='border-border border-t'>
 				<div className='container-page'>
 					<SectionHeader
 						index='04'
@@ -199,7 +197,7 @@ export default async function HomePage() {
 			</Section>
 
 			{/* ----------------------------------------------------------- about */}
-			<Section id='about' labelledBy='about-title' className='border-t border-border bg-surface/30'>
+			<Section id='about' labelledBy='about-title' className='border-border bg-surface/30 border-t'>
 				<div className='container-page'>
 					<SectionHeader
 						index='05'
