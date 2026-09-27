@@ -10,19 +10,10 @@ import { Button } from 'components/ui/button'
 import { formatYear } from 'lib/format'
 import { getExperienceData } from 'lib/experience-data'
 import { getSocialsData } from 'lib/social-data'
+import { resolveMetadataByPath } from 'lib/metadata-data'
 
-export const metadata: Metadata = {
-	title: 'Experience',
-	description:
-		'Professional timeline of Koushik Puppala: full stack development at Earnest Data Analytics, engineering internships and university team leadership.',
-	openGraph: {
-		title: 'Experience — Koushik Puppala',
-		description: 'Full stack roles, internships and team leadership.',
-		type: 'website',
-	},
-	twitter: {
-		card: 'summary_large_image',
-	},
+export const generateMetadata = async (): Promise<Metadata> => {
+	return resolveMetadataByPath('/experience')
 }
 
 export default async function ExperiencePage() {

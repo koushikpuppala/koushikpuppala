@@ -371,3 +371,20 @@ export type ContactModel = {
 	createdAt: Date | string
 	updatedAt: Date | string
 }
+
+// Convenience model aliases
+export type Home = PublishedHome
+export type HomeContent = PublishedHome
+export type About = PublishedAbout
+export type AboutContent = PublishedAbout
+export type Experience = PublishedExperience
+export type Education = PublishedEducation
+export type Project = PublishedProject
+export type ProjectModel = PublishedProject
+export type Skill = PublishedSkill
+export type Service = PublishedService
+export type Resume = PublishedResume
+export type ResumeRecord = PublishedResume
+export type Social = PublishedSocial
+export type Metadata = PublishedMetadata
+

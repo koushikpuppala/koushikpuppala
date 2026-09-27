@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
+import { LoggerService } from 'common/logger/logger.service'
 import { BaseService } from 'common/services/base-cms.service'
 import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { AuditAction, ContactPriority, ContactStatus, Prisma } from '@repo/prisma'
@@ -10,12 +11,25 @@ export class ContactService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
+		private readonly logger: LoggerService,
 	) {
 		super()
 	}
 
 	async submit(dto: CreateContactDto, ipAddress?: string, userAgent?: string) {
 		const isSpam = Boolean(dto.url && dto.url.trim().length > 0)
+
+		if (isSpam) {
+			this.logger.warn('Discarded honeypot spam contact submission', ContactService.name, {
+				ipAddress,
+				email: dto.email,
+			})
+
+			return {
+				id: 'filtered',
+				message: 'Thank you for getting in touch! Your message has been received.',
+			}
+		}
 
 		const contact = await this.prisma.contact.create({
 			data: {

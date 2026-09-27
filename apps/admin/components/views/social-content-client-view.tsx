@@ -89,7 +89,7 @@ export const SocialModal = ({
 						<select
 							value={(formData.platform || 'GITHUB').toUpperCase()}
 							onChange={e =>
-								setFormData(prev => ({
+								setFormData((prev: Partial<Social>) => ({
 									...prev,
 									platform: e.target.value,
 									label: prev.label || e.target.value,
@@ -112,7 +112,7 @@ export const SocialModal = ({
 						<Label className='text-xs'>Display Label</Label>
 						<Input
 							value={formData.label || ''}
-							onChange={e => setFormData(prev => ({ ...prev, label: e.target.value }))}
+							onChange={e => setFormData((prev: Partial<Social>) => ({ ...prev, label: e.target.value }))}
 							required
 							placeholder='e.g. GitHub'
 						/>
@@ -122,7 +122,7 @@ export const SocialModal = ({
 						<Label className='text-xs'>Profile URL</Label>
 						<Input
 							value={formData.url || ''}
-							onChange={e => setFormData(prev => ({ ...prev, url: e.target.value }))}
+							onChange={e => setFormData((prev: Partial<Social>) => ({ ...prev, url: e.target.value }))}
 							required
 							placeholder='https://…'
 						/>
@@ -132,7 +132,7 @@ export const SocialModal = ({
 						<Label className='text-xs'>Handle / Username (Optional)</Label>
 						<Input
 							value={formData.handle || ''}
-							onChange={e => setFormData(prev => ({ ...prev, handle: e.target.value }))}
+							onChange={e => setFormData((prev: Partial<Social>) => ({ ...prev, handle: e.target.value }))}
 							placeholder='@koushikpuppala'
 						/>
 					</div>
@@ -142,7 +142,7 @@ export const SocialModal = ({
 						<select
 							value={formData.status || 'PUBLISHED'}
 							onChange={e =>
-								setFormData(prev => ({ ...prev, status: e.target.value as Social['status'] }))
+								setFormData((prev: Partial<Social>) => ({ ...prev, status: e.target.value as Social['status'] }))
 							}
 							className='h-9 w-full rounded-lg border border-border bg-surface px-3 text-xs font-mono'>
 							<option value='PUBLISHED'>PUBLISHED</option>
@@ -167,11 +167,13 @@ export const SocialModal = ({
 export const SocialContentClientView = () => {
 	const [socials, setSocials] = useState<Social[]>([])
 	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
 	const [modalOpen, setModalOpen] = useState(false)
 	const [editingSoc, setEditingSoc] = useState<Social | null>(null)
 
 	const loadSocials = async () => {
 		setLoading(true)
+		setError(null)
 		try {
 			const res = await adminFetch<{ items?: Social[] } | Social[]>('/api/v1/socials')
 			if (res.data) {
@@ -182,9 +184,11 @@ export const SocialContentClientView = () => {
 						status: s.isPublished || (s as { status?: string }).status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
 					})),
 				)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
-			console.error('Failed to load socials:', err)
+			setError(err instanceof Error ? err.message : 'Failed to load social links from API.')
 		} finally {
 			setLoading(false)
 		}
@@ -266,6 +270,8 @@ export const SocialContentClientView = () => {
 				items={socials}
 				columns={columns}
 				loading={loading}
+				error={error}
+				onRetry={loadSocials}
 				searchKey={s => `${s.label} ${s.platform} ${s.handle || ''}`}
 				createLabel='Add Channel'
 				onCreate={() => {

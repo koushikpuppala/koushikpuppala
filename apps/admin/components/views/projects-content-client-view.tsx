@@ -20,7 +20,7 @@ import { MediaPickerModal } from '@/components/cms/media-picker-modal'
 import { adminFetch } from '@/lib/api-client'
 import { saveProjectAction, deleteProjectAction } from '@/actions/server/admin-server-actions'
 
-import type { Project } from 'types/models'
+import type { Project, ProjectModel } from 'types/models'
 
 export const ProjectEditorModal = ({
 	open,
@@ -65,7 +65,7 @@ export const ProjectEditorModal = ({
 				descriptions: Array.isArray(project.descriptions)
 					? project.descriptions
 					: typeof (project as { summary?: string }).summary === 'string'
-						? [(project as { summary?: string }).summary!]
+						? [(project as { summary?: string }).summary ?? '']
 						: [],
 				tags: Array.isArray(project.tags) ? project.tags : [],
 				technologies: Array.isArray(project.technologies) ? project.technologies : [],
@@ -81,8 +81,8 @@ export const ProjectEditorModal = ({
 				shortDescription: '',
 				descriptions: [],
 				caseStudy: '',
-				tags: ['Next.js', 'NestJS', 'PostgreSQL'],
-				technologies: ['React', 'Next.js', 'TypeScript', 'PostgreSQL'],
+				tags: [],
+				technologies: [],
 				repoUrl: '',
 				liveUrl: '',
 				featured: false,
@@ -93,7 +93,7 @@ export const ProjectEditorModal = ({
 
 	const addDescription = () => {
 		if (!descInput.trim()) return
-		setFormData(prev => ({
+		setFormData((prev: Partial<Project>) => ({
 			...prev,
 			descriptions: [...(prev.descriptions || []), descInput.trim()],
 		}))
@@ -101,15 +101,15 @@ export const ProjectEditorModal = ({
 	}
 
 	const removeDescription = (index: number) => {
-		setFormData(prev => ({
+		setFormData((prev: Partial<Project>) => ({
 			...prev,
-			descriptions: (prev.descriptions || []).filter((_, i) => i !== index),
+			descriptions: (prev.descriptions || []).filter((_: string, i: number) => i !== index),
 		}))
 	}
 
 	const addTag = () => {
 		if (!tagInput.trim()) return
-		setFormData(prev => ({
+		setFormData((prev: Partial<Project>) => ({
 			...prev,
 			tags: [...(prev.tags || []), tagInput.trim()],
 		}))
@@ -117,15 +117,15 @@ export const ProjectEditorModal = ({
 	}
 
 	const removeTag = (index: number) => {
-		setFormData(prev => ({
+		setFormData((prev: Partial<Project>) => ({
 			...prev,
-			tags: (prev.tags || []).filter((_, i) => i !== index),
+			tags: (prev.tags || []).filter((_: string, i: number) => i !== index),
 		}))
 	}
 
 	const addTechnology = () => {
 		if (!techInput.trim()) return
-		setFormData(prev => ({
+		setFormData((prev: Partial<Project>) => ({
 			...prev,
 			technologies: [...(prev.technologies || []), techInput.trim()],
 		}))
@@ -133,9 +133,9 @@ export const ProjectEditorModal = ({
 	}
 
 	const removeTechnology = (index: number) => {
-		setFormData(prev => ({
+		setFormData((prev: Partial<Project>) => ({
 			...prev,
-			technologies: (prev.technologies || []).filter((_, i) => i !== index),
+			technologies: (prev.technologies || []).filter((_: string, i: number) => i !== index),
 		}))
 	}
 
@@ -173,7 +173,7 @@ export const ProjectEditorModal = ({
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
-				className='max-w-2xl max-h-[88vh] flex flex-col p-6'
+				className='flex max-h-[88vh] max-w-2xl flex-col p-6'
 				onClose={() => onOpenChange(false)}>
 				<DialogHeader>
 					<DialogTitle>{project?.id ? 'Edit Project' : 'Create New Project'}</DialogTitle>
@@ -182,7 +182,7 @@ export const ProjectEditorModal = ({
 					</DialogDescription>
 				</DialogHeader>
 
-				<form onSubmit={handleSubmit} className='flex-1 overflow-y-auto space-y-4 pr-1'>
+				<form onSubmit={handleSubmit} className='flex-1 space-y-4 overflow-y-auto pr-1'>
 					<div className='grid gap-4 sm:grid-cols-2'>
 						<div className='space-y-1'>
 							<Label className='text-xs'>Title</Label>
@@ -190,7 +190,7 @@ export const ProjectEditorModal = ({
 								value={formData.title || ''}
 								onChange={e => {
 									const title = e.target.value
-									setFormData(prev => ({
+									setFormData((prev: Partial<Project>) => ({
 										...prev,
 										title,
 										slug:
@@ -209,7 +209,9 @@ export const ProjectEditorModal = ({
 							<Label className='text-xs'>Slug</Label>
 							<Input
 								value={formData.slug || ''}
-								onChange={e => setFormData(prev => ({ ...prev, slug: e.target.value }))}
+								onChange={e =>
+									setFormData((prev: Partial<Project>) => ({ ...prev, slug: e.target.value }))
+								}
 								required
 								placeholder='expensewise'
 							/>
@@ -221,7 +223,9 @@ export const ProjectEditorModal = ({
 							<Label className='text-xs'>Subtitle</Label>
 							<Input
 								value={formData.subtitle || ''}
-								onChange={e => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
+								onChange={e =>
+									setFormData((prev: Partial<Project>) => ({ ...prev, subtitle: e.target.value }))
+								}
 								placeholder='AI-Powered Financial Intelligence'
 							/>
 						</div>
@@ -229,7 +233,9 @@ export const ProjectEditorModal = ({
 							<Label className='text-xs'>Category</Label>
 							<Input
 								value={formData.category || ''}
-								onChange={e => setFormData(prev => ({ ...prev, category: e.target.value }))}
+								onChange={e =>
+									setFormData((prev: Partial<Project>) => ({ ...prev, category: e.target.value }))
+								}
 								placeholder='FULL STACK & AI'
 							/>
 						</div>
@@ -237,7 +243,12 @@ export const ProjectEditorModal = ({
 							<Label className='text-xs'>Project Type</Label>
 							<Input
 								value={formData.projectType || ''}
-								onChange={e => setFormData(prev => ({ ...prev, projectType: e.target.value }))}
+								onChange={e =>
+									setFormData((prev: Partial<Project>) => ({
+										...prev,
+										projectType: e.target.value,
+									}))
+								}
 								placeholder='Financial Platform'
 							/>
 						</div>
@@ -247,7 +258,12 @@ export const ProjectEditorModal = ({
 						<Label className='text-xs'>Short Summary</Label>
 						<Input
 							value={formData.shortDescription || ''}
-							onChange={e => setFormData(prev => ({ ...prev, shortDescription: e.target.value }))}
+							onChange={e =>
+								setFormData((prev: Partial<Project>) => ({
+									...prev,
+									shortDescription: e.target.value,
+								}))
+							}
 							placeholder='One sentence high-level summary…'
 						/>
 					</div>
@@ -256,10 +272,10 @@ export const ProjectEditorModal = ({
 					<div className='space-y-2'>
 						<Label className='text-xs'>Detailed Overview Bullets</Label>
 						<div className='space-y-1.5'>
-							{(formData.descriptions || []).map((desc, idx) => (
+							{(formData.descriptions || []).map((desc: string, idx: number) => (
 								<div
 									key={idx}
-									className='flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-strong/50 p-2 text-xs'>
+									className='border-border bg-surface-strong/50 flex items-center justify-between gap-2 rounded-lg border p-2 text-xs'>
 									<span>{desc}</span>
 									<button
 										type='button'
@@ -294,7 +310,7 @@ export const ProjectEditorModal = ({
 						<Textarea
 							value={formData.caseStudy || ''}
 							onChange={e =>
-								setFormData(prev => ({
+								setFormData((prev: Partial<Project>) => ({
 									...prev,
 									caseStudy: e.target.value,
 								}))
@@ -308,7 +324,7 @@ export const ProjectEditorModal = ({
 					<div className='space-y-2'>
 						<Label className='text-xs'>Search &amp; Filter Tags</Label>
 						<div className='flex flex-wrap gap-1.5'>
-							{(formData.tags || []).map((t, idx) => (
+							{(formData.tags || []).map((t: string, idx: number) => (
 								<Badge key={`tag-${idx}`} variant='outline' className='gap-1 pr-1'>
 									<span>{t}</span>
 									<button
@@ -343,7 +359,7 @@ export const ProjectEditorModal = ({
 					<div className='space-y-2'>
 						<Label className='text-xs'>Tech Stack Badges</Label>
 						<div className='flex flex-wrap gap-1.5'>
-							{(formData.technologies || []).map((t, idx) => (
+							{(formData.technologies || []).map((t: string, idx: number) => (
 								<Badge key={`t-${idx}`} variant='secondary' className='gap-1 pr-1'>
 									<span>{t}</span>
 									<button
@@ -380,7 +396,9 @@ export const ProjectEditorModal = ({
 							<Label className='text-xs'>GitHub Repository</Label>
 							<Input
 								value={formData.repoUrl || ''}
-								onChange={e => setFormData(prev => ({ ...prev, repoUrl: e.target.value }))}
+								onChange={e =>
+									setFormData((prev: Partial<Project>) => ({ ...prev, repoUrl: e.target.value }))
+								}
 								placeholder='https://github.com/…'
 							/>
 						</div>
@@ -388,7 +406,9 @@ export const ProjectEditorModal = ({
 							<Label className='text-xs'>Live Production URL</Label>
 							<Input
 								value={formData.liveUrl || ''}
-								onChange={e => setFormData(prev => ({ ...prev, liveUrl: e.target.value }))}
+								onChange={e =>
+									setFormData((prev: Partial<Project>) => ({ ...prev, liveUrl: e.target.value }))
+								}
 								placeholder='https://…'
 							/>
 						</div>
@@ -398,7 +418,7 @@ export const ProjectEditorModal = ({
 					<div className='space-y-2'>
 						<Label className='text-xs'>Cover Visual</Label>
 						<div className='flex items-center gap-3'>
-							<div className='size-14 rounded-lg bg-surface-strong border border-border overflow-hidden grid place-items-center'>
+							<div className='bg-surface-strong border-border grid size-14 place-items-center overflow-hidden rounded-lg border'>
 								{formData.coverImageUrl ? (
 									/* eslint-disable-next-line @next/next/no-img-element */
 									<img
@@ -407,7 +427,7 @@ export const ProjectEditorModal = ({
 										className='size-full object-cover'
 									/>
 								) : (
-									<ImageIcon className='size-5 text-muted-foreground/40' />
+									<ImageIcon className='text-muted-foreground/40 size-5' />
 								)}
 							</div>
 							<Button
@@ -421,13 +441,15 @@ export const ProjectEditorModal = ({
 					</div>
 
 					{/* Status & Featured */}
-					<div className='flex items-center justify-between pt-2 border-t border-border'>
-						<label className='flex items-center gap-2 text-xs font-medium cursor-pointer'>
+					<div className='border-border flex items-center justify-between border-t pt-2'>
+						<label className='flex cursor-pointer items-center gap-2 text-xs font-medium'>
 							<input
 								type='checkbox'
 								checked={Boolean(formData.featured)}
-								onChange={e => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
-								className='rounded border-border text-signal focus:ring-signal'
+								onChange={e =>
+									setFormData((prev: Partial<Project>) => ({ ...prev, featured: e.target.checked }))
+								}
+								className='border-border text-signal focus:ring-signal rounded'
 							/>
 							<span>Feature on Homepage</span>
 						</label>
@@ -437,12 +459,12 @@ export const ProjectEditorModal = ({
 							<select
 								value={formData.status || 'PUBLISHED'}
 								onChange={e =>
-									setFormData(prev => ({
+									setFormData((prev: Partial<Project>) => ({
 										...prev,
 										status: e.target.value as Project['status'],
 									}))
 								}
-								className='h-8 rounded-lg border border-border bg-surface px-2.5 font-mono text-xs'>
+								className='border-border bg-surface h-8 rounded-lg border px-2.5 font-mono text-xs'>
 								<option value='PUBLISHED'>PUBLISHED</option>
 								<option value='DRAFT'>DRAFT</option>
 								<option value='ARCHIVED'>ARCHIVED</option>
@@ -474,19 +496,23 @@ export const ProjectEditorModal = ({
 export const ProjectsContentClientView = () => {
 	const [projects, setProjects] = useState<Project[]>([])
 	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
 	const [modalOpen, setModalOpen] = useState(false)
 	const [editingProject, setEditingProject] = useState<Project | null>(null)
 
 	const loadProjects = async () => {
 		setLoading(true)
+		setError(null)
 		try {
 			const res = await adminFetch<{ items?: Project[] } | Project[]>('/api/v1/projects')
 			if (res.data) {
-				const items = Array.isArray(res.data) ? res.data : (res.data.items || [])
+				const items = Array.isArray(res.data) ? res.data : res.data.items || []
 				setProjects(items)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
-			console.error('Failed to load projects:', err)
+			setError(err instanceof Error ? err.message : 'Failed to load projects from API.')
 		} finally {
 			setLoading(false)
 		}
@@ -497,7 +523,7 @@ export const ProjectsContentClientView = () => {
 	}, [])
 
 	const handleSave = async (formData: Partial<Project>) => {
-		await saveProjectAction(editingProject?.id, formData as any)
+		await saveProjectAction(editingProject?.id, formData as Partial<ProjectModel>)
 		await loadProjects()
 	}
 
@@ -518,20 +544,20 @@ export const ProjectsContentClientView = () => {
 			header: 'Project Details',
 			render: p => (
 				<div className='flex items-center gap-3'>
-					<div className='size-10 rounded-lg bg-surface-strong border border-border overflow-hidden grid place-items-center shrink-0'>
+					<div className='bg-surface-strong border-border grid size-10 shrink-0 place-items-center overflow-hidden rounded-lg border'>
 						{p.coverImageUrl ? (
 							/* eslint-disable-next-line @next/next/no-img-element */
 							<img src={p.coverImageUrl} alt={p.title} className='size-full object-cover' />
 						) : (
-							<FolderKanban className='size-4 text-muted-foreground' />
+							<FolderKanban className='text-muted-foreground size-4' />
 						)}
 					</div>
 					<div className='min-w-0'>
 						<div className='flex items-center gap-2'>
-							<span className='font-semibold text-foreground truncate'>{p.title}</span>
+							<span className='text-foreground truncate font-semibold'>{p.title}</span>
 							{p.featured && <Badge variant='signal'>Featured</Badge>}
 						</div>
-						<p className='truncate text-xs text-muted-foreground'>/{p.slug}</p>
+						<p className='text-muted-foreground truncate text-xs'>/{p.slug}</p>
 					</div>
 				</div>
 			),
@@ -540,14 +566,14 @@ export const ProjectsContentClientView = () => {
 			key: 'technologies',
 			header: 'Technologies',
 			render: p => (
-				<div className='flex flex-wrap gap-1 max-w-xs'>
+				<div className='flex max-w-xs flex-wrap gap-1'>
 					{(p.technologies || []).slice(0, 3).map((t, idx) => (
 						<Badge key={idx} variant='secondary' className='text-[0.625rem]'>
 							{t}
 						</Badge>
 					))}
 					{(p.technologies || []).length > 3 && (
-						<span className='text-[0.625rem] text-muted-foreground font-mono'>
+						<span className='text-muted-foreground font-mono text-[0.625rem]'>
 							+{(p.technologies || []).length - 3}
 						</span>
 					)}
@@ -576,6 +602,8 @@ export const ProjectsContentClientView = () => {
 				items={projects}
 				columns={columns}
 				loading={loading}
+				error={error}
+				onRetry={loadProjects}
 				searchKey={p => `${p.title} ${p.slug} ${(p.technologies || []).join(' ')}`}
 				createLabel='New Project'
 				onCreate={() => {

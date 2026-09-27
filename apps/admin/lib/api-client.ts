@@ -133,14 +133,7 @@ export async function uploadMediaToS3(file: File): Promise<{
 	})
 
 	if (!presignRes.data?.uploadUrl) {
-		// Fallback for local demo when S3 credentials aren't set
-		const localUrl = URL.createObjectURL(file)
-		return {
-			id: `media-${Date.now()}`,
-			url: localUrl,
-			storageKey: `uploads/${file.name}`,
-			fileName: file.name,
-		}
+		throw new Error(presignRes.error || 'Failed to generate S3 presigned upload URL from API.')
 	}
 
 	const { uploadUrl, storageKey } = presignRes.data

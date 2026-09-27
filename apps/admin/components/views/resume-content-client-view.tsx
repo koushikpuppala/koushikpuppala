@@ -27,19 +27,26 @@ export const ResumeContentClientView = () => {
 	const [isDirty, setIsDirty] = useState(false)
 	const [notice, setNotice] = useState<string | null>(null)
 
-	useEffect(() => {
-		const loadResume = async () => {
-			try {
-				const res = await adminFetch<ResumeRecord>('/api/v1/resume/latest')
-				if (res.data) {
-					setResume(res.data)
-				}
-			} catch (err) {
-				console.error('Failed to load resume document:', err)
-			} finally {
-				setLoading(false)
+	const [error, setError] = useState<string | null>(null)
+
+	const loadResume = async () => {
+		setLoading(true)
+		setError(null)
+		try {
+			const res = await adminFetch<ResumeRecord>('/api/v1/resume/latest')
+			if (res.data) {
+				setResume(res.data)
+			} else if (res.error) {
+				setError(res.error)
 			}
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Failed to load resume from API.')
+		} finally {
+			setLoading(false)
 		}
+	}
+
+	useEffect(() => {
 		loadResume()
 	}, [])
 
@@ -56,7 +63,7 @@ export const ResumeContentClientView = () => {
 		setNotice(null)
 		try {
 			const uploaded = await uploadMediaToS3(file)
-			setResume(prev => ({
+			setResume((prev: ResumeRecord) => ({
 				...prev,
 				fileUrl: uploaded.url,
 				fileId: uploaded.id,
@@ -64,7 +71,7 @@ export const ResumeContentClientView = () => {
 			setIsDirty(true)
 			setNotice(`Uploaded ${file.name} to AWS S3. Save changes to update live resume.`)
 		} catch (err) {
-			setNotice(err instanceof Error ? err.message : 'PDF upload failed.')
+			setError(err instanceof Error ? err.message : 'PDF upload failed.')
 		} finally {
 			setUploading(false)
 		}
@@ -73,10 +80,11 @@ export const ResumeContentClientView = () => {
 	const handleSave = async () => {
 		setSaving(true)
 		setNotice(null)
+		setError(null)
 		try {
 			const payload = {
-				title: resume.title || 'Koushik Puppala Resume',
-				versionName: resume.version || '2026.1',
+				title: resume.title || '',
+				versionName: resume.version || '',
 				summary: resume.summary || undefined,
 				...(resume.fileId && { mediaId: resume.fileId }),
 				isPublished: true,
@@ -89,16 +97,14 @@ export const ResumeContentClientView = () => {
 				},
 			)
 			if (res.data) {
-				setResume(prev => ({ ...prev, ...res.data }))
+				setResume((prev: ResumeRecord) => ({ ...prev, ...res.data }))
 				setIsDirty(false)
 				setNotice('Resume version and download reference updated successfully.')
 			} else {
-				setIsDirty(false)
-				setNotice('Resume metadata updated locally.')
+				setError(res.error || 'Failed to save resume record.')
 			}
-		} catch {
-			setIsDirty(false)
-			setNotice('Saved changes locally.')
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'API request failed.')
 		} finally {
 			setSaving(false)
 			setTimeout(() => setNotice(null), 4000)
@@ -112,6 +118,8 @@ export const ResumeContentClientView = () => {
 			isDirty={isDirty}
 			loading={loading}
 			saving={saving}
+			error={error}
+			onRetry={loadResume}
 			onSave={handleSave}
 			onDiscard={() => setIsDirty(false)}>
 			{notice && (
@@ -130,7 +138,7 @@ export const ResumeContentClientView = () => {
 						<Input
 							value={resume.title}
 							onChange={e => {
-								setResume(prev => ({ ...prev, title: e.target.value }))
+								setResume((prev: ResumeRecord) => ({ ...prev, title: e.target.value }))
 								setIsDirty(true)
 							}}
 							required
@@ -144,7 +152,7 @@ export const ResumeContentClientView = () => {
 						<Input
 							value={resume.version}
 							onChange={e => {
-								setResume(prev => ({ ...prev, version: e.target.value }))
+								setResume((prev: ResumeRecord) => ({ ...prev, version: e.target.value }))
 								setIsDirty(true)
 							}}
 							placeholder='e.g. 2026.1'
@@ -160,7 +168,7 @@ export const ResumeContentClientView = () => {
 					<Textarea
 						value={resume.summary ?? ''}
 						onChange={e => {
-							setResume(prev => ({ ...prev, summary: e.target.value }))
+							setResume((prev: ResumeRecord) => ({ ...prev, summary: e.target.value }))
 							setIsDirty(true)
 						}}
 						rows={3}

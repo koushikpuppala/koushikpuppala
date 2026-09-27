@@ -4,13 +4,7 @@ import type { DataTableProps } from 'types/components'
 import type { ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/react-table'
 
 import dayjs from 'dayjs'
-import {
-	HiCheck,
-	HiChevronDown,
-	HiChevronUp,
-	HiChevronUpDown,
-	HiXMark,
-} from 'react-icons/hi2'
+import { HiCheck, HiChevronDown, HiChevronUp, HiChevronUpDown, HiXMark } from 'react-icons/hi2'
 import {
 	Combobox,
 	ComboboxButton,
@@ -117,10 +111,10 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 
 	const table = useReactTable({
 		data,
-		manualSorting: true,
-		manualFiltering: true,
+		manualSorting: props.manualSorting ?? true,
+		manualFiltering: props.manualFiltering ?? true,
 		enableMultiSort: false,
-		manualPagination: true,
+		manualPagination: props.manualPagination ?? true,
 		onSortingChange: setSorting,
 		getCoreRowModel: getCoreRowModel(),
 		getSortedRowModel: getSortedRowModel(),
@@ -235,17 +229,17 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 
 	return (
 		<div className='flex w-full flex-col gap-4'>
-			<div className='flex items-center justify-between gap-2 text-foreground'>
+			<div className='text-foreground flex items-center justify-between gap-2'>
 				<div className='flex w-full flex-wrap items-center gap-2'>
 					<div className={classNames('relative w-full max-w-xs', { hidden: disableSearch })}>
-						<FiSearch className='pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
+						<FiSearch className='text-muted-foreground pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
 						<Input
 							type='text'
 							value={search}
 							placeholder='Search...'
 							disabled={disableSearch}
 							onChange={e => setSearch?.(e.target.value)}
-							className='w-full max-w-xs rounded-lg border border-border bg-surface py-2 pr-3 pl-9 text-xs font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-signal-ink'
+							className='border-border bg-surface text-foreground focus:ring-signal-ink w-full max-w-xs rounded-lg border py-2 pr-3 pl-9 font-mono text-xs focus:ring-1 focus:outline-none'
 						/>
 					</div>
 					{filters?.map(filter => {
@@ -256,7 +250,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 							case 'search':
 								return (
 									<div key={id} className='relative w-full max-w-xs'>
-										<FiSearch className='pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
+										<FiSearch className='text-muted-foreground pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2' />
 
 										<Input
 											type='text'
@@ -264,7 +258,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 											placeholder={label}
 											onChange={e => table.getColumn(id)?.setFilterValue(e.target.value ?? '')}
 											className={classNames(
-												'w-full max-w-xs rounded-lg border border-border bg-surface py-2 pr-3 pl-9 text-xs font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-signal-ink',
+												'border-border bg-surface text-foreground focus:ring-signal-ink w-full max-w-xs rounded-lg border py-2 pr-3 pl-9 font-mono text-xs focus:ring-1 focus:outline-none',
 											)}
 										/>
 									</div>
@@ -277,20 +271,20 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 										onChange={option => table.getColumn(id)?.setFilterValue(option?.value ?? '')}>
 										<ListboxButton
 											className={classNames(
-												'flex w-full max-w-44 cursor-pointer items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-foreground focus:outline-none hover:bg-accent',
+												'border-border bg-surface text-foreground hover:bg-accent flex w-full max-w-44 cursor-pointer items-center justify-between rounded-lg border px-3 py-2 font-mono text-xs focus:outline-none',
 											)}>
 											<span className={classNames('truncate', { 'text-muted-foreground': !value })}>
 												{options?.find(option => option.value === value)?.label ?? label}
 											</span>
 											<div className='flex items-center justify-center gap-0.5'>
 												<HiChevronDown
-													className='pointer-events-none size-4 fill-muted-foreground'
+													className='fill-muted-foreground pointer-events-none size-4'
 													aria-hidden='true'
 												/>
 												<HiXMark
 													onClick={() => table.getColumn(id)?.setFilterValue('')}
 													className={classNames(
-														'size-4 cursor-pointer fill-muted-foreground p-0.5 hover:fill-foreground',
+														'fill-muted-foreground hover:fill-foreground size-4 cursor-pointer p-0.5',
 														{ hidden: !value },
 													)}
 													aria-hidden='true'
@@ -300,12 +294,12 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 										<ListboxOptions
 											transition={true}
 											anchor='bottom start'
-											className='mt-0.5 w-(--button-width) scrollbar-none rounded-xl border border-border bg-surface p-1 shadow-lg outline-none text-xs font-mono'>
+											className='border-border bg-surface mt-0.5 w-(--button-width) scrollbar-none rounded-xl border p-1 font-mono text-xs shadow-lg outline-none'>
 											{options.map(option => (
 												<ListboxOption
 													key={option.value}
 													value={option}
-													className='group flex w-full cursor-pointer items-center rounded-lg px-2 py-1.5 capitalize hover:bg-accent text-foreground'>
+													className='group hover:bg-accent text-foreground flex w-full cursor-pointer items-center rounded-lg px-2 py-1.5 capitalize'>
 													<HiCheck className='invisible mr-2 size-3 group-data-selected:visible' />
 													<span>{option.label}</span>
 												</ListboxOption>
@@ -326,7 +320,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 										<div className='relative'>
 											<ComboboxInput
 												className={classNames(
-													'flex w-full max-w-44 cursor-pointer items-center justify-between rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-foreground focus:outline-none hover:bg-accent',
+													'border-border bg-surface text-foreground hover:bg-accent flex w-full max-w-44 cursor-pointer items-center justify-between rounded-lg border px-3 py-2 font-mono text-xs focus:outline-none',
 												)}
 												placeholder={label}
 												value={
@@ -341,7 +335,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 													'right-6': value,
 												})}>
 												<HiChevronUpDown
-													className='pointer-events-none size-4 fill-muted-foreground'
+													className='fill-muted-foreground pointer-events-none size-4'
 													aria-hidden='true'
 												/>
 											</ComboboxButton>
@@ -352,7 +346,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 												)}>
 												<HiXMark
 													onClick={() => table.getColumn(id)?.setFilterValue('')}
-													className='size-4 cursor-pointer fill-muted-foreground p-0.5 hover:fill-foreground'
+													className='fill-muted-foreground hover:fill-foreground size-4 cursor-pointer p-0.5'
 													aria-hidden='true'
 												/>
 											</div>
@@ -360,13 +354,13 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 										<ComboboxOptions
 											transition={true}
 											anchor='bottom start'
-											className='mt-0.5 w-(--input-width) scrollbar-none rounded-xl border border-border bg-surface p-1 shadow-lg outline-none text-xs font-mono'>
+											className='border-border bg-surface mt-0.5 w-(--input-width) scrollbar-none rounded-xl border p-1 font-mono text-xs shadow-lg outline-none'>
 											{filteredOptions.length > 0 ? (
 												filteredOptions.map(option => (
 													<ComboboxOption
 														key={option.value}
 														value={option}
-														className='group flex w-full cursor-pointer items-center rounded-lg px-2 py-1.5 capitalize hover:bg-accent text-foreground'>
+														className='group hover:bg-accent text-foreground flex w-full cursor-pointer items-center rounded-lg px-2 py-1.5 capitalize'>
 														<HiCheck className='invisible mr-2 size-3 group-data-selected:visible' />
 														<div>{option.label}</div>
 													</ComboboxOption>
@@ -375,7 +369,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 												<ComboboxOption
 													value={null}
 													disabled={true}
-													className='group flex w-full cursor-not-allowed items-center rounded-lg px-2 py-1.5 capitalize opacity-50 text-muted-foreground'>
+													className='group text-muted-foreground flex w-full cursor-not-allowed items-center rounded-lg px-2 py-1.5 capitalize opacity-50'>
 													<div>No options found</div>
 												</ComboboxOption>
 											)}
@@ -390,8 +384,8 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 					<Menu as='div' className={classNames({ hidden: disableDateRange })}>
 						<MenuButton
 							aria-label='Columns Visibility'
-							className='flex cursor-pointer items-center justify-center rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-foreground focus:outline-none hover:bg-accent'>
-							<IoCalendarOutline className='pointer-events-none mr-2 inline-block size-4 fill-muted-foreground' />
+							className='border-border bg-surface text-foreground hover:bg-accent flex cursor-pointer items-center justify-center rounded-lg border px-3 py-2 font-mono text-xs focus:outline-none'>
+							<IoCalendarOutline className='fill-muted-foreground pointer-events-none mr-2 inline-block size-4' />
 							<span
 								className={classNames('truncate', {
 									'text-muted-foreground': !date.from && !date.to,
@@ -404,7 +398,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 						<MenuItems
 							transition={true}
 							anchor='bottom start'
-							className='mt-0.5 rounded-xl border border-border bg-surface p-1 shadow-lg outline-none text-xs font-mono'>
+							className='border-border bg-surface mt-0.5 rounded-xl border p-1 font-mono text-xs shadow-lg outline-none'>
 							<DateRange
 								onChange={item =>
 									setDate({
@@ -434,7 +428,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 								<button
 									type='button'
 									onClick={() => setDate({ from: '', to: '' })}
-									className='flex w-full items-center justify-center rounded-lg border border-border bg-surface px-4 py-2 text-xs text-foreground transition-all hover:bg-accent'>
+									className='border-border bg-surface text-foreground hover:bg-accent flex w-full items-center justify-center rounded-lg border px-4 py-2 text-xs transition-all'>
 									Clear Date Range
 								</button>
 							</div>
@@ -448,22 +442,22 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 						disabled={disableClearFilters}
 						onClick={() => handleClearFilters()}
 						className={classNames(
-							'flex cursor-pointer items-center justify-center gap-1 rounded-lg border border-border bg-surface px-3 py-2 text-xs font-mono text-foreground whitespace-nowrap focus:outline-none hover:bg-accent',
+							'border-border bg-surface text-foreground hover:bg-accent flex cursor-pointer items-center justify-center gap-1 rounded-lg border px-3 py-2 font-mono text-xs whitespace-nowrap focus:outline-none',
 							{ hidden: disableClearFilters },
 						)}>
-						<MdOutlineFilterAltOff className='size-4 fill-muted-foreground' /> Clear Filters
+						<MdOutlineFilterAltOff className='fill-muted-foreground size-4' /> Clear Filters
 					</button>
 					<Menu as='div' className={classNames({ hidden: disableColumnVisibility })}>
 						<MenuButton
 							aria-label='Columns Visibility'
-							className='relative flex cursor-pointer items-center justify-center rounded-lg border border-border bg-surface p-1 text-xs font-mono whitespace-nowrap focus:outline-none hover:bg-accent'>
+							className='border-border bg-surface hover:bg-accent relative flex cursor-pointer items-center justify-center rounded-lg border p-1 font-mono text-xs whitespace-nowrap focus:outline-none'>
 							<span className='sr-only'>Columns Visibility</span>
-							<CiViewList className='size-6 shrink-0 fill-muted-foreground' />
+							<CiViewList className='fill-muted-foreground size-6 shrink-0' />
 						</MenuButton>
 						<MenuItems
 							transition={true}
 							anchor='bottom end'
-							className='mt-0.5 rounded-xl border border-border bg-surface p-1 shadow-lg outline-none text-xs font-mono'>
+							className='border-border bg-surface mt-0.5 rounded-xl border p-1 font-mono text-xs shadow-lg outline-none'>
 							{table
 								.getAllColumns()
 								.filter(column => column.getCanHide())
@@ -473,7 +467,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 										<MenuItem key={column.id}>
 											<button
 												type='button'
-												className='flex w-full cursor-pointer items-center rounded-lg px-2 py-1.5 capitalize hover:bg-accent text-foreground'
+												className='hover:bg-accent text-foreground flex w-full cursor-pointer items-center rounded-lg px-2 py-1.5 capitalize'
 												onClick={() => column.toggleVisibility(!isVisible)}>
 												<FaCheck className={classNames('mr-2 size-3', { invisible: !isVisible })} />
 												<span>{column.columnDef.header?.toString()}</span>
@@ -485,7 +479,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 					</Menu>
 				</div>
 			</div>
-			<div className='overflow-hidden rounded-2xl border border-border bg-surface shadow-xs'>
+			<div className='border-border bg-surface overflow-hidden rounded-2xl border shadow-xs'>
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map(headerGroup => (
@@ -504,14 +498,14 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 															type='button'
 															onClick={header.column.getToggleSortingHandler()}
 															className={classNames(
-																'ml-1 inline-flex cursor-pointer items-center text-muted-foreground hover:text-foreground',
+																'text-muted-foreground hover:text-foreground ml-1 inline-flex cursor-pointer items-center',
 																{ hidden: disableSorting },
 															)}>
 															{{
-																asc: <HiChevronDown className='size-4 fill-muted-foreground' />,
-																desc: <HiChevronUp className='size-4 fill-muted-foreground' />,
+																asc: <HiChevronDown className='fill-muted-foreground size-4' />,
+																desc: <HiChevronUp className='fill-muted-foreground size-4' />,
 															}[header.column.getIsSorted() as string] ?? (
-																<HiChevronUpDown className='size-4 fill-muted-foreground' />
+																<HiChevronUpDown className='fill-muted-foreground size-4' />
 															)}
 														</button>
 													)}
@@ -531,7 +525,9 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 										.filter(column => column.getIsVisible())
 										.map(column => (
 											<TableCell key={column.id}>
-												<div className='h-5 w-full rounded-md bg-accent/50 animate-pulse'>&nbsp;</div>
+												<div className='bg-accent/50 h-5 w-full animate-pulse rounded-md'>
+													&nbsp;
+												</div>
 											</TableCell>
 										))}
 								</TableRow>
@@ -560,11 +556,11 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 
 				{/* Integrated Table Footer / Counter & Pagination */}
 				{!disablePagination && (
-					<div className='flex flex-col items-center justify-between gap-3 border-t border-border px-4 py-3 font-mono text-xs text-muted-foreground sm:flex-row bg-surface'>
+					<div className='border-border text-muted-foreground bg-surface flex flex-col items-center justify-between gap-3 border-t px-4 py-3 font-mono text-xs sm:flex-row'>
 						<div>
 							Showing {totalCount === 0 ? 0 : pagination.pageIndex * pagination.pageSize + 1} to{' '}
-							{Math.min((pagination.pageIndex + 1) * pagination.pageSize, totalCount)} of {totalCount}{' '}
-							records
+							{Math.min((pagination.pageIndex + 1) * pagination.pageSize, totalCount)} of{' '}
+							{totalCount} records
 						</div>
 						<div className='flex items-center gap-4'>
 							{!disablePageSizeOptions && (
@@ -581,7 +577,7 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 												pageSize: newSize,
 											}))
 										}}
-										className='rounded-lg border border-border bg-surface px-2 py-1 font-mono text-xs text-foreground focus:outline-none cursor-pointer'>
+										className='border-border bg-surface text-foreground cursor-pointer rounded-lg border px-2 py-1 font-mono text-xs focus:outline-none'>
 										{[10, 25, 50, 100].map(size => (
 											<option key={size} value={size}>
 												{size}
@@ -595,14 +591,14 @@ export const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) =
 									type='button'
 									disabled={!table.getCanPreviousPage()}
 									onClick={() => table.previousPage()}
-									className='rounded-lg border border-border bg-surface px-3 py-1.5 font-medium text-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer'>
+									className='border-border bg-surface text-foreground hover:bg-accent cursor-pointer rounded-lg border px-3 py-1.5 font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40'>
 									Previous
 								</button>
 								<button
 									type='button'
 									disabled={!table.getCanNextPage()}
 									onClick={() => table.nextPage()}
-									className='rounded-lg border border-border bg-surface px-3 py-1.5 font-medium text-foreground hover:bg-accent disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer'>
+									className='border-border bg-surface text-foreground hover:bg-accent cursor-pointer rounded-lg border px-3 py-1.5 font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40'>
 									Next
 								</button>
 							</div>

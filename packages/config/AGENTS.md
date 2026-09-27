@@ -1,30 +1,29 @@
-# Shared Configuration Package Instructions
+# Shared Config Package
 
-## Scope
+## Overview
 
-These rules apply to `packages/config`.
+Shared configuration package. It provides centralized TypeScript configurations and tooling presets for all workspaces.
 
-## Purpose
+## Key files
 
-This package contains shared TypeScript/tooling configuration.
+| File | Owns |
+|---|---|
+| packages/config/tsconfig.json | Base TypeScript compiler configuration |
+| packages/config/tsconfig.next.json | Next.js TypeScript compiler preset |
+| packages/config/tsconfig.nest.json | NestJS TypeScript compiler preset |
 
-## Rules
+## Conventions
 
-Before modifying shared configuration:
+* Changes to shared configuration affect all consuming packages.
+* Inspect all consumers before modifying compiler options or path aliases.
+* Prefer the smallest compatible configuration change.
 
-1. Search all consumers.
-2. Identify the affected workspaces.
-3. Determine whether the change is intentional for all consumers.
-4. Prefer the smallest compatible change.
+## Gotchas
 
-Do not make application-specific configuration changes in shared configuration unless the architecture requires it.
+* Avoid adding application specific configuration rules here.
 
-Be especially careful with:
+## Agent skills
 
-- TypeScript configuration
-- Linting
-- Formatting
-- Build configuration
-- Module resolution
+* [turborepo](~/.agents/skills/turborepo/): Workspace configuration and task dependencies
 
-Verify all materially affected packages after changing shared configuration.
+_Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

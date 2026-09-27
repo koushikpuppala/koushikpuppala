@@ -14,107 +14,96 @@ import type { AboutContent, AboutStat } from 'types/models'
 
 export const AboutContentClientView = () => {
 	const [content, setContent] = useState<AboutContent>({
-		title: 'About Koushik Puppala',
-		leadStatement:
-			'Bridging intuitive, high-performance user interfaces with resilient, observable distributed backend systems.',
-		content:
-			'Hi there, I am Koushik Puppala! Software engineer at Upraised® and Team Lead & Mentor for the Indian Institute of Information Technology Raichur web systems team.',
-		bio: 'I specialize in designing and engineering high-throughput backend services, performant web interfaces, and modern cloud infrastructure.',
-		biography:
-			'I specialize in designing and engineering high-throughput backend services, performant web interfaces, and modern cloud infrastructure.',
-		location: 'Bengaluru, Karnataka, India',
-		coordinates: '12.9716° N, 77.5946° E',
-		timezone: 'UTC+5:30 (IST)',
-		status: 'AVAILABLE FOR WORK // GLOBAL REMOTE',
-		highlights: [
-			'Software Engineer at Upraised® scaling core platform services',
-			'Head & Mentor for IIIT Raichur Web Systems Team',
-			'Former Google Developer Student Clubs (GDSC) Lead',
-			'Engineered production systems serving thousands of active users',
-		],
-		stats: [
-			{ label: 'EXPERIENCE', value: '3+', detail: 'Years of Production Engineering' },
-			{ label: 'SYSTEMS', value: '20+', detail: 'Projects & Platforms Delivered' },
-			{ label: 'CONTRIBUTIONS', value: '1.8k+', detail: 'Open-Source Commits' },
-			{ label: 'MENTORSHIP', value: '50+', detail: 'Junior Engineers Guided' },
-		],
-		ctaLabel: 'Read Full Biography',
-		ctaUrl: '/about',
+		title: '',
+		leadStatement: '',
+		content: '',
+		bio: '',
+		biography: '',
+		location: '',
+		coordinates: '',
+		timezone: '',
+		status: '',
+		highlights: [],
+		stats: [],
+		ctaLabel: '',
+		ctaUrl: '',
 		profileImageUrl: '',
 	})
 	const [loading, setLoading] = useState(true)
 	const [saving, setSaving] = useState(false)
+	const [error, setError] = useState<string | null>(null)
 	const [isDirty, setIsDirty] = useState(false)
 	const [mediaModalOpen, setMediaModalOpen] = useState(false)
 	const [notice, setNotice] = useState<string | null>(null)
 	const [newHighlight, setNewHighlight] = useState('')
 	const [newStat, setNewStat] = useState<AboutStat>({ label: '', value: '', detail: '' })
 
-	useEffect(() => {
-		const loadAbout = async () => {
-			try {
-				const res = await adminFetch<AboutContent & { heading?: string; biography?: string }>(
-					'/api/v1/about/published',
-				)
-				if (res.data) {
-					const loadedData = res.data
-					setContent(prev => ({
-						...prev,
-						...loadedData,
-						title: loadedData.title || loadedData.heading || prev.title,
-						bio: loadedData.bio || loadedData.biography || prev.bio,
-						biography: loadedData.biography || loadedData.bio || prev.biography,
-						content: loadedData.content || prev.content,
-						leadStatement: loadedData.leadStatement || prev.leadStatement,
-						location: loadedData.location || prev.location,
-						coordinates: loadedData.coordinates || prev.coordinates,
-						timezone: loadedData.timezone || prev.timezone,
-						status: loadedData.status || prev.status,
-						highlights:
-							Array.isArray(loadedData.highlights) && loadedData.highlights.length > 0
-								? loadedData.highlights
-								: prev.highlights,
-						stats:
-							Array.isArray(loadedData.stats) && loadedData.stats.length > 0
-								? (loadedData.stats as AboutStat[])
-								: prev.stats,
-					}))
-				}
-			} catch (err) {
-				console.error('Failed to load about content:', err)
-			} finally {
-				setLoading(false)
+	const loadAbout = async () => {
+		setLoading(true)
+		setError(null)
+		try {
+			const res = await adminFetch<AboutContent & { heading?: string; biography?: string }>(
+				'/api/v1/about/published',
+			)
+			if (res.data) {
+				const d = res.data
+				setContent({
+					id: d.id,
+					title: d.title || d.heading || '',
+					leadStatement: d.leadStatement || '',
+					content: d.content || '',
+					bio: d.bio || d.biography || '',
+					biography: d.biography || d.bio || '',
+					location: d.location || '',
+					coordinates: d.coordinates || '',
+					timezone: d.timezone || '',
+					status: d.status || '',
+					highlights: Array.isArray(d.highlights) ? d.highlights : [],
+					stats: Array.isArray(d.stats) ? (d.stats as AboutStat[]) : [],
+					ctaLabel: d.ctaLabel || '',
+					ctaUrl: d.ctaUrl || '',
+					profileImageUrl: d.profileImageUrl || '',
+				})
+			} else if (res.error) {
+				setError(res.error)
 			}
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Failed to load about content from API.')
+		} finally {
+			setLoading(false)
 		}
+	}
+
+	useEffect(() => {
 		loadAbout()
 	}, [])
 
 	const handleChange = <K extends keyof AboutContent>(key: K, value: AboutContent[K]) => {
-		setContent(prev => ({ ...prev, [key]: value }))
+		setContent((prev: AboutContent) => ({ ...prev, [key]: value }))
 		setIsDirty(true)
 	}
 
 	const handleAddHighlight = () => {
 		if (!newHighlight.trim()) return
-		setContent(prev => ({
+		setContent((prev: AboutContent) => ({
 			...prev,
-			highlights: [...prev.highlights, newHighlight.trim()],
+			highlights: [...(prev.highlights || []), newHighlight.trim()],
 		}))
 		setNewHighlight('')
 		setIsDirty(true)
 	}
 
 	const handleRemoveHighlight = (index: number) => {
-		setContent(prev => ({
+		setContent((prev: AboutContent) => ({
 			...prev,
-			highlights: prev.highlights.filter((_, i) => i !== index),
+			highlights: (prev.highlights || []).filter((_: string, i: number) => i !== index),
 		}))
 		setIsDirty(true)
 	}
 
 	const handleAddStat = () => {
 		if (!newStat.label.trim() || !newStat.value.trim()) return
-		setContent(prev => ({
+		setContent((prev: AboutContent) => ({
 			...prev,
 			stats: [...(Array.isArray(prev.stats) ? prev.stats : []), { ...newStat }],
 		}))
@@ -123,7 +112,7 @@ export const AboutContentClientView = () => {
 	}
 
 	const handleRemoveStat = (index: number) => {
-		setContent(prev => ({
+		setContent((prev: AboutContent) => ({
 			...prev,
 			stats: (Array.isArray(prev.stats) ? prev.stats : []).filter((_: AboutStat, i: number) => i !== index),
 		}))
@@ -133,6 +122,7 @@ export const AboutContentClientView = () => {
 	const handleSave = async () => {
 		setSaving(true)
 		setNotice(null)
+		setError(null)
 		try {
 			const payload = {
 				...content,
@@ -150,12 +140,10 @@ export const AboutContentClientView = () => {
 				setIsDirty(false)
 				setNotice('About page updated and published.')
 			} else {
-				setIsDirty(false)
-				setNotice('About page draft saved locally.')
+				setError(res.error || 'Failed to save about content.')
 			}
-		} catch {
-			setIsDirty(false)
-			setNotice('Saved changes locally.')
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'API request failed.')
 		} finally {
 			setSaving(false)
 			setTimeout(() => setNotice(null), 4000)
@@ -169,6 +157,8 @@ export const AboutContentClientView = () => {
 			isDirty={isDirty}
 			loading={loading}
 			saving={saving}
+			error={error}
+			onRetry={loadAbout}
 			onSave={handleSave}
 			onDiscard={() => setIsDirty(false)}>
 			{notice && (
@@ -343,20 +333,20 @@ export const AboutContentClientView = () => {
 					<div className='grid gap-2 sm:grid-cols-3 pt-1'>
 						<Input
 							value={newStat.label}
-							onChange={e => setNewStat(prev => ({ ...prev, label: e.target.value }))}
+							onChange={e => setNewStat((prev: AboutStat) => ({ ...prev, label: e.target.value }))}
 							placeholder='Label (e.g. EXPERIENCE)'
 							className='h-9 text-xs font-mono'
 						/>
 						<Input
 							value={newStat.value}
-							onChange={e => setNewStat(prev => ({ ...prev, value: e.target.value }))}
+							onChange={e => setNewStat((prev: AboutStat) => ({ ...prev, value: e.target.value }))}
 							placeholder='Value (e.g. 3+)'
 							className='h-9 text-xs font-mono'
 						/>
 						<div className='flex items-center gap-2'>
 							<Input
 								value={newStat.detail ?? ''}
-								onChange={e => setNewStat(prev => ({ ...prev, detail: e.target.value }))}
+								onChange={e => setNewStat((prev: AboutStat) => ({ ...prev, detail: e.target.value }))}
 								placeholder='Detail (e.g. Years of Engineering)'
 								className='h-9 text-xs'
 							/>

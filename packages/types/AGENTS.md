@@ -1,35 +1,39 @@
-# Shared Types Package Instructions
+# Shared Types Package
 
-## Scope
+## Overview
 
-These rules apply to `packages/types`.
+Shared TypeScript contracts package. It defines shared domain models, API payload types, and component prop definitions used across workspace boundaries.
 
-## Purpose
+## Key files
 
-Use this package for types/contracts that genuinely need to be shared across workspace boundaries.
+| File | Owns |
+|---|---|
+| packages/types/src/index.ts | Package entry point exporting all shared contracts |
+| packages/types/src/models/index.ts | Domain entity interfaces and payload models |
+| packages/types/src/components/index.ts | Component prop contracts including DataTable types |
 
-## Rules
+## Commands
 
-Do:
+```bash
+# Build types
+pnpm --filter types build
+```
 
-- Keep shared contracts application-independent.
-- Prefer strong typing.
-- Keep public contracts separate from server internals.
-- Search for an existing type before creating a new one.
+## Conventions
 
-Do not:
+* Keep shared contracts application independent.
+* Prefer strong typing; avoid any.
+* Keep public contracts distinct from internal server implementation details.
+* Ensure shared types match actual backend API behavior.
 
-- Move server-only implementation types here.
-- Add application-specific UI types unnecessarily.
-- Duplicate an existing domain contract.
-- Create circular dependencies.
+## Gotchas
 
-## API Contracts
+* Do not update shared types merely to satisfy compilation if backend response shapes differ.
+* Check all consumers across apps and packages after modifying contracts.
 
-When a type represents an API contract, ensure it matches actual backend behavior.
+## Agent skills
 
-Do not update shared types merely to make TypeScript compile if the implementation does not match.
+* [typescript](~/.agents/skills/typescript/): Strong type definitions and shared contracts
+* [contract-first](~/.agents/skills/contract-first/): Shared API contracts without field drift
 
-## Verification
-
-After changing shared types, inspect all affected consumers and run relevant type checks/tests.
+_Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

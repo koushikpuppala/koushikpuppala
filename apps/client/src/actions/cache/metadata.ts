@@ -30,6 +30,34 @@ export const getPublishedMetadataByKey = async (
 	}
 }
 
+export const getPublishedMetadataByPath = async (
+	pathname: string,
+): Promise<ApiResponse<PublishedMetadata>> => {
+	cacheLife('weeks')
+	const normalizedKey = pathname.replace(/^\/+|\/+$/g, '') || 'home'
+	cacheTag(`metadata-${normalizedKey}`)
+
+	try {
+		const response = await fetch(
+			`${BASE_URL}/api/v1/metadata/by-path?pathname=${encodeURIComponent(pathname)}`,
+			{
+				headers: { 'Content-Type': 'application/json' },
+			},
+		)
+
+		const data = await response.json()
+
+		if (!response.ok) throw new Error(data.message || 'Failed to fetch metadata.')
+
+		return data
+	} catch (error) {
+		return {
+			error: true,
+			message: (error as Error).message || 'An error occurred while fetching metadata.',
+		}
+	}
+}
+
 export const getAllPublishedMetadata = async (): Promise<ApiResponse<PublishedMetadata[]>> => {
 	cacheLife('weeks')
 	cacheTag('metadata')

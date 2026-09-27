@@ -1,0 +1,1676 @@
+{
+  "schema_version": "1.0",
+  "report_folder": "threat-model-20260926-182224",
+  "commit": "c1a2a16",
+  "commit_date": "2026-09-20 17:38:39 +0000",
+  "branch": "revamp/6.x",
+  "repository": "git@github.com:koushikpuppala/koushikpuppala.git",
+  "analysis_timestamp": "2026-09-26T18:22:24Z",
+  "model": "Antigravity Agent",
+  "components": [
+    {
+      "id": "AdminApp",
+      "display": "Admin App (Next.js)",
+      "type": "process",
+      "tmt_type": "SE.P.TMCore.WebApp",
+      "boundary": "Application",
+      "boundary_kind": "NetworkBoundary",
+      "aliases": [],
+      "source_files": [
+        "apps/admin/package.json",
+        "apps/admin/next.config.ts"
+      ],
+      "source_directories": [
+        "apps/admin"
+      ],
+      "fingerprint": {
+        "component_type": "process",
+        "boundary_kind": "NetworkBoundary",
+        "source_files": [
+          "apps/admin/package.json"
+        ],
+        "source_directories": [
+          "apps/admin"
+        ],
+        "class_names": [],
+        "namespace": "apps/admin",
+        "config_keys": [
+          "NEXT_PUBLIC_API_URL",
+          "NEXT_PUBLIC_FIREBASE_API_KEY"
+        ],
+        "api_routes": [],
+        "dependencies": [
+          "next",
+          "react",
+          "@tanstack/react-table"
+        ],
+        "inbound_from": [
+          "AdminUser"
+        ],
+        "outbound_to": [
+          "ServerApi",
+          "Sentry"
+        ],
+        "protocols": [
+          "HTTPS"
+        ]
+      },
+      "sidecars": []
+    },
+    {
+      "id": "AdminUser",
+      "display": "Admin User / Browser",
+      "type": "external_interactor",
+      "tmt_type": "SE.EI.TMCore.User",
+      "boundary": "Outside Boundary",
+      "boundary_kind": "ProcessBoundary",
+      "aliases": [],
+      "source_files": [],
+      "source_directories": [],
+      "fingerprint": {
+        "component_type": "external_interactor",
+        "boundary_kind": "ProcessBoundary",
+        "source_files": [],
+        "source_directories": [],
+        "class_names": [],
+        "namespace": "browser",
+        "config_keys": [],
+        "api_routes": [],
+        "dependencies": [],
+        "inbound_from": [],
+        "outbound_to": [
+          "AdminApp",
+          "FirebaseAuth"
+        ],
+        "protocols": [
+          "HTTPS"
+        ]
+      },
+      "sidecars": []
+    },
+    {
+      "id": "ClientApp",
+      "display": "Client App (Next.js)",
+      "type": "process",
+      "tmt_type": "SE.P.TMCore.WebApp",
+      "boundary": "Application",
+      "boundary_kind": "NetworkBoundary",
+      "aliases": [],
+      "source_files": [
+        "apps/client/package.json",
+        "apps/client/next.config.ts"
+      ],
+      "source_directories": [
+        "apps/client"
+      ],
+      "fingerprint": {
+        "component_type": "process",
+        "boundary_kind": "NetworkBoundary",
+        "source_files": [
+          "apps/client/package.json"
+        ],
+        "source_directories": [
+          "apps/client"
+        ],
+        "class_names": [],
+        "namespace": "apps/client",
+        "config_keys": [
+          "NEXT_PUBLIC_SERVER_URL"
+        ],
+        "api_routes": [],
+        "dependencies": [
+          "next",
+          "react",
+          "motion"
+        ],
+        "inbound_from": [
+          "PublicUser"
+        ],
+        "outbound_to": [
+          "ServerApi",
+          "Sentry"
+        ],
+        "protocols": [
+          "HTTPS"
+        ]
+      },
+      "sidecars": []
+    },
+    {
+      "id": "FirebaseAuth",
+      "display": "Firebase Auth (IdP)",
+      "type": "external_service",
+      "tmt_type": "SE.EI.TMCore.AuthProvider",
+      "boundary": "Outside Boundary",
+      "boundary_kind": "NetworkBoundary",
+      "aliases": [],
+      "source_files": [
+        "apps/server/src/firebase/firebase.service.ts"
+      ],
+      "source_directories": [
+        "apps/server/src/firebase"
+      ],
+      "fingerprint": {
+        "component_type": "external_service",
+        "boundary_kind": "NetworkBoundary",
+        "source_files": [
+          "apps/server/src/firebase/firebase.service.ts"
+        ],
+        "source_directories": [
+          "apps/server/src/firebase"
+        ],
+        "class_names": [
+          "FirebaseService"
+        ],
+        "namespace": "firebase",
+        "config_keys": [
+          "FIREBASE_PROJECT_ID",
+          "FIREBASE_CLIENT_EMAIL",
+          "FIREBASE_PRIVATE_KEY"
+        ],
+        "api_routes": [],
+        "dependencies": [
+          "firebase-admin"
+        ],
+        "inbound_from": [
+          "AdminUser",
+          "ServerApi"
+        ],
+        "outbound_to": [],
+        "protocols": [
+          "HTTPS"
+        ]
+      },
+      "sidecars": []
+    },
+    {
+      "id": "PostgreSQL",
+      "display": "PostgreSQL 17 Database",
+      "type": "data_store",
+      "tmt_type": "SE.DS.TMCore.SQL",
+      "boundary": "Storage",
+      "boundary_kind": "NetworkBoundary",
+      "aliases": [],
+      "source_files": [
+        "packages/prisma/prisma/schema/schema.prisma"
+      ],
+      "source_directories": [
+        "packages/prisma"
+      ],
+      "fingerprint": {
+        "component_type": "data_store",
+        "boundary_kind": "NetworkBoundary",
+        "source_files": [
+          "packages/prisma/prisma/schema/schema.prisma"
+        ],
+        "source_directories": [
+          "packages/prisma"
+        ],
+        "class_names": [
+          "DatabaseService"
+        ],
+        "namespace": "database",
+        "config_keys": [
+          "DATABASE_URL"
+        ],
+        "api_routes": [],
+        "dependencies": [
+          "@prisma/client"
+        ],
+        "inbound_from": [
+          "ServerApi"
+        ],
+        "outbound_to": [],
+        "protocols": [
+          "SQL / TLS"
+        ]
+      },
+      "sidecars": []
+    },
+    {
+      "id": "PublicUser",
+      "display": "Public User / Browser",
+      "type": "external_interactor",
+      "tmt_type": "SE.EI.TMCore.User",
+      "boundary": "Outside Boundary",
+      "boundary_kind": "ProcessBoundary",
+      "aliases": [],
+      "source_files": [],
+      "source_directories": [],
+      "fingerprint": {
+        "component_type": "external_interactor",
+        "boundary_kind": "ProcessBoundary",
+        "source_files": [],
+        "source_directories": [],
+        "class_names": [],
+        "namespace": "browser",
+        "config_keys": [],
+        "api_routes": [],
+        "dependencies": [],
+        "inbound_from": [],
+        "outbound_to": [
+          "ClientApp"
+        ],
+        "protocols": [
+          "HTTPS"
+        ]
+      },
+      "sidecars": []
+    },
+    {
+      "id": "Redis",
+      "display": "Redis Cache & Sessions",
+      "type": "data_store",
+      "tmt_type": "SE.DS.TMCore.Cache",
+      "boundary": "Storage",
+      "boundary_kind": "NetworkBoundary",
+      "aliases": [],
+      "source_files": [
+        "apps/server/src/redis/redis.service.ts"
+      ],
+      "source_directories": [
+        "apps/server/src/redis"
+      ],
+      "fingerprint": {
+        "component_type": "data_store",
+        "boundary_kind": "NetworkBoundary",
+        "source_files": [
+          "apps/server/src/redis/redis.service.ts"
+        ],
+        "source_directories": [
+          "apps/server/src/redis"
+        ],
+        "class_names": [
+          "RedisService"
+        ],
+        "namespace": "redis",
+        "config_keys": [
+          "REDIS_HOST",
+          "REDIS_PORT",
+          "REDIS_PASSWORD"
+        ],
+        "api_routes": [],
+        "dependencies": [
+          "ioredis"
+        ],
+        "inbound_from": [
+          "ServerApi"
+        ],
+        "outbound_to": [],
+        "protocols": [
+          "TCP"
+        ]
+      },
+      "sidecars": []
+    },
+    {
+      "id": "S3Storage",
+      "display": "AWS S3 Storage",
+      "type": "external_service",
+      "tmt_type": "SE.DS.TMCore.CloudStorage",
+      "boundary": "Outside Boundary",
+      "boundary_kind": "NetworkBoundary",
+      "aliases": [],
+      "source_files": [
+        "apps/server/src/modules/media/media.service.ts"
+      ],
+      "source_directories": [
+        "apps/server/src/modules/media"
+      ],
+      "fingerprint": {
+        "component_type": "external_service",
+        "boundary_kind": "NetworkBoundary",
+        "source_files": [
+          "apps/server/src/modules/media/media.service.ts"
+        ],
+        "source_directories": [
+          "apps/server/src/modules/media"
+        ],
+        "class_names": [
+          "MediaService"
+        ],
+        "namespace": "aws",
+        "config_keys": [
+          "AWS_REGION",
+          "AWS_ACCESS_KEY_ID",
+          "AWS_SECRET_ACCESS_KEY",
+          "AWS_S3_BUCKET"
+        ],
+        "api_routes": [],
+        "dependencies": [
+          "@aws-sdk/client-s3",
+          "@aws-sdk/s3-request-presigner"
+        ],
+        "inbound_from": [
+          "ServerApi"
+        ],
+        "outbound_to": [],
+        "protocols": [
+          "HTTPS"
+        ]
+      },
+      "sidecars": []
+    },
+    {
+      "id": "Sentry",
+      "display": "Sentry Monitoring",
+      "type": "external_service",
+      "tmt_type": "SE.EI.TMCore.WebSvc",
+      "boundary": "Outside Boundary",
+      "boundary_kind": "NetworkBoundary",
+      "aliases": [],
+      "source_files": [
+        "apps/server/src/common/filters/global-exception.filter.ts"
+      ],
+      "source_directories": [
+        "apps/server/src/common"
+      ],
+      "fingerprint": {
+        "component_type": "external_service",
+        "boundary_kind": "NetworkBoundary",
+        "source_files": [
+          "apps/server/src/common/filters/global-exception.filter.ts"
+        ],
+        "source_directories": [
+          "apps/server/src/common"
+        ],
+        "class_names": [
+          "GlobalExceptionFilter"
+        ],
+        "namespace": "sentry",
+        "config_keys": [
+          "SENTRY_DSN",
+          "NEXT_PUBLIC_SENTRY_DSN"
+        ],
+        "api_routes": [],
+        "dependencies": [
+          "@sentry/nestjs",
+          "@sentry/nextjs"
+        ],
+        "inbound_from": [
+          "ClientApp",
+          "AdminApp",
+          "ServerApi"
+        ],
+        "outbound_to": [],
+        "protocols": [
+          "HTTPS"
+        ]
+      },
+      "sidecars": []
+    },
+    {
+      "id": "ServerApi",
+      "display": "Server API (NestJS)",
+      "type": "process",
+      "tmt_type": "SE.P.TMCore.WebSvc",
+      "boundary": "Application",
+      "boundary_kind": "NetworkBoundary",
+      "aliases": [],
+      "source_files": [
+        "apps/server/src/main.ts",
+        "apps/server/src/app.module.ts"
+      ],
+      "source_directories": [
+        "apps/server/src"
+      ],
+      "fingerprint": {
+        "component_type": "process",
+        "boundary_kind": "NetworkBoundary",
+        "source_files": [
+          "apps/server/src/main.ts"
+        ],
+        "source_directories": [
+          "apps/server/src"
+        ],
+        "class_names": [
+          "AppModule"
+        ],
+        "namespace": "apps/server",
+        "config_keys": [
+          "PORT",
+          "HOST",
+          "NODE_ENV"
+        ],
+        "api_routes": [
+          "/api/v1/auth",
+          "/api/v1/contacts",
+          "/api/v1/projects",
+          "/api/v1/media",
+          "/api/v1/users"
+        ],
+        "dependencies": [
+          "@nestjs/core",
+          "@nestjs/common",
+          "@repo/prisma"
+        ],
+        "inbound_from": [
+          "ClientApp",
+          "AdminApp"
+        ],
+        "outbound_to": [
+          "PostgreSQL",
+          "Redis",
+          "FirebaseAuth",
+          "S3Storage",
+          "Sentry"
+        ],
+        "protocols": [
+          "HTTPS"
+        ]
+      },
+      "sidecars": []
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "Application",
+      "display": "Application Network",
+      "kind": "NetworkBoundary",
+      "aliases": [],
+      "contains": [
+        "AdminApp",
+        "ClientApp",
+        "ServerApi"
+      ],
+      "contains_fingerprint": "AdminApp|ClientApp|ServerApi"
+    },
+    {
+      "id": "Storage",
+      "display": "Internal Data Storage",
+      "kind": "NetworkBoundary",
+      "aliases": [],
+      "contains": [
+        "PostgreSQL",
+        "Redis"
+      ],
+      "contains_fingerprint": "PostgreSQL|Redis"
+    }
+  ],
+  "flows": [
+    {
+      "id": "DF01_PublicUser_to_ClientApp",
+      "from": "PublicUser",
+      "to": "ClientApp",
+      "protocol": "HTTPS",
+      "description": "Anonymous visitor requests portfolio pages and submits contact inquiries via web browser"
+    },
+    {
+      "id": "DF02_AdminUser_to_AdminApp",
+      "from": "AdminUser",
+      "to": "AdminApp",
+      "protocol": "HTTPS",
+      "description": "Administrator accesses CMS content management dashboard and editing interfaces"
+    },
+    {
+      "id": "DF03_AdminUser_to_FirebaseAuth",
+      "from": "AdminUser",
+      "to": "FirebaseAuth",
+      "protocol": "HTTPS",
+      "description": "Administrator authenticates with Firebase Authentication to obtain Firebase ID JWT token"
+    },
+    {
+      "id": "DF04_ClientApp_to_ServerApi",
+      "from": "ClientApp",
+      "to": "ServerApi",
+      "protocol": "HTTPS",
+      "description": "Next.js Server Components and route handlers fetch public content and forward contact submissions"
+    },
+    {
+      "id": "DF05_AdminApp_to_ServerApi",
+      "from": "AdminApp",
+      "to": "ServerApi",
+      "protocol": "HTTPS",
+      "description": "Admin studio sends REST requests with Firebase ID Bearer token in Authorization header"
+    },
+    {
+      "id": "DF06_ServerApi_to_FirebaseAuth",
+      "from": "ServerApi",
+      "to": "FirebaseAuth",
+      "protocol": "HTTPS",
+      "description": "Server verifies Firebase ID tokens and checks revocation status via Firebase Admin SDK"
+    },
+    {
+      "id": "DF07_ServerApi_to_PostgreSQL",
+      "from": "ServerApi",
+      "to": "PostgreSQL",
+      "protocol": "SQL / TLS",
+      "description": "NestJS services execute parameterized queries and transactions through Prisma 7 adapter"
+    },
+    {
+      "id": "DF08_ServerApi_to_Redis",
+      "from": "ServerApi",
+      "to": "Redis",
+      "protocol": "TCP",
+      "description": "Server queries session blocklist, caches API responses, and manages rate-limiting counters"
+    },
+    {
+      "id": "DF09_ServerApi_to_S3Storage",
+      "from": "ServerApi",
+      "to": "S3Storage",
+      "protocol": "HTTPS",
+      "description": "Server issues presigned S3 upload/read URLs and manages object deletions via AWS S3 SDK"
+    },
+    {
+      "id": "DF10_ServerApi_to_Sentry",
+      "from": "ServerApi",
+      "to": "Sentry",
+      "protocol": "HTTPS",
+      "description": "NestJS Sentry SDK transmits unhandled exceptions and performance breadcrumbs"
+    },
+    {
+      "id": "DF11_ClientApp_to_Sentry",
+      "from": "ClientApp",
+      "to": "Sentry",
+      "protocol": "HTTPS",
+      "description": "Next.js client-side Sentry SDK captures browser rendering errors and uncaught exceptions"
+    },
+    {
+      "id": "DF12_AdminApp_to_Sentry",
+      "from": "AdminApp",
+      "to": "Sentry",
+      "protocol": "HTTPS",
+      "description": "CMS studio client-side Sentry SDK captures administrative interface exceptions"
+    }
+  ],
+  "threats": [
+    {
+      "id": "T01.A",
+      "title": "Automated scraping bots flooding contact form",
+      "description": "Automated scraping bots flooding contact form endpoint with commercial spam inquiries",
+      "stride_category": "A",
+      "tier": 1,
+      "prerequisites": "None",
+      "status": "Open",
+      "mitigation": "Honeypot field and backend CAPTCHA/bot verification",
+      "identity_key": {
+        "component_id": "ClientApp",
+        "data_flow_id": "DF01",
+        "stride_category": "A",
+        "attack_surface": "ClientApp via DF01"
+      }
+    },
+    {
+      "id": "T01.D",
+      "title": "Volumetric HTTP flooding against Next.js dynamic",
+      "description": "Volumetric HTTP flooding against Next.js dynamic App Router routes causing compute starvation",
+      "stride_category": "D",
+      "tier": 1,
+      "prerequisites": "None",
+      "status": "Open",
+      "mitigation": "Rate limit at edge/reverse proxy and configure endpoint throttling",
+      "identity_key": {
+        "component_id": "ClientApp",
+        "data_flow_id": "DF01",
+        "stride_category": "D",
+        "attack_surface": "ClientApp via DF01"
+      }
+    },
+    {
+      "id": "T01.E",
+      "title": "Privilege escalation through vulnerable npm dependency",
+      "description": "Privilege escalation through vulnerable npm dependency within Next.js runtime container",
+      "stride_category": "E",
+      "tier": 3,
+      "prerequisites": "Host/OS Access",
+      "status": "Mitigated",
+      "mitigation": "Container runs as non-root user portfolio (UID 1001)",
+      "identity_key": {
+        "component_id": "ClientApp",
+        "data_flow_id": "DF01",
+        "stride_category": "E",
+        "attack_surface": "ClientApp via DF01"
+      }
+    },
+    {
+      "id": "T01.I",
+      "title": "Inadvertent leakage of backend environment variables",
+      "description": "Inadvertent leakage of backend environment variables into public client browser bundle",
+      "stride_category": "I",
+      "tier": 2,
+      "prerequisites": "Local Process Access",
+      "status": "Mitigated",
+      "mitigation": "Next.js strictly isolates server-only variables without NEXT_PUBLIC_ prefix",
+      "identity_key": {
+        "component_id": "ClientApp",
+        "data_flow_id": "DF01",
+        "stride_category": "I",
+        "attack_surface": "ClientApp via DF01"
+      }
+    },
+    {
+      "id": "T01.I2",
+      "title": "Production secrets written into .env file",
+      "description": "Production secrets written into .env file during CI build baked into Docker container filesystem layers",
+      "stride_category": "I",
+      "tier": 3,
+      "prerequisites": "Host/OS Access",
+      "status": "Open",
+      "mitigation": "Exclude .env in .dockerignore and inject secrets at container runtime",
+      "identity_key": {
+        "component_id": "ClientApp",
+        "data_flow_id": "DF01",
+        "stride_category": "I",
+        "attack_surface": "ClientApp via DF01"
+      }
+    },
+    {
+      "id": "T01.T",
+      "title": "Injection of malformed or XSS payloads",
+      "description": "Injection of malformed or XSS payloads through contact form input fields",
+      "stride_category": "T",
+      "tier": 2,
+      "prerequisites": "None",
+      "status": "Mitigated",
+      "mitigation": "Client-side Zod schema validation and string trimming",
+      "identity_key": {
+        "component_id": "ClientApp",
+        "data_flow_id": "DF04",
+        "stride_category": "T",
+        "attack_surface": "ClientApp via DF04"
+      }
+    },
+    {
+      "id": "T02.A",
+      "title": "Rapid mass-deletion or modification of CMS",
+      "description": "Rapid mass-deletion or modification of CMS content by rogue editor account",
+      "stride_category": "A",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Open",
+      "mitigation": "Implement distributed rate limits and granular administrative audit logging",
+      "identity_key": {
+        "component_id": "AdminApp",
+        "data_flow_id": "DF05",
+        "stride_category": "A",
+        "attack_surface": "AdminApp via DF05"
+      }
+    },
+    {
+      "id": "T02.D",
+      "title": "Memory exhaustion in client browser when",
+      "description": "Memory exhaustion in client browser when rendering massive unpaginated datasets",
+      "stride_category": "D",
+      "tier": 3,
+      "prerequisites": "Authenticated User + Local Process Access",
+      "status": "Mitigated",
+      "mitigation": "TanStack Table v8 server-side pagination with controlled limits",
+      "identity_key": {
+        "component_id": "AdminApp",
+        "data_flow_id": "DF02",
+        "stride_category": "D",
+        "attack_surface": "AdminApp via DF02"
+      }
+    },
+    {
+      "id": "T02.E",
+      "title": "Bypassing client-side route guards to render",
+      "description": "Bypassing client-side route guards to render unauthorized administrative screens",
+      "stride_category": "E",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Mitigated",
+      "mitigation": "Backend API authoritatively enforces RBAC on all mutation endpoints",
+      "identity_key": {
+        "component_id": "AdminApp",
+        "data_flow_id": "DF02",
+        "stride_category": "E",
+        "attack_surface": "AdminApp via DF02"
+      }
+    },
+    {
+      "id": "T02.I",
+      "title": "Unauthorized read access to draft portfolio",
+      "description": "Unauthorized read access to draft portfolio projects and user messages",
+      "stride_category": "I",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Mitigated",
+      "mitigation": "Backend RolesGuard restricts CMS data access to ADMIN and EDITOR roles",
+      "identity_key": {
+        "component_id": "AdminApp",
+        "data_flow_id": "DF05",
+        "stride_category": "I",
+        "attack_surface": "AdminApp via DF05"
+      }
+    },
+    {
+      "id": "T02.R",
+      "title": "Administrator denying content modifications or deletions",
+      "description": "Administrator denying content modifications or deletions performed in CMS",
+      "stride_category": "R",
+      "tier": 3,
+      "prerequisites": "Admin Credentials + Host/OS Access",
+      "status": "Mitigated",
+      "mitigation": "AuditLogService records actor ID, entity ID, and timestamp in PostgreSQL",
+      "identity_key": {
+        "component_id": "AdminApp",
+        "data_flow_id": "DF02",
+        "stride_category": "R",
+        "attack_surface": "AdminApp via DF02"
+      }
+    },
+    {
+      "id": "T02.S",
+      "title": "Replay of stolen Firebase ID token",
+      "description": "Replay of stolen Firebase ID token to access CMS management interface",
+      "stride_category": "S",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Open",
+      "mitigation": "Enforce short token TTLs and server-side session revocation checks",
+      "identity_key": {
+        "component_id": "AdminApp",
+        "data_flow_id": "DF05",
+        "stride_category": "S",
+        "attack_surface": "AdminApp via DF05"
+      }
+    },
+    {
+      "id": "T02.T",
+      "title": "Stored Cross-Site Scripting (XSS) in Markdown",
+      "description": "Stored Cross-Site Scripting (XSS) in Markdown CMS editors executed in editor browser",
+      "stride_category": "T",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Mitigated",
+      "mitigation": "React auto-escaping, DOMPurify, and strict Biome linter sanitization",
+      "identity_key": {
+        "component_id": "AdminApp",
+        "data_flow_id": "DF02",
+        "stride_category": "T",
+        "attack_surface": "AdminApp via DF02"
+      }
+    },
+    {
+      "id": "T03.A",
+      "title": "High-frequency password guessing or brute-force attempts",
+      "description": "High-frequency password guessing or brute-force attempts bypassing in-memory throttler",
+      "stride_category": "A",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Open",
+      "mitigation": "Store throttler state in Redis with distributed persistent rate counters",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "data_flow_id": "DF05",
+        "stride_category": "A",
+        "attack_surface": "ServerApi via DF05"
+      }
+    },
+    {
+      "id": "T03.D",
+      "title": "Automated HTTP request flood on public",
+      "description": "Automated HTTP request flood on public contact submission endpoint exhausting database resources",
+      "stride_category": "D",
+      "tier": 1,
+      "prerequisites": "None",
+      "status": "Open",
+      "mitigation": "Enforce strict per-IP rate limiting and backend bot detection on contact routes",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "data_flow_id": "DF04",
+        "stride_category": "D",
+        "attack_surface": "ServerApi via DF04"
+      }
+    },
+    {
+      "id": "T03.E",
+      "title": "Last administrator demoting own account to",
+      "description": "Last administrator demoting own account to standard user causing system lockout",
+      "stride_category": "E",
+      "tier": 2,
+      "prerequisites": "Privileged User",
+      "status": "Open",
+      "mitigation": "Enforce self-demotion checks and ensure at least one active administrator remains",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "data_flow_id": "DF05",
+        "stride_category": "E",
+        "attack_surface": "ServerApi via DF05"
+      }
+    },
+    {
+      "id": "T03.E2",
+      "title": "Bypassing session revocation checks when token",
+      "description": "Bypassing session revocation checks when token is absent from Session database table",
+      "stride_category": "E",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Open",
+      "mitigation": "Enforce strict token existence check and maintain revocation list in Redis",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "data_flow_id": "DF05",
+        "stride_category": "E",
+        "attack_surface": "ServerApi via DF05"
+      }
+    },
+    {
+      "id": "T03.I",
+      "title": "Leaking database errors, table schemas, or",
+      "description": "Leaking database errors, table schemas, or stack traces on unhandled exceptions",
+      "stride_category": "I",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Mitigated",
+      "mitigation": "GlobalExceptionFilter intercepts exceptions and redacts 500 error traces",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "data_flow_id": "DF05",
+        "stride_category": "I",
+        "attack_surface": "ServerApi via DF05"
+      }
+    },
+    {
+      "id": "T03.R",
+      "title": "Failure to record security events or",
+      "description": "Failure to record security events or user modifications during database service failure",
+      "stride_category": "R",
+      "tier": 3,
+      "prerequisites": "Host/OS Access",
+      "status": "Mitigated",
+      "mitigation": "Atomic database transactions wrap critical data updates with audit records",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "data_flow_id": "DF07",
+        "stride_category": "R",
+        "attack_surface": "ServerApi via DF07"
+      }
+    },
+    {
+      "id": "T03.S",
+      "title": "Spoofing client IP address via X-Forwarded-For",
+      "description": "Spoofing client IP address via X-Forwarded-For header due to unconstrained trust proxy setting",
+      "stride_category": "S",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Open",
+      "mitigation": "Restrict trust proxy to trusted reverse proxy CIDR blocks",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "data_flow_id": "DF04",
+        "stride_category": "S",
+        "attack_surface": "ServerApi via DF04"
+      }
+    },
+    {
+      "id": "T03.T",
+      "title": "Cross-origin framing or clickjacking due to",
+      "description": "Cross-origin framing or clickjacking due to disabled Content Security Policy in Helmet",
+      "stride_category": "T",
+      "tier": 1,
+      "prerequisites": "None",
+      "status": "Open",
+      "mitigation": "Configure Content Security Policy header in Helmet middleware",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "data_flow_id": "DF04",
+        "stride_category": "T",
+        "attack_surface": "ServerApi via DF04"
+      }
+    },
+    {
+      "id": "T03.T2",
+      "title": "Registering arbitrary storage keys or unverified",
+      "description": "Registering arbitrary storage keys or unverified file metadata via media upload completion endpoint",
+      "stride_category": "T",
+      "tier": 2,
+      "prerequisites": "Privileged User",
+      "status": "Open",
+      "mitigation": "Validate S3 object existence and size using S3 HeadObject before saving",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "data_flow_id": "DF09",
+        "stride_category": "T",
+        "attack_surface": "ServerApi via DF09"
+      }
+    },
+    {
+      "id": "T04.A",
+      "title": "Accidental schema reset or destructive migration",
+      "description": "Accidental schema reset or destructive migration execution dropping production tables",
+      "stride_category": "A",
+      "tier": 3,
+      "prerequisites": "Admin Credentials + Host/OS Access",
+      "status": "Mitigated",
+      "mitigation": "Engineering policy and CI/CD enforce prisma migrate deploy; migrate reset prohibited",
+      "identity_key": {
+        "component_id": "PostgreSQL",
+        "data_flow_id": "DF07",
+        "stride_category": "A",
+        "attack_surface": "PostgreSQL via DF07"
+      }
+    },
+    {
+      "id": "T04.D",
+      "title": "Connection pool starvation due to synchronous",
+      "description": "Connection pool starvation due to synchronous session lookups on every API request",
+      "stride_category": "D",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Open",
+      "mitigation": "Cache active session validation state in Redis with sensible TTL",
+      "identity_key": {
+        "component_id": "PostgreSQL",
+        "data_flow_id": "DF07",
+        "stride_category": "D",
+        "attack_surface": "PostgreSQL via DF07"
+      }
+    },
+    {
+      "id": "T04.E",
+      "title": "Database superuser privilege abuse to read",
+      "description": "Database superuser privilege abuse to read local filesystem or execute OS commands",
+      "stride_category": "E",
+      "tier": 3,
+      "prerequisites": "Admin Credentials + Host/OS Access",
+      "status": "Mitigated",
+      "mitigation": "Run PostgreSQL service under dedicated unprivileged system account with least privilege",
+      "identity_key": {
+        "component_id": "PostgreSQL",
+        "data_flow_id": "DF07",
+        "stride_category": "E",
+        "attack_surface": "PostgreSQL via DF07"
+      }
+    },
+    {
+      "id": "T04.I",
+      "title": "Eavesdropping on unencrypted database network traffic",
+      "description": "Eavesdropping on unencrypted database network traffic across local network",
+      "stride_category": "I",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Mitigated",
+      "mitigation": "Configure database connection with sslmode=require and enforce TLS encryption",
+      "identity_key": {
+        "component_id": "PostgreSQL",
+        "data_flow_id": "DF07",
+        "stride_category": "I",
+        "attack_surface": "PostgreSQL via DF07"
+      }
+    },
+    {
+      "id": "T04.S",
+      "title": "Unauthorized connection to PostgreSQL database port",
+      "description": "Unauthorized connection to PostgreSQL database port from compromised internal network node",
+      "stride_category": "S",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Mitigated",
+      "mitigation": "Require strong database authentication password and isolate database subnet",
+      "identity_key": {
+        "component_id": "PostgreSQL",
+        "data_flow_id": "DF07",
+        "stride_category": "S",
+        "attack_surface": "PostgreSQL via DF07"
+      }
+    },
+    {
+      "id": "T04.T",
+      "title": "SQL Injection via raw SQL queries",
+      "description": "SQL Injection via raw SQL queries altering or deleting database records",
+      "stride_category": "T",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Mitigated",
+      "mitigation": "Prisma 7 ORM uses parameterized queries exclusively; raw unescaped SQL forbidden",
+      "identity_key": {
+        "component_id": "PostgreSQL",
+        "data_flow_id": "DF07",
+        "stride_category": "T",
+        "attack_surface": "PostgreSQL via DF07"
+      }
+    },
+    {
+      "id": "T05.D",
+      "title": "Redis service downtime crashing backend API",
+      "description": "Redis service downtime crashing backend API requests",
+      "stride_category": "D",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Mitigated",
+      "mitigation": "CacheService implements fallback error handling to directly query PostgreSQL",
+      "identity_key": {
+        "component_id": "Redis",
+        "data_flow_id": "DF08",
+        "stride_category": "D",
+        "attack_surface": "Redis via DF08"
+      }
+    },
+    {
+      "id": "T05.E",
+      "title": "Execution of dangerous Redis commands (CONFIG,",
+      "description": "Execution of dangerous Redis commands (CONFIG, FLUSHALL) compromising database host",
+      "stride_category": "E",
+      "tier": 3,
+      "prerequisites": "Host/OS Access",
+      "status": "Open",
+      "mitigation": "Disable dangerous commands via rename-command in redis.conf",
+      "identity_key": {
+        "component_id": "Redis",
+        "data_flow_id": "DF08",
+        "stride_category": "E",
+        "attack_surface": "Redis via DF08"
+      }
+    },
+    {
+      "id": "T05.I",
+      "title": "Unencrypted Redis communications exposing session hashes",
+      "description": "Unencrypted Redis communications exposing session hashes and rate limit data on local network",
+      "stride_category": "I",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Open",
+      "mitigation": "Enable Redis TLS encryption for all client connections",
+      "identity_key": {
+        "component_id": "Redis",
+        "data_flow_id": "DF08",
+        "stride_category": "I",
+        "attack_surface": "Redis via DF08"
+      }
+    },
+    {
+      "id": "T05.S",
+      "title": "Unauthenticated command execution against Redis server",
+      "description": "Unauthenticated command execution against Redis server when REDIS_PASSWORD is not set",
+      "stride_category": "S",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Open",
+      "mitigation": "Enforce mandatory REDIS_PASSWORD and Redis ACL user authentication",
+      "identity_key": {
+        "component_id": "Redis",
+        "data_flow_id": "DF08",
+        "stride_category": "S",
+        "attack_surface": "Redis via DF08"
+      }
+    },
+    {
+      "id": "T05.T",
+      "title": "Cache poisoning modifying cached API responses",
+      "description": "Cache poisoning modifying cached API responses or clearing session revocation keys",
+      "stride_category": "T",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Open",
+      "mitigation": "Secure Redis access with authentication and validate cache data integrity",
+      "identity_key": {
+        "component_id": "Redis",
+        "data_flow_id": "DF08",
+        "stride_category": "T",
+        "attack_surface": "Redis via DF08"
+      }
+    },
+    {
+      "id": "T06.A",
+      "title": "Unauthorized users signing up via Firebase",
+      "description": "Unauthorized users signing up via Firebase client SDK to gain unauthorized system access",
+      "stride_category": "A",
+      "tier": 3,
+      "prerequisites": "Host/OS Access",
+      "status": "Mitigated",
+      "mitigation": "Newly created users receive USER role with zero CMS permissions by default",
+      "identity_key": {
+        "component_id": "FirebaseAuth",
+        "data_flow_id": "DF03",
+        "stride_category": "A",
+        "attack_surface": "FirebaseAuth via DF03"
+      }
+    },
+    {
+      "id": "T06.D",
+      "title": "Firebase API service outage or rate-limiting",
+      "description": "Firebase API service outage or rate-limiting blocking administrator sign-in",
+      "stride_category": "D",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Platform",
+      "mitigation": "Google Cloud multi-region high availability and enterprise SLA",
+      "identity_key": {
+        "component_id": "FirebaseAuth",
+        "data_flow_id": "DF06",
+        "stride_category": "D",
+        "attack_surface": "FirebaseAuth via DF06"
+      }
+    },
+    {
+      "id": "T06.E",
+      "title": "Malicious user assigning self-proclaimed roles via",
+      "description": "Malicious user assigning self-proclaimed roles via Firebase custom user claims",
+      "stride_category": "E",
+      "tier": 2,
+      "prerequisites": "Privileged User",
+      "status": "Mitigated",
+      "mitigation": "RolesGuard authoritatively checks database roles in PostgreSQL; Firebase claims ignored",
+      "identity_key": {
+        "component_id": "FirebaseAuth",
+        "data_flow_id": "DF06",
+        "stride_category": "E",
+        "attack_surface": "FirebaseAuth via DF06"
+      }
+    },
+    {
+      "id": "T06.I",
+      "title": "Leaking Firebase service account private key",
+      "description": "Leaking Firebase service account private key allowing full project administrative takeover",
+      "stride_category": "I",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Mitigated",
+      "mitigation": "FIREBASE_PRIVATE_KEY injected via secret environment variables and redacted from logs",
+      "identity_key": {
+        "component_id": "FirebaseAuth",
+        "data_flow_id": "DF06",
+        "stride_category": "I",
+        "attack_surface": "FirebaseAuth via DF06"
+      }
+    },
+    {
+      "id": "T06.S",
+      "title": "Credential stuffing or password brute-force against",
+      "description": "Credential stuffing or password brute-force against Firebase Authentication endpoint",
+      "stride_category": "S",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Platform",
+      "mitigation": "Google Firebase Identity Platform enforces brute-force protection and account lockout",
+      "identity_key": {
+        "component_id": "FirebaseAuth",
+        "data_flow_id": "DF03",
+        "stride_category": "S",
+        "attack_surface": "FirebaseAuth via DF03"
+      }
+    },
+    {
+      "id": "T06.T",
+      "title": "Forging JWT claims or signatures to",
+      "description": "Forging JWT claims or signatures to impersonate administrators",
+      "stride_category": "T",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Mitigated",
+      "mitigation": "FirebaseAuthGuard cryptographically verifies token signatures with Google public certs",
+      "identity_key": {
+        "component_id": "FirebaseAuth",
+        "data_flow_id": "DF06",
+        "stride_category": "T",
+        "attack_surface": "FirebaseAuth via DF06"
+      }
+    },
+    {
+      "id": "T07.A",
+      "title": "Replaying expired presigned upload URLs or",
+      "description": "Replaying expired presigned upload URLs or tampering with S3 upload signatures",
+      "stride_category": "A",
+      "tier": 3,
+      "prerequisites": "Admin Credentials + Host/OS Access",
+      "status": "Platform",
+      "mitigation": "AWS S3 cryptographically validates SigV4 signatures and rejects modified requests",
+      "identity_key": {
+        "component_id": "S3Storage",
+        "data_flow_id": "DF09",
+        "stride_category": "A",
+        "attack_surface": "S3Storage via DF09"
+      }
+    },
+    {
+      "id": "T07.D",
+      "title": "Uploading excessively large files via presigned",
+      "description": "Uploading excessively large files via presigned URL exhausting S3 storage quota",
+      "stride_category": "D",
+      "tier": 2,
+      "prerequisites": "Privileged User",
+      "status": "Open",
+      "mitigation": "Enforce Content-Length-Range restrictions in presigned URL policy",
+      "identity_key": {
+        "component_id": "S3Storage",
+        "data_flow_id": "DF09",
+        "stride_category": "D",
+        "attack_surface": "S3Storage via DF09"
+      }
+    },
+    {
+      "id": "T07.E",
+      "title": "Uploading executable or malicious HTML/SVG files",
+      "description": "Uploading executable or malicious HTML/SVG files resulting in stored XSS via CDN",
+      "stride_category": "E",
+      "tier": 2,
+      "prerequisites": "Privileged User",
+      "status": "Open",
+      "mitigation": "Validate MIME types and enforce Content-Disposition: attachment for non-image assets",
+      "identity_key": {
+        "component_id": "S3Storage",
+        "data_flow_id": "DF09",
+        "stride_category": "E",
+        "attack_surface": "S3Storage via DF09"
+      }
+    },
+    {
+      "id": "T07.I",
+      "title": "Public enumeration of S3 bucket objects",
+      "description": "Public enumeration of S3 bucket objects exposing unlinked administrative files",
+      "stride_category": "I",
+      "tier": 2,
+      "prerequisites": "Internal Network",
+      "status": "Mitigated",
+      "mitigation": "S3 Block Public Access enabled; files served through CloudFront CDN with strict origins",
+      "identity_key": {
+        "component_id": "S3Storage",
+        "data_flow_id": "DF09",
+        "stride_category": "I",
+        "attack_surface": "S3Storage via DF09"
+      }
+    },
+    {
+      "id": "T07.S",
+      "title": "Interception and unauthorized reuse of presigned",
+      "description": "Interception and unauthorized reuse of presigned PUT upload URL",
+      "stride_category": "S",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Mitigated",
+      "mitigation": "Presigned URLs restricted to short 900-second TTL and specific randomized keys",
+      "identity_key": {
+        "component_id": "S3Storage",
+        "data_flow_id": "DF09",
+        "stride_category": "S",
+        "attack_surface": "S3Storage via DF09"
+      }
+    },
+    {
+      "id": "T07.T",
+      "title": "Overwriting legitimate media files by uploading",
+      "description": "Overwriting legitimate media files by uploading to existing storage keys",
+      "stride_category": "T",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Mitigated",
+      "mitigation": "Keys generated using collision-resistant random UUIDv7 and timestamp prefixes",
+      "identity_key": {
+        "component_id": "S3Storage",
+        "data_flow_id": "DF09",
+        "stride_category": "T",
+        "attack_surface": "S3Storage via DF09"
+      }
+    },
+    {
+      "id": "T08.A",
+      "title": "Injecting misleading crash reports to obscure",
+      "description": "Injecting misleading crash reports to obscure active security attacks or generate alert fatigue",
+      "stride_category": "A",
+      "tier": 1,
+      "prerequisites": "None",
+      "status": "Platform",
+      "mitigation": "Sentry allowed domains restrictions and server-side issue fingerprinting",
+      "identity_key": {
+        "component_id": "Sentry",
+        "data_flow_id": "DF11",
+        "stride_category": "A",
+        "attack_surface": "Sentry via DF11"
+      }
+    },
+    {
+      "id": "T08.D",
+      "title": "Flooding public Sentry DSN endpoint with",
+      "description": "Flooding public Sentry DSN endpoint with synthetic events exhausting error quotas",
+      "stride_category": "D",
+      "tier": 1,
+      "prerequisites": "None",
+      "status": "Platform",
+      "mitigation": "Sentry edge rate limiting, event filtering, and client sampleRate limits",
+      "identity_key": {
+        "component_id": "Sentry",
+        "data_flow_id": "DF11",
+        "stride_category": "D",
+        "attack_surface": "Sentry via DF11"
+      }
+    },
+    {
+      "id": "T08.E",
+      "title": "Leaking Sentry auth tokens in CI/CD",
+      "description": "Leaking Sentry auth tokens in CI/CD pipeline allowing unauthorized access to project issues",
+      "stride_category": "E",
+      "tier": 3,
+      "prerequisites": "Host/OS Access",
+      "status": "Open",
+      "mitigation": "Protect SENTRY_AUTH_TOKEN in GitHub Actions Secrets and prevent layer leakage",
+      "identity_key": {
+        "component_id": "Sentry",
+        "data_flow_id": "DF10",
+        "stride_category": "E",
+        "attack_surface": "Sentry via DF10"
+      }
+    },
+    {
+      "id": "T08.I",
+      "title": "Sensitive user credentials, Bearer tokens, or",
+      "description": "Sensitive user credentials, Bearer tokens, or PII transmitted in Sentry breadcrumbs",
+      "stride_category": "I",
+      "tier": 2,
+      "prerequisites": "Authenticated User",
+      "status": "Mitigated",
+      "mitigation": "Sentry beforeSend hook sanitizes headers, cookies, and removes sensitive payload data",
+      "identity_key": {
+        "component_id": "Sentry",
+        "data_flow_id": "DF10",
+        "stride_category": "I",
+        "attack_surface": "Sentry via DF10"
+      }
+    },
+    {
+      "id": "T08.S",
+      "title": "Spoofing Sentry ingestion server via DNS",
+      "description": "Spoofing Sentry ingestion server via DNS hijacking to capture application exceptions",
+      "stride_category": "S",
+      "tier": 3,
+      "prerequisites": "Host/OS Access",
+      "status": "Platform",
+      "mitigation": "Sentry SDK enforces TLS with strict certificate verification",
+      "identity_key": {
+        "component_id": "Sentry",
+        "data_flow_id": "DF10",
+        "stride_category": "S",
+        "attack_surface": "Sentry via DF10"
+      }
+    },
+    {
+      "id": "T08.T",
+      "title": "Modifying Sentry configuration variables in runtime",
+      "description": "Modifying Sentry configuration variables in runtime to suppress security alerting",
+      "stride_category": "T",
+      "tier": 2,
+      "prerequisites": "Privileged User",
+      "status": "Mitigated",
+      "mitigation": "Sentry configuration is set via immutable environment variables at deployment",
+      "identity_key": {
+        "component_id": "Sentry",
+        "data_flow_id": "DF10",
+        "stride_category": "T",
+        "attack_surface": "Sentry via DF10"
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "FIND-01",
+      "title": "Unauthenticated Public Contact Endpoint Lacks Dedicated Rate Limiting and Backend CAPTCHA Verification",
+      "severity": "Important",
+      "cvss_score": 7.1,
+      "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+      "cwe": "CWE-770",
+      "owasp": "A05:2025",
+      "tier": 1,
+      "effort": "Low",
+      "related_threats": [
+        "T01.D",
+        "T01.A",
+        "T03.D"
+      ],
+      "evidence_files": [
+        "apps/server/src/app.module.ts",
+        "apps/server/src/modules/contact/contact.controller.ts",
+        "apps/server/src/modules/contact/contact.service.ts"
+      ],
+      "component": "ServerApi",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "vulnerability": "CWE-770",
+        "attack_surface": "apps/server/src/app.module.ts"
+      }
+    },
+    {
+      "id": "FIND-02",
+      "title": "Content Security Policy (CSP) Explicitly Disabled in Helmet Configuration",
+      "severity": "Moderate",
+      "cvss_score": 5.3,
+      "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "cwe": "CWE-1021",
+      "owasp": "A02:2025",
+      "tier": 1,
+      "effort": "Low",
+      "related_threats": [
+        "T03.T"
+      ],
+      "evidence_files": [
+        "apps/server/src/main.ts"
+      ],
+      "component": "ServerApi",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "vulnerability": "CWE-1021",
+        "attack_surface": "apps/server/src/main.ts"
+      }
+    },
+    {
+      "id": "FIND-03",
+      "title": "Unauthenticated Redis Transport and Optional Authentication Configuration",
+      "severity": "Important",
+      "cvss_score": 7.1,
+      "cvss_vector": "CVSS:4.0/AV:A/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+      "cwe": "CWE-306",
+      "owasp": "A02:2025",
+      "tier": 2,
+      "effort": "Low",
+      "related_threats": [
+        "T05.S",
+        "T05.T",
+        "T05.I",
+        "T05.E"
+      ],
+      "evidence_files": [
+        "apps/server/src/config/configuration.ts",
+        "apps/server/src/redis/redis.service.ts"
+      ],
+      "component": "Redis",
+      "identity_key": {
+        "component_id": "Redis",
+        "vulnerability": "CWE-306",
+        "attack_surface": "apps/server/src/config/configuration.ts"
+      }
+    },
+    {
+      "id": "FIND-04",
+      "title": "Missing Self-Demotion and Last-Admin Account Protection in User Management",
+      "severity": "Important",
+      "cvss_score": 5.9,
+      "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:N/VI:L/VA:H/SC:N/SI:N/SA:N",
+      "cwe": "CWE-284",
+      "owasp": "A01:2025",
+      "tier": 2,
+      "effort": "Low",
+      "related_threats": [
+        "T03.E"
+      ],
+      "evidence_files": [
+        "apps/server/src/modules/user/user.service.ts"
+      ],
+      "component": "ServerApi",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "vulnerability": "CWE-284",
+        "attack_surface": "apps/server/src/modules/user/user.service.ts"
+      }
+    },
+    {
+      "id": "FIND-05",
+      "title": "Global In-Memory Rate Limiter Lacks Distributed Redis Store and Resets on Restarts",
+      "severity": "Moderate",
+      "cvss_score": 5.3,
+      "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+      "cwe": "CWE-400",
+      "owasp": "A10:2025",
+      "tier": 2,
+      "effort": "Medium",
+      "related_threats": [
+        "T02.A",
+        "T03.S",
+        "T03.A"
+      ],
+      "evidence_files": [
+        "apps/server/src/app.module.ts"
+      ],
+      "component": "ServerApi",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "vulnerability": "CWE-400",
+        "attack_surface": "apps/server/src/app.module.ts"
+      }
+    },
+    {
+      "id": "FIND-06",
+      "title": "Media Upload Completion Lacks Server-Side S3 Object Existence and Size Verification",
+      "severity": "Moderate",
+      "cvss_score": 5.1,
+      "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:H/UI:N/VC:N/VI:L/VA:L/SC:N/SI:N/SA:N",
+      "cwe": "CWE-345",
+      "owasp": "A08:2025",
+      "tier": 2,
+      "effort": "Medium",
+      "related_threats": [
+        "T03.T2",
+        "T07.D",
+        "T07.E"
+      ],
+      "evidence_files": [
+        "apps/server/src/modules/media/media.service.ts"
+      ],
+      "component": "ServerApi",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "vulnerability": "CWE-345",
+        "attack_surface": "apps/server/src/modules/media/media.service.ts"
+      }
+    },
+    {
+      "id": "FIND-07",
+      "title": "Session Revocation Verification Relies on Uncached PostgreSQL Queries with Default-Allow on Unregistered Tokens",
+      "severity": "Moderate",
+      "cvss_score": 5.1,
+      "cvss_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:L/UI:N/VC:L/VI:L/VA:N/SC:N/SI:N/SA:N",
+      "cwe": "CWE-613",
+      "owasp": "A07:2025",
+      "tier": 2,
+      "effort": "Medium",
+      "related_threats": [
+        "T02.S",
+        "T03.E2",
+        "T04.D"
+      ],
+      "evidence_files": [
+        "apps/server/src/common/guards/firebase-auth.guard.ts",
+        "apps/server/src/modules/auth/session.service.ts"
+      ],
+      "component": "ServerApi",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "vulnerability": "CWE-613",
+        "attack_surface": "apps/server/src/common/guards/firebase-auth.guard.ts"
+      }
+    },
+    {
+      "id": "FIND-08",
+      "title": "Deployment SSH Host Key Verification Disabled in CI/CD Workflow",
+      "severity": "Important",
+      "cvss_score": 7.0,
+      "cvss_vector": "CVSS:4.0/AV:A/AC:H/AT:P/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+      "cwe": "CWE-295",
+      "owasp": "A08:2025",
+      "tier": 3,
+      "effort": "Low",
+      "related_threats": [
+        "T04.S"
+      ],
+      "evidence_files": [
+        ".github/workflows/production.yml"
+      ],
+      "component": "ServerApi",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "vulnerability": "CWE-295",
+        "attack_surface": ".github/workflows/production.yml"
+      }
+    },
+    {
+      "id": "FIND-09",
+      "title": "Production Secrets Written to `.env` File Inside CI/CD Runner and Baked into Docker Image Layers",
+      "severity": "Important",
+      "cvss_score": 6.8,
+      "cvss_vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:H/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+      "cwe": "CWE-538",
+      "owasp": "A04:2025",
+      "tier": 3,
+      "effort": "Low",
+      "related_threats": [
+        "T01.I2",
+        "T08.E"
+      ],
+      "evidence_files": [
+        ".dockerignore",
+        ".github/workflows/production.yml",
+        "Dockerfile"
+      ],
+      "component": "ServerApi",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "vulnerability": "CWE-538",
+        "attack_surface": ".dockerignore"
+      }
+    },
+    {
+      "id": "FIND-10",
+      "title": "Third-Party GitHub Actions Unpinned to Immutable Commit SHAs",
+      "severity": "Moderate",
+      "cvss_score": 6.8,
+      "cvss_vector": "CVSS:4.0/AV:N/AC:H/AT:P/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+      "cwe": "CWE-1357",
+      "owasp": "A03:2025",
+      "tier": 3,
+      "effort": "Low",
+      "related_threats": [
+        "T01.E"
+      ],
+      "evidence_files": [
+        ".github/workflows/production.yml"
+      ],
+      "component": "ServerApi",
+      "identity_key": {
+        "component_id": "ServerApi",
+        "vulnerability": "CWE-1357",
+        "attack_surface": ".github/workflows/production.yml"
+      }
+    }
+  ],
+  "metrics": {
+    "total_components": 10,
+    "total_boundaries": 2,
+    "total_flows": 12,
+    "total_threats": 51,
+    "total_findings": 10,
+    "threats_by_tier": {
+      "T1": 6,
+      "T2": 33,
+      "T3": 12
+    },
+    "findings_by_tier": {
+      "T1": 2,
+      "T2": 5,
+      "T3": 3
+    },
+    "threats_by_stride": {
+      "S": 7,
+      "T": 9,
+      "R": 2,
+      "I": 9,
+      "D": 8,
+      "E": 9,
+      "A": 7
+    },
+    "findings_by_severity": {
+      "Critical": 0,
+      "Important": 5,
+      "Moderate": 5,
+      "Low": 0
+    }
+  }
+}

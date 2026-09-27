@@ -449,6 +449,29 @@ export class UserService {
 			userId: user.id,
 		})
 
+		if (actorId && id === actorId) {
+			if (dto.role && dto.role !== UserRole.ADMIN)
+				throw new BadRequestException('Administrators cannot demote their own account')
+
+			if (dto.status && dto.status !== UserStatus.ACTIVE)
+				throw new BadRequestException('Administrators cannot deactivate their own account')
+		}
+
+		if (
+			user.role === UserRole.ADMIN &&
+			((dto.role && dto.role !== UserRole.ADMIN) ||
+				(dto.status && dto.status !== UserStatus.ACTIVE))
+		) {
+			const activeAdminCount = await this.prisma.user.count({
+				where: { role: UserRole.ADMIN, status: UserStatus.ACTIVE, id: { not: id } },
+			})
+
+			if (activeAdminCount === 0)
+				throw new BadRequestException(
+					'Cannot demote or deactivate the last remaining active administrator',
+				)
+		}
+
 		const data: Prisma.UserUpdateInput = {
 			version: { increment: 1 },
 			...(actorId && { updatedBy: actorId }),
@@ -507,7 +530,19 @@ export class UserService {
 	}
 
 	async adminDelete(id: string, actorId?: string) {
+		if (actorId && id === actorId)
+			throw new BadRequestException('Administrators cannot delete their own account')
+
 		const user = await this.findByIdOrThrow(id)
+
+		if (user.role === UserRole.ADMIN) {
+			const activeAdminCount = await this.prisma.user.count({
+				where: { role: UserRole.ADMIN, status: UserStatus.ACTIVE, id: { not: id } },
+			})
+
+			if (activeAdminCount === 0)
+				throw new BadRequestException('Cannot delete the last remaining active administrator')
+		}
 
 		try {
 			await this.firebase.deleteUser(user.firebaseUid)

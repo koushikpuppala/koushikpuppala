@@ -721,9 +721,13 @@
 	*,
 	*::before,
 	*::after {
+		/* biome-ignore lint/complexity/noImportantStyles: WCAG prefers-reduced-motion reset */
 		animation-duration: 0.01ms !important;
+		/* biome-ignore lint/complexity/noImportantStyles: WCAG prefers-reduced-motion reset */
 		animation-iteration-count: 1 !important;
+		/* biome-ignore lint/complexity/noImportantStyles: WCAG prefers-reduced-motion reset */
 		transition-duration: 0.01ms !important;
+		/* biome-ignore lint/complexity/noImportantStyles: WCAG prefers-reduced-motion reset */
 		scroll-behavior: auto !important;
 	}
 }

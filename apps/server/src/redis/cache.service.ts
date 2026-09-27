@@ -25,4 +25,20 @@ export class CacheService {
 
 		return value
 	}
+
+	async forget(key: string): Promise<void> {
+		try {
+			await this.redis.del(key)
+		} catch {
+			// Non-blocking cache eviction failure
+		}
+	}
+
+	async forgetByPattern(pattern: string): Promise<number> {
+		try {
+			return await this.redis.delByPattern(pattern)
+		} catch {
+			return 0
+		}
+	}
 }

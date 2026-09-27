@@ -3,6 +3,7 @@ import { AuditAction, Prisma } from '@repo/prisma'
 import { BaseService } from 'common/services/base-cms.service'
 import { ConflictException, Injectable } from '@nestjs/common'
 import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CacheService } from 'redis/cache.service'
 import { CreateMetadataDto, QueryMetadataDto, UpdateMetadataDto } from './metadata.dto'
 
 @Injectable()
@@ -10,25 +11,74 @@ export class MetadataService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
+		private readonly cache: CacheService,
 	) {
 		super()
 	}
 
-	async getPublishedByKey(key: string) {
-		const meta = await this.prisma.metadata.findFirst({
-			where: { key, isPublished: true, deletedAt: null },
-		})
+	normalizePath(pathname?: string): string {
+		if (!pathname) return '/'
 
-		return this.ensureExists(meta, `Metadata for key '${key}' not found`)
+		let p = pathname.trim()
+
+		if (!p.startsWith('/')) p = `/${p}`
+
+		if (p.length > 1 && p.endsWith('/')) p = p.slice(0, -1)
+
+		return p
+	}
+
+	async getPublishedByPath(pathname: string) {
+		const normalized = this.normalizePath(pathname)
+
+		const cacheKey = `metadata:path:${normalized}`
+
+		return this.cache.remember(cacheKey, 3600, async () => {
+			let meta = await this.prisma.metadata.findFirst({
+				where: { key: normalized, isPublished: true, deletedAt: null },
+			})
+
+			if (!meta) {
+				const strippedKey = normalized === '/' ? 'home' : normalized.slice(1)
+
+				meta = await this.prisma.metadata.findFirst({
+					where: { key: strippedKey, isPublished: true, deletedAt: null },
+				})
+			}
+
+			if (!meta && normalized.startsWith('/projects/'))
+				meta = await this.prisma.metadata.findFirst({
+					where: {
+						key: { in: ['/projects/[slug]', '/projects/:slug', 'projects/[slug]'] },
+						isPublished: true,
+						deletedAt: null,
+					},
+				})
+
+			if (!meta)
+				meta = await this.prisma.metadata.findFirst({
+					where: {
+						key: { in: ['/', 'home', 'global-seo', 'root', 'default'] },
+						isPublished: true,
+						deletedAt: null,
+					},
+				})
+
+			return this.ensureExists(meta, `Metadata for path '${pathname}' not found`)
+		})
+	}
+
+	async getPublishedByKey(key: string) {
+		return this.getPublishedByPath(key)
 	}
 
 	async getAllPublished() {
-		const items = await this.prisma.metadata.findMany({
-			where: { isPublished: true, deletedAt: null },
-			orderBy: { createdAt: 'asc' },
+		return this.cache.remember('metadata:all-published', 3600, async () => {
+			return this.prisma.metadata.findMany({
+				where: { isPublished: true, deletedAt: null },
+				orderBy: { createdAt: 'asc' },
+			})
 		})
-
-		return items
 	}
 
 	async adminFindAll(query: QueryMetadataDto) {
@@ -98,6 +148,8 @@ export class MetadataService extends BaseService {
 			newData: metadata as unknown as Record<string, unknown>,
 		})
 
+		await this.cache.forgetByPattern('metadata:*')
+
 		return metadata
 	}
 
@@ -141,6 +193,8 @@ export class MetadataService extends BaseService {
 			newData: metadata as unknown as Record<string, unknown>,
 		})
 
+		await this.cache.forgetByPattern('metadata:*')
+
 		return metadata
 	}
 
@@ -161,6 +215,8 @@ export class MetadataService extends BaseService {
 			newData: { isPublished: nextState },
 		})
 
+		await this.cache.forgetByPattern('metadata:*')
+
 		return metadata
 	}
 
@@ -176,6 +232,8 @@ export class MetadataService extends BaseService {
 			actor,
 			oldData: existing as unknown as Record<string, unknown>,
 		})
+
+		await this.cache.forgetByPattern('metadata:*')
 
 		return { id, deleted: true }
 	}

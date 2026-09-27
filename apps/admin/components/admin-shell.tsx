@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect, type ReactNode } from 'react'
+import { useState, useEffect, useMemo, useRef, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
 	Activity,
 	BookOpen,
 	Briefcase,
+	ChevronRight,
 	ExternalLink,
 	FileText,
 	FolderKanban,
@@ -18,6 +19,7 @@ import {
 	Menu,
 	Moon,
 	ScrollText,
+	Search,
 	Settings,
 	Share2,
 	Sparkles,
@@ -27,17 +29,20 @@ import {
 	X,
 	Zap,
 } from '@/components/icons'
+import { CommandPalette } from '@/components/cms/command-palette'
 import { useAuth } from '@/lib/auth'
 import { useTheme } from '@/lib/theme'
 import { cn } from '@/lib/utils'
 
+type NavItem = {
+	href: string
+	label: string
+	icon: React.ComponentType<{ className?: string }>
+}
+
 type NavSection = {
 	group: string | null
-	items: {
-		href: string
-		label: string
-		icon: React.ComponentType<{ className?: string }>
-	}[]
+	items: NavItem[]
 }
 
 const adminNav: NavSection[] = [
@@ -82,7 +87,35 @@ export function AdminShell({ children }: { children: ReactNode }) {
 	const { theme, toggleTheme } = useTheme()
 	const [mobileOpen, setMobileOpen] = useState(false)
 	const [userMenuOpen, setUserMenuOpen] = useState(false)
+	const [cmdOpen, setCmdOpen] = useState(false)
+	const userMenuRef = useRef<HTMLDivElement>(null)
 
+	// Cmd+K global shortcut handler
+	useEffect(() => {
+		function handleKeyDown(e: KeyboardEvent) {
+			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+				e.preventDefault()
+				setCmdOpen(prev => !prev)
+			}
+		}
+		window.addEventListener('keydown', handleKeyDown)
+		return () => window.removeEventListener('keydown', handleKeyDown)
+	}, [])
+
+	// Click outside user menu handler
+	useEffect(() => {
+		function handleClickOutside(e: MouseEvent) {
+			if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+				setUserMenuOpen(false)
+			}
+		}
+		if (userMenuOpen) {
+			document.addEventListener('mousedown', handleClickOutside)
+			return () => document.removeEventListener('mousedown', handleClickOutside)
+		}
+	}, [userMenuOpen])
+
+	// Router auth check
 	useEffect(() => {
 		if (!loading) {
 			if (!user && pathname !== '/login') {
@@ -93,6 +126,19 @@ export function AdminShell({ children }: { children: ReactNode }) {
 		}
 	}, [user, loading, pathname, router])
 
+	// Dynamic Breadcrumb calculation
+	const breadcrumbs = useMemo(() => {
+		if (pathname === '/') return ['Admin', 'Dashboard']
+		for (const section of adminNav) {
+			for (const item of section.items) {
+				if (item.href !== '/' && pathname.startsWith(item.href)) {
+					return ['Admin', section.group || 'Overview', item.label]
+				}
+			}
+		}
+		return ['Admin', 'Content Studio']
+	}, [pathname])
+
 	if (pathname === '/login') {
 		return <main className='bg-background text-foreground min-h-screen'>{children}</main>
 	}
@@ -101,7 +147,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 		return (
 			<div className='bg-background text-foreground flex min-h-screen items-center justify-center'>
 				<div className='flex flex-col items-center gap-3'>
-					<div className='bg-signal grid size-10 animate-pulse place-items-center rounded-2xl font-mono text-sm font-bold text-white'>
+					<div className='bg-signal grid size-10 animate-pulse place-items-center rounded-2xl font-mono text-sm font-bold text-white shadow-md'>
 						KP
 					</div>
 					<p className='text-muted-foreground font-mono text-xs'>Authenticating Content Studio…</p>
@@ -111,16 +157,16 @@ export function AdminShell({ children }: { children: ReactNode }) {
 	}
 
 	return (
-		<div className='bg-background text-foreground flex min-h-screen'>
-			{/* Desktop Sidebar */}
-			<aside className='border-border bg-sidebar sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r lg:flex'>
+		<div className='bg-background text-foreground flex h-screen w-screen overflow-hidden'>
+			{/* Desktop Sidebar (Fixed) */}
+			<aside className='border-border bg-sidebar hidden h-full w-64 shrink-0 flex-col border-r lg:flex'>
 				<div className='border-sidebar-border flex h-16 shrink-0 items-center justify-between border-b px-5'>
-					<Link href='/' className='flex items-center gap-2.5'>
-						<span className='bg-signal text-signal-foreground grid size-8 place-items-center rounded-lg font-mono text-xs font-bold'>
+					<Link href='/' className='flex items-center gap-2.5 group'>
+						<span className='bg-signal text-signal-foreground grid size-8 place-items-center rounded-lg font-mono text-xs font-bold transition-transform group-hover:scale-105'>
 							KP
 						</span>
 						<div>
-							<span className='font-display block text-sm font-bold tracking-tight'>
+							<span className='font-display block text-sm font-bold tracking-tight text-foreground'>
 								Content Studio
 							</span>
 							<span className='text-muted-foreground block font-mono text-[0.625rem]'>
@@ -148,7 +194,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 											key={item.href}
 											href={item.href}
 											className={cn(
-												'flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium transition-colors',
+												'flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
 												isActive
 													? 'bg-signal/15 text-signal-ink font-semibold'
 													: 'text-muted-foreground hover:bg-sidebar-accent hover:text-foreground',
@@ -167,32 +213,6 @@ export function AdminShell({ children }: { children: ReactNode }) {
 						</div>
 					))}
 				</nav>
-
-				{/* Sidebar Footer User Info */}
-				{/* <div className='border-sidebar-border shrink-0 border-t p-3'>
-					<div className='border-border/80 bg-surface/50 flex items-center justify-between rounded-xl border p-2.5'>
-						<div className='flex min-w-0 items-center gap-2'>
-							<div className='bg-signal/20 text-signal-ink grid size-7 shrink-0 place-items-center rounded-full font-mono text-xs font-bold'>
-								{user?.displayName?.[0] || 'K'}
-							</div>
-							<div className='min-w-0 flex-1'>
-								<p className='text-foreground truncate font-sans text-xs font-medium'>
-									{user?.displayName || 'Koushik Puppala'}
-								</p>
-								<p className='text-signal-ink truncate font-mono text-[0.5625rem] uppercase'>
-									{user?.role || 'ADMIN'}
-								</p>
-							</div>
-						</div>
-						<button
-							type='button'
-							onClick={() => logout()}
-							title='Sign out'
-							className='text-muted-foreground hover:bg-destructive/15 hover:text-destructive cursor-pointer rounded-lg p-1 transition-colors'>
-							<LogOut className='size-4' />
-						</button>
-					</div>
-				</div> */}
 			</aside>
 
 			{/* Mobile Sidebar Overlay */}
@@ -239,7 +259,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 													href={item.href}
 													onClick={() => setMobileOpen(false)}
 													className={cn(
-														'flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs font-medium transition-colors',
+														'flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-xs font-medium transition-colors',
 														isActive
 															? 'bg-signal/15 text-signal-ink font-semibold'
 															: 'text-muted-foreground hover:bg-sidebar-accent hover:text-foreground',
@@ -258,7 +278,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 							<button
 								type='button'
 								onClick={() => logout()}
-								className='text-destructive hover:bg-destructive/10 flex w-full items-center gap-2 rounded-lg p-2 text-xs'>
+								className='text-destructive hover:bg-destructive/10 flex w-full items-center gap-2 rounded-xl p-2 text-xs cursor-pointer'>
 								<LogOut className='size-4' />
 								<span>Sign out</span>
 							</button>
@@ -268,10 +288,10 @@ export function AdminShell({ children }: { children: ReactNode }) {
 			)}
 
 			{/* Main Content Area */}
-			<div className='flex min-w-0 flex-1 flex-col'>
+			<div className='flex min-w-0 flex-1 flex-col h-full overflow-hidden'>
 				{/* Top Header */}
-				<header className='border-border bg-background/90 sticky top-0 z-30 flex h-16 items-center justify-between border-b px-4 backdrop-blur-md sm:px-6'>
-					<div className='flex items-center gap-3'>
+				<header className='border-border bg-background/90 shrink-0 z-30 flex h-16 items-center justify-between border-b px-4 backdrop-blur-md sm:px-6'>
+					<div className='flex items-center gap-3 min-w-0'>
 						<button
 							type='button'
 							onClick={() => setMobileOpen(true)}
@@ -279,21 +299,45 @@ export function AdminShell({ children }: { children: ReactNode }) {
 							<Menu className='size-5' />
 						</button>
 
+						{/* Route Breadcrumbs */}
+						<nav aria-label='Breadcrumb' className='hidden sm:flex items-center gap-1.5 font-mono text-xs text-muted-foreground truncate'>
+							{breadcrumbs.map((crumb, idx) => (
+								<div key={`crumb-${idx}`} className='flex items-center gap-1.5 truncate'>
+									{idx > 0 && <ChevronRight className='size-3 shrink-0 text-muted-foreground/50' />}
+									<span className={cn(idx === breadcrumbs.length - 1 ? 'text-foreground font-medium' : '')}>
+										{crumb}
+									</span>
+								</div>
+							))}
+						</nav>
+
+						{/* Command Palette Trigger Button */}
+						<button
+							type='button'
+							onClick={() => setCmdOpen(true)}
+							className='border-border bg-surface text-muted-foreground hover:border-signal/50 hover:text-foreground flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs transition-colors cursor-pointer ml-1'>
+							<Search className='size-3.5 text-muted-foreground' />
+							<span className='hidden md:inline'>Search commands…</span>
+							<kbd className='rounded border border-border bg-surface-strong px-1.5 py-0.5 font-mono text-[0.625rem] text-muted-foreground'>
+								⌘K
+							</kbd>
+						</button>
+					</div>
+
+					<div className='flex items-center gap-2.5 shrink-0'>
 						{/* API Connection Telemetry Badge */}
-						<div className='border-border bg-surface text-muted-foreground hidden items-center gap-2 rounded-full border px-3 py-1 font-mono text-xs sm:flex'>
+						<div className='border-border bg-surface text-muted-foreground hidden items-center gap-2 rounded-full border px-3 py-1 font-mono text-xs md:flex'>
 							<span className='bg-success size-2 animate-pulse rounded-full' />
 							<span>API Connected</span>
 							<span className='text-[0.625rem] opacity-60'>v1</span>
 						</div>
-					</div>
 
-					<div className='flex items-center gap-2.5'>
 						{/* Public Website External Link */}
 						<a
 							href='https://koushikpuppala.com'
 							target='_blank'
 							rel='noopener noreferrer'
-							className='border-border bg-surface text-muted-foreground hover:border-signal/50 hover:text-foreground hidden items-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-mono text-xs transition-colors sm:inline-flex'>
+							className='border-border bg-surface text-muted-foreground hover:border-signal/50 hover:text-foreground hidden items-center gap-1.5 rounded-xl border px-2.5 py-1.5 font-mono text-xs transition-colors sm:inline-flex'>
 							<span>Live Site</span>
 							<ExternalLink className='size-3' />
 						</a>
@@ -303,16 +347,17 @@ export function AdminShell({ children }: { children: ReactNode }) {
 							type='button'
 							onClick={toggleTheme}
 							title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-							className='border-border bg-surface text-muted-foreground hover:text-foreground cursor-pointer rounded-lg border p-2 transition-colors'>
+							className='border-border bg-surface text-muted-foreground hover:text-foreground cursor-pointer rounded-xl border p-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'>
 							{theme === 'dark' ? <Sun className='size-4' /> : <Moon className='size-4' />}
 						</button>
 
 						{/* User Menu */}
-						<div className='relative'>
+						<div className='relative' ref={userMenuRef}>
 							<button
 								type='button'
 								onClick={() => setUserMenuOpen(prev => !prev)}
-								className='border-border bg-surface text-foreground hover:bg-accent flex cursor-pointer items-center gap-2 rounded-lg border px-2.5 py-1.5 text-xs transition-colors'>
+								aria-expanded={userMenuOpen}
+								className='border-border bg-surface text-foreground hover:bg-accent flex cursor-pointer items-center gap-2 rounded-xl border px-2.5 py-1.5 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'>
 								<span className='bg-signal grid size-6 place-items-center rounded-full font-mono text-[0.625rem] font-bold text-white'>
 									{user?.displayName?.[0] || 'K'}
 								</span>
@@ -322,7 +367,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 							</button>
 
 							{userMenuOpen && (
-								<div className='border-border bg-surface absolute right-0 z-50 mt-2 w-48 rounded-xl border p-1.5 font-mono text-xs shadow-xl'>
+								<div className='border-border bg-surface absolute right-0 z-50 mt-2 w-48 rounded-xl border p-1.5 font-mono text-xs shadow-xl animate-in fade-in-50 zoom-in-95 duration-100'>
 									<div className='border-border mb-1 border-b px-2.5 py-2'>
 										<p className='text-foreground truncate font-sans font-semibold'>
 											{user?.displayName}
@@ -352,9 +397,13 @@ export function AdminShell({ children }: { children: ReactNode }) {
 					</div>
 				</header>
 
-				{/* Page Body */}
-				<main className='mx-auto w-full max-w-7xl flex-1 p-4 sm:p-6 lg:p-8'>{children}</main>
+				{/* Page Body (Scrollable Main Area) */}
+				<main className='mx-auto w-full max-w-7xl flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8'>{children}</main>
 			</div>
+
+			{/* Command Palette Modal */}
+			<CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
 		</div>
 	)
 }
+

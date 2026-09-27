@@ -59,6 +59,15 @@ export class MediaService extends BaseService {
 	}
 
 	async completeUpload(dto: CompleteMediaUploadDto, userId?: string, actor = 'admin') {
+		if (this.config.production || process.env.AWS_ACCESS_KEY_ID) {
+			const exists = await this.s3Service.exists(dto.storageKey)
+
+			if (!exists)
+				throw new BadRequestException(
+					'Uploaded file does not exist in storage or upload was incomplete.',
+				)
+		}
+
 		const extension = extname(dto.originalName).toLowerCase().replace('.', '')
 
 		const fileName = dto.storageKey.split('/').pop() ?? dto.originalName

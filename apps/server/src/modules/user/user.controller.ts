@@ -8,7 +8,7 @@ import { Roles } from 'common/decorators/roles.decorator'
 import { CurrentUser } from 'common/decorators/current-user.decorator'
 import { ApiBearerAuth, ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger'
 import { AdminCreateUserDto, AdminUpdateUserDto, UserResponseDto } from './user.dto'
-import { Controller, Get, Post, Body, Patch, Param, Req, Query } from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, ParseUUIDPipe, Req, Query } from '@nestjs/common'
 
 @ApiTags('User Management')
 @ApiBearerAuth()
@@ -40,7 +40,7 @@ export class UserController {
 	@Get(':id')
 	@ApiOperation({ summary: 'Get user by ID (Admin / Super Admin)' })
 	@ApiResponse({ status: 200, type: UserResponseDto })
-	async findOne(@Param('id') id: string) {
+	async findOne(@Param('id', ParseUUIDPipe) id: string) {
 		return this.userService.findOne(id)
 	}
 
@@ -48,7 +48,7 @@ export class UserController {
 	@ApiOperation({ summary: 'Update a user (Admin / Super Admin)' })
 	@ApiResponse({ status: 200, type: UserResponseDto })
 	async update(
-		@Param('id') id: string,
+		@Param('id', ParseUUIDPipe) id: string,
 		@Body() updateUserDto: AdminUpdateUserDto,
 		@Req() req: Request,
 		@CurrentUser() currentUser: AuthenticatedUser,

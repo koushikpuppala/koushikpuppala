@@ -23,5 +23,8 @@ export type DataTableProps<TData extends RowData = any, TValue = any> = {
 	disableClearFilters?: boolean
 	disablePageSizeOptions?: boolean
 	disableColumnVisibility?: boolean
+	manualFiltering?: boolean
+	manualSorting?: boolean
+	manualPagination?: boolean
 	columns: ColumnDef<TData, TValue>[]
 } & DataTablePaginationProps

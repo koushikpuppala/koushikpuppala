@@ -76,7 +76,7 @@ export const ExperienceModal = ({
 				featured: false,
 				description: [],
 				achievements: [],
-				technologies: ['TypeScript', 'Next.js', 'NestJS', 'PostgreSQL'],
+				technologies: [],
 				website: '',
 				status: 'PUBLISHED',
 			})
@@ -112,7 +112,7 @@ export const ExperienceModal = ({
 
 	const addDescription = () => {
 		if (!descInput.trim()) return
-		setFormData(prev => ({
+		setFormData((prev: Partial<Experience>) => ({
 			...prev,
 			description: [...(prev.description || []), descInput.trim()],
 		}))
@@ -121,7 +121,7 @@ export const ExperienceModal = ({
 
 	const addAchievement = () => {
 		if (!newAch.trim()) return
-		setFormData(prev => ({
+		setFormData((prev: Partial<Experience>) => ({
 			...prev,
 			achievements: [...(prev.achievements || []), newAch.trim()],
 		}))
@@ -130,7 +130,7 @@ export const ExperienceModal = ({
 
 	const addTechnology = () => {
 		if (!newTech.trim()) return
-		setFormData(prev => ({
+		setFormData((prev: Partial<Experience>) => ({
 			...prev,
 			technologies: [...(prev.technologies || []), newTech.trim()],
 		}))
@@ -157,7 +157,7 @@ export const ExperienceModal = ({
 							<Label className='text-xs'>Company / Organization</Label>
 							<Input
 								value={formData.company || ''}
-								onChange={e => setFormData(prev => ({ ...prev, company: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Experience>) => ({ ...prev, company: e.target.value }))}
 								required
 								placeholder='e.g. Upraised'
 							/>
@@ -166,7 +166,7 @@ export const ExperienceModal = ({
 							<Label className='text-xs'>Role Title</Label>
 							<Input
 								value={formData.title || ''}
-								onChange={e => setFormData(prev => ({ ...prev, title: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Experience>) => ({ ...prev, title: e.target.value }))}
 								required
 								placeholder='e.g. Software Engineer'
 							/>
@@ -178,7 +178,7 @@ export const ExperienceModal = ({
 							<Label className='text-xs'>Location</Label>
 							<Input
 								value={formData.location || ''}
-								onChange={e => setFormData(prev => ({ ...prev, location: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Experience>) => ({ ...prev, location: e.target.value }))}
 								placeholder='Bengaluru, Karnataka, India'
 							/>
 						</div>
@@ -187,7 +187,7 @@ export const ExperienceModal = ({
 							<select
 								value={formData.employmentType || 'FULL_TIME'}
 								onChange={e =>
-									setFormData(prev => ({
+									setFormData((prev: Partial<Experience>) => ({
 										...prev,
 										employmentType: e.target.value as Experience['employmentType'],
 									}))
@@ -208,7 +208,7 @@ export const ExperienceModal = ({
 							<Input
 								type='date'
 								value={formData.startDate ? String(formData.startDate).slice(0, 10) : ''}
-								onChange={e => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Experience>) => ({ ...prev, startDate: e.target.value }))}
 								required
 							/>
 						</div>
@@ -218,7 +218,7 @@ export const ExperienceModal = ({
 								type='date'
 								value={formData.endDate ? String(formData.endDate).slice(0, 10) : ''}
 								disabled={formData.isCurrent}
-								onChange={e => setFormData(prev => ({ ...prev, endDate: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Experience>) => ({ ...prev, endDate: e.target.value }))}
 							/>
 						</div>
 					</div>
@@ -227,7 +227,7 @@ export const ExperienceModal = ({
 						<Label className='text-xs'>Company Website URL</Label>
 						<Input
 							value={formData.website || ''}
-							onChange={e => setFormData(prev => ({ ...prev, website: e.target.value }))}
+							onChange={e => setFormData((prev: Partial<Experience>) => ({ ...prev, website: e.target.value }))}
 							placeholder='https://upraised.co'
 						/>
 					</div>
@@ -238,7 +238,7 @@ export const ExperienceModal = ({
 								type='checkbox'
 								checked={Boolean(formData.isCurrent)}
 								onChange={e =>
-									setFormData(prev => ({
+									setFormData((prev: Partial<Experience>) => ({
 										...prev,
 										isCurrent: e.target.checked,
 										endDate: e.target.checked ? null : prev.endDate,
@@ -253,7 +253,7 @@ export const ExperienceModal = ({
 							<input
 								type='checkbox'
 								checked={Boolean(formData.featured)}
-								onChange={e => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+								onChange={e => setFormData((prev: Partial<Experience>) => ({ ...prev, featured: e.target.checked }))}
 								className='rounded border-border text-signal focus:ring-signal'
 							/>
 							<span>Feature on portfolio</span>
@@ -272,7 +272,7 @@ export const ExperienceModal = ({
 									<button
 										type='button'
 										onClick={() =>
-											setFormData(prev => ({
+											setFormData((prev: Partial<Experience>) => ({
 												...prev,
 												description: (Array.isArray(prev.description) ? prev.description : []).filter((_: string, idx: number) => idx !== i),
 											}))
@@ -300,7 +300,7 @@ export const ExperienceModal = ({
 					<div className='space-y-2'>
 						<Label className='text-xs'>Measurable Achievements</Label>
 						<div className='space-y-1.5'>
-							{(formData.achievements || []).map((ach, i) => (
+							{(formData.achievements || []).map((ach: string, i: number) => (
 								<div
 									key={i}
 									className='flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-strong/50 p-2 text-xs'>
@@ -308,9 +308,9 @@ export const ExperienceModal = ({
 									<button
 										type='button'
 										onClick={() =>
-											setFormData(prev => ({
+											setFormData((prev: Partial<Experience>) => ({
 												...prev,
-												achievements: (prev.achievements || []).filter((_, idx) => idx !== i),
+												achievements: (prev.achievements || []).filter((_: string, idx: number) => idx !== i),
 											}))
 										}
 										className='text-muted-foreground hover:text-destructive'>
@@ -336,15 +336,15 @@ export const ExperienceModal = ({
 					<div className='space-y-2'>
 						<Label className='text-xs'>Technologies Used</Label>
 						<div className='flex flex-wrap gap-1.5'>
-							{(formData.technologies || []).map((tech, i) => (
+							{(formData.technologies || []).map((tech: string, i: number) => (
 								<Badge key={i} variant='secondary' className='gap-1 pr-1'>
 									<span>{tech}</span>
 									<button
 										type='button'
 										onClick={() =>
-											setFormData(prev => ({
+											setFormData((prev: Partial<Experience>) => ({
 												...prev,
-												technologies: (prev.technologies || []).filter((_, idx) => idx !== i),
+												technologies: (prev.technologies || []).filter((_: string, idx: number) => idx !== i),
 											}))
 										}
 										className='text-muted-foreground hover:text-destructive'>
@@ -383,11 +383,13 @@ export const ExperienceModal = ({
 export const ExperienceContentClientView = () => {
 	const [experiences, setExperiences] = useState<Experience[]>([])
 	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
 	const [modalOpen, setModalOpen] = useState(false)
 	const [editingExp, setEditingExp] = useState<Experience | null>(null)
 
 	const loadExperiences = async () => {
 		setLoading(true)
+		setError(null)
 		try {
 			const res = await adminFetch<{ items?: Experience[] } | Experience[]>('/api/v1/experience')
 			if (res.data) {
@@ -399,9 +401,11 @@ export const ExperienceContentClientView = () => {
 						status: item.isPublished || (item as { status?: string }).status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
 					})),
 				)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
-			console.error('Failed to load experiences:', err)
+			setError(err instanceof Error ? err.message : 'Failed to load experiences from API.')
 		} finally {
 			setLoading(false)
 		}
@@ -489,6 +493,8 @@ export const ExperienceContentClientView = () => {
 				items={experiences}
 				columns={columns}
 				loading={loading}
+				error={error}
+				onRetry={loadExperiences}
 				searchKey={e => `${e.title} ${e.company} ${e.location}`}
 				createLabel='Add Experience'
 				onCreate={() => {

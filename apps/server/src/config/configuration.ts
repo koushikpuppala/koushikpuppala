@@ -45,15 +45,18 @@ export class Configuration {
 		}
 
 		this.redis = {
-			host: this.get('REDIS_HOST', 'server.koushikpuppala.com'),
+			host: this.get('REDIS_HOST', '127.0.0.1'),
 			port: this.number('REDIS_PORT', 6379),
 			username: this.optional('REDIS_USERNAME'),
-			password: this.optional('REDIS_PASSWORD'),
+			password: this.production
+				? this.required('REDIS_PASSWORD')
+				: this.optional('REDIS_PASSWORD'),
 			db: this.number('REDIS_DB', 0),
 			keepAlive: this.number('REDIS_KEEP_ALIVE', 30_000),
 			lazyConnect: this.boolean('REDIS_LAZY_CONNECT', true),
 			connectTimeout: this.number('REDIS_CONNECT_TIMEOUT', 10_000),
 			maxRetriesPerRequest: this.number('REDIS_MAX_RETRIES_PER_REQUEST', 3),
+			...(this.boolean('REDIS_TLS', false) && { tls: {} }),
 		}
 
 		this.firebase = {

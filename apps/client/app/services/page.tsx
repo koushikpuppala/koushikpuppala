@@ -10,19 +10,10 @@ import { Button } from 'components/ui/button'
 import { splitList } from 'lib/format'
 import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
+import { resolveMetadataByPath } from 'lib/metadata-data'
 
-export const metadata: Metadata = {
-	title: 'Skills',
-	description:
-		'Frontend, backend, database, cloud and DevOps, engineering and tooling skills — React, Next.js, TypeScript, Node.js, PostgreSQL, AWS and Docker.',
-	openGraph: {
-		title: 'Skills — Koushik Puppala',
-		description: 'Frontend, backend, database, cloud and DevOps skills.',
-		type: 'website',
-	},
-	twitter: {
-		card: 'summary_large_image',
-	},
+export const generateMetadata = async (): Promise<Metadata> => {
+	return resolveMetadataByPath('/services')
 }
 
 export default async function ServicesPage() {

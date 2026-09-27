@@ -3,8 +3,13 @@
 	"version": "0.0.1",
 	"private": true,
 	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"exports": {
-		".": "./src/index.ts",
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
 		"./api": "./src/api/index.ts",
 		"./utils": "./src/utils/index.ts",
 		"./models": "./src/models/index.ts",

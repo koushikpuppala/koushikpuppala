@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getApiBaseUrl } from '../../../src/lib/api-client'
+import { BASE_URL } from '../../../src/constants/base-url'
 import { validateContactForm, type ContactFormPayload } from '../../../src/lib/contact-data'
 
 export async function POST(req: Request) {
@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 		}
 
 		// 3. Connect to Authoritative Backend Contact Endpoint
-		const apiUrl = getApiBaseUrl()
+		const apiUrl = BASE_URL
 
 		try {
 			const backendRes = await fetch(`${apiUrl}/api/v1/contacts`, {

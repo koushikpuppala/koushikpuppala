@@ -1,36 +1,36 @@
-# Shared Utilities Instructions
+# Shared Utilities Package
 
-## Scope
+## Overview
 
-These rules apply to `packages/utils`.
+Shared utilities package. It provides deterministic helper functions, string formatting, date utilities, and styling class merging.
 
-## Purpose
+## Key files
 
-Utilities should be small, reusable, deterministic where possible, and application-independent.
+| File | Owns |
+|---|---|
+| packages/utils/src/classNames.ts | Tailwind class merging and conditional styling |
+| packages/utils/src/formatDate.ts | Date formatting helpers |
+| packages/utils/src/useFormReducer.ts | Reusable form state reducer with schema validation |
 
-## Before Adding a Utility
+## Commands
 
-Search the repository for existing equivalent functionality.
+```bash
+# Type check
+pnpm --filter utils check-types
+```
 
-Do not create duplicate helpers.
+## Conventions
 
-## Design
+* Utilities must be small, focused, and deterministic.
+* Avoid UI state, backend business logic, or database access inside utilities.
+* Prefer pure functions with strong TypeScript input and output types.
 
-Prefer:
+## Gotchas
 
-- Strong TypeScript types
-- Small focused functions
-- Clear input/output contracts
-- No unnecessary side effects
-- No application-specific dependencies
+* Search existing utilities before introducing new helper functions.
 
-Avoid:
+## Agent skills
 
-- Backend business logic
-- UI state
-- Direct database access
-- Environment-specific behavior unless explicitly intended
+* [typescript](~/.agents/skills/typescript/): Pure deterministic helper functions and strong types
 
-## Verification
-
-Add or update unit tests for meaningful utility behavior, especially edge cases.
+_Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

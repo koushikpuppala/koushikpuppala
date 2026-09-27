@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import type { ColumnDef } from '@tanstack/react-table'
+import type { DataTableFilters } from 'types/components'
 import { DataTable } from 'ui/designs/data-table'
 import { adminFetch } from '@/lib/api-client'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import {
 	Server,
@@ -13,7 +14,6 @@ import {
 	Radio,
 	RefreshCw,
 	Clock,
-	Search,
 } from '@/components/icons'
 
 export type HealthData = {
@@ -56,19 +56,34 @@ export type ApiMetricItem = {
 }
 
 export const ApiMetricsClientView = () => {
+	const searchParams = useSearchParams()
 	const [health, setHealth] = useState<HealthData | null>(null)
 	const [stats, setStats] = useState<MetricsStats | null>(null)
 	const [metrics, setMetrics] = useState<ApiMetricItem[]>([])
 	const [loading, setLoading] = useState(true)
 	const [autoRefresh, setAutoRefresh] = useState(false)
 
-	// Filter state
-	const [search, setSearch] = useState('')
-	const [methodFilter, setMethodFilter] = useState('ALL')
 	const [totalMetrics, setTotalMetrics] = useState(0)
+	const [error, setError] = useState<string | null>(null)
+
+	const metricFilters: DataTableFilters[] = [
+		{
+			id: 'method',
+			label: 'Method',
+			type: 'select',
+			options: [
+				{ label: 'All Methods', value: '' },
+				{ label: 'GET', value: 'GET' },
+				{ label: 'POST', value: 'POST' },
+				{ label: 'PATCH', value: 'PATCH' },
+				{ label: 'DELETE', value: 'DELETE' },
+			],
+		},
+	]
 
 	const loadData = useCallback(async () => {
 		setLoading(true)
+		setError(null)
 		try {
 			const healthRes = await adminFetch<HealthData>('/api/v1/health')
 			if (healthRes.data) setHealth(healthRes.data)
@@ -76,11 +91,18 @@ export const ApiMetricsClientView = () => {
 			const statsRes = await adminFetch<MetricsStats>('/api/v1/api-metrics/stats')
 			if (statsRes.data) setStats(statsRes.data)
 
+			const search = searchParams.get('search') || ''
+			const methodFilter = searchParams.get('method') || ''
+			const from = searchParams.get('from') || ''
+			const to = searchParams.get('to') || ''
+
 			const query = new URLSearchParams({
 				limit: '100',
 			})
 			if (search) query.set('search', search)
-			if (methodFilter !== 'ALL') query.set('method', methodFilter)
+			if (methodFilter) query.set('method', methodFilter)
+			if (from) query.set('from', from)
+			if (to) query.set('to', to)
 
 			const metricsRes = await adminFetch<ApiMetricItem[]>(
 				`/api/v1/api-metrics?${query.toString()}`,
@@ -91,10 +113,11 @@ export const ApiMetricsClientView = () => {
 			}
 		} catch (err) {
 			console.error('Failed to load telemetry data:', err)
+			setError('Failed to load telemetry metrics from server.')
 		} finally {
 			setLoading(false)
 		}
-	}, [search, methodFilter])
+	}, [searchParams])
 
 	useEffect(() => {
 		loadData()
@@ -258,6 +281,15 @@ export const ApiMetricsClientView = () => {
 				</div>
 			</div>
 
+			{error && (
+				<div className='rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-xs text-destructive flex items-center justify-between'>
+					<span>{error}</span>
+					<Button variant='outline' size='sm' onClick={loadData} className='text-xs'>
+						Retry API Fetch
+					</Button>
+				</div>
+			)}
+
 			{/* Health Ribbon */}
 			<div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
 				<div className='flex items-center gap-4 rounded-2xl border border-border bg-surface p-5 shadow-xs'>
@@ -381,36 +413,6 @@ export const ApiMetricsClientView = () => {
 				</div>
 			)}
 
-			{/* Filter Toolbar */}
-			<div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border bg-surface/60 p-3'>
-				<div className='relative flex-1 max-w-sm'>
-					<Search className='size-4 text-muted-foreground absolute left-3 top-2.5' />
-					<Input
-						placeholder='Search telemetry by endpoint path, IP address, or request ID…'
-						value={search}
-						onChange={e => setSearch(e.target.value)}
-						className='pl-9 h-9'
-					/>
-				</div>
-				<div className='flex flex-wrap items-center gap-2 font-mono text-xs'>
-					<div className='flex items-center gap-1.5 overflow-x-auto'>
-						{(['ALL', 'GET', 'POST', 'PATCH', 'DELETE'] as const).map(m => (
-							<button
-								key={m}
-								type='button'
-								onClick={() => setMethodFilter(m)}
-								className={`rounded-lg px-2.5 py-1 transition-colors cursor-pointer ${
-									methodFilter === m
-										? 'bg-primary text-primary-foreground font-semibold shadow-xs'
-										: 'text-muted-foreground hover:bg-accent hover:text-foreground'
-								}`}>
-								{m}
-							</button>
-						))}
-					</div>
-				</div>
-			</div>
-
 			{/* Data Table */}
 			<DataTable
 				columns={columns}
@@ -418,8 +420,7 @@ export const ApiMetricsClientView = () => {
 				loading={loading}
 				totalCount={totalMetrics}
 				pageSize={25}
-				disableDateRange
-				disableSearch
+				filters={metricFilters}
 			/>
 		</div>
 	)

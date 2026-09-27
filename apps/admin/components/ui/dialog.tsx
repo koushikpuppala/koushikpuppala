@@ -15,11 +15,20 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
 		if (open) {
 			const prev = document.body.style.overflow
 			document.body.style.overflow = 'hidden'
+
+			const handleKeyDown = (e: KeyboardEvent) => {
+				if (e.key === 'Escape') {
+					onOpenChange(false)
+				}
+			}
+			window.addEventListener('keydown', handleKeyDown)
+
 			return () => {
 				document.body.style.overflow = prev
+				window.removeEventListener('keydown', handleKeyDown)
 			}
 		}
-	}, [open])
+	}, [open, onOpenChange])
 
 	if (!open) return null
 
@@ -27,12 +36,14 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
 		<div className='fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6'>
 			{/* Backdrop */}
 			<div
-				className='fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity'
+				className='fixed inset-0 bg-background/80 backdrop-blur-sm transition-opacity animate-in fade-in duration-150'
 				onClick={() => onOpenChange(false)}
 				aria-hidden='true'
 			/>
-			{/* Focus Trap / Container */}
-			<div className='relative z-50 w-full max-w-lg'>{children}</div>
+			{/* Dialog Container */}
+			<div className='relative z-50 w-full max-w-lg animate-in fade-in-50 zoom-in-95 duration-150'>
+				{children}
+			</div>
 		</div>
 	)
 }

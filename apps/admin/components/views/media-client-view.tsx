@@ -42,16 +42,21 @@ export const MediaClientView = () => {
 	const [copiedId, setCopiedId] = useState<string | null>(null)
 	const [selectedMedia, setSelectedMedia] = useState<MediaAsset | null>(null)
 
+	const [error, setError] = useState<string | null>(null)
+
 	const loadMedia = async () => {
 		setLoading(true)
+		setError(null)
 		try {
 			const res = await adminFetch<{ items?: MediaAsset[] } | MediaAsset[]>('/api/v1/media')
 			if (res.data) {
 				const items = Array.isArray(res.data) ? res.data : (res.data.items || [])
 				setMediaList(items)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
-			console.error('Failed to load media:', err)
+			setError(err instanceof Error ? err.message : 'Failed to load media assets from API.')
 		} finally {
 			setLoading(false)
 		}
@@ -154,6 +159,18 @@ export const MediaClientView = () => {
 					</Button>
 				</label>
 			</div>
+
+			{error && !loading && (
+				<div className='flex items-center justify-between rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-xs font-mono text-destructive'>
+					<div>
+						<span className='font-semibold'>API Error: </span>
+						<span>{error}</span>
+					</div>
+					<Button type='button' variant='outline' size='sm' onClick={loadMedia} className='h-7 text-xs'>
+						Retry API Fetch
+					</Button>
+				</div>
+			)}
 
 			{/* Search & Filter Toolbar */}
 			<div className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-border bg-surface p-3 shadow-xs'>

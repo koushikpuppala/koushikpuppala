@@ -9,19 +9,10 @@ import { Button } from 'components/ui/button'
 import { getEducationData } from 'lib/education-data'
 import { getExperienceData } from 'lib/experience-data'
 import { getSocialsData } from 'lib/social-data'
+import { resolveMetadataByPath } from 'lib/metadata-data'
 
-export const metadata: Metadata = {
-	title: 'Education',
-	description:
-		'B.Tech in Computer Science and Engineering at IIIT Raichur, intermediate studies, and student community leadership.',
-	openGraph: {
-		title: 'Education — Koushik Puppala',
-		description: 'Academic background and student community leadership.',
-		type: 'website',
-	},
-	twitter: {
-		card: 'summary_large_image',
-	},
+export const generateMetadata = async (): Promise<Metadata> => {
+	return resolveMetadataByPath('/education')
 }
 
 export default async function EducationPage() {

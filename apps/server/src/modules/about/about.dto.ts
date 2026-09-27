@@ -1,3 +1,5 @@
+import type { AboutStat } from 'types'
+
 import { Type } from 'class-transformer'
 import { PaginationDto } from 'common/dto/pagination.dto'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
@@ -77,19 +79,21 @@ export class CreateAboutDto {
 		example: [{ label: 'EXPERIENCE', value: '3+', detail: 'Years of Production Engineering' }],
 	})
 	@IsOptional()
-	stats?: any
+	stats?: AboutStat[] | Record<string, unknown>[]
 
 	@ApiPropertyOptional({
-		example: [{ title: 'Simplicity over Cleverness', description: 'Favor transparent architecture' }],
+		example: [
+			{ title: 'Simplicity over Cleverness', description: 'Favor transparent architecture' },
+		],
 	})
 	@IsOptional()
-	values?: any
+	values?: Array<{ title: string; description: string }> | string[]
 
 	@ApiPropertyOptional({
 		example: [{ index: '01', title: 'Clean Boundaries', description: 'Strict module boundaries' }],
 	})
 	@IsOptional()
-	pillars?: any
+	pillars?: Array<{ title: string; description: string; icon?: string }> | Record<string, unknown>[]
 
 	@ApiPropertyOptional({ example: 'Download Resume' })
 	@IsString()

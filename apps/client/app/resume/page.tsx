@@ -12,19 +12,10 @@ import { getExperienceData } from 'lib/experience-data'
 import { getEducationData } from 'lib/education-data'
 import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
+import { resolveMetadataByPath } from 'lib/metadata-data'
 
-export const metadata: Metadata = {
-	title: 'Resume',
-	description:
-		'Resume of Koushik Puppala, Software Engineer – Full Stack: roles, education and the technologies behind them.',
-	openGraph: {
-		title: 'Resume — Koushik Puppala',
-		description: 'Roles, education and technologies at a glance.',
-		type: 'website',
-	},
-	twitter: {
-		card: 'summary_large_image',
-	},
+export const generateMetadata = async (): Promise<Metadata> => {
+	return resolveMetadataByPath('/resume')
 }
 
 function RecordRow({

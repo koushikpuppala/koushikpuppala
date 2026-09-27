@@ -6,6 +6,7 @@ import {
 	Post,
 	Delete,
 	Param,
+	ParseUUIDPipe,
 	Req,
 	HttpCode,
 	HttpStatus,
@@ -103,7 +104,10 @@ export class AuthController {
 		summary: 'Revoke session by ID',
 		description: 'Revokes a specific session.',
 	})
-	async revokeSession(@Param('id') sessionId: string, @CurrentUser() user: AuthenticatedUser) {
+	async revokeSession(
+		@Param('id', ParseUUIDPipe) sessionId: string,
+		@CurrentUser() user: AuthenticatedUser,
+	) {
 		if (!user.id) throw new UnauthorizedException('Not authenticated')
 
 		await this.sessionService.revokeSessionById(sessionId, user.id)

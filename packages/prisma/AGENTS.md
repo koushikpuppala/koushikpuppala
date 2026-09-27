@@ -1,82 +1,52 @@
-# Prisma Package Instructions
+# Prisma Package
 
-## Scope
+## Overview
 
-These rules apply to `packages/prisma`.
+Database integration package. It manages the PostgreSQL database schema, migrations, seed scripts, and the generated Prisma 7 database client.
 
-This package owns the repository's Prisma 7 database integration.
+## Key files
 
-## Database
+| File | Owns |
+|---|---|
+| packages/prisma/prisma/schema.prisma | Prisma client configuration and datasource |
+| packages/prisma/prisma/schema/*.prisma | Domain-separated Prisma models and relations |
+| packages/prisma/src/index.ts | Prisma client export and client instantiation |
+| packages/prisma/prisma/migrations/ | Versioned SQL migration history |
 
-Database:
+## Commands
 
-```text
-PostgreSQL
+```bash
+# Push schema changes to development database
+pnpm --filter @repo/prisma db:push
+
+# Generate Prisma client
+pnpm --filter @repo/prisma db:generate
+
+# Create migration
+pnpm --filter @repo/prisma db:migrate:dev
+
+# Deploy migrations
+pnpm --filter @repo/prisma db:migrate:deploy
 ```
 
-ORM:
+## Conventions
 
-```text
-Prisma 7
-```
+* PostgreSQL is the persistent source of truth.
+* Never rewrite historical migrations; use additive migrations for schema changes.
+* Never reset or drop production databases.
+* Use Prisma as the default database abstraction; use parameterized raw SQL only when required.
+* Keep Prisma transactions focused on operations that must succeed or fail together.
 
-The exact Prisma schema and generated-client configuration must be verified from the current package configuration.
+## Gotchas
 
-Do not assume generated output paths.
+* Always inspect existing consumers before renaming columns or changing relation models.
+* Verify generated client output before importing in backend services.
 
-## Schema Changes
+## Agent skills
 
-Before modifying the schema:
+* [prisma](~/.agents/skills/prisma/): Prisma ORM type safe database queries and schema design
+* [prisma-patterns](~/.agents/skills/prisma-patterns/): Prisma ORM transactions, pagination, and migration safety
+* [postgresql-best-practices](~/.agents/skills/postgresql-best-practices/): PostgreSQL schema design and query optimization
+* [database-migrations](~/.agents/skills/database-migrations/): Database migration practices and zero downtime deployments
 
-1. Inspect the relevant model/schema files.
-2. Inspect relations.
-3. Inspect indexes and constraints.
-4. Inspect existing migrations.
-5. Search all consumers.
-6. Consider existing production data.
-7. Make the smallest safe schema change.
-
-## Migrations
-
-Never rewrite historical migrations.
-
-Never reset production databases.
-
-Prefer additive migrations for potentially destructive changes.
-
-Do not delete data merely to simplify a migration.
-
-## Queries
-
-Use Prisma as the default database abstraction.
-
-Use raw SQL only when genuinely required.
-
-When raw SQL is necessary:
-
-- Parameterize values.
-- Never interpolate untrusted input.
-- Document why it is required.
-- Consider query plans and indexes.
-
-## Transactions
-
-Use transactions for operations that must be atomic.
-
-Do not hold database transactions open while making unnecessary external network calls.
-
-## Client Generation
-
-Do not manually edit generated Prisma client output.
-
-Modify the source/configuration and regenerate using the repository's established command.
-
-## Verification
-
-After schema/client changes:
-
-- Generate the client when required.
-- Validate affected packages.
-- Run relevant tests.
-- Inspect migration output.
-- Confirm affected application consumers.
+_Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

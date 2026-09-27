@@ -39,6 +39,19 @@ export type MetadataRecord = {
 	updatedAt?: string
 }
 
+export const PATHNAME_PRESETS = [
+	{ key: '/', label: 'Home Page (/)' },
+	{ key: '/about', label: 'About (/about)' },
+	{ key: '/projects', label: 'Projects (/projects)' },
+	{ key: '/projects/[slug]', label: 'Project Detail (/projects/[slug])' },
+	{ key: '/experience', label: 'Experience (/experience)' },
+	{ key: '/education', label: 'Education (/education)' },
+	{ key: '/services', label: 'Services (/services)' },
+	{ key: '/skills', label: 'Skills (/skills)' },
+	{ key: '/resume', label: 'Resume (/resume)' },
+	{ key: '/contact', label: 'Contact (/contact)' },
+]
+
 export const SettingsClientView = () => {
 	const [recordId, setRecordId] = useState<string | null>(null)
 	const [allRecords, setAllRecords] = useState<MetadataRecord[]>([])
@@ -46,9 +59,10 @@ export const SettingsClientView = () => {
 	const [saving, setSaving] = useState(false)
 	const [saveSuccess, setSaveSuccess] = useState(false)
 	const [saveError, setSaveError] = useState('')
+	const [fetchError, setFetchError] = useState<string | null>(null)
 
 	// Form state
-	const [key, setKey] = useState('global-seo')
+	const [key, setKey] = useState('/')
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 	const [canonicalUrl, setCanonicalUrl] = useState('')
@@ -73,22 +87,51 @@ export const SettingsClientView = () => {
 		setIsPublished(record.isPublished)
 	}, [])
 
+	const handleSelectPath = useCallback(
+		(targetKey: string) => {
+			const existing = allRecords.find(m => m.key === targetKey)
+
+			if (existing) populateForm(existing)
+			else {
+				setRecordId(null)
+				setKey(targetKey)
+				setTitle('')
+				setDescription('')
+				setCanonicalUrl(`https://koushikpuppala.com${targetKey === '/' ? '' : targetKey}`)
+				setOgImage('')
+				setRobots('index,follow')
+				setKeywords([])
+				setIsPublished(true)
+			}
+		},
+		[allRecords, populateForm],
+	)
+
 	const loadSettings = useCallback(async () => {
 		setLoading(true)
+		setFetchError(null)
 		try {
 			const res = await adminFetch<{ items: MetadataRecord[] } | MetadataRecord[]>(
 				'/api/v1/metadata',
 			)
-			const list = Array.isArray(res.data) ? res.data : (res.data?.items || [])
-			setAllRecords(list)
+			if (res.data) {
+				const list = Array.isArray(res.data) ? res.data : res.data?.items || []
+				setAllRecords(list)
 
-			const existing = list.find(m => m.key === 'global-seo') || list[0]
+				const existing =
+					list.find(m => m.key === '/' || m.key === 'home') ||
+					list.find(m => m.key === 'global-seo') ||
+					list[0]
 
-			if (existing) {
-				populateForm(existing)
+				if (existing) {
+					populateForm(existing)
+				}
+			} else if (res.error) {
+				setFetchError(res.error)
 			}
 		} catch (err) {
 			console.error('Failed to load settings metadata:', err)
+			setFetchError('Failed to load settings from server.')
 		} finally {
 			setLoading(false)
 		}
@@ -175,7 +218,7 @@ export const SettingsClientView = () => {
 				accessorKey: 'key',
 				header: 'Key / Identifier',
 				cell: ({ row }) => (
-					<span className='font-mono font-semibold text-xs text-signal-ink'>
+					<span className='text-signal-ink font-mono text-xs font-semibold'>
 						{row.original.key}
 					</span>
 				),
@@ -193,7 +236,7 @@ export const SettingsClientView = () => {
 				accessorKey: 'title',
 				header: 'SEO Title',
 				cell: ({ row }) => (
-					<span className='font-medium text-xs text-foreground truncate block max-w-xs'>
+					<span className='text-foreground block max-w-xs truncate text-xs font-medium'>
 						{row.original.title || 'Untitled'}
 					</span>
 				),
@@ -202,7 +245,7 @@ export const SettingsClientView = () => {
 				accessorKey: 'robots',
 				header: 'Robots Directives',
 				cell: ({ row }) => (
-					<span className='font-mono text-xs text-muted-foreground'>
+					<span className='text-muted-foreground font-mono text-xs'>
 						{row.original.robots || 'index,follow'}
 					</span>
 				),
@@ -225,8 +268,8 @@ export const SettingsClientView = () => {
 							variant='ghost'
 							size='sm'
 							onClick={() => populateForm(row.original)}
-							className='text-xs text-signal-ink hover:bg-signal-ink/10'>
-							<Pencil className='size-3.5 mr-1' />
+							className='text-signal-ink hover:bg-signal-ink/10 text-xs'>
+							<Pencil className='mr-1 size-3.5' />
 							Load in Form
 						</Button>
 					</div>
@@ -242,10 +285,10 @@ export const SettingsClientView = () => {
 				{/* Header */}
 				<div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
 					<div>
-						<h1 className='font-display text-2xl font-bold tracking-tight text-foreground'>
+						<h1 className='font-display text-foreground text-2xl font-bold tracking-tight'>
 							Site Settings & SEO Engine
 						</h1>
-						<p className='text-sm text-muted-foreground'>
+						<p className='text-muted-foreground text-sm'>
 							Configure global search engine metadata, OpenGraph social cards, canonical routing,
 							and web indexation.
 						</p>
@@ -263,18 +306,32 @@ export const SettingsClientView = () => {
 							size='sm'
 							onClick={loadSettings}
 							disabled={loading || saving}>
-							<RefreshCw className={`size-4 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
+							<RefreshCw className={`mr-1.5 size-4 ${loading ? 'animate-spin' : ''}`} />
 							Refresh
 						</Button>
 						<Button type='submit' variant='signal' size='sm' disabled={saving}>
-							<Save className='size-4 mr-1.5' />
+							<Save className='mr-1.5 size-4' />
 							{saving ? 'Saving...' : 'Save Changes'}
 						</Button>
 					</div>
 				</div>
 
+				{fetchError && (
+					<div className='border-destructive/30 bg-destructive/10 text-destructive flex items-center justify-between rounded-2xl border p-4 text-xs'>
+						<span>{fetchError}</span>
+						<Button
+							type='button'
+							variant='outline'
+							size='sm'
+							onClick={loadSettings}
+							className='text-xs'>
+							Retry API Fetch
+						</Button>
+					</div>
+				)}
+
 				{saveError && (
-					<div className='rounded-2xl border border-destructive/30 bg-destructive/10 p-4 text-xs text-destructive'>
+					<div className='border-destructive/30 bg-destructive/10 text-destructive rounded-2xl border p-4 text-xs'>
 						{saveError}
 					</div>
 				)}
@@ -282,15 +339,72 @@ export const SettingsClientView = () => {
 				<div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
 					{/* Left 2 Columns: Core Form */}
 					<div className='space-y-6 lg:col-span-2'>
+						{/* Pathname / Key Selector */}
+						<div className='border-border bg-surface space-y-4 rounded-2xl border p-6 shadow-xs'>
+							<div className='flex items-center justify-between'>
+								<div>
+									<h2 className='text-foreground text-sm font-semibold tracking-tight'>
+										Target Page Pathname
+									</h2>
+									<p className='text-muted-foreground text-xs'>
+										Select a page route to configure or type a custom pathname key.
+									</p>
+								</div>
+								<Badge variant='signal' className='font-mono text-xs'>
+									{key}
+								</Badge>
+							</div>
+
+							<div className='flex flex-wrap gap-2'>
+								{PATHNAME_PRESETS.map(preset => {
+									const isSelected = key === preset.key
+									const hasCustomMeta = allRecords.some(r => r.key === preset.key)
+									return (
+										<button
+											key={preset.key}
+											type='button'
+											onClick={() => handleSelectPath(preset.key)}
+											className={`inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 font-mono text-xs transition-colors ${
+												isSelected
+													? 'border-signal bg-signal/15 text-signal-ink font-semibold'
+													: 'border-border/80 bg-background text-muted-foreground hover:bg-muted/40 hover:text-foreground'
+											}`}>
+											<span>{preset.key}</span>
+											{hasCustomMeta && (
+												<span
+													className='size-1.5 rounded-full bg-emerald-500'
+													title='Saved in DB'
+												/>
+											)}
+										</button>
+									)
+								})}
+							</div>
+
+							<div className='space-y-1.5 pt-1'>
+								<label htmlFor='settings-key' className='text-foreground text-xs font-medium'>
+									Custom Pathname Key
+								</label>
+								<Input
+									id='settings-key'
+									required
+									placeholder='/custom-path'
+									value={key}
+									onChange={e => setKey(e.target.value)}
+									className='font-mono text-xs'
+								/>
+							</div>
+						</div>
+
 						{/* Meta Tags Card */}
-						<div className='rounded-2xl border border-border bg-surface p-6 shadow-xs space-y-5'>
-							<h2 className='text-base font-semibold tracking-tight text-foreground flex items-center gap-2'>
-								<Globe className='size-4 text-signal-ink' />
+						<div className='border-border bg-surface space-y-5 rounded-2xl border p-6 shadow-xs'>
+							<h2 className='text-foreground flex items-center gap-2 text-base font-semibold tracking-tight'>
+								<Globe className='text-signal-ink size-4' />
 								Search Engine Metadata
 							</h2>
 
 							<div className='space-y-1.5'>
-								<label htmlFor='settings-title' className='text-xs font-medium text-foreground'>
+								<label htmlFor='settings-title' className='text-foreground text-xs font-medium'>
 									Global Title Template
 								</label>
 								<Input
@@ -300,13 +414,15 @@ export const SettingsClientView = () => {
 									value={title}
 									onChange={e => setTitle(e.target.value)}
 								/>
-								<p className='text-[11px] text-muted-foreground'>
+								<p className='text-muted-foreground text-[11px]'>
 									Optimal length: 50–60 characters. Current length: {title.length} chars.
 								</p>
 							</div>
 
 							<div className='space-y-1.5'>
-								<label htmlFor='settings-description' className='text-xs font-medium text-foreground'>
+								<label
+									htmlFor='settings-description'
+									className='text-foreground text-xs font-medium'>
 									Global Meta Description
 								</label>
 								<Textarea
@@ -317,14 +433,16 @@ export const SettingsClientView = () => {
 									value={description}
 									onChange={e => setDescription(e.target.value)}
 								/>
-								<p className='text-[11px] text-muted-foreground'>
+								<p className='text-muted-foreground text-[11px]'>
 									Optimal length: 140–160 characters. Current length: {description.length} chars.
 								</p>
 							</div>
 
 							<div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
 								<div className='space-y-1.5'>
-									<label htmlFor='settings-canonical' className='text-xs font-medium text-foreground'>
+									<label
+										htmlFor='settings-canonical'
+										className='text-foreground text-xs font-medium'>
 										Canonical Base URL
 									</label>
 									<Input
@@ -337,7 +455,7 @@ export const SettingsClientView = () => {
 								</div>
 
 								<div className='space-y-1.5'>
-									<label htmlFor='settings-robots' className='text-xs font-medium text-foreground'>
+									<label htmlFor='settings-robots' className='text-foreground text-xs font-medium'>
 										Robots Directives
 									</label>
 									<select
@@ -345,7 +463,7 @@ export const SettingsClientView = () => {
 										aria-label='Robots directives'
 										value={robots}
 										onChange={e => setRobots(e.target.value)}
-										className='w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-signal-ink'>
+										className='border-border bg-surface text-foreground focus:ring-signal-ink w-full rounded-lg border px-3 py-2 text-sm focus:ring-1 focus:outline-none'>
 										<option value='index,follow'>index, follow (Standard Public)</option>
 										<option value='noindex,follow'>noindex, follow (Staging / Pre-launch)</option>
 										<option value='noindex,nofollow'>noindex, nofollow (Private)</option>
@@ -355,8 +473,8 @@ export const SettingsClientView = () => {
 						</div>
 
 						{/* Keywords Card */}
-						<div className='rounded-2xl border border-border bg-surface p-6 shadow-xs space-y-4'>
-							<h2 className='text-base font-semibold tracking-tight text-foreground'>
+						<div className='border-border bg-surface space-y-4 rounded-2xl border p-6 shadow-xs'>
+							<h2 className='text-foreground text-base font-semibold tracking-tight'>
 								Meta Keywords & Discoverability
 							</h2>
 							<div className='flex gap-2'>
@@ -372,7 +490,7 @@ export const SettingsClientView = () => {
 									}}
 								/>
 								<Button type='button' variant='secondary' onClick={handleAddKeyword}>
-									<Plus className='size-4 mr-1' />
+									<Plus className='mr-1 size-4' />
 									Add
 								</Button>
 							</div>
@@ -381,7 +499,7 @@ export const SettingsClientView = () => {
 								{keywords.map(kw => (
 									<span
 										key={kw}
-										className='inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground'>
+										className='border-border bg-background text-foreground inline-flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium'>
 										{kw}
 										<button
 											type='button'
@@ -395,12 +513,12 @@ export const SettingsClientView = () => {
 						</div>
 
 						{/* OpenGraph & Social Sharing Image */}
-						<div className='rounded-2xl border border-border bg-surface p-6 shadow-xs space-y-4'>
-							<h2 className='text-base font-semibold tracking-tight text-foreground flex items-center gap-2'>
-								<ImageIcon className='size-4 text-signal-ink' />
+						<div className='border-border bg-surface space-y-4 rounded-2xl border p-6 shadow-xs'>
+							<h2 className='text-foreground flex items-center gap-2 text-base font-semibold tracking-tight'>
+								<ImageIcon className='text-signal-ink size-4' />
 								OpenGraph & Social Share Banner
 							</h2>
-							<p className='text-xs text-muted-foreground'>
+							<p className='text-muted-foreground text-xs'>
 								Default preview image displayed on Twitter, LinkedIn, Slack, and Facebook feeds
 								(1200x630 recommended).
 							</p>
@@ -417,7 +535,7 @@ export const SettingsClientView = () => {
 							</div>
 
 							{ogImage && (
-								<div className='overflow-hidden rounded-lg border border-border bg-background max-w-md aspect-[1200/630] relative'>
+								<div className='border-border bg-background relative aspect-1200/630 max-w-md overflow-hidden rounded-lg border'>
 									{/* eslint-disable-next-line @next/next/no-img-element */}
 									<img src={ogImage} alt='OG Preview' className='h-full w-full object-cover' />
 								</div>
@@ -425,10 +543,10 @@ export const SettingsClientView = () => {
 						</div>
 
 						{/* Publication State */}
-						<div className='rounded-2xl border border-border bg-surface p-6 shadow-xs flex items-center justify-between'>
+						<div className='border-border bg-surface flex items-center justify-between rounded-2xl border p-6 shadow-xs'>
 							<div>
-								<h2 className='text-sm font-semibold text-foreground'>Publish Status</h2>
-								<p className='text-xs text-muted-foreground mt-0.5'>
+								<h2 className='text-foreground text-sm font-semibold'>Publish Status</h2>
+								<p className='text-muted-foreground mt-0.5 text-xs'>
 									When active, these SEO tags are propagated to client SSR/SSG layout outputs.
 								</p>
 							</div>
@@ -450,73 +568,73 @@ export const SettingsClientView = () => {
 					{/* Right Column: Live SERP & Social Previews */}
 					<div className='space-y-6'>
 						{/* Google SERP Card */}
-						<div className='rounded-2xl border border-border bg-surface p-5 shadow-xs space-y-3'>
-							<h3 className='text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 font-mono'>
+						<div className='border-border bg-surface space-y-3 rounded-2xl border p-5 shadow-xs'>
+							<h3 className='text-muted-foreground flex items-center gap-1.5 font-mono text-xs font-semibold tracking-wider uppercase'>
 								<Eye className='size-3.5' />
 								Google Search SERP Preview
 							</h3>
-							<div className='rounded-xl border border-border bg-background p-4 space-y-1.5 text-left'>
-								<div className='flex items-center gap-1.5 text-xs text-muted-foreground'>
-									<div className='size-3.5 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-[9px] font-bold'>
+							<div className='border-border bg-background space-y-1.5 rounded-xl border p-4 text-left'>
+								<div className='text-muted-foreground flex items-center gap-1.5 text-xs'>
+									<div className='flex size-3.5 items-center justify-center rounded-full bg-emerald-500/20 text-[9px] font-bold text-emerald-500'>
 										K
 									</div>
-									<span className='truncate max-w-[200px]'>{canonicalUrl}</span>
+									<span className='max-w-50 truncate'>{canonicalUrl}</span>
 								</div>
-								<h4 className='text-sm font-medium text-blue-500 hover:underline cursor-pointer line-clamp-1'>
+								<h4 className='line-clamp-1 cursor-pointer text-sm font-medium text-blue-500 hover:underline'>
 									{title || 'Page Title'}
 								</h4>
-								<p className='text-xs text-muted-foreground line-clamp-2 leading-relaxed'>
+								<p className='text-muted-foreground line-clamp-2 text-xs leading-relaxed'>
 									{description || 'Page meta description will appear in Google index results...'}
 								</p>
 							</div>
 						</div>
 
 						{/* Twitter / Social Card Preview */}
-						<div className='rounded-2xl border border-border bg-surface p-5 shadow-xs space-y-3'>
-							<h3 className='text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 font-mono'>
+						<div className='border-border bg-surface space-y-3 rounded-2xl border p-5 shadow-xs'>
+							<h3 className='text-muted-foreground flex items-center gap-1.5 font-mono text-xs font-semibold tracking-wider uppercase'>
 								<Share2 className='size-3.5' />
 								Social OpenGraph Card
 							</h3>
-							<div className='overflow-hidden rounded-xl border border-border bg-background text-left'>
-								<div className='aspect-[1200/630] bg-surface/70 flex items-center justify-center overflow-hidden border-b border-border'>
+							<div className='border-border bg-background overflow-hidden rounded-xl border text-left'>
+								<div className='bg-surface/70 border-border flex aspect-1200/630 items-center justify-center overflow-hidden border-b'>
 									{ogImage ? (
 										// eslint-disable-next-line @next/next/no-img-element
 										<img src={ogImage} alt='OG Preview' className='h-full w-full object-cover' />
 									) : (
-										<div className='flex flex-col items-center justify-center p-4 text-center text-muted-foreground'>
-											<ImageIcon className='size-8 mb-2 opacity-50' />
+										<div className='text-muted-foreground flex flex-col items-center justify-center p-4 text-center'>
+											<ImageIcon className='mb-2 size-8 opacity-50' />
 											<span className='text-xs'>No OG Image specified</span>
 										</div>
 									)}
 								</div>
-								<div className='p-3 space-y-1'>
-									<p className='text-[10px] uppercase font-semibold text-muted-foreground font-mono'>
+								<div className='space-y-1 p-3'>
+									<p className='text-muted-foreground font-mono text-[10px] font-semibold uppercase'>
 										koushikpuppala.com
 									</p>
-									<p className='text-xs font-semibold text-foreground line-clamp-1'>{title}</p>
-									<p className='text-[11px] text-muted-foreground line-clamp-2'>{description}</p>
+									<p className='text-foreground line-clamp-1 text-xs font-semibold'>{title}</p>
+									<p className='text-muted-foreground line-clamp-2 text-[11px]'>{description}</p>
 								</div>
 							</div>
 						</div>
 
 						{/* System Metadata Verification */}
-						<div className='rounded-2xl border border-border bg-surface p-5 shadow-xs space-y-3'>
-							<h3 className='text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5 font-mono'>
-								<Shield className='size-3.5 text-signal-ink' />
+						<div className='border-border bg-surface space-y-3 rounded-2xl border p-5 shadow-xs'>
+							<h3 className='text-muted-foreground flex items-center gap-1.5 font-mono text-xs font-semibold tracking-wider uppercase'>
+								<Shield className='text-signal-ink size-3.5' />
 								Architecture Boundaries
 							</h3>
-							<ul className='text-xs text-muted-foreground space-y-2'>
+							<ul className='text-muted-foreground space-y-2 text-xs'>
 								<li className='flex items-center justify-between'>
 									<span>Backend Verification:</span>
-									<span className='font-mono font-medium text-foreground'>NestJS 11</span>
+									<span className='text-foreground font-mono font-medium'>NestJS 11</span>
 								</li>
 								<li className='flex items-center justify-between'>
 									<span>Prisma Model:</span>
-									<span className='font-mono font-medium text-foreground'>Metadata (db.Uuid)</span>
+									<span className='text-foreground font-mono font-medium'>Metadata (db.Uuid)</span>
 								</li>
 								<li className='flex items-center justify-between'>
 									<span>Media Storage:</span>
-									<span className='font-mono font-medium text-foreground'>AWS S3 Presigned</span>
+									<span className='text-foreground font-mono font-medium'>AWS S3 Presigned</span>
 								</li>
 							</ul>
 						</div>
@@ -538,10 +656,10 @@ export const SettingsClientView = () => {
 			{/* Table Section */}
 			<div className='space-y-4'>
 				<div>
-					<h2 className='font-display text-lg font-bold tracking-tight text-foreground'>
+					<h2 className='font-display text-foreground text-lg font-bold tracking-tight'>
 						Metadata Audit & Configuration Records
 					</h2>
-					<p className='text-xs text-muted-foreground'>
+					<p className='text-muted-foreground text-xs'>
 						Inspect and manage stored layout and page SEO configuration records.
 					</p>
 				</div>

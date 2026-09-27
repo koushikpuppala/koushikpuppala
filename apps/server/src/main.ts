@@ -43,7 +43,19 @@ const bootstrap = async () => {
 
 	app.use(
 		helmet({
-			contentSecurityPolicy: false,
+			contentSecurityPolicy: {
+				directives: {
+					defaultSrc: ["'self'"],
+					scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+					styleSrc: ["'self'", "'unsafe-inline'"],
+					imgSrc: ["'self'", 'data:', 'https:'],
+					fontSrc: ["'self'", 'https:', 'data:'],
+					connectSrc: ["'self'", 'https:'],
+					frameAncestors: ["'none'"],
+					baseUri: ["'self'"],
+					formAction: ["'self'"],
+				},
+			},
 			crossOriginEmbedderPolicy: false,
 			crossOriginResourcePolicy: { policy: 'cross-origin' },
 		}),

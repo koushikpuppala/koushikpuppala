@@ -54,101 +54,120 @@ export const DashboardClientView = () => {
 		recentContacts: [],
 		recentAudits: [],
 	})
-	const [_loading, setLoading] = useState(true)
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
 
-	useEffect(() => {
-		const loadDashboard = async () => {
-			try {
-				const [projectsRes, contactsRes, mediaRes, auditsRes] = await Promise.all([
-					adminFetch<{ items?: Array<{ status: string }> } | Array<{ status: string }>>(
-						'/api/v1/projects',
-					),
-					adminFetch<{
-						items?: Array<{
-							id: string
-							name: string
-							email: string
-							subject: string
-							createdAt: string
-							status: string
-						}>
-						unreadCount?: number
-					} | Array<{
+	const loadDashboard = async () => {
+		setLoading(true)
+		setError(null)
+		try {
+			const [projectsRes, contactsRes, mediaRes, auditsRes] = await Promise.all([
+				adminFetch<{ items?: Array<{ status: string }> } | Array<{ status: string }>>(
+					'/api/v1/projects',
+				),
+				adminFetch<{
+					items?: Array<{
 						id: string
 						name: string
 						email: string
 						subject: string
 						createdAt: string
 						status: string
-					}>>('/api/v1/contacts?limit=5'),
-					adminFetch<{ items?: unknown[]; pagination?: { total: number } } | unknown[]>(
-						'/api/v1/media',
-					),
-					adminFetch<{
-						items?: Array<{
-							id: string
-							actor: string
-							action: string
-							entity: string
-							createdAt: string
-						}>
-					} | Array<{
+					}>
+					unreadCount?: number
+				} | Array<{
+					id: string
+					name: string
+					email: string
+					subject: string
+					createdAt: string
+					status: string
+				}>>('/api/v1/contacts?limit=5'),
+				adminFetch<{ items?: unknown[]; pagination?: { total: number } } | unknown[]>(
+					'/api/v1/media',
+				),
+				adminFetch<{
+					items?: Array<{
 						id: string
 						actor: string
 						action: string
 						entity: string
 						createdAt: string
-					}>>('/api/v1/audit-logs?limit=5'),
-				])
+					}>
+				} | Array<{
+					id: string
+					actor: string
+					action: string
+					entity: string
+					createdAt: string
+				}>>('/api/v1/audit-logs?limit=5'),
+			])
 
-				const projectItems = Array.isArray(projectsRes.data)
-					? projectsRes.data
-					: (projectsRes.data?.items || [])
-				const publishedCount = projectItems.filter(p => p.status === 'PUBLISHED').length
-
-				const contactItems = Array.isArray(contactsRes.data)
-					? contactsRes.data
-					: (contactsRes.data?.items || [])
-				const unreadCount =
-					(contactsRes.data && !Array.isArray(contactsRes.data) && contactsRes.data.unreadCount !== undefined)
-						? contactsRes.data.unreadCount
-						: contactItems.filter(c => c.status === 'UNREAD').length
-
-				const mediaCount =
-					mediaRes.count ??
-					(mediaRes.data && !Array.isArray(mediaRes.data) && mediaRes.data.pagination?.total !== undefined
-						? mediaRes.data.pagination.total
-						: Array.isArray(mediaRes.data)
-							? mediaRes.data.length
-							: (mediaRes.data?.items?.length ?? 0))
-
-				const auditItems = Array.isArray(auditsRes.data)
-					? auditsRes.data
-					: (auditsRes.data?.items || [])
-				const auditCount = auditsRes.count ?? auditItems.length
-
-				setMetrics({
-					projectsCount: projectItems.length,
-					publishedProjects: publishedCount,
-					inboxCount: contactItems.length,
-					unreadInquiries: unreadCount,
-					mediaCount,
-					auditEventsCount: auditCount,
-					recentContacts: contactItems.slice(0, 5),
-					recentAudits: auditItems.slice(0, 5),
-				})
-			} catch (err) {
-				console.error('Failed to load dashboard metrics:', err)
-			} finally {
-				setLoading(false)
+			const hasError = projectsRes.error || contactsRes.error || mediaRes.error || auditsRes.error
+			if (hasError) {
+				setError(projectsRes.error || contactsRes.error || mediaRes.error || auditsRes.error || 'Failed to fetch dashboard metrics from backend API.')
 			}
-		}
 
+			const projectItems = Array.isArray(projectsRes.data)
+				? projectsRes.data
+				: (projectsRes.data?.items || [])
+			const publishedCount = projectItems.filter(p => p.status === 'PUBLISHED').length
+
+			const contactItems = Array.isArray(contactsRes.data)
+				? contactsRes.data
+				: (contactsRes.data?.items || [])
+			const unreadCount =
+				(contactsRes.data && !Array.isArray(contactsRes.data) && contactsRes.data.unreadCount !== undefined)
+					? contactsRes.data.unreadCount
+					: contactItems.filter(c => c.status === 'UNREAD').length
+
+			const mediaCount =
+				mediaRes.count ??
+				(mediaRes.data && !Array.isArray(mediaRes.data) && mediaRes.data.pagination?.total !== undefined
+					? mediaRes.data.pagination.total
+					: Array.isArray(mediaRes.data)
+						? mediaRes.data.length
+						: (mediaRes.data?.items?.length ?? 0))
+
+			const auditItems = Array.isArray(auditsRes.data)
+				? auditsRes.data
+				: (auditsRes.data?.items || [])
+			const auditCount = auditsRes.count ?? auditItems.length
+
+			setMetrics({
+				projectsCount: projectItems.length,
+				publishedProjects: publishedCount,
+				inboxCount: contactItems.length,
+				unreadInquiries: unreadCount,
+				mediaCount,
+				auditEventsCount: auditCount,
+				recentContacts: contactItems.slice(0, 5),
+				recentAudits: auditItems.slice(0, 5),
+			})
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Failed to connect to backend API.')
+		} finally {
+			setLoading(false)
+		}
+	}
+
+	useEffect(() => {
 		loadDashboard()
 	}, [])
 
 	return (
 		<div className='space-y-8'>
+			{error && !loading && (
+				<div className='flex items-center justify-between rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-xs font-mono text-destructive'>
+					<div>
+						<span className='font-semibold'>Dashboard API Error: </span>
+						<span>{error}</span>
+					</div>
+					<Button type='button' variant='outline' size='sm' onClick={loadDashboard} className='h-7 text-xs'>
+						Retry API Fetch
+					</Button>
+				</div>
+			)}
 			{/* Welcome Banner */}
 			<div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-border bg-gradient-to-r from-surface to-surface-strong/60 p-6 sm:p-8 shadow-xs'>
 				<div>

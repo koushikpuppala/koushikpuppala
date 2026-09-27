@@ -2,12 +2,11 @@
 
 import { useState, useMemo, type ReactNode } from 'react'
 import type { ColumnDef as TanstackColumnDef } from '@tanstack/react-table'
+import type { DataTableFilters } from 'types/components'
 import { DataTable } from 'ui/designs/data-table'
-import { Eye, EyeOff, Pencil, Plus, Search, Trash2 } from '@/components/icons'
+import { Eye, EyeOff, Pencil, Plus, Trash2 } from '@/components/icons'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { ConfirmDialog } from '@/components/cms/confirm-dialog'
-import { cn } from '@/lib/utils'
 
 export type ColumnDef<T> = {
 	key: string
@@ -22,6 +21,8 @@ type CollectionManagerProps<T extends { id: string; status?: string }> = {
 	items: T[]
 	columns: ColumnDef<T>[]
 	loading?: boolean
+	error?: string | null
+	onRetry?: () => void
 	searchKey?: (item: T) => string
 	statusFilterKey?: (item: T) => string
 	onCreate?: () => void
@@ -38,7 +39,8 @@ export function CollectionManager<T extends { id: string; status?: string }>({
 	items,
 	columns,
 	loading = false,
-	searchKey,
+	error = null,
+	onRetry,
 	statusFilterKey = item => item.status || 'PUBLISHED',
 	onCreate,
 	onEdit,
@@ -47,21 +49,22 @@ export function CollectionManager<T extends { id: string; status?: string }>({
 	createLabel = 'Create New',
 	actionsExtra,
 }: CollectionManagerProps<T>) {
-	const [query, setQuery] = useState('')
-	const [statusFilter, setStatusFilter] = useState<'ALL' | 'PUBLISHED' | 'DRAFT' | 'ARCHIVED'>(
-		'ALL',
-	)
 	const [deleteItem, setDeleteItem] = useState<T | null>(null)
 	const [deleting, setDeleting] = useState(false)
 
-	const filtered = items.filter(item => {
-		const matchesQuery = searchKey
-			? searchKey(item).toLowerCase().includes(query.toLowerCase())
-			: true
-		const currentStatus = statusFilterKey(item)
-		const matchesStatus = statusFilter === 'ALL' ? true : currentStatus === statusFilter
-		return matchesQuery && matchesStatus
-	})
+	const statusFilterOptions: DataTableFilters[] = [
+		{
+			id: 'status',
+			label: 'Status',
+			type: 'select',
+			options: [
+				{ label: 'All Statuses', value: '' },
+				{ label: 'Published', value: 'PUBLISHED' },
+				{ label: 'Draft', value: 'DRAFT' },
+				{ label: 'Archived', value: 'ARCHIVED' },
+			],
+		},
+	]
 
 	const tanstackColumns = useMemo<TanstackColumnDef<T>[]>(() => {
 		const cols: TanstackColumnDef<T>[] = columns.map(col => ({
@@ -73,6 +76,16 @@ export function CollectionManager<T extends { id: string; status?: string }>({
 					? col.render(info.row.original)
 					: String((info.row.original as Record<string, unknown>)[col.key] ?? ''),
 		}))
+
+		if (!cols.some(c => c.id === 'status')) {
+			cols.unshift({
+				id: 'status',
+				accessorFn: item => statusFilterKey(item),
+				header: () => null,
+				cell: () => null,
+				enableHiding: true,
+			})
+		}
 
 		cols.push({
 			id: 'actions',
@@ -119,7 +132,7 @@ export function CollectionManager<T extends { id: string; status?: string }>({
 		})
 
 		return cols
-	}, [columns, actionsExtra, onTogglePublish, onEdit, onDelete])
+	}, [columns, statusFilterKey, actionsExtra, onTogglePublish, onEdit, onDelete])
 
 	async function handleDeleteConfirm() {
 		if (!deleteItem || !onDelete) return
@@ -150,46 +163,33 @@ export function CollectionManager<T extends { id: string; status?: string }>({
 				)}
 			</div>
 
-			{/* Filter & Search Toolbar */}
-			<div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border bg-surface/60 p-3'>
-				<div className='relative flex-1 max-w-sm'>
-					<Search className='size-4 text-muted-foreground absolute left-3 top-2.5' />
-					<Input
-						value={query}
-						onChange={e => setQuery(e.target.value)}
-						placeholder={`Search ${title.toLowerCase()}…`}
-						className='pl-9 h-9'
-					/>
+			{/* Error Alert */}
+			{error && !loading && (
+				<div className='flex items-center justify-between rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-xs font-mono text-destructive'>
+					<div>
+						<span className='font-semibold'>API Error: </span>
+						<span>{error}</span>
+					</div>
+					{onRetry && (
+						<Button type='button' variant='outline' size='sm' onClick={onRetry} className='h-7 text-xs'>
+							Retry
+						</Button>
+					)}
 				</div>
-
-				{/* Status Filters */}
-				<div className='flex items-center gap-1.5 overflow-x-auto font-mono text-xs'>
-					{(['ALL', 'PUBLISHED', 'DRAFT', 'ARCHIVED'] as const).map(tab => (
-						<button
-							key={tab}
-							type='button'
-							onClick={() => setStatusFilter(tab)}
-							className={cn(
-								'rounded-lg px-2.5 py-1 transition-colors cursor-pointer',
-								statusFilter === tab
-									? 'bg-primary text-primary-foreground font-semibold shadow-xs'
-									: 'text-muted-foreground hover:bg-accent hover:text-foreground',
-							)}>
-							{tab}
-						</button>
-					))}
-				</div>
-			</div>
+			)}
 
 			{/* Data Table */}
 			<DataTable
 				columns={tanstackColumns}
-				data={filtered}
+				data={items}
 				loading={loading}
-				totalCount={filtered.length}
+				totalCount={items.length}
 				pageSize={10}
+				filters={statusFilterOptions}
+				manualFiltering={false}
+				manualSorting={false}
+				manualPagination={false}
 				disableDateRange
-				disableSearch
 			/>
 
 			{/* Confirm Delete Dialog */}

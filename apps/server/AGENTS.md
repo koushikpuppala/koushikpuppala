@@ -1,132 +1,50 @@
-# Server Application Instructions
+# Server Application
 
-## Scope
+## Overview
 
-These rules apply to `apps/server`.
+Authoritative NestJS backend application. It provides HTTP API endpoints, authentication verification, business logic, PostgreSQL database access via Prisma, Redis caching, and audit logging.
 
-`apps/server` is the authoritative NestJS backend.
+## Key files
 
-## Responsibilities
+| File | Owns |
+|---|---|
+| apps/server/src/main.ts | Application bootstrap, Swagger setup, and global pipes |
+| apps/server/src/app.module.ts | Root NestJS module registering feature modules and infrastructure |
+| apps/server/src/modules/ | Domain feature modules, controllers, and services |
 
-Own:
+## Commands
 
-- API endpoints
-- Authentication verification
-- Authorization
-- Business logic
-- Database access
-- Redis
-- S3
-- Email integrations
-- API metrics
-- Audit logging
-- Validation
-- Error handling
-- Swagger/OpenAPI
-- Rate limiting
-- External service orchestration
+```bash
+# Dev server
+pnpm --filter server dev
 
-## Architecture
+# Build
+pnpm --filter server build
 
-Prefer:
-
-```text
-Controller
-    ↓
-Service
-    ↓
-Repository / Provider
-    ↓
-Database / External System
+# Lint
+pnpm --filter server lint
 ```
 
-Controllers should remain thin.
+## Conventions
 
-Do not put complex business logic, large queries, or infrastructure implementation directly into controllers.
+* Architecture follows Controller to Service to Repository or Provider pattern.
+* Controllers handle HTTP concerns and stay thin; business logic belongs in services.
+* Authentication uses Firebase Admin SDK for token verification; backend enforces authorization.
+* Validate all request inputs using class validator DTOs.
+* Return consistent error responses and never expose internal database errors or credentials.
+* Record administrative mutations into the audit log.
 
-## Authentication
+## Gotchas
 
-Use Firebase Admin SDK for backend token verification.
+* Never trust client provided user identifiers or roles.
+* Keep external network calls outside database transactions.
 
-Do not introduce another authentication provider without an explicit architecture decision.
+## Agent skills
 
-## Authorization
+* [nestjs-best-practices](~/.agents/skills/nestjs-best-practices/): NestJS modular architecture and dependency injection
+* [nestjs-patterns](~/.agents/skills/nestjs-patterns/): NestJS controllers, providers, DTO validation, and guards
+* [api-design](~/.agents/skills/api-design/): REST API design patterns and error contracts
+* [auth-implementation-patterns](~/.agents/skills/auth-implementation-patterns/): Token verification and backend authorization
+* [redis-best-practices](~/.agents/skills/redis-best-practices/): Redis caching and high performance key value operations
 
-Authorization is enforced on the backend.
-
-Never trust client-provided:
-
-- User ID
-- Role
-- Permissions
-- Ownership
-- Price
-- Administrative status
-
-## Database
-
-Use the established Prisma 7 integration through `packages/prisma`.
-
-Before changing database behavior:
-
-1. Inspect the relevant schema.
-2. Inspect relationships and indexes.
-3. Inspect migrations.
-4. Identify consumers.
-5. Consider production data.
-6. Implement the smallest safe change.
-7. Verify it.
-
-Do not introduce another ORM.
-
-## API Contracts
-
-Preserve established request, response, error, authentication, and authorization contracts.
-
-Check both frontend applications before changing an endpoint.
-
-Maintain Swagger metadata.
-
-## Validation
-
-Validate all external input:
-
-- Body
-- Query
-- Route parameters
-- Headers
-- Files
-- Webhooks
-- External responses
-
-## Errors
-
-Use the repository's existing NestJS exception/filter conventions.
-
-Do not expose internal errors, stack traces, credentials, or infrastructure details.
-
-## Logging and Metrics
-
-Preserve existing logging, request IDs, API metrics, and audit logging.
-
-Avoid secrets and unnecessary sensitive data.
-
-## Redis
-
-Treat PostgreSQL as the persistent source of truth.
-
-Use deliberate cache keys and invalidation.
-
-Never leak user-specific data through shared cache entries.
-
-## S3
-
-Keep AWS credentials server-side.
-
-Prefer presigned uploads for appropriate media flows.
-
-## Verification
-
-For backend changes, run relevant type/lint/tests and verify affected consumers.
-
-For security-sensitive changes, verify both authorized and unauthorized paths.
+_Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

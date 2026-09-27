@@ -58,7 +58,7 @@ export const ServiceModal = ({
 
 	const addFeature = () => {
 		if (!featureInput.trim()) return
-		setFormData(prev => ({
+		setFormData((prev: Partial<Service>) => ({
 			...prev,
 			features: [...(prev.features || []), featureInput.trim()],
 		}))
@@ -66,9 +66,9 @@ export const ServiceModal = ({
 	}
 
 	const removeFeature = (index: number) => {
-		setFormData(prev => ({
+		setFormData((prev: Partial<Service>) => ({
 			...prev,
-			features: (prev.features || []).filter((_, i) => i !== index),
+			features: (prev.features || []).filter((_: string, i: number) => i !== index),
 		}))
 	}
 
@@ -102,7 +102,7 @@ export const ServiceModal = ({
 						<Label className='text-xs'>Service Title</Label>
 						<Input
 							value={formData.title || ''}
-							onChange={e => setFormData(prev => ({ ...prev, title: e.target.value }))}
+							onChange={e => setFormData((prev: Partial<Service>) => ({ ...prev, title: e.target.value }))}
 							required
 							placeholder='e.g. Full-Stack Web Development'
 						/>
@@ -112,7 +112,7 @@ export const ServiceModal = ({
 						<Label className='text-xs'>Description</Label>
 						<Textarea
 							value={formData.description || ''}
-							onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
+							onChange={e => setFormData((prev: Partial<Service>) => ({ ...prev, description: e.target.value }))}
 							rows={3}
 							required
 							placeholder='Scope of work, deliverables, and engineering practices…'
@@ -123,7 +123,7 @@ export const ServiceModal = ({
 					<div className='space-y-2'>
 						<Label className='text-xs'>Key Feature Deliverables</Label>
 						<div className='space-y-1.5'>
-							{(formData.features || []).map((feat, i) => (
+							{(formData.features || []).map((feat: string, i: number) => (
 								<div
 									key={i}
 									className='flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-strong/50 p-2 text-xs'>
@@ -161,7 +161,7 @@ export const ServiceModal = ({
 						<select
 							value={formData.status || 'PUBLISHED'}
 							onChange={e =>
-								setFormData(prev => ({ ...prev, status: e.target.value as Service['status'] }))
+								setFormData((prev: Partial<Service>) => ({ ...prev, status: e.target.value as Service['status'] }))
 							}
 							className='h-9 w-full rounded-lg border border-border bg-surface px-3 text-xs'>
 							<option value='PUBLISHED'>PUBLISHED</option>
@@ -187,11 +187,13 @@ export const ServiceModal = ({
 export const ServicesContentClientView = () => {
 	const [services, setServices] = useState<Service[]>([])
 	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
 	const [modalOpen, setModalOpen] = useState(false)
 	const [editingSvc, setEditingSvc] = useState<Service | null>(null)
 
 	const loadServices = async () => {
 		setLoading(true)
+		setError(null)
 		try {
 			const res = await adminFetch<{ items?: Service[] } | Service[]>('/api/v1/services')
 			if (res.data) {
@@ -202,9 +204,11 @@ export const ServicesContentClientView = () => {
 						status: s.isPublished || (s as { status?: string }).status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
 					})),
 				)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
-			console.error('Failed to load services:', err)
+			setError(err instanceof Error ? err.message : 'Failed to load services from API.')
 		} finally {
 			setLoading(false)
 		}
@@ -273,6 +277,8 @@ export const ServicesContentClientView = () => {
 				items={services}
 				columns={columns}
 				loading={loading}
+				error={error}
+				onRetry={loadServices}
 				searchKey={s => `${s.title} ${s.description}`}
 				createLabel='Add Service'
 				onCreate={() => {

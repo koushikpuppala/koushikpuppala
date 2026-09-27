@@ -1,4 +1,4 @@
-import { ApiResponse } from 'types/src/api'
+import type { ApiResponse } from 'types'
 
 export type { ApiResponse }
 

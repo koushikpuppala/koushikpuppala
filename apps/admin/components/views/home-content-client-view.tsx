@@ -14,101 +14,92 @@ import type { HomeContent } from 'types/models'
 
 export const HomeContentClientView = () => {
 	const [content, setContent] = useState<HomeContent>({
-		title: 'KOUSHIK PUPPALA',
+		title: '',
 		separator: '|',
-		subtitles: [
-			'Senior Full-Stack & AI Systems Engineer',
-			'Software Engineer at Upraised®',
-			'Team Lead & Mentor — IIIT Raichur Web Systems',
-			'Former Google Developer Student Clubs (GDSC) Lead',
-		],
-		content:
-			'Architecting resilient distributed platforms, high-throughput web systems, and AI-enabled digital experiences. Engineering with TypeScript, Next.js 16, NestJS, and PostgreSQL.',
-		ctaLabel: 'Explore Selected Work',
-		ctaUrl: '#projects',
-		secondaryCtaLabel: 'Get In Touch',
-		secondaryCtaUrl: '#contact',
-		featuredSkills: ['TypeScript', 'Next.js 16', 'NestJS 11', 'PostgreSQL', 'Redis', 'AWS'],
-		stats: {
-			yearsOfExperience: '3+',
-			projectsDelivered: '20+',
-			openSourceCommits: '1.8k+',
-			menteesGuided: '50+',
-		},
+		subtitles: [],
+		content: '',
+		ctaLabel: '',
+		ctaUrl: '',
+		secondaryCtaLabel: '',
+		secondaryCtaUrl: '',
+		featuredSkills: [],
+		stats: null,
 		profileImageUrl: '',
-		isPublished: true,
+		isPublished: false,
 	})
 	const [loading, setLoading] = useState(true)
 	const [saving, setSaving] = useState(false)
+	const [error, setError] = useState<string | null>(null)
 	const [isDirty, setIsDirty] = useState(false)
 	const [mediaModalOpen, setMediaModalOpen] = useState(false)
 	const [notice, setNotice] = useState<string | null>(null)
 	const [newSubtitle, setNewSubtitle] = useState('')
 	const [newSkill, setNewSkill] = useState('')
 
-	useEffect(() => {
-		const loadHome = async () => {
-			try {
-				const res = await adminFetch<HomeContent & { profileImage?: { url?: string } }>(
-					'/api/v1/home/published',
-				)
-				if (res.data) {
-					const d = res.data
-					setContent(prev => ({
-						...prev,
-						...d,
-						title: d.title || prev.title,
-						separator: d.separator || prev.separator,
-						subtitles:
-							Array.isArray(d.subtitles) && d.subtitles.length > 0 ? d.subtitles : prev.subtitles,
-						content: d.content || prev.content,
-						ctaLabel: d.ctaLabel || prev.ctaLabel,
-						ctaUrl: d.ctaUrl || prev.ctaUrl,
-						secondaryCtaLabel: d.secondaryCtaLabel || prev.secondaryCtaLabel,
-						secondaryCtaUrl: d.secondaryCtaUrl || prev.secondaryCtaUrl,
-						featuredSkills:
-							Array.isArray(d.featuredSkills) && d.featuredSkills.length > 0
-								? d.featuredSkills
-								: prev.featuredSkills,
-						stats: d.stats || prev.stats,
-						profileImageUrl: d.profileImageUrl || d.profileImage?.url || prev.profileImageUrl,
-					}))
-				}
-			} catch (err) {
-				console.error('Failed to load homepage content:', err)
-			} finally {
-				setLoading(false)
+	const loadHome = async () => {
+		setLoading(true)
+		setError(null)
+		try {
+			const res = await adminFetch<HomeContent & { profileImage?: { url?: string } }>(
+				'/api/v1/home/published',
+			)
+			if (res.data) {
+				const d = res.data
+				setContent({
+					id: d.id,
+					title: d.title || '',
+					separator: d.separator || '|',
+					subtitles: Array.isArray(d.subtitles) ? d.subtitles : [],
+					content: d.content || '',
+					ctaLabel: d.ctaLabel || '',
+					ctaUrl: d.ctaUrl || '',
+					secondaryCtaLabel: d.secondaryCtaLabel || '',
+					secondaryCtaUrl: d.secondaryCtaUrl || '',
+					featuredSkills: Array.isArray(d.featuredSkills) ? d.featuredSkills : [],
+					stats: d.stats || null,
+					profileImageUrl: d.profileImageUrl || d.profileImage?.url || '',
+					isPublished: d.isPublished ?? true,
+				})
+			} else if (res.error) {
+				setError(res.error)
 			}
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Failed to load homepage content from API.')
+		} finally {
+			setLoading(false)
 		}
+	}
+
+	useEffect(() => {
 		loadHome()
 	}, [])
 
 	const handleChange = <K extends keyof HomeContent>(key: K, value: HomeContent[K]) => {
-		setContent(prev => ({ ...prev, [key]: value }))
+		setContent((prev: HomeContent) => ({ ...prev, [key]: value }))
 		setIsDirty(true)
 	}
 
 	const handleAddSubtitle = () => {
 		if (!newSubtitle.trim()) return
-		setContent(prev => ({
+		setContent((prev: HomeContent) => ({
 			...prev,
-			subtitles: [...prev.subtitles, newSubtitle.trim()],
+			subtitles: [...(prev.subtitles || []), newSubtitle.trim()],
 		}))
 		setNewSubtitle('')
 		setIsDirty(true)
 	}
 
 	const handleRemoveSubtitle = (index: number) => {
-		setContent(prev => ({
+		setContent((prev: HomeContent) => ({
 			...prev,
-			subtitles: prev.subtitles.filter((_, i) => i !== index),
+			subtitles: (prev.subtitles || []).filter((_: string, i: number) => i !== index),
 		}))
 		setIsDirty(true)
 	}
 
 	const handleAddSkill = () => {
 		if (!newSkill.trim()) return
-		setContent(prev => ({
+		setContent((prev: HomeContent) => ({
 			...prev,
 			featuredSkills: [...(prev.featuredSkills || []), newSkill.trim()],
 		}))
@@ -117,9 +108,9 @@ export const HomeContentClientView = () => {
 	}
 
 	const handleRemoveSkill = (index: number) => {
-		setContent(prev => ({
+		setContent((prev: HomeContent) => ({
 			...prev,
-			featuredSkills: (prev.featuredSkills || []).filter((_, i) => i !== index),
+			featuredSkills: (prev.featuredSkills || []).filter((_: string, i: number) => i !== index),
 		}))
 		setIsDirty(true)
 	}
@@ -127,6 +118,7 @@ export const HomeContentClientView = () => {
 	const handleSave = async () => {
 		setSaving(true)
 		setNotice(null)
+		setError(null)
 		try {
 			const res = await adminFetch<HomeContent>(
 				content.id ? `/api/v1/home/${content.id}` : '/api/v1/home',
@@ -136,16 +128,14 @@ export const HomeContentClientView = () => {
 				},
 			)
 			if (res.data) {
-				setContent(prev => ({ ...prev, ...res.data }))
+				setContent((prev: HomeContent) => ({ ...prev, ...res.data }))
 				setIsDirty(false)
 				setNotice('Homepage content published successfully.')
 			} else {
-				setIsDirty(false)
-				setNotice('Homepage draft saved locally.')
+				setError(res.error || 'Failed to save homepage content.')
 			}
-		} catch {
-			setIsDirty(false)
-			setNotice('Saved changes locally.')
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'API request failed.')
 		} finally {
 			setSaving(false)
 			setTimeout(() => setNotice(null), 4000)
@@ -159,6 +149,8 @@ export const HomeContentClientView = () => {
 			isDirty={isDirty}
 			loading={loading}
 			saving={saving}
+			error={error}
+			onRetry={loadHome}
 			onSave={handleSave}
 			onDiscard={() => setIsDirty(false)}>
 			{notice && (

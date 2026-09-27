@@ -29,6 +29,8 @@ lerna-debug.log*
 .yarn-integrity
 
 # Local dotenv environment variable files
+.env
+.env.*
 **/.env*.local
 
 # TypeScript cache

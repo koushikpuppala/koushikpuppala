@@ -12,20 +12,10 @@ import { getExperienceData } from 'lib/experience-data'
 import { getEducationData } from 'lib/education-data'
 import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
+import { resolveMetadataByPath } from 'lib/metadata-data'
 
-export const metadata: Metadata = {
-	title: 'About',
-	description:
-		'Koushik Puppala is a Full Stack Developer building scalable, high-performance web applications with React, Next.js, Node.js and PostgreSQL.',
-	openGraph: {
-		title: 'About — Koushik Puppala',
-		description:
-			'Full stack development, frontend performance, clean architecture and backend integration.',
-		type: 'profile',
-	},
-	twitter: {
-		card: 'summary_large_image',
-	},
+export const generateMetadata = async (): Promise<Metadata> => {
+	return resolveMetadataByPath('/about')
 }
 
 export default async function AboutPage() {

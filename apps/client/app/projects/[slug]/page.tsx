@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowRight, ArrowUpRight, ExternalLink, Github } from 'components/icons'
 import { SiteShell } from 'components/site-shell'
@@ -14,12 +15,14 @@ export type PageProps = {
 	params: Promise<{ slug: string }>
 }
 
-export async function generateStaticParams() {
+export const generateStaticParams = async () => {
 	const projects = await getProjectsData()
 	return projects.map(p => ({ slug: p.slug }))
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+import { resolveMetadataByPath } from 'lib/metadata-data'
+
+export const generateMetadata = async ({ params }: PageProps): Promise<Metadata> => {
 	const { slug } = await params
 	const project = await getProjectBySlug(slug)
 
@@ -30,18 +33,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 		}
 	}
 
-	return {
+	return resolveMetadataByPath(`/projects/${slug}`, {
 		title: `${project.title} — Koushik Puppala`,
 		description: project.summary,
-		openGraph: {
-			title: `${project.title} — Koushik Puppala`,
-			description: project.summary,
-			type: 'article',
-		},
-		twitter: {
-			card: 'summary_large_image',
-		},
-	}
+		ogImage: project.heroImageUrl || project.imageUrl || undefined,
+	})
 }
 
 function MetaCell({ label, value }: { label: string; value: string }) {
@@ -89,7 +85,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 					aria-hidden
 				/>
 				<div
-					className='pointer-events-none absolute -top-56 -right-32 size-[36rem] rounded-full opacity-70 blur-3xl'
+					className='pointer-events-none absolute -top-56 -right-32 size-144 rounded-full opacity-70 blur-3xl'
 					style={{ background: 'var(--glow-signal)' }}
 					aria-hidden
 				/>
@@ -169,7 +165,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 							coverImageUrl={project.coverImageUrl}
 							eager
 							frame='wide'
-							className='aspect-4/3 w-full sm:aspect-16/9 lg:aspect-21/9'
+							className='aspect-4/3 w-full sm:aspect-video lg:aspect-21/9'
 						/>
 						<div className='ring-foreground/5 pointer-events-none absolute inset-0 ring-1 ring-inset' />
 					</div>
@@ -196,24 +192,27 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
 						{gallery.length > 0 ? (
 							<div className='mt-14 grid gap-5 sm:grid-cols-2'>
-								{gallery.map((item, i) => (
-									<Reveal key={item.id} delay={i * 60}>
-										<figure className='border-border bg-surface overflow-hidden rounded-xl border'>
-											<img
-												src={item.url}
-												alt={item.caption ?? project.title}
-												loading='lazy'
-												decoding='async'
-												className='w-full'
-											/>
-											{item.caption ? (
-												<figcaption className='border-border text-muted-foreground border-t px-4 py-3 font-mono text-[0.6875rem]'>
-													{item.caption}
-												</figcaption>
-											) : null}
-										</figure>
-									</Reveal>
-								))}
+								{gallery.map((item, i) =>
+									item.url ? (
+										<Reveal key={item.id} delay={i * 60}>
+											<figure className='border-border bg-surface overflow-hidden rounded-xl border'>
+												<Image
+													src={item.url}
+													alt={item.caption ?? project.title}
+													width={800}
+													height={500}
+													unoptimized
+													className='h-auto w-full object-cover'
+												/>
+												{item.caption ? (
+													<figcaption className='border-border text-muted-foreground border-t px-4 py-3 font-mono text-[0.6875rem]'>
+														{item.caption}
+													</figcaption>
+												) : null}
+											</figure>
+										</Reveal>
+									) : null,
+								)}
 							</div>
 						) : null}
 					</div>

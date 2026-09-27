@@ -64,8 +64,8 @@ export const EducationModal = ({
 		} else {
 			setFormData({
 				university: '',
-				degree: 'Bachelor of Technology (B.Tech)',
-				fieldOfStudy: 'Computer Science and Engineering',
+				degree: '',
+				fieldOfStudy: '',
 				location: '',
 				startDate: '',
 				endDate: '',
@@ -106,7 +106,7 @@ export const EducationModal = ({
 
 	const addDescription = () => {
 		if (!descInput.trim()) return
-		setFormData(prev => ({
+		setFormData((prev: Partial<Education>) => ({
 			...prev,
 			description: [...(prev.description || []), descInput.trim()],
 		}))
@@ -115,7 +115,7 @@ export const EducationModal = ({
 
 	const addAchievement = () => {
 		if (!newAch.trim()) return
-		setFormData(prev => ({
+		setFormData((prev: Partial<Education>) => ({
 			...prev,
 			achievements: [...(prev.achievements || []), newAch.trim()],
 		}))
@@ -139,7 +139,7 @@ export const EducationModal = ({
 						<Label className='text-xs'>University / Institution Name</Label>
 						<Input
 							value={formData.university || ''}
-							onChange={e => setFormData(prev => ({ ...prev, university: e.target.value }))}
+							onChange={e => setFormData((prev: Partial<Education>) => ({ ...prev, university: e.target.value }))}
 							required
 							placeholder='e.g. Indian Institute of Information Technology Raichur'
 						/>
@@ -150,7 +150,7 @@ export const EducationModal = ({
 							<Label className='text-xs'>Degree</Label>
 							<Input
 								value={formData.degree || ''}
-								onChange={e => setFormData(prev => ({ ...prev, degree: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Education>) => ({ ...prev, degree: e.target.value }))}
 								required
 								placeholder='Bachelor of Technology (B.Tech)'
 							/>
@@ -159,7 +159,7 @@ export const EducationModal = ({
 							<Label className='text-xs'>Major / Field of Study</Label>
 							<Input
 								value={formData.fieldOfStudy || ''}
-								onChange={e => setFormData(prev => ({ ...prev, fieldOfStudy: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Education>) => ({ ...prev, fieldOfStudy: e.target.value }))}
 								placeholder='Computer Science and Engineering'
 							/>
 						</div>
@@ -170,7 +170,7 @@ export const EducationModal = ({
 							<Label className='text-xs'>Location</Label>
 							<Input
 								value={formData.location || ''}
-								onChange={e => setFormData(prev => ({ ...prev, location: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Education>) => ({ ...prev, location: e.target.value }))}
 								placeholder='Raichur, Karnataka, India'
 							/>
 						</div>
@@ -178,7 +178,7 @@ export const EducationModal = ({
 							<Label className='text-xs'>Website URL</Label>
 							<Input
 								value={formData.website || ''}
-								onChange={e => setFormData(prev => ({ ...prev, website: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Education>) => ({ ...prev, website: e.target.value }))}
 								placeholder='https://iiitr.ac.in'
 							/>
 						</div>
@@ -190,7 +190,7 @@ export const EducationModal = ({
 							<Input
 								type='date'
 								value={formData.startDate ? String(formData.startDate).slice(0, 10) : ''}
-								onChange={e => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Education>) => ({ ...prev, startDate: e.target.value }))}
 								required
 							/>
 						</div>
@@ -199,7 +199,7 @@ export const EducationModal = ({
 							<Input
 								type='date'
 								value={formData.endDate ? String(formData.endDate).slice(0, 10) : ''}
-								onChange={e => setFormData(prev => ({ ...prev, endDate: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Education>) => ({ ...prev, endDate: e.target.value }))}
 							/>
 						</div>
 					</div>
@@ -216,7 +216,7 @@ export const EducationModal = ({
 									<button
 										type='button'
 										onClick={() =>
-											setFormData(prev => ({
+											setFormData((prev: Partial<Education>) => ({
 												...prev,
 												description: (Array.isArray(prev.description) ? prev.description : []).filter((_: string, idx: number) => idx !== i),
 											}))
@@ -244,7 +244,7 @@ export const EducationModal = ({
 					<div className='space-y-2'>
 						<Label className='text-xs'>Academic Achievements</Label>
 						<div className='space-y-1.5'>
-							{(formData.achievements || []).map((ach, i) => (
+							{(formData.achievements || []).map((ach: string, i: number) => (
 								<div
 									key={i}
 									className='flex items-center justify-between gap-2 rounded-lg border border-border bg-surface-strong/50 p-2 text-xs'>
@@ -252,9 +252,9 @@ export const EducationModal = ({
 									<button
 										type='button'
 										onClick={() =>
-											setFormData(prev => ({
+											setFormData((prev: Partial<Education>) => ({
 												...prev,
-												achievements: (prev.achievements || []).filter((_, idx) => idx !== i),
+												achievements: (prev.achievements || []).filter((_: string, idx: number) => idx !== i),
 											}))
 										}
 										className='text-muted-foreground hover:text-destructive'>
@@ -293,11 +293,13 @@ export const EducationModal = ({
 export const EducationContentClientView = () => {
 	const [educations, setEducations] = useState<Education[]>([])
 	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
 	const [modalOpen, setModalOpen] = useState(false)
 	const [editingEdu, setEditingEdu] = useState<Education | null>(null)
 
 	const loadEducation = async () => {
 		setLoading(true)
+		setError(null)
 		try {
 			const res = await adminFetch<{ items?: Education[] } | Education[]>('/api/v1/education')
 			if (res.data) {
@@ -310,9 +312,11 @@ export const EducationContentClientView = () => {
 						status: item.isPublished || (item as { status?: string }).status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
 					})),
 				)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
-			console.error('Failed to load education:', err)
+			setError(err instanceof Error ? err.message : 'Failed to load education from API.')
 		} finally {
 			setLoading(false)
 		}
@@ -391,6 +395,8 @@ export const EducationContentClientView = () => {
 				items={educations}
 				columns={columns}
 				loading={loading}
+				error={error}
+				onRetry={loadEducation}
 				searchKey={e => `${e.university} ${e.degree} ${e.fieldOfStudy}`}
 				createLabel='Add Education'
 				onCreate={() => {

@@ -26,15 +26,29 @@ export class MetadataController {
 	constructor(private readonly metadataService: MetadataService) {}
 
 	@Public()
+	@Get('by-path')
+	@ApiEndpoint({
+		summary: 'Get published SEO/layout metadata by page pathname (Public)',
+		method: 'GET',
+		auth: false,
+		endpoint: 'GET /api/v1/metadata/by-path',
+	})
+	async getByPath(@Query('pathname') pathname?: string, @Query('path') path?: string) {
+		const target = pathname || path || '/'
+		return this.metadataService.getPublishedByPath(target)
+	}
+
+	@Public()
 	@Get('key/:key')
 	@ApiEndpoint({
-		summary: 'Get published SEO/layout metadata by unique key (Public)',
+		summary: 'Get published SEO/layout metadata by unique key or encoded pathname (Public)',
 		method: 'GET',
 		auth: false,
 		endpoint: 'GET /api/v1/metadata/key/:key',
 	})
 	async getByKey(@Param('key') key: string) {
-		return this.metadataService.getPublishedByKey(key)
+		const decoded = decodeURIComponent(key)
+		return this.metadataService.getPublishedByPath(decoded)
 	}
 
 	@Public()

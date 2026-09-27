@@ -47,7 +47,7 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout Repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v4.2.2
 
       # Create .env file from secrets for Docker build
       - name: Create .env file
@@ -76,7 +76,7 @@ jobs:
 
       # Set up QEMU for multi-platform builds
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@master
+        uses: docker/setup-qemu-action@v3.3.0
         with:
           platforms: all
 
@@ -84,7 +84,7 @@ jobs:
       # multi-platform images and export cache
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@master
+        uses: docker/setup-buildx-action@v3.7.1
         with:
           platforms: linux/amd64
 
@@ -92,7 +92,7 @@ jobs:
       # https://github.com/docker/login-action
       - name: Log into registry
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@master
+        uses: docker/login-action@v3.3.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -102,7 +102,7 @@ jobs:
       # https://github.com/docker/metadata-action
       - name: Extract metadata from Dockerfile
         id: metadata
-        uses: docker/metadata-action@master
+        uses: docker/metadata-action@v5.6.1
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -112,7 +112,7 @@ jobs:
       # Build and push Docker image with Buildx except on pull requests
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        uses: docker/build-push-action@master
+        uses: docker/build-push-action@v6.9.0
         with:
           context: .
           file: ${{ env.DOCKERFILE_PATH }}
@@ -136,14 +136,21 @@ jobs:
     steps:
       # Set up SSH key for EC2 access
       - name: Set up SSH key for EC2
-        uses: webfactory/ssh-agent@master
+        uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+      # Configure SSH known hosts for EC2 host key verification
+      - name: Configure SSH Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ vars.EC2_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
       # SSH into EC2 and deploy the Docker container
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ vars.EC2_USER }}@${{ vars.EC2_HOST }} << 'EOF'
+          ssh ${{ vars.EC2_USER }}@${{ vars.EC2_HOST }} << 'EOF'
             # Pull the latest Docker image
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 

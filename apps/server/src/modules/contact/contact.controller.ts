@@ -17,6 +17,7 @@ import { ApiTags } from '@nestjs/swagger'
 import { ContactService } from './contact.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
+import { Throttle } from '@nestjs/throttler'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
 import { CreateContactDto, QueryContactDto, UpdateContactDto } from './contact.dto'
 
@@ -26,6 +27,7 @@ export class ContactController {
 	constructor(private readonly contactService: ContactService) {}
 
 	@Public()
+	@Throttle({ default: { limit: 5, ttl: 60_000 } })
 	@Post()
 	@ApiEndpoint({
 		method: 'POST',

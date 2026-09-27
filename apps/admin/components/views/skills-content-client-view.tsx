@@ -85,7 +85,7 @@ export const SkillModal = ({
 						<Label className='text-xs'>Skill Name</Label>
 						<Input
 							value={formData.name || ''}
-							onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+							onChange={e => setFormData((prev: Partial<Skill>) => ({ ...prev, name: e.target.value }))}
 							required
 							placeholder='e.g. Next.js 16 or PostgreSQL'
 						/>
@@ -96,7 +96,7 @@ export const SkillModal = ({
 							<Label className='text-xs'>Category</Label>
 							<select
 								value={formData.category || 'Frontend'}
-								onChange={e => setFormData(prev => ({ ...prev, category: e.target.value }))}
+								onChange={e => setFormData((prev: Partial<Skill>) => ({ ...prev, category: e.target.value }))}
 								className='h-9 w-full rounded-lg border border-border bg-surface px-3 text-xs'>
 								<option value='Frontend'>Frontend</option>
 								<option value='Backend'>Backend</option>
@@ -115,7 +115,7 @@ export const SkillModal = ({
 								max={100}
 								value={formData.proficiency ?? 90}
 								onChange={e =>
-									setFormData(prev => ({ ...prev, proficiency: Number(e.target.value) }))
+									setFormData((prev: Partial<Skill>) => ({ ...prev, proficiency: Number(e.target.value) }))
 								}
 							/>
 						</div>
@@ -126,7 +126,7 @@ export const SkillModal = ({
 							<input
 								type='checkbox'
 								checked={Boolean(formData.featured)}
-								onChange={e => setFormData(prev => ({ ...prev, featured: e.target.checked }))}
+								onChange={e => setFormData((prev: Partial<Skill>) => ({ ...prev, featured: e.target.checked }))}
 								className='rounded border-border text-signal focus:ring-signal'
 							/>
 							<span>Feature on Homepage ticker</span>
@@ -135,7 +135,7 @@ export const SkillModal = ({
 						<select
 							value={formData.status || 'PUBLISHED'}
 							onChange={e =>
-								setFormData(prev => ({ ...prev, status: e.target.value as Skill['status'] }))
+								setFormData((prev: Partial<Skill>) => ({ ...prev, status: e.target.value as Skill['status'] }))
 							}
 							className='h-8 rounded-lg border border-border bg-surface px-2.5 text-xs font-mono'>
 							<option value='PUBLISHED'>PUBLISHED</option>
@@ -160,11 +160,13 @@ export const SkillModal = ({
 export const SkillsContentClientView = () => {
 	const [skills, setSkills] = useState<Skill[]>([])
 	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState<string | null>(null)
 	const [modalOpen, setModalOpen] = useState(false)
 	const [editingSkill, setEditingSkill] = useState<Skill | null>(null)
 
 	const loadSkills = async () => {
 		setLoading(true)
+		setError(null)
 		try {
 			const res = await adminFetch<{ items?: Skill[] } | Skill[]>('/api/v1/skills')
 			if (res.data) {
@@ -175,9 +177,11 @@ export const SkillsContentClientView = () => {
 						status: s.isPublished || (s as { status?: string }).status === 'PUBLISHED' ? 'PUBLISHED' : 'DRAFT',
 					})),
 				)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
-			console.error('Failed to load skills:', err)
+			setError(err instanceof Error ? err.message : 'Failed to load skills from API.')
 		} finally {
 			setLoading(false)
 		}
@@ -266,6 +270,8 @@ export const SkillsContentClientView = () => {
 				items={skills}
 				columns={columns}
 				loading={loading}
+				error={error}
+				onRetry={loadSkills}
 				searchKey={s => `${s.name} ${s.category}`}
 				createLabel='Add Skill'
 				onCreate={() => {

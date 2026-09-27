@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import type { ColumnDef } from '@tanstack/react-table'
+import type { DataTableFilters } from 'types/components'
 import { DataTable } from 'ui/designs/data-table'
 import { adminFetch } from '@/lib/api-client'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import {
 	Dialog,
@@ -19,7 +20,6 @@ import {
 	User,
 	Shield,
 	Eye,
-	Search,
 } from '@/components/icons'
 
 export type AuditLogItem = {
@@ -38,38 +38,85 @@ export type AuditLogItem = {
 }
 
 export const AuditLogsClientView = () => {
+	const searchParams = useSearchParams()
 	const [logs, setLogs] = useState<AuditLogItem[]>([])
 	const [loading, setLoading] = useState(true)
-	const [search, setSearch] = useState('')
-	const [actionFilter, setActionFilter] = useState<string>('ALL')
-	const [entityFilter, setEntityFilter] = useState<string>('ALL')
 	const [totalCount, setTotalCount] = useState(0)
 
+	const [error, setError] = useState<string | null>(null)
 	// Detail payload modal
 	const [selectedLog, setSelectedLog] = useState<AuditLogItem | null>(null)
 
+	const auditFilters: DataTableFilters[] = [
+		{
+			id: 'action',
+			label: 'Action',
+			type: 'select',
+			options: [
+				{ label: 'All Actions', value: '' },
+				{ label: 'Create', value: 'CREATE' },
+				{ label: 'Update', value: 'UPDATE' },
+				{ label: 'Delete', value: 'DELETE' },
+				{ label: 'Publish', value: 'PUBLISH' },
+				{ label: 'Unpublish', value: 'UNPUBLISH' },
+				{ label: 'Upload', value: 'UPLOAD' },
+				{ label: 'Login', value: 'LOGIN' },
+				{ label: 'Logout', value: 'LOGOUT' },
+			],
+		},
+		{
+			id: 'entity',
+			label: 'Entity',
+			type: 'select',
+			options: [
+				{ label: 'All Entities', value: '' },
+				{ label: 'Project', value: 'Project' },
+				{ label: 'Experience', value: 'Experience' },
+				{ label: 'Education', value: 'Education' },
+				{ label: 'Service', value: 'Service' },
+				{ label: 'Skill', value: 'Skill' },
+				{ label: 'Media', value: 'Media' },
+				{ label: 'Contact', value: 'Contact' },
+				{ label: 'Metadata', value: 'Metadata' },
+				{ label: 'User', value: 'User' },
+			],
+		},
+	]
+
 	const loadLogs = useCallback(async () => {
 		setLoading(true)
+		setError(null)
 		try {
+			const search = searchParams.get('search') || ''
+			const actionFilter = searchParams.get('action') || ''
+			const entityFilter = searchParams.get('entity') || ''
+			const from = searchParams.get('from') || ''
+			const to = searchParams.get('to') || ''
+
 			const query = new URLSearchParams({
 				limit: '100',
 			})
 			if (search) query.set('search', search)
-			if (actionFilter !== 'ALL') query.set('action', actionFilter)
-			if (entityFilter !== 'ALL') query.set('entity', entityFilter)
+			if (actionFilter) query.set('action', actionFilter)
+			if (entityFilter) query.set('entity', entityFilter)
+			if (from) query.set('from', from)
+			if (to) query.set('to', to)
 
 			const res = await adminFetch<AuditLogItem[]>(`/api/v1/audit-logs?${query.toString()}`)
 			if (res.data) {
 				setLogs(res.data)
 				const total = res.count || res.data.length
 				setTotalCount(total)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
 			console.error('Failed to load audit logs:', err)
+			setError('Failed to load audit logs from server.')
 		} finally {
 			setLoading(false)
 		}
-	}, [search, actionFilter, entityFilter])
+	}, [searchParams])
 
 	useEffect(() => {
 		loadLogs()
@@ -193,6 +240,15 @@ export const AuditLogsClientView = () => {
 				</div>
 			</div>
 
+			{error && (
+				<div className='rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-xs text-destructive flex items-center justify-between'>
+					<span>{error}</span>
+					<Button variant='outline' size='sm' onClick={loadLogs} className='text-xs'>
+						Retry API Fetch
+					</Button>
+				</div>
+			)}
+
 			{/* Summary Metrics */}
 			<div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
 				<div className='rounded-2xl border border-border bg-surface p-5 space-y-1.5 shadow-xs'>
@@ -223,53 +279,6 @@ export const AuditLogsClientView = () => {
 				</div>
 			</div>
 
-			{/* Filter Toolbar */}
-			<div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border bg-surface/60 p-3'>
-				<div className='relative flex-1 max-w-sm'>
-					<Search className='size-4 text-muted-foreground absolute left-3 top-2.5' />
-					<Input
-						placeholder='Search audit logs by actor, entity name, or entity ID…'
-						value={search}
-						onChange={e => setSearch(e.target.value)}
-						className='pl-9 h-9'
-					/>
-				</div>
-				<div className='flex flex-wrap items-center gap-2 font-mono text-xs'>
-					<select
-						aria-label='Filter audit logs by action'
-						value={actionFilter}
-						onChange={e => setActionFilter(e.target.value)}
-						className='rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-signal-ink cursor-pointer'>
-						<option value='ALL'>All Actions</option>
-						<option value='CREATE'>Create</option>
-						<option value='UPDATE'>Update</option>
-						<option value='DELETE'>Delete</option>
-						<option value='PUBLISH'>Publish</option>
-						<option value='UNPUBLISH'>Unpublish</option>
-						<option value='UPLOAD'>Upload</option>
-						<option value='LOGIN'>Login</option>
-						<option value='LOGOUT'>Logout</option>
-					</select>
-
-					<select
-						aria-label='Filter audit logs by entity type'
-						value={entityFilter}
-						onChange={e => setEntityFilter(e.target.value)}
-						className='rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-signal-ink cursor-pointer'>
-						<option value='ALL'>All Entities</option>
-						<option value='Project'>Project</option>
-						<option value='Experience'>Experience</option>
-						<option value='Education'>Education</option>
-						<option value='Service'>Service</option>
-						<option value='Skill'>Skill</option>
-						<option value='Media'>Media</option>
-						<option value='Contact'>Contact</option>
-						<option value='Metadata'>Metadata</option>
-						<option value='User'>User</option>
-					</select>
-				</div>
-			</div>
-
 			{/* Data Table */}
 			<DataTable
 				columns={columns}
@@ -277,7 +286,7 @@ export const AuditLogsClientView = () => {
 				loading={loading}
 				totalCount={totalCount}
 				pageSize={25}
-				disableSearch
+				filters={auditFilters}
 			/>
 
 			{/* Payload Diff Modal */}

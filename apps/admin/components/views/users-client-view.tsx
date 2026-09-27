@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import type { ColumnDef } from '@tanstack/react-table'
+import type { DataTableFilters } from 'types/components'
 import { DataTable } from 'ui/designs/data-table'
 import { adminFetch } from '@/lib/api-client'
 import { createUserAction, updateUserAction, deleteUserAction } from '@/actions/server/admin-server-actions'
@@ -16,7 +18,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog'
 import { ConfirmDialog } from '@/components/cms/confirm-dialog'
-import { Plus, RefreshCw, Pencil, Trash2, Search } from '@/components/icons'
+import { Plus, RefreshCw, Pencil, Trash2 } from '@/components/icons'
 import { useFormReducer } from 'utils/useFormReducer'
 import { z } from 'zod'
 
@@ -45,10 +47,9 @@ const createUserSchema = z.object({
 type CreateUserFormValues = z.infer<typeof createUserSchema>
 
 export const UsersClientView = () => {
+	const searchParams = useSearchParams()
 	const [users, setUsers] = useState<AdminUser[]>([])
 	const [loading, setLoading] = useState(true)
-	const [search, setSearch] = useState('')
-	const [roleFilter, setRoleFilter] = useState('ALL')
 
 	// Create User Modal
 	const [isCreateOpen, setIsCreateOpen] = useState(false)
@@ -59,16 +60,38 @@ export const UsersClientView = () => {
 	const [editStatus, setEditStatus] = useState<'ACTIVE' | 'INACTIVE' | 'SUSPENDED'>('ACTIVE')
 	const [isUpdating, setIsUpdating] = useState(false)
 
-	// Delete Confirmation
 	const [userToDelete, setUserToDelete] = useState<AdminUser | null>(null)
 	const [isDeleting, setIsDeleting] = useState(false)
+	const [error, setError] = useState<string | null>(null)
+
+	const userFilters: DataTableFilters[] = [
+		{
+			id: 'role',
+			label: 'Role',
+			type: 'select',
+			options: [
+				{ label: 'All Roles', value: '' },
+				{ label: 'Admin', value: 'ADMIN' },
+				{ label: 'Editor', value: 'EDITOR' },
+				{ label: 'User', value: 'USER' },
+			],
+		},
+	]
 
 	const loadUsers = useCallback(async () => {
 		setLoading(true)
+		setError(null)
 		try {
+			const search = searchParams.get('search') || ''
+			const roleFilter = searchParams.get('role') || ''
+			const from = searchParams.get('from') || ''
+			const to = searchParams.get('to') || ''
+
 			const query = new URLSearchParams()
 			if (search) query.set('search', search)
-			if (roleFilter !== 'ALL') query.set('role', roleFilter)
+			if (roleFilter) query.set('role', roleFilter)
+			if (from) query.set('from', from)
+			if (to) query.set('to', to)
 
 			const res = await adminFetch<{ items?: AdminUser[] } | AdminUser[]>(
 				`/api/v1/users?${query.toString()}`,
@@ -80,13 +103,16 @@ export const UsersClientView = () => {
 						? res.data.items
 						: [])
 				setUsers(list)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
 			console.error('Failed to load users:', err)
+			setError('Failed to load personnel users from server.')
 		} finally {
 			setLoading(false)
 		}
-	}, [search, roleFilter])
+	}, [searchParams])
 
 	useEffect(() => {
 		loadUsers()
@@ -292,6 +318,15 @@ export const UsersClientView = () => {
 				</div>
 			</div>
 
+			{error && (
+				<div className='rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-xs text-destructive flex items-center justify-between'>
+					<span>{error}</span>
+					<Button variant='outline' size='sm' onClick={loadUsers} className='text-xs'>
+						Retry API Fetch
+					</Button>
+				</div>
+			)}
+
 			{/* Metrics Ribbon */}
 			<div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
 				<div className='rounded-2xl border border-border bg-surface p-5 space-y-1.5 shadow-xs'>
@@ -320,36 +355,6 @@ export const UsersClientView = () => {
 				</div>
 			</div>
 
-			{/* Filter Toolbar */}
-			<div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border bg-surface/60 p-3'>
-				<div className='relative flex-1 max-w-sm'>
-					<Search className='size-4 text-muted-foreground absolute left-3 top-2.5' />
-					<Input
-						placeholder='Search personnel by name or email address…'
-						value={search}
-						onChange={e => setSearch(e.target.value)}
-						className='pl-9 h-9'
-					/>
-				</div>
-				<div className='flex flex-wrap items-center gap-2 font-mono text-xs'>
-					<div className='flex items-center gap-1.5 overflow-x-auto'>
-						{(['ALL', 'ADMIN', 'EDITOR', 'USER'] as const).map(r => (
-							<button
-								key={r}
-								type='button'
-								onClick={() => setRoleFilter(r)}
-								className={`rounded-lg px-2.5 py-1 transition-colors cursor-pointer ${
-									roleFilter === r
-										? 'bg-primary text-primary-foreground font-semibold shadow-xs'
-										: 'text-muted-foreground hover:bg-accent hover:text-foreground'
-								}`}>
-								{r}
-							</button>
-						))}
-					</div>
-				</div>
-			</div>
-
 			{/* Data Table */}
 			<DataTable
 				columns={columns}
@@ -357,8 +362,7 @@ export const UsersClientView = () => {
 				loading={loading}
 				totalCount={users.length}
 				pageSize={10}
-				disableDateRange
-				disableSearch
+				filters={userFilters}
 			/>
 
 			{/* Create User Modal */}

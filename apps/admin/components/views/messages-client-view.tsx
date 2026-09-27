@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import type { ColumnDef } from '@tanstack/react-table'
+import type { DataTableFilters } from 'types/components'
 import { DataTable } from 'ui/designs/data-table'
 import { adminFetch } from '@/lib/api-client'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -21,7 +22,6 @@ import {
 	Trash2,
 	CheckCircle2,
 	Eye,
-	Search,
 } from '@/components/icons'
 
 export type ContactMessage = {
@@ -42,13 +42,11 @@ export type ContactMessage = {
 }
 
 export const MessagesClientView = () => {
+	const searchParams = useSearchParams()
 	const [messages, setMessages] = useState<ContactMessage[]>([])
 	const [loading, setLoading] = useState(true)
-	const [search, setSearch] = useState('')
-	const [statusFilter, setStatusFilter] = useState<string>('ALL')
-	const [priorityFilter, setPriorityFilter] = useState<string>('ALL')
 
-	// Message detail modal
+	const [error, setError] = useState<string | null>(null)
 	const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(null)
 	const [notes, setNotes] = useState('')
 	const [status, setStatus] = useState<string>('')
@@ -60,13 +58,50 @@ export const MessagesClientView = () => {
 	const [messageToDelete, setMessageToDelete] = useState<ContactMessage | null>(null)
 	const [isDeleting, setIsDeleting] = useState(false)
 
+	const messageFilters: DataTableFilters[] = [
+		{
+			id: 'status',
+			label: 'Status',
+			type: 'select',
+			options: [
+				{ label: 'All Statuses', value: '' },
+				{ label: 'Unread', value: 'UNREAD' },
+				{ label: 'Read', value: 'READ' },
+				{ label: 'Resolved', value: 'RESOLVED' },
+				{ label: 'Archived', value: 'ARCHIVED' },
+				{ label: 'Spam', value: 'SPAM' },
+			],
+		},
+		{
+			id: 'priority',
+			label: 'Priority',
+			type: 'select',
+			options: [
+				{ label: 'All Priorities', value: '' },
+				{ label: 'Low', value: 'LOW' },
+				{ label: 'Normal', value: 'NORMAL' },
+				{ label: 'High', value: 'HIGH' },
+				{ label: 'Urgent', value: 'URGENT' },
+			],
+		},
+	]
+
 	const loadMessages = useCallback(async () => {
 		setLoading(true)
+		setError(null)
 		try {
+			const search = searchParams.get('search') || ''
+			const statusFilter = searchParams.get('status') || ''
+			const priorityFilter = searchParams.get('priority') || ''
+			const from = searchParams.get('from') || ''
+			const to = searchParams.get('to') || ''
+
 			const query = new URLSearchParams({ limit: '100' })
 			if (search) query.set('search', search)
-			if (statusFilter !== 'ALL') query.set('status', statusFilter)
-			if (priorityFilter !== 'ALL') query.set('priority', priorityFilter)
+			if (statusFilter) query.set('status', statusFilter)
+			if (priorityFilter) query.set('priority', priorityFilter)
+			if (from) query.set('from', from)
+			if (to) query.set('to', to)
 
 			const res = await adminFetch<{ items?: ContactMessage[] } | ContactMessage[]>(
 				`/api/v1/contacts?${query.toString()}`,
@@ -74,13 +109,16 @@ export const MessagesClientView = () => {
 			if (res.data) {
 				const list = Array.isArray(res.data) ? res.data : (res.data.items || [])
 				setMessages(list)
+			} else if (res.error) {
+				setError(res.error)
 			}
 		} catch (err) {
 			console.error('Failed to load messages:', err)
+			setError('Failed to load inquiries from server.')
 		} finally {
 			setLoading(false)
 		}
-	}, [search, statusFilter, priorityFilter])
+	}, [searchParams])
 
 	useEffect(() => {
 		loadMessages()
@@ -289,6 +327,15 @@ export const MessagesClientView = () => {
 				</div>
 			</div>
 
+			{error && (
+				<div className='rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-xs text-destructive flex items-center justify-between'>
+					<span>{error}</span>
+					<Button variant='outline' size='sm' onClick={loadMessages} className='text-xs'>
+						Retry API Fetch
+					</Button>
+				</div>
+			)}
+
 			{/* Metrics Ribbon */}
 			<div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
 				<div className='rounded-2xl border border-border bg-surface p-5 space-y-1.5 shadow-xs'>
@@ -322,48 +369,6 @@ export const MessagesClientView = () => {
 				</div>
 			</div>
 
-			{/* Filter Toolbar */}
-			<div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-xl border border-border bg-surface/60 p-3'>
-				<div className='relative flex-1 max-w-sm'>
-					<Search className='size-4 text-muted-foreground absolute left-3 top-2.5' />
-					<Input
-						placeholder='Search messages by sender, email, or subject…'
-						value={search}
-						onChange={e => setSearch(e.target.value)}
-						className='pl-9 h-9'
-					/>
-				</div>
-				<div className='flex flex-wrap items-center gap-2 font-mono text-xs'>
-					<div className='flex items-center gap-1.5 overflow-x-auto'>
-						{(['ALL', 'UNREAD', 'READ', 'RESOLVED', 'ARCHIVED'] as const).map(tab => (
-							<button
-								key={tab}
-								type='button'
-								onClick={() => setStatusFilter(tab)}
-								className={`rounded-lg px-2.5 py-1 transition-colors cursor-pointer ${
-									statusFilter === tab
-										? 'bg-primary text-primary-foreground font-semibold shadow-xs'
-										: 'text-muted-foreground hover:bg-accent hover:text-foreground'
-								}`}>
-								{tab}
-							</button>
-						))}
-					</div>
-
-					<select
-						aria-label='Filter inquiries by priority'
-						value={priorityFilter}
-						onChange={e => setPriorityFilter(e.target.value)}
-						className='rounded-lg border border-border bg-surface px-2.5 py-1 text-xs font-mono text-foreground focus:outline-none focus:ring-1 focus:ring-signal-ink cursor-pointer'>
-						<option value='ALL'>All Priorities</option>
-						<option value='LOW'>Low</option>
-						<option value='NORMAL'>Normal</option>
-						<option value='HIGH'>High</option>
-						<option value='URGENT'>Urgent</option>
-					</select>
-				</div>
-			</div>
-
 			{/* Data Table */}
 			<DataTable
 				columns={columns}
@@ -371,8 +376,7 @@ export const MessagesClientView = () => {
 				loading={loading}
 				totalCount={messages.length}
 				pageSize={10}
-				disableDateRange
-				disableSearch
+				filters={messageFilters}
 			/>
 
 			{/* Message Detail Modal */}

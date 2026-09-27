@@ -5,6 +5,8 @@ import { DecodedIdToken } from 'firebase-admin/auth'
 import { AuditAction, UserRole } from '@repo/prisma'
 import { DatabaseService } from 'database/database.service'
 import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CacheService } from 'redis/cache.service'
+import { RedisService } from 'redis/redis.service'
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { ApiResponse, successResponse } from 'common/interfaces/api-response.interface'
 
@@ -13,6 +15,8 @@ export class SessionService {
 	constructor(
 		private readonly prisma: DatabaseService,
 		private readonly auditLog: AuditLogService,
+		private readonly cacheService: CacheService,
+		private readonly redisService: RedisService,
 	) {}
 
 	private hashToken(token: string): string {
@@ -54,6 +58,12 @@ export class SessionService {
 			userAgent,
 		})
 
+		try {
+			await this.redisService.set(`session:revoked:${tokenHash}`, JSON.stringify(false), 3600)
+		} catch {
+			// Non-blocking cache update
+		}
+
 		return session
 	}
 
@@ -65,6 +75,12 @@ export class SessionService {
 				where: { tokenHash },
 				data: { revoked: true, revokedAt: new Date() },
 			})
+
+			try {
+				await this.redisService.set(`session:revoked:${tokenHash}`, JSON.stringify(true), 86400)
+			} catch {
+				// Non-blocking cache update
+			}
 
 			await this.auditLog.log({
 				action: AuditAction.LOGOUT,
@@ -79,16 +95,19 @@ export class SessionService {
 
 	async isSessionRevoked(token: string): Promise<boolean> {
 		const tokenHash = this.hashToken(token)
-		const session = await this.prisma.session.findUnique({
-			where: { tokenHash },
-			select: { revoked: true, expiresAt: true },
+
+		return this.cacheService.remember<boolean>(`session:revoked:${tokenHash}`, 60, async () => {
+			const session = await this.prisma.session.findUnique({
+				where: { tokenHash },
+				select: { revoked: true, expiresAt: true },
+			})
+
+			if (!session) return false
+			if (session.revoked) return true
+			if (session.expiresAt < new Date()) return true
+
+			return false
 		})
-
-		if (!session) return false
-		if (session.revoked) return true
-		if (session.expiresAt < new Date()) return true
-
-		return false
 	}
 
 	async getSessionsForUser(user: AuthenticatedUser): Promise<ApiResponse<unknown[]>> {
@@ -107,7 +126,7 @@ export class SessionService {
 		const [session, user] = await this.prisma.$transaction([
 			this.prisma.session.findUnique({
 				where: { id: sessionId },
-				select: { id: true, userId: true, revoked: true },
+				select: { id: true, userId: true, revoked: true, tokenHash: true },
 			}),
 			this.prisma.user.findUnique({
 				where: { id: userId },
@@ -128,6 +147,16 @@ export class SessionService {
 				where: { id: session.id },
 				data: { revoked: true, revokedAt: new Date(), revokedBy: user.id },
 			})
+
+			try {
+				await this.redisService.set(
+					`session:revoked:${session.tokenHash}`,
+					JSON.stringify(true),
+					86400,
+				)
+			} catch {
+				// Non-blocking cache update
+			}
 
 			await this.auditLog.log({
 				action: AuditAction.DELETE,

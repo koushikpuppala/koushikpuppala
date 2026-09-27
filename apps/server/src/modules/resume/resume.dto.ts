@@ -1,3 +1,5 @@
+import type { ResumeHighlight, ResumeStat } from 'types'
+
 import { Type } from 'class-transformer'
 import { PaginationDto } from 'common/dto/pagination.dto'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
@@ -27,10 +29,12 @@ export class CreateResumeDto {
 	summary?: string
 
 	@ApiPropertyOptional({
-		example: [{ number: '01', title: 'PRODUCTION ENGINEERING', description: 'Engineered features...' }],
+		example: [
+			{ number: '01', title: 'PRODUCTION ENGINEERING', description: 'Engineered features...' },
+		],
 	})
 	@IsOptional()
-	highlights?: any
+	highlights?: ResumeHighlight[] | Record<string, unknown>[]
 
 	@ApiPropertyOptional({
 		example: ['TypeScript', 'Next.js 16', 'NestJS 11', 'PostgreSQL'],
@@ -43,7 +47,7 @@ export class CreateResumeDto {
 
 	@ApiPropertyOptional({ example: [{ label: 'FORMAT', value: 'PDF 1.4' }] })
 	@IsOptional()
-	stats?: any
+	stats?: ResumeStat[] | Record<string, unknown>[]
 
 	@ApiProperty({ example: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' })
 	@IsUUID()
