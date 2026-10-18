@@ -1,11 +1,60 @@
 'use client'
 
-import type { SingletonEditorProps } from 'types/components/admin'
+import type {
+	EditorErrorProps,
+	PublishButtonProps,
+	SaveButtonProps,
+	SingletonEditorProps,
+} from 'types/components/admin'
 import { EyeOff, Globe, RefreshCw, Save, ShieldCheck } from 'components/icons'
 import { Button } from 'ui/button'
 import { Badge } from 'components/ui/badge'
 import { LoadingRegion } from 'ui/skeleton'
 import { FormFieldsSkeleton } from 'components/skeletons'
+
+const PublishButton = ({
+	isPublished,
+	publishing,
+	isDirty,
+	disabled,
+	onClick,
+}: PublishButtonProps) => {
+	const Icon = publishing ? RefreshCw : isPublished ? EyeOff : Globe
+
+	return (
+		<Button
+			type='button'
+			variant='outline'
+			onClick={onClick}
+			disabled={disabled}
+			title={isDirty ? 'Save your changes before publishing' : undefined}>
+			<Icon className={publishing ? 'size-4 animate-spin' : 'size-4'} />
+			<span>{isPublished ? 'Unpublish' : 'Publish'}</span>
+		</Button>
+	)
+}
+
+const SaveButton = ({ saving, disabled, onClick }: SaveButtonProps) => (
+	<Button type='button' variant='signal' onClick={onClick} disabled={disabled}>
+		{saving ? <RefreshCw className='size-4 animate-spin' /> : <Save className='size-4' />}
+		<span>{saving ? 'Saving…' : 'Save Changes'}</span>
+	</Button>
+)
+
+const EditorError = ({ error, onRetry }: EditorErrorProps) => (
+	<div className='border-destructive/30 bg-destructive/10 text-destructive flex items-center justify-between rounded-xl border p-4 font-mono text-xs'>
+		<div className='flex items-center gap-2'>
+			<span className='font-semibold'>API Error:</span>
+			<span>{error}</span>
+		</div>
+		{onRetry && (
+			<Button type='button' variant='outline' size='sm' onClick={onRetry} className='h-7 text-xs'>
+				<RefreshCw className='mr-1 size-3' />
+				<span>Retry</span>
+			</Button>
+		)}
+	</div>
+)
 
 export const SingletonEditor = ({
 	title,
@@ -52,61 +101,19 @@ export const SingletonEditor = ({
 						</Button>
 					)}
 					{onTogglePublish && (
-						<Button
-							type='button'
-							variant='outline'
-							onClick={onTogglePublish}
+						<PublishButton
+							isPublished={isPublished}
+							publishing={publishing}
+							isDirty={isDirty}
 							disabled={!canPublish || isDirty || loading || saving || publishing}
-							title={isDirty ? 'Save your changes before publishing' : undefined}>
-							{publishing ? (
-								<RefreshCw className='size-4 animate-spin' />
-							) : isPublished ? (
-								<EyeOff className='size-4' />
-							) : (
-								<Globe className='size-4' />
-							)}
-							<span>{isPublished ? 'Unpublish' : 'Publish'}</span>
-						</Button>
+							onClick={onTogglePublish}
+						/>
 					)}
-					<Button
-						type='button'
-						variant='signal'
-						onClick={onSave}
-						disabled={!isDirty || saving || loading}>
-						{saving ? (
-							<>
-								<RefreshCw className='size-4 animate-spin' />
-								<span>Saving…</span>
-							</>
-						) : (
-							<>
-								<Save className='size-4' />
-								<span>Save Changes</span>
-							</>
-						)}
-					</Button>
+					<SaveButton saving={saving} disabled={!isDirty || saving || loading} onClick={onSave} />
 				</div>
 			</div>
 
-			{error && !loading && (
-				<div className='border-destructive/30 bg-destructive/10 text-destructive flex items-center justify-between rounded-xl border p-4 font-mono text-xs'>
-					<div className='flex items-center gap-2'>
-						<span className='font-semibold'>API Error:</span>
-						<span>{error}</span>
-					</div>
-					{onRetry && (
-						<Button
-							type='button'
-							variant='outline'
-							size='sm'
-							onClick={onRetry}
-							className='h-7 text-xs'>
-							<RefreshCw className='mr-1 size-3' />
-							<span>Retry</span>
-						</Button>
-					)}
-				</div>
-			)}
+			{error && !loading && <EditorError error={error} onRetry={onRetry} />}
 
 			<div className='border-border bg-surface space-y-6 rounded-2xl border p-6 shadow-2xs sm:p-8'>
 				{loading ? (

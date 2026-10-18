@@ -22,3 +22,29 @@ describe('validateContactForm email check', () => {
 		expect(performance.now() - started).toBeLessThan(100)
 	})
 })
+
+describe('validateContactForm', () => {
+	it('passes a complete message with no errors, defaulting the subject', () => {
+		expect(
+			validateContactForm({
+				name: ' Ada ',
+				email: 'ada@example.com',
+				subject: '',
+				message: 'A message long enough.',
+			}),
+		).toEqual({ isValid: true, errors: {} })
+	})
+
+	it('reports only failing fields, each with its first failing rule', () => {
+		expect(
+			validateContactForm({ name: '', email: 'ada@example.com', subject: 'Hi', message: 'short' }),
+		).toEqual({
+			isValid: false,
+			errors: {
+				name: 'Please provide your name or organization.',
+				subject: 'Subject must be at least 3 characters.',
+				message: 'Message must be at least 10 characters.',
+			},
+		})
+	})
+})

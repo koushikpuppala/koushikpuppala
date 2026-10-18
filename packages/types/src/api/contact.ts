@@ -35,6 +35,8 @@ export type ContactValidationErrors = {
 	general?: string
 }
 
+export type ValidationRule = [failed: boolean, message: string]
+
 export type ContactValidation = {
 	isValid: boolean
 	errors: ContactValidationErrors

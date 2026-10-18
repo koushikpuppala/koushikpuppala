@@ -196,6 +196,22 @@ export type SingletonEditorProps = {
 	children: ReactNode
 }
 
+export type PublishButtonProps = {
+	isPublished: boolean
+	publishing: boolean
+	isDirty: boolean
+	disabled: boolean
+	onClick: () => void | Promise<void>
+}
+
+export type SaveButtonProps = {
+	saving: boolean
+	disabled: boolean
+	onClick: () => void | Promise<void>
+}
+
+export type EditorErrorProps = { error: string; onRetry?: () => void }
+
 export type FormDialogBaseProps = {
 	open: boolean
 	onOpenChange: (open: boolean) => void

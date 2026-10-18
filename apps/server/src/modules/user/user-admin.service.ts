@@ -1,6 +1,7 @@
 import type { Prisma, User } from '@repo/prisma'
 import type { ApiResponse, PaginatedList, UserListCounts, UserRecord } from 'types/api'
 import type { CodedError, RequestMeta } from 'types/server'
+import type { UpdateRequest } from 'firebase-admin/auth'
 
 import { DatabaseService } from 'database'
 import { QueryUserDto } from './dto/query-user.dto'
@@ -155,38 +156,10 @@ export class UserAdminService {
 			userId: user.id,
 		})
 
-		// Losing the admin role or active status both count as removing an administrator.
-		const demotes =
-			(dto.role !== undefined && dto.role !== UserRole.ADMIN) ||
-			(dto.status !== undefined && dto.status !== UserStatus.ACTIVE)
+		await this.assertRoleChangeAllowed(user, dto, actorId)
 
-		if (actorId && id === actorId) {
-			if (dto.role && dto.role !== UserRole.ADMIN)
-				throw new BadRequestException('Administrators cannot demote their own account')
-
-			if (dto.status && dto.status !== UserStatus.ACTIVE)
-				throw new BadRequestException('Administrators cannot deactivate their own account')
-		}
-
-		if (user.role === UserRole.ADMIN && demotes)
-			await this.assertAnotherActiveAdmin(
-				id,
-				'Cannot demote or deactivate the last remaining active administrator',
-			)
-
-		const fullName = dto.fullName?.trim()
-
-		const data: Prisma.UserUpdateInput = {
-			...(fullName && { displayName: fullName, ...splitName(fullName) }),
-			...(dto.role && { role: dto.role }),
-			...(dto.status && { status: dto.status }),
-		}
-
-		const firebaseUpdate = {
-			...(fullName && { displayName: fullName }),
-			...(dto.phoneNumber !== undefined && { phoneNumber: dto.phoneNumber?.trim() || null }),
-			...(dto.password && { password: dto.password }),
-		}
+		const data = this.userUpdateData(dto)
+		const firebaseUpdate = this.firebaseUpdateData(dto)
 
 		if (Object.keys(firebaseUpdate).length > 0)
 			await this.firebaseCall('Failed to update user in Firebase', () =>
@@ -241,6 +214,48 @@ export class UserAdminService {
 		})
 
 		return deleted
+	}
+
+	private async assertRoleChangeAllowed(
+		user: User,
+		dto: AdminUpdateUserDto,
+		actorId?: string,
+	): Promise<void> {
+		const losesAdmin = dto.role !== undefined && dto.role !== UserRole.ADMIN
+		const losesActive = dto.status !== undefined && dto.status !== UserStatus.ACTIVE
+
+		if (actorId === user.id && losesAdmin)
+			throw new BadRequestException('Administrators cannot demote their own account')
+
+		if (actorId === user.id && losesActive)
+			throw new BadRequestException('Administrators cannot deactivate their own account')
+
+		// Losing the admin role or active status both count as removing an administrator.
+		if (user.role === UserRole.ADMIN && (losesAdmin || losesActive))
+			await this.assertAnotherActiveAdmin(
+				user.id,
+				'Cannot demote or deactivate the last remaining active administrator',
+			)
+	}
+
+	private userUpdateData(dto: AdminUpdateUserDto): Prisma.UserUpdateInput {
+		const fullName = dto.fullName?.trim()
+
+		return {
+			...(fullName && { displayName: fullName, ...splitName(fullName) }),
+			...(dto.role && { role: dto.role }),
+			...(dto.status && { status: dto.status }),
+		}
+	}
+
+	private firebaseUpdateData(dto: AdminUpdateUserDto): UpdateRequest {
+		const fullName = dto.fullName?.trim()
+
+		return {
+			...(fullName && { displayName: fullName }),
+			...(dto.phoneNumber !== undefined && { phoneNumber: dto.phoneNumber?.trim() || null }),
+			...(dto.password && { password: dto.password }),
+		}
 	}
 
 	private async findByIdOrThrow(id: string): Promise<User> {
