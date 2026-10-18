@@ -2,10 +2,8 @@ name: Test
 run-name: Test - ${{ github.ref_name }}
 
 on:
+  # Every pull request runs the full test suite; merging needs it green (branch protection on master).
   pull_request:
-    branches-ignore:
-      - master
-      - dev
   # Also run as the first job of the production workflow, so no image is built from failing code.
   workflow_call:
 

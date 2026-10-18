@@ -157,7 +157,7 @@ For developers and AI agents working in this repository:
    - Import UI components from `ui` or `ui/designs/*`.
    - Import utility functions from `utils`.
 4. **Backend Authorization is Authoritative**: Never rely on frontend-only role checks or hidden UI elements for security.
-5. **No Credentials in Code**: Secrets (`DATABASE_URL`, `FIREBASE_PRIVATE_KEY`, `AWS_SECRET_ACCESS_KEY`) belong strictly in `.env.*.local` files and must never reach client bundles.
+5. **No Credentials in Code**: Secrets (`DATABASE_URL`, `FIREBASE_PRIVATE_KEY`, `REDIS_PASSWORD`) belong strictly in `.env.*.local` files and must never reach client bundles.
 
 ---
 

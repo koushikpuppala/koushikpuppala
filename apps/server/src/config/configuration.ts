@@ -122,8 +122,9 @@ export class Configuration {
 			region: this.required('AWS_REGION'),
 			s3Bucket: this.required('S3_BUCKET'),
 			cdnUrl: (/^https?:\/\//i.test(cdn) ? cdn : `https://${cdn}`).replace(/\/+$/, ''),
-			// Upload checks call S3, so they are skipped locally when no AWS credentials are configured.
-			verifyUploads: this.production || Boolean(this.optional('AWS_ACCESS_KEY_ID')),
+			// Confirming an upload landed calls S3, so it runs only in production, where the instance role
+			// grants access; local and test runs skip it.
+			verifyUploads: this.production,
 		}
 	}
 

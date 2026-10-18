@@ -22,7 +22,7 @@ Monorepo for Koushik Puppala's digital presence, comprising a public portfolio w
 │   └── config/       # Shared TypeScript presets (tsconfig.next.json, tsconfig.nest.json) (@repo/config)
 ├── docker/           # One multi-stage Dockerfile per app, server entrypoint, Firebase emulator image
 ├── docs/             # Technical documentation, agent workflow (agent-workflow.md), architecture diagrams
-└── .github/          # GitHub Actions workflows (test.yml, production.yml, developement.yml)
+└── .github/          # GitHub Actions workflows (test.yml, deploy-client.yml, deploy-admin.yml, deploy-server.yml)
 ```
 
 ### Boundary & Dependency Rules
@@ -288,7 +288,7 @@ pnpm --filter utils check-types
 ### 9. Git & Deployment
 
 - Branch naming follows standard prefixes (`revamp/*`, `feat/*`, `fix/*`, `chore/*`).
-- Continuous integration runs via GitHub Actions (`.github/workflows/production.yml`), building the `client`, `admin` and `server` Docker targets, pushing them to Amazon ECR (`<ECR_REPOSITORY_PREFIX>/<app>`), and deploying to AWS EC2 via SSH.
+- There is one environment, production. `master` is protected: changes land only through pull requests, and every pull request runs `.github/workflows/test.yml`, which must pass before merging. Each app deploys on its own: `deploy-client.yml`, `deploy-admin.yml` and `deploy-server.yml` run on a push to `master` that touches that app, a workspace package it builds from, its Dockerfile or the root workspace files (and by hand from the Actions tab, e.g. after changing the `ENV_FILE` secret, which is baked into the image). Each runs the tests again, tags its image `DD-MM-YYYYv<n>` (Indian time, numbered per app per day) and `sha-<commit>`, pushes it to Amazon ECR (`<ECR_REPOSITORY_PREFIX>/<app>`), replaces only its own container on EC2 over SSH and waits for it to report healthy. Releases of the same app queue rather than cancel each other; different apps deploy independently, so a release that changes the schema and an app together does not order them. AWS access is through IAM roles only (the GitHub OIDC role in `AWS_ROLE_ARN` for ECR, the EC2 instance role for S3 and SES), never access keys.
 - Never push broken builds or bypass CI verification.
 
 ---
