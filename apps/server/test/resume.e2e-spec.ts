@@ -116,6 +116,19 @@ describe('resume (e2e)', () => {
 		expect(one.body.result.downloadFileName).toBe('cv.pdf')
 	})
 
+	it('keeps the file address out of the public read', async () => {
+		await publishResume()
+
+		const latest = await t.http().get('/api/v1/resume/latest').expect(200)
+		const body = JSON.stringify(latest.body.result)
+
+		expect(latest.body.result.hasFile).toBe(true)
+		expect(latest.body.result.downloadUrl).toBeUndefined()
+		expect(body).not.toContain('storageKey')
+		expect(body).not.toContain('resume/cv-')
+		expect(t.s3.getSignedUrl).not.toHaveBeenCalled()
+	})
+
 	it('replaces the file and removes the old one from storage', async () => {
 		const resume = await publishResume()
 		const next = await createMedia()

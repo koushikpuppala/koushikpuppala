@@ -1,6 +1,6 @@
 import type { Type } from '@nestjs/common'
 import type { DecodedIdToken } from 'firebase-admin/auth'
-import type { AuditAction, AuditLog, MediaType } from '@repo/prisma'
+import type { AuditAction, AuditLog, MediaType, Prisma } from '@repo/prisma'
 
 export type RequestContextData = {
 	userId?: string
@@ -96,6 +96,16 @@ export type UploadFileResponse = {
 export type SignedDownload = { fileName: string; contentType?: string }
 
 export type ResumeNaming = { title: string; versionName: string | null }
+
+export type WithDownloadFileName<T> = T & { downloadFileName: string }
+
+export type ResumeWithMedia = WithDownloadFileName<
+	Prisma.ResumeGetPayload<{ include: { media: true } }>
+>
+
+export type LatestResume = WithDownloadFileName<
+	Prisma.ResumeGetPayload<{ include: { media: { select: { size: true; mimeType: true } } } }>
+> & { hasFile: boolean }
 
 export type StorageService = {
 	upload(options: UploadFileOptions): Promise<UploadFileResponse>

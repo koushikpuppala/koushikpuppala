@@ -224,9 +224,8 @@ export type PublishedResume = {
 	fileSize?: number
 	fileSizeFormatted?: string
 	fileType?: string
-	downloadUrl?: string
+	hasFile?: boolean
 	downloadFileName?: string
-	previewUrl?: string
 	checksum?: string
 	downloads?: number
 	highlights?: ResumeHighlight[] | string[]

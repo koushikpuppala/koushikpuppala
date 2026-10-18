@@ -29,5 +29,5 @@ Claude Code loads it via the import below:
 3. **Server-Side Security**: Never trust client-side role claims. Authorization is strictly enforced server-side via `RolesGuard` against database roles.
 4. **Database Safety**: Never run `prisma migrate reset` in production. Keep Prisma schemas modularized under `packages/prisma/prisma/schema/*.prisma`.
 5. **Types in one place**: Define every custom type (models, API shapes, props, inline prop objects) in `packages/types` and import it with `import type`. A Biome plugin fails `pnpm lint` on local types.
-6. **No comments**: Write no code comments unless the owner asks for one. Directive comments (`biome-ignore`, `@vitest-environment`, `/// <reference>`, shebangs, Dockerfile `# syntax=`) are the exception.
+6. **Comments explain why**: Comment only where the reason is not obvious from the code (a security decision, a workaround, a non-obvious constraint), in one or two plain sentences. Never restate what the code does. Directive comments (`biome-ignore`, `@vitest-environment`, `/// <reference>`, shebangs, Dockerfile `# syntax=`) are always fine.
 7. **Verification**: Always run `pnpm lint` and verify build status before marking any task as complete.

@@ -12,8 +12,6 @@ export const getResumeData = cache(async (): Promise<PublishedResume> => {
 
 	const size = Number(result.fileSize || result.media?.size || 0)
 
-	const dl = result.downloadUrl || result.media?.url || ''
-
 	return {
 		...EMPTY_RESUME,
 		id: String(result.id || ''),
@@ -22,8 +20,7 @@ export const getResumeData = cache(async (): Promise<PublishedResume> => {
 		fileSize: size,
 		fileSizeFormatted: size ? `${Math.round(size / 1024)} KB` : '',
 		fileType: result.fileType || '',
-		downloadUrl: dl,
-		previewUrl: dl,
+		hasFile: Boolean(result.hasFile),
 		headline: String(result.headline || ''),
 		summary: String(result.summary || ''),
 		highlights: Array.isArray(result.highlights) ? result.highlights : [],

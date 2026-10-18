@@ -1,7 +1,14 @@
 import { DatabaseService } from 'database'
-import { Prisma } from '@repo/prisma'
-import type { ResumeDownload } from 'types/api'
-import type { ResumeNaming, StorageService } from 'types/server'
+import { Prisma, type Resume } from '@repo/prisma'
+import type { PaginatedList, ResumeDownload } from 'types/api'
+import type {
+	DeletedRecord,
+	LatestResume,
+	ResumeNaming,
+	ResumeWithMedia,
+	StorageService,
+	WithDownloadFileName,
+} from 'types/server'
 import { STORAGE_SERVICE } from 'common/storage/storage.token'
 import { BaseService } from 'common/services/base-cms.service'
 import { LoggerService } from 'common/logger/logger.service'
@@ -20,7 +27,7 @@ const LIVE_RESUME = {
 	orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
 } satisfies Prisma.ResumeFindFirstArgs
 
-const withFileName = <T extends ResumeNaming>(resume: T) => ({
+const withFileName = <T extends ResumeNaming>(resume: T): WithDownloadFileName<T> => ({
 	...resume,
 	downloadFileName: resumeFileName(resume.title, resume.versionName),
 })
@@ -37,38 +44,17 @@ export class ResumeService extends BaseService {
 		super()
 	}
 
-	async getLatest() {
+	async getLatest(): Promise<LatestResume> {
 		const resume = await this.prisma.resume.findFirst({
 			...LIVE_RESUME,
-			include: {
-				media: {
-					select: {
-						id: true,
-						fileName: true,
-						originalName: true,
-						size: true,
-						mimeType: true,
-						url: true,
-						storageKey: true,
-					},
-				},
-			},
+			include: { media: { select: { size: true, mimeType: true } } },
 		})
 
 		if (!resume) throw new NotFoundException('No active resume published')
 
-		let downloadUrl = resume.media.url
-
-		// Fall back to a short-lived signed URL when the file has no public CDN URL.
-		if (!downloadUrl && resume.media.storageKey) {
-			try {
-				downloadUrl = await this.storage.getSignedUrl(resume.media.storageKey)
-			} catch {}
-		}
-
-		// The public site only checks whether this is set; visitors always download through
-		// /resume/download, which counts the download.
-		return withFileName({ ...resume, downloadUrl })
+		// The file's address stays private: visitors only get it through /resume/download, which counts
+		// the download and signs a short-lived link.
+		return { ...withFileName(resume), hasFile: true }
 	}
 
 	async download(): Promise<ResumeDownload> {
@@ -105,7 +91,7 @@ export class ResumeService extends BaseService {
 		return { url, fileName }
 	}
 
-	async adminFindAll(query: QueryResumeDto) {
+	async adminFindAll(query: QueryResumeDto): Promise<PaginatedList<ResumeWithMedia>> {
 		const { page, limit, take, skip } = this.getPagination(query.page, query.limit)
 		const where: Prisma.ResumeWhereInput = { deletedAt: null }
 
@@ -134,7 +120,7 @@ export class ResumeService extends BaseService {
 		}
 	}
 
-	async findOne(id: string) {
+	async findOne(id: string): Promise<ResumeWithMedia> {
 		const resume = await this.prisma.resume.findFirst({
 			where: { id, deletedAt: null },
 			include: { media: true },
@@ -143,7 +129,7 @@ export class ResumeService extends BaseService {
 		return withFileName(this.ensureExists(resume, 'Resume record not found'))
 	}
 
-	async create(dto: CreateResumeDto, actor = 'admin') {
+	async create(dto: CreateResumeDto, actor = 'admin'): Promise<ResumeWithMedia> {
 		const media = await this.assertResumeMedia(dto.mediaId)
 
 		const resume = await this.prisma.resume.create({
@@ -162,7 +148,7 @@ export class ResumeService extends BaseService {
 		return withFileName(await this.audit.created(ENTITY, actor, resume))
 	}
 
-	async update(id: string, dto: UpdateResumeDto, actor = 'admin') {
+	async update(id: string, dto: UpdateResumeDto, actor = 'admin'): Promise<ResumeWithMedia> {
 		const existing = await this.findOne(id)
 
 		if (dto.mediaId) await this.assertResumeMedia(dto.mediaId)
@@ -185,7 +171,7 @@ export class ResumeService extends BaseService {
 		return withFileName(saved)
 	}
 
-	async togglePublish(id: string, actor = 'admin') {
+	async togglePublish(id: string, actor = 'admin'): Promise<Resume> {
 		const existing = await this.findOne(id)
 
 		return this.audit.togglePublish(ENTITY, actor, existing, data =>
@@ -193,7 +179,7 @@ export class ResumeService extends BaseService {
 		)
 	}
 
-	async remove(id: string, actor = 'admin') {
+	async remove(id: string, actor = 'admin'): Promise<DeletedRecord> {
 		const existing = await this.findOne(id)
 
 		return this.audit.softDeleted(ENTITY, actor, existing, () =>

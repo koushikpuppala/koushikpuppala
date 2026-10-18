@@ -11,6 +11,9 @@ import {
 	Post,
 	Query,
 } from '@nestjs/common'
+import type { Resume } from '@repo/prisma'
+import type { PaginatedList, ResumeDownload } from 'types/api'
+import type { DeletedRecord, LatestResume, ResumeWithMedia } from 'types/server'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { Actor } from 'common/decorators/actor.decorator'
@@ -30,12 +33,12 @@ export class ResumeController {
 	@Public()
 	@Get('latest')
 	@ApiEndpoint({
-		summary: 'Get the active published resume and access URL (Public)',
+		summary: 'Get the active published resume and whether its file is available (Public)',
 		method: 'GET',
 		auth: false,
 		endpoint: 'GET /api/v1/resume/latest',
 	})
-	async getLatest() {
+	async getLatest(): Promise<LatestResume> {
 		return this.resumeService.getLatest()
 	}
 
@@ -51,7 +54,7 @@ export class ResumeController {
 		notFound: true,
 		endpoint: 'POST /api/v1/resume/download',
 	})
-	async download() {
+	async download(): Promise<ResumeDownload> {
 		return this.resumeService.download()
 	}
 
@@ -63,7 +66,7 @@ export class ResumeController {
 		isPaginated: true,
 		endpoint: 'GET /api/v1/resume',
 	})
-	async findAll(@Query() query: QueryResumeDto) {
+	async findAll(@Query() query: QueryResumeDto): Promise<PaginatedList<ResumeWithMedia>> {
 		return this.resumeService.adminFindAll(query)
 	}
 
@@ -74,7 +77,7 @@ export class ResumeController {
 		method: 'GET',
 		endpoint: 'GET /api/v1/resume/:id',
 	})
-	async findOne(@Param('id', ParseUUIDPipe) id: string) {
+	async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<ResumeWithMedia> {
 		return this.resumeService.findOne(id)
 	}
 
@@ -85,7 +88,7 @@ export class ResumeController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/resume',
 	})
-	async create(@Body() dto: CreateResumeDto, @Actor() actor: string) {
+	async create(@Body() dto: CreateResumeDto, @Actor() actor: string): Promise<ResumeWithMedia> {
 		return this.resumeService.create(dto, actor)
 	}
 
@@ -100,7 +103,7 @@ export class ResumeController {
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateResumeDto,
 		@Actor() actor: string,
-	) {
+	): Promise<ResumeWithMedia> {
 		return this.resumeService.update(id, dto, actor)
 	}
 
@@ -111,7 +114,10 @@ export class ResumeController {
 		method: 'PATCH',
 		endpoint: 'PATCH /api/v1/resume/:id/publish',
 	})
-	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
+	async togglePublish(
+		@Param('id', ParseUUIDPipe) id: string,
+		@Actor() actor: string,
+	): Promise<Resume> {
 		return this.resumeService.togglePublish(id, actor)
 	}
 
@@ -122,7 +128,10 @@ export class ResumeController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/resume/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
+	async remove(
+		@Param('id', ParseUUIDPipe) id: string,
+		@Actor() actor: string,
+	): Promise<DeletedRecord> {
 		return this.resumeService.remove(id, actor)
 	}
 }

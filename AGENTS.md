@@ -214,7 +214,7 @@ pnpm --filter utils check-types
 
 - **Inspect first**: examine existing code, architecture, and contracts before modifying anything.
 - **Smallest correct change**: make minimal, surgical edits. Avoid sprawling or speculative refactors.
-- **No comments in code**: write no comments in source, config, CSS, workflows or Dockerfiles; add one only when the owner asks for it. Directive comments that change behaviour are the exception: `// biome-ignore`, `// @vitest-environment`, `/// <reference>`, shebangs and Dockerfile `# syntax=`. `.env.example` keeps its `# description` lines.
+- **Comments explain why, not what**: add a comment only where the reason behind the code is not obvious from reading it (a security decision, a workaround, a framework quirk, a non-obvious constraint), in one or two plain sentences. Never restate what the code does, and leave simple, self-explanatory code uncommented. Directive comments that change behaviour are always fine: `// biome-ignore`, `// @vitest-environment`, `/// <reference>`, shebangs and Dockerfile `# syntax=`. `.env.example` keeps its `# description` lines.
 - **Preserve existing behavior**: do not break established functionality unless explicitly instructed.
 - **Reuse existing abstractions**: check `packages/ui`, `packages/utils`, and domain services before introducing new components or helpers.
 - **Real data only**: NEVER introduce mock, stub, or fallback business data when backend endpoints are unavailable. Fix or implement the real contract.

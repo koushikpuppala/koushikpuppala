@@ -16,6 +16,7 @@ import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
 import { emailAddress } from 'lib/email'
+import { DownloadUnavailableNotice } from 'components/resume/download-unavailable-notice'
 
 export const generateMetadata = async (): Promise<Metadata> => {
 	'use cache'
@@ -45,7 +46,7 @@ const ResumePage = async () => {
 	])
 
 	const email = emailAddress(socials)
-	const fileUrl = resume.downloadUrl && resume.downloadUrl !== '#' ? resume.downloadUrl : null
+	const hasFile = Boolean(resume.hasFile)
 	const updated = resume.updatedAt
 		? new Date(resume.updatedAt).toLocaleDateString('en-US', { dateStyle: 'medium' })
 		: null
@@ -61,7 +62,7 @@ const ResumePage = async () => {
 				lead={summary}
 				meta={[version, updated ? `Updated ${updated}` : ''].filter(Boolean)}
 				actions={
-					fileUrl ? (
+					hasFile ? (
 						<>
 							<Button asChild size='lg' variant='signal'>
 								{/* No prefetch: prefetching this route would call it and count a download. */}
@@ -92,7 +93,9 @@ const ResumePage = async () => {
 				}
 			/>
 
-			{!fileUrl ? (
+			{hasFile ? <DownloadUnavailableNotice /> : null}
+
+			{!hasFile ? (
 				<div className='border-border bg-surface/50 border-b'>
 					<p className='container-page text-muted-foreground py-4 font-mono text-[0.75rem]'>
 						The resume file hasn&apos;t been published yet — the record below stays current.
