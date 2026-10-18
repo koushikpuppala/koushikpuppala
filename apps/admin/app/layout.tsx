@@ -1,6 +1,6 @@
 import type { ChildrenProps } from 'types/components'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono, Bricolage_Grotesque } from 'next/font/google'
+import { Plus_Jakarta_Sans } from 'next/font/google'
 import 'styles/globals.css'
 import { ThemeProvider } from 'lib/theme'
 import { AuthProvider } from 'lib/auth'
@@ -8,9 +8,7 @@ import { AdminShell } from 'components/shell/admin-shell'
 import { classNames } from 'utils/classNames'
 import { KeyboardFocus } from 'ui/keyboard-focus'
 
-const geistSans = Geist({ variable: '--font-geist-sans', display: 'swap' })
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', display: 'swap' })
-const bricolageGrotesque = Bricolage_Grotesque({ variable: '--font-bricolage', display: 'swap' })
+const plusJakartaSans = Plus_Jakarta_Sans({ variable: '--font-jakarta', display: 'swap' })
 
 export const viewport: Viewport = {
 	themeColor: [
@@ -50,9 +48,7 @@ const RootLayout = ({ children }: Readonly<ChildrenProps>) => {
 			<body
 				suppressHydrationWarning
 				className={classNames(
-					geistSans.variable,
-					geistMono.variable,
-					bricolageGrotesque.variable,
+					plusJakartaSans.variable,
 					'bg-background text-foreground selection:bg-signal min-h-screen font-sans antialiased selection:text-white',
 				)}>
 				<KeyboardFocus />

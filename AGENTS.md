@@ -233,7 +233,7 @@ pnpm --filter utils check-types
 
 - Prefer React Server Components (RSC) for data fetching and static markup.
 - Use Client Components (`'use client'`) only for user interaction, local state, browser APIs, or custom event handlers.
-- Admin styling must follow the public application (`apps/client`) design language, typography hierarchy, and spacing system while remaining optimized for CMS density.
+- Admin styling must follow the public application (`apps/client`) design language, typography hierarchy, and spacing system while remaining optimized for CMS density. Typefaces are the one intentional difference: the client uses Geist (body), Bricolage Grotesque (headings) and Geist Mono, while the admin uses Plus Jakarta Sans for everything, mono included, with tabular numerals on former mono text and tables. Don't align them.
 - Reuse shared `DataTable` and table toolbar patterns from `packages/ui` rather than creating ad-hoc search and filter controls.
 - Keep admin navigation and sidebar fixed; page content scrolls within the main viewport.
 - Adhere to WCAG 2.2 Level AA accessibility: proper ARIA roles, keyboard focus management, and semantic HTML elements.
