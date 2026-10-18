@@ -1,15 +1,18 @@
 import { DatabaseService } from 'database'
+import { publishFields, publishUpdate } from 'common/utils/publish.util'
 import { Injectable } from '@nestjs/common'
-import { AuditAction, Prisma } from '@repo/prisma'
+import { Prisma } from '@repo/prisma'
 import { BaseService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CreateSkillDto, QuerySkillDto, UpdateSkillDto } from './skill.dto'
+
+const ENTITY = 'Skill'
 
 @Injectable()
 export class SkillService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
+		private readonly audit: CmsAuditService,
 	) {
 		super()
 	}
@@ -50,7 +53,10 @@ export class SkillService extends BaseService {
 				where,
 				skip,
 				take,
-				orderBy: [{ category: 'asc' }, { sortOrder: 'asc' }],
+				orderBy: this.getOrderBy(query.sortBy, query.sortOrder, [
+					{ category: 'asc' },
+					{ sortOrder: 'asc' },
+				]),
 				include: { media: true },
 			}),
 			this.prisma.skill.count({ where }),
@@ -71,29 +77,15 @@ export class SkillService extends BaseService {
 	async create(dto: CreateSkillDto, actor = 'admin') {
 		const skill = await this.prisma.skill.create({
 			data: {
-				name: dto.name,
-				category: dto.category,
-				description: dto.description,
-				proficiency: dto.proficiency,
-				icon: dto.icon,
-				mediaId: dto.mediaId,
+				...dto,
 				featured: dto.featured ?? false,
 				sortOrder: dto.sortOrder ?? 0,
-				isPublished: dto.isPublished ?? true,
-				publishedAt: dto.isPublished ? new Date() : null,
+				...publishFields(dto.isPublished ?? true),
 			},
 			include: { media: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'Skill',
-			entityId: skill.id,
-			actor,
-			newData: skill as unknown as Record<string, unknown>,
-		})
-
-		return skill
+		return this.audit.created(ENTITY, actor, skill)
 	}
 
 	async update(id: string, dto: UpdateSkillDto, actor = 'admin') {
@@ -101,68 +93,26 @@ export class SkillService extends BaseService {
 
 		const skill = await this.prisma.skill.update({
 			where: { id },
-			data: {
-				...(dto.name !== undefined && { name: dto.name }),
-				...(dto.category !== undefined && { category: dto.category }),
-				...(dto.description !== undefined && { description: dto.description }),
-				...(dto.proficiency !== undefined && { proficiency: dto.proficiency }),
-				...(dto.icon !== undefined && { icon: dto.icon }),
-				...(dto.mediaId !== undefined && { mediaId: dto.mediaId }),
-				...(dto.featured !== undefined && { featured: dto.featured }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-				...(dto.isPublished !== undefined && {
-					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
-				}),
-			},
+			data: { ...dto, ...publishUpdate(dto.isPublished, existing.publishedAt) },
 			include: { media: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Skill',
-			entityId: skill.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: skill as unknown as Record<string, unknown>,
-		})
-
-		return skill
+		return this.audit.updated(ENTITY, actor, existing, skill)
 	}
 
 	async togglePublish(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
-		const nextState = !existing.isPublished
 
-		const skill = await this.prisma.skill.update({
-			where: { id },
-			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
-		})
-
-		await this.auditLog.create({
-			action: nextState ? AuditAction.PUBLISH : AuditAction.UNPUBLISH,
-			entity: 'Skill',
-			entityId: skill.id,
-			actor,
-			newData: { isPublished: nextState },
-		})
-
-		return skill
+		return this.audit.togglePublish(ENTITY, actor, existing, data =>
+			this.prisma.skill.update({ where: { id }, data }),
+		)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.skill.update({ where: { id }, data: { deletedAt: new Date() } })
-
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Skill',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
-
-		return { id, deleted: true }
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.skill.update({ where: { id }, data: { deletedAt: new Date() } }),
+		)
 	}
 }

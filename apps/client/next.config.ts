@@ -1,8 +1,8 @@
-import { type SentryBuildOptions, withSentryConfig } from '@sentry/nextjs'
+import { type SentryBuildOptions, withSentryConfig } from '@sentry/nextjs/config'
 
-import * as nextPWA from '@ducanh2912/next-pwa'
+import nextPWA from '@ducanh2912/next-pwa'
 
-const nextConfig = nextPWA.default({
+const nextConfig = nextPWA({
 	dest: 'public',
 	register: process.env.NODE_ENV !== 'development',
 	disable: process.env.NODE_ENV === 'development',
@@ -14,9 +14,10 @@ const nextConfig = nextPWA.default({
 	},
 })({
 	cacheComponents: true,
+	partialPrefetching: true,
+	outputFileTracingIncludes: { '/sitemap.xml': ['./app/**/page.{js,jsx,ts,tsx,md,mdx}'] },
 	reactStrictMode: process.env.NODE_ENV !== 'development',
 	output: process.env.ENVIRONMENT === 'docker' ? 'standalone' : undefined,
-	// logging: { browserToTerminal: process.env.NODE_ENV !== 'production' },
 	images: {
 		formats: ['image/avif', 'image/webp'],
 		minimumCacheTTL: 86400,
@@ -58,9 +59,10 @@ const nextConfig = nextPWA.default({
 			source: '/__/auth/:params',
 			destination: 'https://koushikpuppala.firebaseapp.com/__/auth/:params',
 		},
-		// { source: '/api/:path*', destination: `${process.env.BACKEND_URL}/api/:path*` },
+		{ source: '/api/:path*', destination: `${process.env.NEXT_PUBLIC_BASE_URL}/api/:path*` },
 	],
 	redirects: async () => [
+		{ source: '/skills', destination: '/services', permanent: true },
 		{ source: '/github', destination: 'https://github.com/koushikpuppala', permanent: true },
 		{
 			source: '/github/:params',
@@ -100,38 +102,30 @@ const nextConfig = nextPWA.default({
 })
 
 const sentryBuildOptions: SentryBuildOptions = {
-	org: 'koushikpuppala',
-	project: 'koushikpuppala',
+	org: process.env.SENTRY_ORG,
+	project: process.env.SENTRY_CLIENT_PROJECT,
 	authToken: process.env.NODE_ENV === 'production' ? process.env.SENTRY_AUTH_TOKEN : undefined,
 
-	// Logging
 	debug: false,
 	silent: process.env.NODE_ENV !== 'production',
 
-	// Release tracking
 	release:
 		process.env.NODE_ENV === 'production' ? { name: process.env.npm_package_version } : undefined,
 
-	// Client bundle upload
 	widenClientFileUpload: process.env.NODE_ENV === 'production',
 
-	// Ad-blocker avoidance (prod only)
 	tunnelRoute: process.env.NODE_ENV === 'production' ? '/monitoring' : undefined,
 
-	// Sourcemaps (BEST PRACTICE)
 	sourcemaps: {
 		disable: process.env.NODE_ENV !== 'production',
 		deleteSourcemapsAfterUpload: process.env.NODE_ENV === 'production',
 	},
 
 	webpack: {
-		// Vercel Cron monitoring (prod only)
 		automaticVercelMonitors: process.env.NODE_ENV === 'production',
 
-		// Tree-shaking + bundle hygiene
 		treeshake: { removeDebugLogging: process.env.NODE_ENV === 'production' },
 
-		// Better React stack traces
 		reactComponentAnnotation: { enabled: process.env.NODE_ENV === 'production' },
 	},
 }

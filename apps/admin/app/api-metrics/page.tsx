@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { ApiMetricsClientView } from '@/components/views/api-metrics-client-view'
+import { ApiMetricsView } from 'components/api-metrics/api-metrics-view'
 
 export const metadata: Metadata = {
 	title: 'API Metrics',
 	description: 'Monitor backend endpoint response times, request throughput, and error rates.',
 }
 
-export const ApiMetricsPage = () => {
-	return <ApiMetricsClientView />
+const ApiMetricsPage = () => {
+	return <ApiMetricsView />
 }
 
 export default ApiMetricsPage

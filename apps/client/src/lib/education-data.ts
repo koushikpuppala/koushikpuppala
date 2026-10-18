@@ -1,18 +1,18 @@
 import type { PublishedEducation } from 'types/models'
 
 import { cache } from 'react'
+import { unwrap } from 'lib/api-result'
 import { getPublishedEducation } from 'actions/cache/education'
-import { API_EDUCATION_FALLBACK } from 'constants/api-fallback'
 
 export const getEducationData = cache(async (): Promise<PublishedEducation[]> => {
-	const { result, error } = await getPublishedEducation()
+	const result = unwrap(await getPublishedEducation(), 'education')
 
-	if (error || !result) return API_EDUCATION_FALLBACK
+	if (!result) return []
 
 	return result.map((item, idx) => {
 		const startYear = item.startDate ? new Date(String(item.startDate)).getFullYear() : ''
 		const endYear = item.endDate ? new Date(String(item.endDate)).getFullYear() : 'Present'
-		const period = startYear ? `${startYear} — ${endYear}` : 'Verified'
+		const period = startYear ? `${startYear} — ${endYear}` : ''
 
 		return {
 			id: String(item.id || `remote-edu-${idx}`),
@@ -26,10 +26,7 @@ export const getEducationData = cache(async (): Promise<PublishedEducation[]> =>
 			isCurrent: Boolean(item.isCurrent),
 			description: Array.isArray(item.description) ? item.description : [],
 			achievements: Array.isArray(item.achievements) ? item.achievements : [],
-			focusAreas:
-				Array.isArray(item.description) && item.description.length > 0
-					? item.description
-					: [item.fieldOfStudy || 'Computer Science', 'Algorithms', 'Distributed Systems'],
+			focusAreas: Array.isArray(item.focusAreas) ? item.focusAreas : [],
 			website: item.website ? String(item.website) : null,
 			sortOrder: Number(item.sortOrder ?? idx),
 		}

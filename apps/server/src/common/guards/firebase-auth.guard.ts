@@ -1,11 +1,10 @@
 import type { Request } from 'express'
-import type { AuthenticatedUser } from 'types/express'
-import type { DecodedIdToken } from 'firebase-admin/auth'
+import type { RequestMeta } from 'types/server'
 import type { CanActivate, ExecutionContext } from '@nestjs/common'
 
 import { Reflector } from '@nestjs/core'
-import { UserService } from 'modules/user'
-import { AuthProvider, UserStatus } from '@repo/prisma'
+import { fromFirebaseToken, toAuthenticatedUser, UserAccountService } from 'modules/user'
+import { UserStatus } from '@repo/prisma'
 import { FirebaseService } from 'firebase/firebase.service'
 import { SessionService } from 'modules/auth/session.service'
 import { IS_PUBLIC_KEY } from 'common/decorators/public.decorator'
@@ -17,7 +16,7 @@ export class FirebaseAuthGuard implements CanActivate {
 	constructor(
 		private readonly reflector: Reflector,
 		private readonly firebase: FirebaseService,
-		private readonly userService: UserService,
+		private readonly accounts: UserAccountService,
 		private readonly sessionService: SessionService,
 	) {}
 
@@ -34,12 +33,14 @@ export class FirebaseAuthGuard implements CanActivate {
 		return token
 	}
 
-	private async verifyFirebaseToken(token: string, meta: { requestId: string; endpoint: string }) {
+	private async verifyFirebaseToken(token: string, meta: RequestMeta) {
 		try {
 			const decoded = await this.firebase.verifyIdToken(token, true, meta)
 
+			// Unverified emails are only allowed for accounts that already exist in the database,
+			// which were created by an admin rather than through self sign-up.
 			if (!decoded.email_verified) {
-				const userInDb = await this.userService.findByFirebaseUid(decoded.uid, meta)
+				const userInDb = await this.accounts.findByFirebaseUid(decoded.uid, meta)
 
 				if (!userInDb) throw new UnauthorizedException('Email address is not verified.')
 			}
@@ -48,6 +49,7 @@ export class FirebaseAuthGuard implements CanActivate {
 		} catch (error) {
 			if (error instanceof HttpException) throw error
 
+			// Hide Firebase's error details so callers cannot tell why a token was rejected.
 			throw new UnauthorizedException('Invalid or expired authentication token')
 		}
 	}
@@ -59,28 +61,6 @@ export class FirebaseAuthGuard implements CanActivate {
 		])
 	}
 
-	private mapProvider(provider: DecodedIdToken['firebase']['sign_in_provider']): AuthProvider {
-		switch (provider) {
-			case 'google.com':
-				return AuthProvider.GOOGLE
-			case 'password':
-				return AuthProvider.PASSWORD
-			default:
-				return AuthProvider.PASSWORD
-		}
-	}
-
-	private toFirebaseAuthenticatedUser(decoded: DecodedIdToken): AuthenticatedUser {
-		return {
-			firebaseUid: decoded.uid,
-			email: decoded.email ?? '',
-			displayName: decoded.name,
-			photoUrl: decoded.picture,
-			emailVerified: decoded.email_verified ?? false,
-			provider: this.mapProvider(decoded.firebase.sign_in_provider),
-		}
-	}
-
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		if (this.metadata(context, IS_PUBLIC_KEY)) return true
 
@@ -88,10 +68,12 @@ export class FirebaseAuthGuard implements CanActivate {
 
 		const token = this.extractBearerToken(request.headers.authorization)
 
-		const meta = { requestId: request.requestId, endpoint: request.originalUrl }
+		const meta: RequestMeta = { requestId: request.requestId, endpoint: request.originalUrl }
 
 		const decoded = await this.verifyFirebaseToken(token, meta)
 
+		// Firebase's revocation check covers revoked refresh tokens; this covers sessions
+		// signed out or revoked through the API, which Firebase does not know about.
 		const isRevoked = await this.sessionService.isSessionRevoked(token)
 
 		if (isRevoked) throw new UnauthorizedException('Session has been revoked or expired.')
@@ -99,20 +81,22 @@ export class FirebaseAuthGuard implements CanActivate {
 		request.token = token
 		request.decodedToken = decoded
 
+		// Routes such as first sign-in run before the user row exists, so they get the token's identity.
 		if (this.metadata(context, ALLOW_UNREGISTERED_USER_KEY)) {
-			request.user = this.toFirebaseAuthenticatedUser(decoded)
+			request.user = fromFirebaseToken(decoded)
 
 			return true
 		}
 
-		const user = await this.userService.findByFirebaseUid(decoded.uid, meta)
+		const user = await this.accounts.findByFirebaseUid(decoded.uid, meta)
 
 		if (!user) throw new UnauthorizedException('User is not registered. Please sign in first.')
 
 		if (user.status !== UserStatus.ACTIVE)
 			throw new UnauthorizedException('Your account is inactive.')
 
-		request.user = this.userService.toAuthenticatedUser(user)
+		request.user = toAuthenticatedUser(user)
+
 		return true
 	}
 }

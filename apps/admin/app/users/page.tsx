@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { UsersClientView } from '@/components/views/users-client-view'
+import { UsersView } from 'components/users/users-view'
 
 export const metadata: Metadata = {
 	title: 'User Management',
 	description: 'Manage studio administrators, roles, permissions, and active sessions.',
 }
 
-export const UsersPage = () => {
-	return <UsersClientView />
+const UsersPage = () => {
+	return <UsersView />
 }
 
 export default UsersPage

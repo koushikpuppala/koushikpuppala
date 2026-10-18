@@ -1,34 +1,37 @@
-import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
+import { Injectable } from '@nestjs/common'
+import { ContactNotifier } from './contact.notifier'
 import { LoggerService } from 'common/logger/logger.service'
+import { createdAtRange } from 'common/utils/date-range.util'
 import { BaseService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
-import { AuditAction, ContactPriority, ContactStatus, Prisma } from '@repo/prisma'
+import { ContactPriority, ContactStatus, Prisma } from '@repo/prisma'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CreateContactDto, QueryContactDto, UpdateContactDto } from './contact.dto'
+
+const ENTITY = 'Contact'
+const RECEIVED = 'Thank you for getting in touch! Your message has been received.'
 
 @Injectable()
 export class ContactService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
+		private readonly audit: CmsAuditService,
 		private readonly logger: LoggerService,
+		private readonly notifier: ContactNotifier,
 	) {
 		super()
 	}
 
 	async submit(dto: CreateContactDto, ipAddress?: string, userAgent?: string) {
-		const isSpam = Boolean(dto.url && dto.url.trim().length > 0)
-
-		if (isSpam) {
+		// The url field is a hidden honeypot that people never fill in. Bots that do get the
+		// normal success reply so they cannot tell the message was dropped.
+		if (dto.url?.trim()) {
 			this.logger.warn('Discarded honeypot spam contact submission', ContactService.name, {
 				ipAddress,
 				email: dto.email,
 			})
 
-			return {
-				id: 'filtered',
-				message: 'Thank you for getting in touch! Your message has been received.',
-			}
+			return { id: 'filtered', message: RECEIVED }
 		}
 
 		const contact = await this.prisma.contact.create({
@@ -39,17 +42,16 @@ export class ContactService extends BaseService {
 				message: dto.message,
 				url: dto.url,
 				source: dto.source ?? 'website',
-				status: isSpam ? ContactStatus.SPAM : ContactStatus.UNREAD,
-				priority: isSpam ? ContactPriority.LOW : ContactPriority.NORMAL,
+				status: ContactStatus.UNREAD,
+				priority: ContactPriority.NORMAL,
 				ipAddress,
 				userAgent,
 			},
 		})
 
-		return {
-			id: contact.id,
-			message: 'Thank you for getting in touch! Your message has been received.',
-		}
+		await this.notifier.notify(contact)
+
+		return { id: contact.id, message: RECEIVED }
 	}
 
 	async adminFindAll(query: QueryContactDto) {
@@ -68,21 +70,39 @@ export class ContactService extends BaseService {
 		if (query.status) where.status = query.status
 		if (query.priority) where.priority = query.priority
 
-		const [items, total, unreadCount] = await Promise.all([
+		const createdAt = createdAtRange(query.from, query.to)
+		if (createdAt) where.createdAt = createdAt
+
+		const [items, total, unreadCount, urgentCount, resolvedCount] = await Promise.all([
 			this.prisma.contact.findMany({
 				where,
 				skip,
 				take,
-				orderBy: { createdAt: 'desc' },
+				orderBy: this.getOrderBy(query.sortBy, query.sortOrder, [{ createdAt: 'desc' }]),
 				include: { assignedTo: { select: { id: true, email: true, displayName: true } } },
 			}),
 			this.prisma.contact.count({ where }),
 			this.prisma.contact.count({
 				where: { status: ContactStatus.UNREAD, deletedAt: null },
 			}),
+			this.prisma.contact.count({
+				where: {
+					priority: { in: [ContactPriority.HIGH, ContactPriority.URGENT] },
+					deletedAt: null,
+				},
+			}),
+			this.prisma.contact.count({
+				where: { status: ContactStatus.RESOLVED, deletedAt: null },
+			}),
 		])
 
-		return { items, unreadCount, pagination: this.getPaginationMeta(page, limit, total) }
+		return {
+			items,
+			unreadCount,
+			urgentCount,
+			resolvedCount,
+			pagination: this.getPaginationMeta(page, limit, total),
+		}
 	}
 
 	async findOne(id: string) {
@@ -93,7 +113,7 @@ export class ContactService extends BaseService {
 
 		const found = this.ensureExists(contact, 'Contact message not found')
 
-		// If unread, mark as read
+		// Opening a message in the admin marks it as read.
 		if (found.status === ContactStatus.UNREAD) {
 			await this.prisma.contact.update({
 				where: { id },
@@ -109,46 +129,23 @@ export class ContactService extends BaseService {
 	async update(id: string, dto: UpdateContactDto, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		const isNowResolved =
+		const resolvesNow =
 			dto.status === ContactStatus.RESOLVED && existing.status !== ContactStatus.RESOLVED
 
 		const contact = await this.prisma.contact.update({
 			where: { id },
-			data: {
-				...(dto.status !== undefined && { status: dto.status }),
-				...(dto.priority !== undefined && { priority: dto.priority }),
-				...(dto.internalNotes !== undefined && { internalNotes: dto.internalNotes }),
-				...(dto.assignedToId !== undefined && { assignedToId: dto.assignedToId }),
-				...(isNowResolved && { resolvedAt: new Date() }),
-			},
+			data: { ...dto, ...(resolvesNow && { resolvedAt: new Date() }) },
 			include: { assignedTo: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Contact',
-			entityId: contact.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: contact as unknown as Record<string, unknown>,
-		})
-
-		return contact
+		return this.audit.updated(ENTITY, actor, existing, contact)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.contact.update({ where: { id }, data: { deletedAt: new Date() } })
-
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Contact',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
-
-		return { id, deleted: true }
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.contact.update({ where: { id }, data: { deletedAt: new Date() } }),
+		)
 	}
 }

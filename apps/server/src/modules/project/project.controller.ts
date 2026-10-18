@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,7 +8,6 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import {
 	AddGalleryMediaDto,
@@ -21,12 +18,15 @@ import {
 } from './project.dto'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { ProjectService } from './project.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('Projects')
+@RevalidateTags('projects')
 @Controller('projects')
 export class ProjectController {
 	constructor(private readonly projectService: ProjectService) {}
@@ -86,9 +86,7 @@ export class ProjectController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/projects',
 	})
-	async create(@Body() dto: CreateProjectDto, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async create(@Body() dto: CreateProjectDto, @Actor() actor: string) {
 		return this.projectService.create(dto, actor)
 	}
 
@@ -102,10 +100,8 @@ export class ProjectController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateProjectDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.projectService.update(id, dto, actor)
 	}
 
@@ -116,9 +112,7 @@ export class ProjectController {
 		method: 'PATCH',
 		endpoint: 'PATCH /api/v1/projects/:id/publish',
 	})
-	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.projectService.togglePublish(id, actor)
 	}
 
@@ -129,13 +123,10 @@ export class ProjectController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/projects/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.projectService.remove(id, actor)
 	}
 
-	// --- Gallery Endpoints ---
 	@Post(':id/gallery')
 	@Roles(UserRole.EDITOR)
 	@ApiEndpoint({
@@ -146,10 +137,8 @@ export class ProjectController {
 	async addGalleryMedia(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: AddGalleryMediaDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.projectService.addGalleryMedia(id, dto, actor)
 	}
 
@@ -164,10 +153,8 @@ export class ProjectController {
 		@Param('id', ParseUUIDPipe) id: string,
 		@Param('mediaId', ParseUUIDPipe) mediaId: string,
 		@Body() dto: UpdateGalleryMediaDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.projectService.updateGalleryMedia(id, mediaId, dto, actor)
 	}
 
@@ -181,10 +168,8 @@ export class ProjectController {
 	async removeGalleryMedia(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Param('mediaId', ParseUUIDPipe) mediaId: string,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.projectService.removeGalleryMedia(id, mediaId, actor)
 	}
 }

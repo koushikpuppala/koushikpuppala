@@ -1,6 +1,5 @@
 model Service {
-  id      String @id @default(uuid()) @db.Uuid
-  version Int    @default(1)
+  id String @id @default(uuid()) @db.Uuid
 
   title       String
   subtitle    String?

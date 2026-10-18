@@ -1,19 +1,6 @@
-import type { ElementType, HTMLAttributes, ReactNode } from 'react'
+import type { SurfaceProps } from 'types/components'
 import { classNames } from 'utils/classNames'
 
-export type SurfaceProps = HTMLAttributes<HTMLElement> & {
-	children: ReactNode
-	className?: string
-	as?: ElementType
-	variant?: 'flat' | 'bordered' | 'strong' | 'transparent' | 'card'
-	interactive?: boolean
-	glow?: boolean
-}
-
-/**
- * Surface
- * Technical panel system prioritizing crisp hairline borders over heavy drop shadows.
- */
 export const Surface = ({
 	children,
 	className,
@@ -37,7 +24,7 @@ export const Surface = ({
 				'relative rounded-lg transition-colors duration-200',
 				variantMap[variant],
 				interactive &&
-					'hover:border-border-strong hover:bg-surface/90 focus-visible:ring-signal focus-visible:ring-offset-background cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+					'hover:border-border-strong hover:bg-surface/90 focus-ring:ring-signal focus-ring:ring-offset-background focus-ring:ring-2 focus-ring:ring-offset-2 cursor-pointer outline-none',
 				glow && 'hover:border-signal/50 hover:shadow-[0_0_20px_rgba(255,51,102,0.12)]',
 				className,
 			)}

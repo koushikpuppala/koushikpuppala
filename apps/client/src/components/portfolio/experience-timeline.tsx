@@ -1,23 +1,14 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import type { ExperienceTimelineProps, TimelineEntryProps } from 'types/components/client'
+import { useRef, useState, useSyncExternalStore } from 'react'
 import { ChevronDown } from 'components/icons'
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'motion/react'
-import { Chip, PulseDot } from 'components/primitives'
+import { Chip, PulseDot } from 'components/primitives/layout'
 import { durationLabel, formatMonthYear } from 'lib/format'
 import { classNames } from 'utils/classNames'
-import type { PublishedExperience } from 'types/models'
 
-function extractMetric(highlights: string[]) {
-	for (const line of highlights) {
-		const match = line.match(/(~?\d{1,3}%)/)
-
-		if (match) return match[1] as string
-	}
-	return null
-}
-
-function yearOf(value: string | null | undefined) {
+const yearOf = (value: string | null | undefined) => {
 	if (!value) return null
 
 	const parsed = new Date(value)
@@ -25,27 +16,26 @@ function yearOf(value: string | null | undefined) {
 	return Number.isNaN(parsed.getTime()) ? null : parsed.getFullYear()
 }
 
+// The server snapshot is null, so durations of ongoing roles render only after hydration and
+// the server HTML never disagrees with the client's clock. The date is read once and shared.
+let clientNow: Date | null = null
+const subscribeNow = () => () => {}
+const getNow = () => (clientNow ??= new Date())
+const getServerNow = () => null
+
 const viewport = { once: true, margin: '0px 0px -18% 0px' } as const
 
 const ease = [0.16, 1, 0.3, 1] as const
 
-const TimelineEntry = ({
-	item,
-	index,
-	defaultOpen,
-}: {
-	item: PublishedExperience
-	index: number
-	defaultOpen: boolean
-}) => {
+const TimelineEntry = ({ item, index, defaultOpen }: TimelineEntryProps) => {
 	const [open, setOpen] = useState(defaultOpen)
-	const current = !item.endDate
+	const now = useSyncExternalStore(subscribeNow, getNow, getServerNow)
+	const current = item.isCurrent || !item.endDate
 	const panelId = `exp-panel-${item.id}`
-	const highlights = item.highlights || []
-	const metric = extractMetric(highlights)
+	const achievements = item.achievements
 	const startYear = yearOf(item.startDate)
-	const roleStr = item.role || item.title || ''
-	const orgStr = item.organization || item.company || ''
+	const roleStr = item.title
+	const orgStr = item.organization
 	const descStr = Array.isArray(item.description)
 		? item.description.join(' ')
 		: item.description || ''
@@ -94,7 +84,7 @@ const TimelineEntry = ({
 						<p
 							className={classNames(
 								'numeric font-display text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl',
-								current ? 'text-signal-ink' : 'text-foreground/35',
+								current ? 'text-signal-ink' : 'text-muted-foreground',
 							)}>
 							{startYear}
 						</p>
@@ -109,8 +99,9 @@ const TimelineEntry = ({
 						)}
 					</p>
 					<p className='text-muted-foreground mt-1.5 font-mono text-[0.6875rem]'>
-						{durationLabel(item.startDate, item.endDate)}
-						{item.location ? ` · ${item.location}` : ''}
+						{[durationLabel(item.startDate, item.endDate, now), item.location]
+							.filter(Boolean)
+							.join(' · ')}
 					</p>
 					{current ? (
 						<span className='bg-signal-soft text-signal-ink mt-3 inline-flex items-center gap-2 rounded-full px-2.5 py-1 font-mono text-[0.625rem] tracking-[0.14em] uppercase'>
@@ -121,24 +112,17 @@ const TimelineEntry = ({
 				</div>
 
 				<div className='min-w-0'>
-					<div className='grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4'>
-						<div className='min-w-0'>
-							<h3
-								className={classNames(
-									'font-display font-semibold tracking-tight text-balance',
-									current ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl',
-								)}>
-								{roleStr}
-							</h3>
-							<p className='text-muted-foreground mt-1.5 text-sm'>
-								<span className='text-foreground'>{orgStr}</span>
-							</p>
-						</div>
-						{metric ? (
-							<span className='numeric font-display text-signal-ink shrink-0 text-2xl font-semibold tracking-tight sm:text-3xl'>
-								{metric}
-							</span>
-						) : null}
+					<div className='min-w-0'>
+						<h3
+							className={classNames(
+								'font-display font-semibold tracking-tight text-balance',
+								current ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl',
+							)}>
+							{roleStr}
+						</h3>
+						<p className='text-muted-foreground mt-1.5 text-sm'>
+							<span className='text-foreground'>{orgStr}</span>
+						</p>
 					</div>
 
 					<p className='text-muted-foreground mt-4 max-w-2xl leading-relaxed'>{descStr}</p>
@@ -153,7 +137,7 @@ const TimelineEntry = ({
 						</div>
 					) : null}
 
-					{highlights.length ? (
+					{achievements.length ? (
 						<>
 							<button
 								type='button'
@@ -161,7 +145,9 @@ const TimelineEntry = ({
 								aria-expanded={open}
 								aria-controls={panelId}
 								className='text-muted-foreground hover:text-foreground mt-5 inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.14em] uppercase transition-colors'>
-								{open ? 'Hide detail' : `${highlights.length} highlights`}
+								{open
+									? 'Hide detail'
+									: `${achievements.length} ${achievements.length === 1 ? 'achievement' : 'achievements'}`}
 								<ChevronDown
 									className={classNames(
 										'size-3.5 transition-transform duration-500',
@@ -181,11 +167,11 @@ const TimelineEntry = ({
 										transition={{ duration: 0.45, ease }}
 										className='overflow-hidden'>
 										<ul className='border-border mt-5 space-y-3 border-l pl-5'>
-											{highlights.map(highlight => (
+											{achievements.map(achievement => (
 												<li
-													key={highlight}
+													key={achievement}
 													className='text-muted-foreground before:bg-border-strong relative text-sm leading-relaxed before:absolute before:top-[0.6em] before:-left-5 before:h-px before:w-3'>
-													{highlight}
+													{achievement}
 												</li>
 											))}
 										</ul>
@@ -200,7 +186,7 @@ const TimelineEntry = ({
 	)
 }
 
-export const ExperienceTimeline = ({ items }: { items: PublishedExperience[] }) => {
+export const ExperienceTimeline = ({ items }: ExperienceTimelineProps) => {
 	const ref = useRef<HTMLDivElement>(null)
 
 	const reduced = useReducedMotion()

@@ -1,9 +1,10 @@
-import type { ReactNode } from 'react'
-import { DisplayLines, PulseDot } from 'components/primitives'
+import type { PageHeroProps } from 'types/components/client'
+import { PulseDot } from 'components/primitives/layout'
+import { DisplayLines } from 'components/primitives/motion'
 import { toDisplayLines } from 'lib/format'
 import { classNames } from 'utils/classNames'
 
-export function PageHero({
+export const PageHero = ({
 	eyebrow,
 	title,
 	lines,
@@ -13,18 +14,7 @@ export function PageHero({
 	accentWord,
 	separator = '//',
 	className,
-}: {
-	eyebrow: string
-	title: string
-	/** explicit line breaks; derived from the title when omitted */
-	lines?: string[]
-	lead?: string | null
-	meta?: string[]
-	actions?: ReactNode
-	accentWord?: string
-	separator?: string
-	className?: string
-}) {
+}: PageHeroProps) => {
 	const titleLines = lines ?? toDisplayLines(title, 2)
 
 	return (

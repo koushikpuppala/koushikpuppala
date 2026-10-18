@@ -1,12 +1,10 @@
 import { Prisma } from '@repo/prisma'
 
-const TRANSIENT_PRISMA_ERRORS = [
-	'P1001', // Can't reach database server
-	'P1002', // The database server was reached but the connection timed out
-	'P1008', // Operations timed out
-	'P1017', // Server closed connection
-]
+// Can't reach server, server timed out, operation timed out, server closed the connection.
+const TRANSIENT_PRISMA_ERRORS = ['P1001', 'P1002', 'P1008', 'P1017']
 
+// Retries only connection-level failures with exponential backoff (500ms, 1s, ...).
+// Query errors such as constraint violations are rethrown immediately.
 export const withPrismaRetry = async <T>(
 	fn: () => Promise<T>,
 	retries = 3,

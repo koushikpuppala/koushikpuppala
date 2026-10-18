@@ -1,6 +1,6 @@
 import type { FormAction, FormState, UseFormOptions, ZodIssueLike } from 'types/utils'
 
-import { useCallback, useReducer, useState } from 'react'
+import { useCallback, useReducer, useState, type SubmitEvent } from 'react'
 
 export const useFormReducer = <T extends Record<string, string>>({
 	initialValues,
@@ -60,9 +60,8 @@ export const useFormReducer = <T extends Record<string, string>>({
 			const formattedErrors: Partial<Record<keyof T, string>> = {}
 			for (const issue of result.error.issues) {
 				const field = issue.path[0] as keyof T
-				if (field && !formattedErrors[field]) {
-					formattedErrors[field] = issue.message
-				}
+				// Keep only the first issue per field.
+				if (field && !formattedErrors[field]) formattedErrors[field] = issue.message
 			}
 			dispatch({ type: 'SET_ERRORS', errors: formattedErrors })
 			return false
@@ -73,6 +72,7 @@ export const useFormReducer = <T extends Record<string, string>>({
 	const handleChange = useCallback(
 		(field: keyof T, value: unknown) => {
 			dispatch({ type: 'SET_FIELD', field, value })
+			// Validate while typing only after the field was blurred once, so errors do not appear mid-entry.
 			if (schema && state.touched[field]) {
 				const updatedValues = { ...state.values, [field]: value }
 				const result = schema.safeParse(updatedValues)
@@ -102,7 +102,7 @@ export const useFormReducer = <T extends Record<string, string>>({
 	)
 
 	const handleSubmit = useCallback(
-		async (e?: React.FormEvent) => {
+		async (e?: SubmitEvent<HTMLFormElement>) => {
 			if (e) e.preventDefault()
 			setSubmitError(null)
 

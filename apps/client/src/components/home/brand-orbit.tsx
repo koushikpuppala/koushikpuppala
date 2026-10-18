@@ -1,7 +1,6 @@
+import type { BrandOrbitProps } from 'types/components/client'
 import { classNames } from 'utils/classNames'
 import { LogoGlyph } from 'components/brand/logo'
-
-export type OrbitNode = { label: string; value: string; angle: number }
 
 const RADIAL_TICKS = [
 	{ x1: 194, y1: 100, x2: 186, y2: 100 },
@@ -30,15 +29,7 @@ const RADIAL_TICKS = [
 	{ x1: 190.8, y1: 75.67, x2: 186.93, y2: 76.71 },
 ] as const
 
-export const BrandOrbit = ({
-	nodes,
-	caption,
-	className,
-}: {
-	nodes: OrbitNode[]
-	caption?: string
-	className?: string
-}) => {
+export const BrandOrbit = ({ nodes, caption, className }: BrandOrbitProps) => {
 	const label = `End-to-end stack: ${nodes.map(n => `${n.label} ${n.value}`).join(', ')}`
 
 	return (

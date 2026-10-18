@@ -28,8 +28,7 @@ lerna-debug.log*
 # Yarn Integrity file
 .yarn-integrity
 
-# Local dotenv environment variable files
-.env
+# Local dotenv environment variable files (the root .env is kept: the docker/*.Dockerfile builds copy it)
 .env.*
 **/.env*.local
 

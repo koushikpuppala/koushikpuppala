@@ -1,6 +1,7 @@
+import type { ComponentProps } from 'react'
 import { classNames } from 'utils/classNames'
 
-const Table = ({ className, ...props }: React.ComponentProps<'table'>) => (
+const Table = ({ className, ...props }: ComponentProps<'table'>) => (
 	<div data-slot='table-container' className='relative w-full overflow-x-auto'>
 		<table
 			data-slot='table'
@@ -10,68 +11,49 @@ const Table = ({ className, ...props }: React.ComponentProps<'table'>) => (
 	</div>
 )
 
-const TableHeader = ({ className, ...props }: React.ComponentProps<'thead'>) => (
-	<thead
-		data-slot='table-header'
-		className={classNames('border-b border-border bg-surface-strong/50 font-mono text-xs uppercase tracking-wider text-muted-foreground', className)}
-		{...props}
-	/>
+const TableHeader = ({ className, ...props }: ComponentProps<'thead'>) => (
+	<thead data-slot='table-header' className={classNames('text-foreground', className)} {...props} />
 )
 
-const TableBody = ({ className, ...props }: React.ComponentProps<'tbody'>) => (
+const TableBody = ({ className, ...props }: ComponentProps<'tbody'>) => (
 	<tbody
 		data-slot='table-body'
-		className={classNames('divide-y divide-border font-mono text-xs [&_tr:last-child]:border-0', className)}
+		className={classNames('text-sm [&_tr:last-child]:border-0', className)}
 		{...props}
 	/>
 )
 
-const TableFooter = ({ className, ...props }: React.ComponentProps<'tfoot'>) => (
-	<tfoot
-		data-slot='table-footer'
-		className={classNames(
-			'bg-surface/50 border-t border-border font-mono text-xs text-muted-foreground [&>tr]:last:border-b-0',
-			className,
-		)}
-		{...props}
-	/>
-)
-
-const TableRow = ({ className, ...props }: React.ComponentProps<'tr'>) => (
+const TableRow = ({ className, ...props }: ComponentProps<'tr'>) => (
 	<tr
 		data-slot='table-row'
 		className={classNames(
-			'border-b border-border/60 transition-colors hover:bg-accent/40 data-[state=selected]:bg-accent/50',
+			'border-border/70 hover:bg-signal/5 data-[state=selected]:bg-signal/10 border-b transition-colors',
 			className,
 		)}
 		{...props}
 	/>
 )
 
-const TableHead = ({ className, ...props }: React.ComponentProps<'th'>) => (
+const TableHead = ({ className, ...props }: ComponentProps<'th'>) => (
 	<th
 		data-slot='table-head'
 		className={classNames(
-			'h-10 px-4 py-3 text-left align-middle font-mono text-xs uppercase tracking-wider font-medium text-muted-foreground whitespace-nowrap has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+			'text-foreground h-11 bg-[color-mix(in_oklab,var(--signal)_10%,var(--surface))] px-3 py-2.5 text-left align-middle font-semibold whitespace-nowrap first:rounded-tl-lg last:rounded-tr-lg has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
 			className,
 		)}
 		{...props}
 	/>
 )
 
-const TableCell = ({ className, ...props }: React.ComponentProps<'td'>) => (
+const TableCell = ({ className, ...props }: ComponentProps<'td'>) => (
 	<td
 		data-slot='table-cell'
 		className={classNames(
-			'px-4 py-3 align-middle font-sans text-xs whitespace-nowrap text-foreground has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+			'text-foreground px-3 py-2.5 align-middle whitespace-nowrap has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
 			className,
 		)}
 		{...props}
 	/>
 )
 
-const TableCaption = ({ className, ...props }: React.ComponentProps<'caption'>) => (
-	<caption data-slot='table-caption' className={classNames('mt-4 text-sm text-muted-foreground', className)} {...props} />
-)
-
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption }
+export { Table, TableHeader, TableBody, TableHead, TableRow, TableCell }

@@ -1,21 +1,25 @@
 import { DatabaseService } from 'database'
-import { AuditAction, Prisma } from '@repo/prisma'
+import { Prisma } from '@repo/prisma'
+import { publishFields, publishUpdate } from 'common/utils/publish.util'
 import { BaseService } from 'common/services/base-cms.service'
 import { ConflictException, Injectable } from '@nestjs/common'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CacheService } from 'redis/cache.service'
 import { CreateMetadataDto, QueryMetadataDto, UpdateMetadataDto } from './metadata.dto'
+
+const ENTITY = 'Metadata'
 
 @Injectable()
 export class MetadataService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
+		private readonly audit: CmsAuditService,
 		private readonly cache: CacheService,
 	) {
 		super()
 	}
 
+	// Gives every path one form ('/about', never 'about' or '/about/') so it matches the stored keys.
 	normalizePath(pathname?: string): string {
 		if (!pathname) return '/'
 
@@ -38,6 +42,8 @@ export class MetadataService extends BaseService {
 				where: { key: normalized, isPublished: true, deletedAt: null },
 			})
 
+			// Lookup order: exact path, the same key without a leading slash, the project detail
+			// template for /projects/<slug>, and finally the site-wide default.
 			if (!meta) {
 				const strippedKey = normalized === '/' ? 'home' : normalized.slice(1)
 
@@ -68,10 +74,6 @@ export class MetadataService extends BaseService {
 		})
 	}
 
-	async getPublishedByKey(key: string) {
-		return this.getPublishedByPath(key)
-	}
-
 	async getAllPublished() {
 		return this.cache.remember('metadata:all-published', 3600, async () => {
 			return this.prisma.metadata.findMany({
@@ -92,6 +94,8 @@ export class MetadataService extends BaseService {
 				{ description: { contains: query.search, mode: 'insensitive' } },
 			]
 
+		if (query.key) where.key = { in: query.key }
+
 		if (query.type) where.type = query.type
 
 		if (query.isPublished !== undefined) where.isPublished = query.isPublished
@@ -101,7 +105,7 @@ export class MetadataService extends BaseService {
 				where,
 				skip,
 				take,
-				orderBy: { createdAt: 'desc' },
+				orderBy: this.getOrderBy(query.sortBy, query.sortOrder, [{ createdAt: 'desc' }]),
 			}),
 			this.prisma.metadata.count({ where }),
 		])
@@ -118,123 +122,69 @@ export class MetadataService extends BaseService {
 	}
 
 	async create(dto: CreateMetadataDto, actor = 'admin') {
-		const existing = await this.prisma.metadata.findUnique({
-			where: { key: dto.key },
-		})
-
-		if (existing) throw new ConflictException(`Metadata key '${dto.key}' already exists`)
+		await this.assertKeyFree(dto.key)
 
 		const metadata = await this.prisma.metadata.create({
 			data: {
-				type: dto.type,
-				key: dto.key,
+				...dto,
 				value: dto.value as Prisma.InputJsonValue,
-				title: dto.title,
-				description: dto.description,
-				ogImage: dto.ogImage,
-				canonicalUrl: dto.canonicalUrl,
 				robots: dto.robots ?? 'index,follow',
 				keywords: dto.keywords ?? [],
-				isPublished: dto.isPublished ?? false,
-				publishedAt: dto.isPublished ? new Date() : null,
+				...publishFields(dto.isPublished ?? false),
 			},
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'Metadata',
-			entityId: metadata.id,
-			actor,
-			newData: metadata as unknown as Record<string, unknown>,
-		})
-
-		await this.cache.forgetByPattern('metadata:*')
-
-		return metadata
+		return this.invalidate(await this.audit.created(ENTITY, actor, metadata))
 	}
 
 	async update(id: string, dto: UpdateMetadataDto, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		if (dto.key && dto.key !== existing.key) {
-			const duplicate = await this.prisma.metadata.findUnique({
-				where: { key: dto.key },
-			})
-
-			if (duplicate && duplicate.id !== id)
-				throw new ConflictException(`Metadata key '${dto.key}' already exists`)
-		}
+		if (dto.key && dto.key !== existing.key) await this.assertKeyFree(dto.key, id)
 
 		const metadata = await this.prisma.metadata.update({
 			where: { id },
 			data: {
-				...(dto.type !== undefined && { type: dto.type }),
-				...(dto.key !== undefined && { key: dto.key }),
-				...(dto.value !== undefined && { value: dto.value as Prisma.InputJsonValue }),
-				...(dto.title !== undefined && { title: dto.title }),
-				...(dto.description !== undefined && { description: dto.description }),
-				...(dto.ogImage !== undefined && { ogImage: dto.ogImage }),
-				...(dto.canonicalUrl !== undefined && { canonicalUrl: dto.canonicalUrl }),
-				...(dto.robots !== undefined && { robots: dto.robots }),
-				...(dto.keywords !== undefined && { keywords: dto.keywords }),
-				...(dto.isPublished !== undefined && {
-					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
-				}),
+				...dto,
+				value: dto.value as Prisma.InputJsonValue | undefined,
+				...publishUpdate(dto.isPublished, existing.publishedAt),
 			},
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Metadata',
-			entityId: metadata.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: metadata as unknown as Record<string, unknown>,
-		})
-
-		await this.cache.forgetByPattern('metadata:*')
-
-		return metadata
+		return this.invalidate(await this.audit.updated(ENTITY, actor, existing, metadata))
 	}
 
 	async togglePublish(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
-		const nextState = !existing.isPublished
 
-		const metadata = await this.prisma.metadata.update({
-			where: { id },
-			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
-		})
-
-		await this.auditLog.create({
-			action: nextState ? AuditAction.PUBLISH : AuditAction.UNPUBLISH,
-			entity: 'Metadata',
-			entityId: metadata.id,
-			actor,
-			newData: { isPublished: nextState },
-		})
-
-		await this.cache.forgetByPattern('metadata:*')
-
-		return metadata
+		return this.invalidate(
+			await this.audit.togglePublish(ENTITY, actor, existing, data =>
+				this.prisma.metadata.update({ where: { id }, data }),
+			),
+		)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.metadata.update({ where: { id }, data: { deletedAt: new Date() } })
+		return this.invalidate(
+			await this.audit.softDeleted(ENTITY, actor, existing, () =>
+				this.prisma.metadata.update({ where: { id }, data: { deletedAt: new Date() } }),
+			),
+		)
+	}
 
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Metadata',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
+	private async assertKeyFree(key: string, exceptId?: string): Promise<void> {
+		const duplicate = await this.prisma.metadata.findUnique({ where: { key } })
 
+		if (duplicate && duplicate.id !== exceptId)
+			throw new ConflictException(`Metadata key '${key}' already exists`)
+	}
+
+	private async invalidate<T>(result: T): Promise<T> {
+		// Any change can affect fallback results for other paths, so clear all cached metadata.
 		await this.cache.forgetByPattern('metadata:*')
 
-		return { id, deleted: true }
+		return result
 	}
 }

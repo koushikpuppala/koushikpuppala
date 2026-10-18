@@ -1,15 +1,18 @@
 import { DatabaseService } from 'database'
+import { publishFields, publishUpdate } from 'common/utils/publish.util'
 import { Injectable } from '@nestjs/common'
-import { AuditAction, Prisma } from '@repo/prisma'
+import { Prisma } from '@repo/prisma'
 import { BaseService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CreateAboutDto, QueryAboutDto, UpdateAboutDto } from './about.dto'
+
+const ENTITY = 'About'
 
 @Injectable()
 export class AboutService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
+		private readonly audit: CmsAuditService,
 	) {
 		super()
 	}
@@ -67,38 +70,17 @@ export class AboutService extends BaseService {
 	async create(dto: CreateAboutDto, actor = 'admin') {
 		const about = await this.prisma.about.create({
 			data: {
-				title: dto.title,
-				leadStatement: dto.leadStatement,
-				content: dto.content,
-				biography: dto.biography,
-				location: dto.location,
-				coordinates: dto.coordinates,
-				timezone: dto.timezone,
-				status: dto.status,
-				profileImageId: dto.profileImageId,
+				...dto,
 				highlights: dto.highlights ?? [],
 				skills: dto.skills ?? [],
-				stats: dto.stats as Prisma.InputJsonValue,
-				values: dto.values as Prisma.InputJsonValue,
-				pillars: dto.pillars as Prisma.InputJsonValue,
-				ctaLabel: dto.ctaLabel,
-				ctaUrl: dto.ctaUrl,
+				...this.jsonFields(dto),
 				sortOrder: dto.sortOrder ?? 0,
-				isPublished: dto.isPublished ?? false,
-				publishedAt: dto.isPublished ? new Date() : null,
+				...publishFields(dto.isPublished ?? false),
 			},
 			include: { profileImage: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'About',
-			entityId: about.id,
-			actor,
-			newData: about as unknown as Record<string, unknown>,
-		})
-
-		return about
+		return this.audit.created(ENTITY, actor, about)
 	}
 
 	async update(id: string, dto: UpdateAboutDto, actor = 'admin') {
@@ -107,79 +89,37 @@ export class AboutService extends BaseService {
 		const about = await this.prisma.about.update({
 			where: { id },
 			data: {
-				...(dto.title !== undefined && { title: dto.title }),
-				...(dto.leadStatement !== undefined && { leadStatement: dto.leadStatement }),
-				...(dto.content !== undefined && { content: dto.content }),
-				...(dto.biography !== undefined && { biography: dto.biography }),
-				...(dto.location !== undefined && { location: dto.location }),
-				...(dto.coordinates !== undefined && { coordinates: dto.coordinates }),
-				...(dto.timezone !== undefined && { timezone: dto.timezone }),
-				...(dto.status !== undefined && { status: dto.status }),
-				...(dto.profileImageId !== undefined && { profileImageId: dto.profileImageId }),
-				...(dto.highlights !== undefined && { highlights: dto.highlights }),
-				...(dto.skills !== undefined && { skills: dto.skills }),
-				...(dto.stats !== undefined && { stats: dto.stats as Prisma.InputJsonValue }),
-				...(dto.values !== undefined && { values: dto.values as Prisma.InputJsonValue }),
-				...(dto.pillars !== undefined && { pillars: dto.pillars as Prisma.InputJsonValue }),
-				...(dto.ctaLabel !== undefined && { ctaLabel: dto.ctaLabel }),
-				...(dto.ctaUrl !== undefined && { ctaUrl: dto.ctaUrl }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-				...(dto.isPublished !== undefined && {
-					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
-				}),
+				...dto,
+				...this.jsonFields(dto),
+				...publishUpdate(dto.isPublished, existing.publishedAt),
 			},
 			include: { profileImage: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'About',
-			entityId: about.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: about as unknown as Record<string, unknown>,
-		})
-
-		return about
+		return this.audit.updated(ENTITY, actor, existing, about)
 	}
 
 	async togglePublish(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
-		const nextState = !existing.isPublished
 
-		const about = await this.prisma.about.update({
-			where: { id },
-			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
-		})
-
-		await this.auditLog.create({
-			action: nextState ? AuditAction.PUBLISH : AuditAction.UNPUBLISH,
-			entity: 'About',
-			entityId: about.id,
-			actor,
-			newData: { isPublished: nextState },
-		})
-
-		return about
+		return this.audit.togglePublish(ENTITY, actor, existing, data =>
+			this.prisma.about.update({ where: { id }, data }),
+		)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.about.update({
-			where: { id },
-			data: { deletedAt: new Date() },
-		})
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.about.update({ where: { id }, data: { deletedAt: new Date() } }),
+		)
+	}
 
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'About',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
-
-		return { id, deleted: true }
+	private jsonFields(dto: UpdateAboutDto) {
+		return {
+			stats: dto.stats as Prisma.InputJsonValue | undefined,
+			values: dto.values as Prisma.InputJsonValue | undefined,
+			pillars: dto.pillars as Prisma.InputJsonValue | undefined,
+		}
 	}
 }

@@ -1,13 +1,13 @@
+import { PublishableDto, PublishPageDto } from 'common/dto/publishable.dto'
 import type { ResumeHighlight, ResumeStat } from 'types'
 
-import { Type } from 'class-transformer'
-import { PaginationDto } from 'common/dto/pagination.dto'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsInt, IsOptional, IsString, IsUUID } from 'class-validator'
+import { IsArray, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator'
 
-export class CreateResumeDto {
+export class CreateResumeDto extends PublishableDto {
 	@ApiProperty({ example: 'Koushik Puppala - Resume 2026' })
 	@IsString()
+	@IsNotEmpty()
 	title!: string
 
 	@ApiPropertyOptional({ example: 'v2026.1' })
@@ -43,7 +43,7 @@ export class CreateResumeDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	competencies?: string[] = []
+	competencies?: string[]
 
 	@ApiPropertyOptional({ example: [{ label: 'FORMAT', value: 'PDF 1.4' }] })
 	@IsOptional()
@@ -61,7 +61,7 @@ export class CreateResumeDto {
 	@ApiPropertyOptional({ example: 'application/pdf', default: 'application/pdf' })
 	@IsString()
 	@IsOptional()
-	fileType?: string = 'application/pdf'
+	fileType?: string
 
 	@ApiPropertyOptional({
 		example: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
@@ -69,29 +69,13 @@ export class CreateResumeDto {
 	@IsString()
 	@IsOptional()
 	checksum?: string
-
-	@ApiPropertyOptional({ example: 0, default: 0 })
-	@IsInt()
-	@IsOptional()
-	sortOrder?: number = 0
-
-	@ApiPropertyOptional({ example: true, default: false })
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean = false
 }
 
 export class UpdateResumeDto extends PartialType(CreateResumeDto) {}
 
-export class QueryResumeDto extends PaginationDto {
+export class QueryResumeDto extends PublishPageDto {
 	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()
 	search?: string
-
-	@ApiPropertyOptional()
-	@Type(() => Boolean)
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean
 }

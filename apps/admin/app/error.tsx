@@ -1,16 +1,11 @@
 'use client'
 
+import type { ErrorPageProps } from 'types/components'
 import { useEffect } from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Button } from 'ui/button'
 
-export default function AdminRootError({
-	error,
-	reset,
-}: {
-	error: Error & { digest?: string }
-	reset: () => void
-}) {
+const AdminRootError = ({ error, reset }: ErrorPageProps) => {
 	useEffect(() => {
 		console.error('[CMS Studio Runtime Error]', error)
 	}, [error])
@@ -31,23 +26,15 @@ export default function AdminRootError({
 						An unexpected error occurred while loading this administrative view.
 					</p>
 					{error.digest ? (
-						<p className='text-muted-foreground/60 font-mono text-xs'>
-							Digest: {error.digest}
-						</p>
+						<p className='text-muted-foreground/60 font-mono text-xs'>Digest: {error.digest}</p>
 					) : null}
 				</div>
 
 				<div className='flex flex-wrap items-center justify-center gap-3 pt-2'>
-					<Button
-						variant='signal'
-						onClick={() => reset()}
-						className='font-mono text-xs uppercase'>
+					<Button variant='signal' onClick={() => reset()} className='font-mono text-xs uppercase'>
 						Retry View
 					</Button>
-					<Button
-						variant='outline'
-						asChild
-						className='font-mono text-xs uppercase'>
+					<Button variant='outline' asChild className='font-mono text-xs uppercase'>
 						<Link href='/'>Return to Dashboard</Link>
 					</Button>
 				</div>
@@ -55,3 +42,5 @@ export default function AdminRootError({
 		</main>
 	)
 }
+
+export default AdminRootError

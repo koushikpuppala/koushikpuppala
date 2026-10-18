@@ -1,10 +1,5 @@
-import { AsyncLocalStorage } from 'node:async_hooks'
+import type { RequestContextData } from 'types/server'
 
-export type RequestContextData = {
-	userId?: string
-	ipAddress?: string
-	userAgent?: string
-	requestId?: string
-}
+import { AsyncLocalStorage } from 'node:async_hooks'
 
 export const requestContextStorage = new AsyncLocalStorage<RequestContextData>()

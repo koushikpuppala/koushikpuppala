@@ -1,6 +1,11 @@
 'use client'
 
-import { useCallback, useRef, useState } from 'react'
+import type {
+	FeaturedProjectRowProps,
+	ProjectListRowProps,
+	SupportingProjectsProps,
+} from 'types/components/client'
+import { useCallback, useRef, useState, type MouseEvent } from 'react'
 import Link from 'next/link'
 import { ArrowUpRight } from 'components/icons'
 import {
@@ -12,23 +17,19 @@ import {
 	useSpring,
 	useTransform,
 } from 'motion/react'
-import { Chip, Reveal } from 'components/primitives'
+import { Chip } from 'components/primitives/layout'
+import { Reveal } from 'components/primitives/motion'
 import { ProjectVisual } from 'components/projects/project-visual'
 import { splitTitle } from 'lib/format'
 import { classNames } from 'utils/classNames'
 import type { PublishedProject } from 'types/models'
 
-export function FeaturedProjectRow({
+export const FeaturedProjectRow = ({
 	project,
 	index,
 	flip = false,
 	eager = false,
-}: {
-	project: PublishedProject
-	index: number
-	flip?: boolean
-	eager?: boolean
-}) {
+}: FeaturedProjectRowProps) => {
 	const { main, sub } = splitTitle(project.title)
 	const number = String(index + 1).padStart(2, '0')
 	const ref = useRef<HTMLDivElement>(null)
@@ -40,7 +41,7 @@ export function FeaturedProjectRow({
 		<article ref={ref} className='group relative'>
 			<Link
 				href={`/projects/${project.slug}`}
-				className='block focus-visible:outline-none'
+				className='block outline-none'
 				aria-label={`${project.title} — case study`}>
 				<Reveal>
 					<div className='text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[0.6875rem] tracking-[0.18em] uppercase'>
@@ -48,7 +49,7 @@ export function FeaturedProjectRow({
 						<span className='bg-border-strong h-px w-10' aria-hidden />
 						<span>{(project.tags || []).join(' · ')}</span>
 						<span className='numeric ml-auto hidden sm:inline'>
-							{(project.stack || project.technologies || []).length} technologies
+							{project.technologies.length} technologies
 						</span>
 					</div>
 				</Reveal>
@@ -77,7 +78,7 @@ export function FeaturedProjectRow({
 								<ProjectVisual
 									slug={project.slug}
 									title={project.title}
-									coverImageUrl={project.coverImageUrl}
+									coverImageUrl={project.heroImageUrl || project.imageUrl}
 									eager={eager}
 									index={`Fig. ${number}`}
 									className='aspect-16/10 w-full'
@@ -97,7 +98,7 @@ export function FeaturedProjectRow({
 								aria-hidden
 							/>
 							<span
-								className='bg-signal text-signal-foreground pointer-events-none absolute right-5 bottom-5 grid size-11 translate-y-2 place-items-center rounded-full opacity-0 transition-all duration-500 ease-(--ease-out-expo) group-hover:translate-y-0 group-hover:opacity-100'
+								className='bg-signal-solid text-signal-foreground pointer-events-none absolute right-5 bottom-5 grid size-11 translate-y-2 place-items-center rounded-full opacity-0 transition-all duration-500 ease-(--ease-out-expo) group-hover:translate-y-0 group-hover:opacity-100'
 								aria-hidden>
 								<ArrowUpRight className='size-5' />
 							</span>
@@ -105,10 +106,10 @@ export function FeaturedProjectRow({
 					</Reveal>
 
 					<Reveal delay={90} from={flip ? 'left' : 'right'} className='lg:col-span-5 xl:col-span-4'>
-						<p className='text-muted-foreground leading-relaxed'>{project.summary}</p>
+						<p className='text-muted-foreground leading-relaxed'>{project.shortDescription}</p>
 
 						<div className='mt-6 flex flex-wrap gap-1.5'>
-							{(project.stack || project.technologies || []).slice(0, 5).map(tech => (
+							{project.technologies.slice(0, 5).map(tech => (
 								<Chip key={tech} tone='outline'>
 									{tech}
 								</Chip>
@@ -126,17 +127,7 @@ export function FeaturedProjectRow({
 	)
 }
 
-export function ProjectListRow({
-	project,
-	index,
-	onEnter,
-	onLeave,
-}: {
-	project: PublishedProject
-	index: number
-	onEnter?: (project: PublishedProject) => void
-	onLeave?: () => void
-}) {
+const ProjectListRow = ({ project, index, onEnter, onLeave }: ProjectListRowProps) => {
 	const { main } = splitTitle(project.title)
 	const number = String(index).padStart(2, '0')
 
@@ -160,14 +151,14 @@ export function ProjectListRow({
 							{main}
 						</span>
 						<span className='text-muted-foreground font-mono text-[0.6875rem]'>
-							{(project.stack || project.technologies || []).slice(0, 3).join(' · ')}
+							{project.technologies.slice(0, 3).join(' · ')}
 						</span>
 					</span>
 					<span className='text-muted-foreground mt-1.5 block truncate text-sm'>
-						{project.summary}
+						{project.shortDescription}
 					</span>
 				</span>
-				<span className='border-border text-muted-foreground group-hover:border-signal group-hover:bg-signal group-hover:text-signal-foreground grid size-9 shrink-0 place-items-center rounded-full border transition-all duration-500 sm:mr-4'>
+				<span className='border-border text-muted-foreground group-hover:border-signal-solid group-hover:bg-signal-solid group-hover:text-signal-foreground grid size-9 shrink-0 place-items-center rounded-full border transition-all duration-500 sm:mr-4'>
 					<ArrowUpRight className='size-4' />
 				</span>
 			</Link>
@@ -175,18 +166,11 @@ export function ProjectListRow({
 	)
 }
 
-/**
- * Supporting project list with a cursor-following preview.
- */
-export function SupportingProjects({
+export const SupportingProjects = ({
 	projects,
 	startIndex = 1,
 	className,
-}: {
-	projects: PublishedProject[]
-	startIndex?: number
-	className?: string
-}) {
+}: SupportingProjectsProps) => {
 	const reduced = useReducedMotion()
 	const [hovered, setHovered] = useState<PublishedProject | null>(null)
 	const x = useMotionValue(0)
@@ -195,7 +179,7 @@ export function SupportingProjects({
 	const springY = useSpring(yv, { stiffness: 220, damping: 26, mass: 0.4 })
 
 	const onMove = useCallback(
-		(event: React.MouseEvent<HTMLDivElement>) => {
+		(event: MouseEvent<HTMLDivElement>) => {
 			x.set(event.clientX + 24)
 			yv.set(event.clientY - 90)
 		},
@@ -231,7 +215,7 @@ export function SupportingProjects({
 						<ProjectVisual
 							slug={hovered.slug}
 							title={hovered.title}
-							coverImageUrl={hovered.coverImageUrl}
+							coverImageUrl={hovered.heroImageUrl || hovered.imageUrl}
 							className='aspect-16/10 w-full'
 						/>
 					</motion.div>

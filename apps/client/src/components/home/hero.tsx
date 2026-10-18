@@ -1,16 +1,16 @@
 'use client'
 
-import type { PublishedExperience, PublishedHome, PublishedSocial } from 'types/models'
+import type { HeroMetaCellProps, HeroProps } from 'types/components/client'
 
 import Link from 'next/link'
 import { toDisplayLines } from 'lib/format'
-import { Button } from 'components/ui/button'
+import { Button } from 'ui/button'
 import { classNames } from 'utils/classNames'
 import { LogoGlyph } from 'components/brand/logo'
 import { BrandOrbit } from 'components/home/brand-orbit'
-import { socialIcons } from 'components/home/home-sections'
-import { ArrowDown, ArrowRight, ArrowUpRight } from 'components/icons'
-import { DisplayLines, Magnetic, PulseDot } from 'components/primitives'
+import { ArrowDown, ArrowRight, ArrowUpRight, socialIcon } from 'components/icons'
+import { PulseDot } from 'components/primitives/layout'
+import { DisplayLines, Magnetic } from 'components/primitives/motion'
 
 const orbitNodes = [
 	{ label: 'Client', value: 'React', angle: 0 },
@@ -19,7 +19,7 @@ const orbitNodes = [
 	{ label: 'Data', value: 'PostgreSQL', angle: 270 },
 ]
 
-const MetaCell = ({ label, value, mono }: { label: string; value: string; mono?: boolean }) => {
+const MetaCell = ({ label, value, mono }: HeroMetaCellProps) => {
 	return (
 		<div className='min-w-0 px-5 py-4 sm:px-6 sm:py-5'>
 			<p className='text-muted-foreground font-mono text-[0.625rem] tracking-[0.18em] uppercase'>
@@ -36,20 +36,15 @@ const MetaCell = ({ label, value, mono }: { label: string; value: string; mono?:
 	)
 }
 
-export const Hero = ({
-	home,
-	socials,
-	current,
-}: {
-	home: PublishedHome
-	socials: PublishedSocial[]
-	current?: PublishedExperience
-}) => {
+export const Hero = ({ home, socials, current, location }: HeroProps) => {
 	const lines = toDisplayLines(home.title, 2)
-	const ctaList = home.ctas || []
-	const [primary, ...secondary] = ctaList
+	const primary = home.ctaLabel && home.ctaUrl ? { label: home.ctaLabel, href: home.ctaUrl } : null
+	const secondary =
+		home.secondaryCtaLabel && home.secondaryCtaUrl
+			? { label: home.secondaryCtaLabel, href: home.secondaryCtaUrl }
+			: null
 	const subtitles = home.subtitles || []
-	const role = subtitles[0] ?? 'Software Engineer – Full Stack'
+	const role = subtitles[0]
 	const focus = subtitles.slice(1).join(' · ')
 
 	const tenure = /(\d+)\+?\s*years?/i.exec(home.content)?.[0]
@@ -64,6 +59,8 @@ export const Hero = ({
 			<div className='noise-layer pointer-events-none absolute inset-0 -z-10' aria-hidden />
 			<LogoGlyph
 				aria-hidden
+				loading='eager'
+				fetchPriority='high'
 				className='mark-watermark absolute -top-24 -left-28 -z-10 hidden size-184 opacity-[0.07] saturate-[0.6] md:block'
 			/>
 			<div className='beam-sweep pointer-events-none absolute inset-x-0 top-28 -z-10 h-px' />
@@ -71,14 +68,18 @@ export const Hero = ({
 
 			<div className='container-page relative pt-28 sm:pt-32 lg:pt-40'>
 				<div className='enter-item text-muted-foreground flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[0.6875rem] tracking-[0.16em] uppercase'>
-					<span className='text-foreground flex items-center gap-2'>
-						<PulseDot />
-						{role}
-					</span>
-					<span aria-hidden className='text-signal-ink'>
-						{home.separator}
-					</span>
-					<span>India</span>
+					{role ? (
+						<span className='text-foreground flex items-center gap-2'>
+							<PulseDot />
+							{role}
+						</span>
+					) : null}
+					{role && location ? (
+						<span aria-hidden className='text-signal-ink'>
+							{home.separator}
+						</span>
+					) : null}
+					{location ? <span>{location}</span> : null}
 					{current ? (
 						<span className='hidden items-center gap-5 sm:flex'>
 							<span aria-hidden className='text-signal-ink'>
@@ -115,28 +116,28 @@ export const Hero = ({
 									</Button>
 								</Magnetic>
 							) : null}
-							{secondary.map(cta => (
-								<Magnetic key={cta.href} strength={0.18}>
+							{secondary ? (
+								<Magnetic strength={0.18}>
 									<Button asChild size='xl' variant='outline'>
-										<Link href={cta.href}>{cta.label}</Link>
+										<Link href={secondary.href}>{secondary.label}</Link>
 									</Button>
 								</Magnetic>
-							))}
+							) : null}
 						</div>
 
 						<div className='enter-item enter-delay-6 mt-9 flex flex-wrap items-center gap-x-3 gap-y-4'>
 							{socials.map(social => {
-								const Icon = socialIcons[social.icon ?? ''] ?? ArrowUpRight
+								const Icon = socialIcon(social)
 								return (
-									<a
+									<Link
 										key={social.id}
 										href={social.url}
 										target='_blank'
 										rel='noreferrer noopener'
-										aria-label={social.label}
+										aria-label={social.label ?? social.platform}
 										className='group border-border text-muted-foreground hover:border-signal/60 hover:text-signal-ink grid size-10 place-items-center rounded-lg border transition-all duration-300 hover:-translate-y-0.5'>
 										<Icon className='size-4' />
-									</a>
+									</Link>
 								)
 							})}
 							<Link
@@ -156,22 +157,23 @@ export const Hero = ({
 
 				<div className='enter-item enter-delay-6 mt-16 lg:mt-20'>
 					<div className='hairline-grid border-border bg-surface/40 grid overflow-hidden rounded-xl border sm:grid-cols-3'>
-						<MetaCell label='Based in' value={current?.location ?? 'India'} />
-						<MetaCell
-							label='Currently'
-							value={current ? `${current.role} · ${current.organization}` : 'Full Stack Developer'}
-						/>
-						<MetaCell label={tenure ? 'Experience' : 'Focus'} value={tenure ?? focus} mono />
+						{current?.location ? <MetaCell label='Based in' value={current.location} /> : null}
+						{current ? (
+							<MetaCell label='Currently' value={`${current.title} · ${current.organization}`} />
+						) : null}
+						{tenure || focus ? (
+							<MetaCell label={tenure ? 'Experience' : 'Focus'} value={tenure ?? focus} mono />
+						) : null}
 					</div>
 				</div>
 
 				<div className='flex justify-center pt-10 pb-14 lg:pt-14'>
-					<a
+					<Link
 						href='#work'
 						className='group text-muted-foreground hover:text-foreground inline-flex items-center gap-2 font-mono text-[0.625rem] tracking-[0.2em] uppercase transition-colors'>
 						Selected work
 						<ArrowDown className='size-3.5 transition-transform duration-500 group-hover:translate-y-1' />
-					</a>
+					</Link>
 				</div>
 			</div>
 		</section>

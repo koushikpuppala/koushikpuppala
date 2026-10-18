@@ -1,4 +1,6 @@
-import type { AuthenticatedUser } from 'types/express'
+import type { RequestMeta } from 'types/server'
+import { Meta } from 'common/decorators/meta.decorator'
+import type { AuthenticatedUser } from 'types/auth'
 
 import {
 	Controller,
@@ -12,7 +14,7 @@ import {
 	HttpStatus,
 	UnauthorizedException,
 } from '@nestjs/common'
-import { Request } from 'express'
+import type { Request } from 'express'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
@@ -40,21 +42,13 @@ export class AuthController {
 		description: 'Authenticates the Firebase user and returns the authenticated user.',
 		type: AuthenticatedUserResponse,
 	})
-	async login(@CurrentUser() user: AuthenticatedUser, @Req() req: Request) {
-		const meta = { requestId: req.requestId, endpoint: req.originalUrl }
-
-		const resultUser = await this.authService.login(user, meta)
-
-		if (req.token && req.decodedToken && resultUser.id)
-			await this.sessionService.createOrUpdateSession(
-				resultUser.id,
-				req.token,
-				req.decodedToken,
-				req.context?.ip,
-				req.context?.userAgent,
-			)
-
-		return resultUser
+	login(@CurrentUser() user: AuthenticatedUser, @Meta() meta: RequestMeta, @Req() req: Request) {
+		return this.authService.login(user, meta, {
+			token: req.token,
+			decodedToken: req.decodedToken,
+			ip: req.context?.ip,
+			userAgent: req.context?.userAgent,
+		})
 	}
 
 	@Get('me')

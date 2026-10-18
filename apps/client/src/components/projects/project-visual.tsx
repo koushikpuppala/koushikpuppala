@@ -1,5 +1,11 @@
+import type {
+	ArtProps,
+	ProjectVisualProps,
+	ProjectVisualVariant,
+	SeededArtProps,
+} from 'types/components/client'
 import Image from 'next/image'
-import { useMemo } from 'react'
+import { useId, useMemo } from 'react'
 import { classNames } from 'utils/classNames'
 
 const hash = (input: string) => {
@@ -25,13 +31,11 @@ const mulberry32 = (seed: number) => {
 	}
 }
 
-type Variant = 'flow' | 'lattice' | 'waves' | 'orbit'
-
-const variants: Variant[] = ['flow', 'lattice', 'waves', 'orbit']
+const variants: ProjectVisualVariant[] = ['flow', 'lattice', 'waves', 'orbit']
 
 const r2 = (n: number) => Math.round(n * 100) / 100
 
-const FlowArt = ({ rand }: { rand: () => number }) => {
+const FlowArt = ({ rand, glowId }: ArtProps) => {
 	const rows = 7
 
 	return (
@@ -54,13 +58,13 @@ const FlowArt = ({ rand }: { rand: () => number }) => {
 					/>
 				)
 			})}
-			<circle cx={296} cy={124} r={54} fill='url(#pv-signal)' opacity={0.85} />
+			<circle cx={296} cy={124} r={54} fill={`url(#${glowId})`} opacity={0.85} />
 			<circle cx={296} cy={124} r={54} fill='none' stroke='var(--signal)' strokeOpacity={0.5} />
 		</g>
 	)
 }
 
-const LatticeArt = ({ rand }: { rand: () => number }) => {
+const LatticeArt = ({ rand }: SeededArtProps) => {
 	const cols = 10
 	const rows = 7
 	const cells: Array<[number, number]> = []
@@ -119,7 +123,7 @@ const LatticeArt = ({ rand }: { rand: () => number }) => {
 	)
 }
 
-const WavesArt = ({ rand }: { rand: () => number }) => {
+const WavesArt = ({ rand }: SeededArtProps) => {
 	const bars = 34
 
 	return (
@@ -145,7 +149,7 @@ const WavesArt = ({ rand }: { rand: () => number }) => {
 	)
 }
 
-const OrbitArt = ({ rand }: { rand: () => number }) => {
+const OrbitArt = ({ rand, glowId }: ArtProps) => {
 	const rings = [58, 92, 128, 166]
 
 	return (
@@ -176,7 +180,7 @@ const OrbitArt = ({ rand }: { rand: () => number }) => {
 					/>
 				)
 			})}
-			<circle cx={200} cy={140} r={26} fill='url(#pv-signal)' />
+			<circle cx={200} cy={140} r={26} fill={`url(#${glowId})`} />
 			<circle cx={200} cy={140} r={26} fill='none' stroke='var(--signal)' strokeOpacity={0.6} />
 		</g>
 	)
@@ -190,31 +194,29 @@ export const ProjectVisual = ({
 	className,
 	eager = false,
 	frame = 'cover',
-}: {
-	slug: string
-	title: string
-	coverImageUrl?: string | null
-	index?: string
-	className?: string
-	eager?: boolean
-	/** `wide` zooms the artwork out so it reads well in panoramic hero areas. */
-	frame?: 'cover' | 'wide'
-}) => {
+}: ProjectVisualProps) => {
 	const { variant, rand } = useMemo(() => {
 		const seed = hash(slug)
 
-		return { variant: variants[seed % variants.length] as Variant, rand: mulberry32(seed) }
+		return {
+			variant: variants[seed % variants.length] as ProjectVisualVariant,
+			rand: mulberry32(seed),
+		}
 	}, [slug])
+
+	const glowId = `pv-signal-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
 
 	if (coverImageUrl)
 		return (
 			<div className={classNames('bg-surface-strong relative overflow-hidden', className)}>
 				<Image
 					alt={title}
+					fill
+					sizes='(min-width: 1024px) 60vw, 100vw'
 					decoding='async'
 					src={coverImageUrl}
 					loading={eager ? 'eager' : 'lazy'}
-					className='size-full object-cover transition-transform duration-[1.2s] ease-(--ease-out-expo) group-hover:scale-[1.04]'
+					className='object-cover transition-transform duration-[1.2s] ease-(--ease-out-expo) group-hover:scale-[1.04]'
 				/>
 			</div>
 		)
@@ -233,15 +235,15 @@ export const ProjectVisual = ({
 				className='absolute inset-0 size-full transition-transform duration-[1.2s] ease-(--ease-out-expo) group-hover:scale-[1.06]'
 				role='presentation'>
 				<defs>
-					<radialGradient id='pv-signal' cx='50%' cy='50%' r='50%'>
+					<radialGradient id={glowId} cx='50%' cy='50%' r='50%'>
 						<stop offset='0%' stopColor='var(--signal)' stopOpacity='0.55' />
 						<stop offset='100%' stopColor='var(--signal)' stopOpacity='0' />
 					</radialGradient>
 				</defs>
-				{variant === 'flow' ? <FlowArt rand={rand} /> : null}
+				{variant === 'flow' ? <FlowArt rand={rand} glowId={glowId} /> : null}
 				{variant === 'lattice' ? <LatticeArt rand={rand} /> : null}
 				{variant === 'waves' ? <WavesArt rand={rand} /> : null}
-				{variant === 'orbit' ? <OrbitArt rand={rand} /> : null}
+				{variant === 'orbit' ? <OrbitArt rand={rand} glowId={glowId} /> : null}
 			</svg>
 			<div
 				className='absolute inset-0'

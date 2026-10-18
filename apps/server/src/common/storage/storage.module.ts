@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common'
 import { S3Service } from './s3.service'
-
-export const STORAGE_SERVICE = Symbol('STORAGE_SERVICE')
+import { STORAGE_SERVICE } from './storage.token'
 
 @Module({
 	providers: [S3Service, { provide: STORAGE_SERVICE, useExisting: S3Service }],

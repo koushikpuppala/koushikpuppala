@@ -1,15 +1,26 @@
+import { PublishFilterDto, PublishFlagDto } from 'common/dto/publishable.dto'
 import { MetadataType } from '@repo/prisma'
-import { PaginationDto } from 'common/dto/pagination.dto'
+import { Transform, type TransformFnParams } from 'class-transformer'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsEnum, IsObject, IsOptional, IsString, IsUrl } from 'class-validator'
+import {
+	IsArray,
+	IsEnum,
+	IsIn,
+	IsNotEmpty,
+	IsObject,
+	IsOptional,
+	IsString,
+	IsUrl,
+} from 'class-validator'
 
-export class CreateMetadataDto {
+export class CreateMetadataDto extends PublishFlagDto {
 	@ApiProperty({ enum: MetadataType, example: MetadataType.PAGE })
 	@IsEnum(MetadataType)
 	type!: MetadataType
 
 	@ApiProperty({ example: 'home', description: 'Unique page or component key' })
 	@IsString()
+	@IsNotEmpty()
 	key!: string
 
 	@ApiProperty({
@@ -49,7 +60,7 @@ export class CreateMetadataDto {
 	})
 	@IsString()
 	@IsOptional()
-	robots?: string = 'index,follow'
+	robots?: string
 
 	@ApiPropertyOptional({
 		example: ['Software Engineer', 'Full Stack', 'NestJS', 'Next.js', 'PostgreSQL'],
@@ -58,29 +69,44 @@ export class CreateMetadataDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	keywords?: string[] = []
-
-	@ApiPropertyOptional({ example: true, default: false })
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean = false
+	keywords?: string[]
 }
 
 export class UpdateMetadataDto extends PartialType(CreateMetadataDto) {}
 
-export class QueryMetadataDto extends PaginationDto {
+const METADATA_SORT_FIELDS = [
+	'key',
+	'title',
+	'type',
+	'robots',
+	'isPublished',
+	'createdAt',
+	'updatedAt',
+] as const
+
+export class QueryMetadataDto extends PublishFilterDto {
+	@ApiPropertyOptional({ enum: [...METADATA_SORT_FIELDS] })
+	@IsIn(METADATA_SORT_FIELDS)
+	@IsOptional()
+	sortBy?: (typeof METADATA_SORT_FIELDS)[number]
+
 	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()
 	search?: string
 
+	@ApiPropertyOptional({
+		type: [String],
+		example: ['/', '/about'],
+		description: 'Exact page or component keys (repeat the parameter for several)',
+	})
+	@Transform(({ value }: TransformFnParams) => (Array.isArray(value) ? value : [value]))
+	@IsString({ each: true })
+	@IsOptional()
+	key?: string[]
+
 	@ApiPropertyOptional({ enum: MetadataType })
 	@IsEnum(MetadataType)
 	@IsOptional()
 	type?: MetadataType
-
-	@ApiPropertyOptional()
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean
 }

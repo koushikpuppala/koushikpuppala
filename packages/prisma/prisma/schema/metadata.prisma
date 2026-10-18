@@ -1,6 +1,5 @@
 model Metadata {
-  id      String @id @default(uuid()) @db.Uuid
-  version Int    @default(1)
+  id String @id @default(uuid()) @db.Uuid
 
   type MetadataType @default(PAGE)
 

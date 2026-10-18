@@ -1,4 +1,11 @@
-import type { ColumnDef, RowData } from '@tanstack/react-table'
+import type { ReactNode } from 'react'
+
+export type ChildrenProps = { children: ReactNode }
+
+export type ErrorPageProps = {
+	error: Error & { digest?: string }
+	reset: () => void
+}
 
 export type DataTablePaginationProps =
 	{ disablePagination?: false; pageSize?: number } | { disablePagination: true; pageSize: number }
@@ -10,7 +17,7 @@ export type DataTableFilters = { id: string; label: string } & (
 	| { type: 'select' | 'search-select'; options: DataTableFilterOptions[] }
 )
 
-export type DataTableProps<TData extends RowData = any, TValue = any> = {
+export type DataTableOptions<TData> = {
 	data: TData[]
 	loading?: boolean
 	pageSize?: number
@@ -26,5 +33,6 @@ export type DataTableProps<TData extends RowData = any, TValue = any> = {
 	manualFiltering?: boolean
 	manualSorting?: boolean
 	manualPagination?: boolean
-	columns: ColumnDef<TData, TValue>[]
 } & DataTablePaginationProps
+
+export * from './ui/index'

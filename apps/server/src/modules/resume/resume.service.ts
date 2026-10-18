@@ -1,17 +1,21 @@
 import { DatabaseService } from 'database'
-import { AuditAction, Prisma } from '@repo/prisma'
-import { S3Service } from 'common/storage/s3.service'
+import { Prisma } from '@repo/prisma'
+import type { StorageService } from 'types/server'
+import { STORAGE_SERVICE } from 'common/storage/storage.token'
 import { BaseService } from 'common/services/base-cms.service'
-import { Injectable, NotFoundException } from '@nestjs/common'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { publishFields, publishUpdate } from 'common/utils/publish.util'
+import { Inject, Injectable, NotFoundException } from '@nestjs/common'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CreateResumeDto, QueryResumeDto, UpdateResumeDto } from './resume.dto'
+
+const ENTITY = 'Resume'
 
 @Injectable()
 export class ResumeService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
-		private readonly s3Service: S3Service,
+		private readonly audit: CmsAuditService,
+		@Inject(STORAGE_SERVICE) private readonly storage: StorageService,
 	) {
 		super()
 	}
@@ -39,12 +43,11 @@ export class ResumeService extends BaseService {
 
 		let downloadUrl = resume.media.url
 
+		// Fall back to a short-lived signed URL when the file has no public CDN URL.
 		if (!downloadUrl && resume.media.storageKey) {
 			try {
-				downloadUrl = await this.s3Service.getSignedUrl(resume.media.storageKey)
-			} catch {
-				// Fallback to null if S3 not reached
-			}
+				downloadUrl = await this.storage.getSignedUrl(resume.media.storageKey)
+			} catch {}
 		}
 
 		return { ...resume, downloadUrl }
@@ -59,7 +62,6 @@ export class ResumeService extends BaseService {
 
 		if (!resume) throw new NotFoundException('No active resume available for download')
 
-		// Increment download counter
 		await this.prisma.resume.update({
 			where: { id: resume.id },
 			data: { downloads: { increment: 1 } },
@@ -69,10 +71,8 @@ export class ResumeService extends BaseService {
 
 		if (!downloadUrl && resume.media.storageKey) {
 			try {
-				downloadUrl = await this.s3Service.getSignedUrl(resume.media.storageKey)
-			} catch {
-				// Fallback if needed
-			}
+				downloadUrl = await this.storage.getSignedUrl(resume.media.storageKey)
+			} catch {}
 		}
 
 		return { ...resume, downloads: resume.downloads + 1, downloadUrl }
@@ -114,41 +114,24 @@ export class ResumeService extends BaseService {
 	}
 
 	async create(dto: CreateResumeDto, actor = 'admin') {
-		const media = await this.prisma.media.findUnique({
-			where: { id: dto.mediaId },
-		})
+		const media = await this.prisma.media.findUnique({ where: { id: dto.mediaId } })
 
 		if (!media) throw new NotFoundException('Specified Media document does not exist')
 
 		const resume = await this.prisma.resume.create({
 			data: {
-				title: dto.title,
-				versionName: dto.versionName,
-				headline: dto.headline,
-				summary: dto.summary,
-				highlights: dto.highlights as Prisma.InputJsonValue,
+				...dto,
+				...this.jsonFields(dto),
 				competencies: dto.competencies ?? [],
-				stats: dto.stats as Prisma.InputJsonValue,
-				mediaId: dto.mediaId,
 				fileSize: dto.fileSize ?? media.size,
 				fileType: dto.fileType ?? media.mimeType,
-				checksum: dto.checksum,
 				sortOrder: dto.sortOrder ?? 0,
-				isPublished: dto.isPublished ?? false,
-				publishedAt: dto.isPublished ? new Date() : null,
+				...publishFields(dto.isPublished ?? false),
 			},
 			include: { media: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'Resume',
-			entityId: resume.id,
-			actor,
-			newData: resume as unknown as Record<string, unknown>,
-		})
-
-		return resume
+		return this.audit.created(ENTITY, actor, resume)
 	}
 
 	async update(id: string, dto: UpdateResumeDto, actor = 'admin') {
@@ -157,71 +140,36 @@ export class ResumeService extends BaseService {
 		const resume = await this.prisma.resume.update({
 			where: { id },
 			data: {
-				...(dto.title !== undefined && { title: dto.title }),
-				...(dto.versionName !== undefined && { versionName: dto.versionName }),
-				...(dto.headline !== undefined && { headline: dto.headline }),
-				...(dto.summary !== undefined && { summary: dto.summary }),
-				...(dto.highlights !== undefined && { highlights: dto.highlights as Prisma.InputJsonValue }),
-				...(dto.competencies !== undefined && { competencies: dto.competencies }),
-				...(dto.stats !== undefined && { stats: dto.stats as Prisma.InputJsonValue }),
-				...(dto.mediaId !== undefined && { mediaId: dto.mediaId }),
-				...(dto.fileSize !== undefined && { fileSize: dto.fileSize }),
-				...(dto.fileType !== undefined && { fileType: dto.fileType }),
-				...(dto.checksum !== undefined && { checksum: dto.checksum }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-				...(dto.isPublished !== undefined && {
-					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
-				}),
+				...dto,
+				...this.jsonFields(dto),
+				...publishUpdate(dto.isPublished, existing.publishedAt),
 			},
 			include: { media: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Resume',
-			entityId: resume.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: resume as unknown as Record<string, unknown>,
-		})
-
-		return resume
+		return this.audit.updated(ENTITY, actor, existing, resume)
 	}
 
 	async togglePublish(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
-		const nextState = !existing.isPublished
 
-		const resume = await this.prisma.resume.update({
-			where: { id },
-			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
-		})
-
-		await this.auditLog.create({
-			action: nextState ? AuditAction.PUBLISH : AuditAction.UNPUBLISH,
-			entity: 'Resume',
-			entityId: resume.id,
-			actor,
-			newData: { isPublished: nextState },
-		})
-
-		return resume
+		return this.audit.togglePublish(ENTITY, actor, existing, data =>
+			this.prisma.resume.update({ where: { id }, data }),
+		)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.resume.update({ where: { id }, data: { deletedAt: new Date() } })
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.resume.update({ where: { id }, data: { deletedAt: new Date() } }),
+		)
+	}
 
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Resume',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
-
-		return { id, deleted: true }
+	private jsonFields(dto: UpdateResumeDto) {
+		return {
+			highlights: dto.highlights as Prisma.InputJsonValue | undefined,
+			stats: dto.stats as Prisma.InputJsonValue | undefined,
+		}
 	}
 }

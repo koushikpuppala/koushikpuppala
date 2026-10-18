@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,7 +8,6 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import {
 	CompleteMediaUploadDto,
@@ -20,11 +17,26 @@ import {
 } from './media.dto'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
+import { CurrentUser } from 'common/decorators/current-user.decorator'
 import { MediaService } from './media.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('Media')
+@RevalidateTags(
+	'home',
+	'about',
+	'experience',
+	'education',
+	'projects',
+	'skills',
+	'services',
+	'resume',
+	'socials',
+	'metadata',
+)
 @Controller('media')
 export class MediaController {
 	constructor(private readonly mediaService: MediaService) {}
@@ -47,10 +59,11 @@ export class MediaController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/media/complete',
 	})
-	async completeUpload(@Body() dto: CompleteMediaUploadDto, @Req() req: Request) {
-		const userId = req.user?.id
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async completeUpload(
+		@Body() dto: CompleteMediaUploadDto,
+		@CurrentUser('id') userId: string | undefined,
+		@Actor() actor: string,
+	) {
 		return this.mediaService.completeUpload(dto, userId, actor)
 	}
 
@@ -87,10 +100,8 @@ export class MediaController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateMediaDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.mediaService.update(id, dto, actor)
 	}
 
@@ -101,9 +112,7 @@ export class MediaController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/media/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.mediaService.remove(id, actor)
 	}
 }

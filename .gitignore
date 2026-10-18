@@ -30,6 +30,7 @@ lerna-debug.log*
 
 # dotenv environment variable files
 **/.env*
+!**/.env.example
 
 
 # TypeScript cache
@@ -53,3 +54,8 @@ next-env.d.ts
 
 # Turbo Repo cache
 .turbo/
+
+# Playwright
+apps/e2e/playwright-report/
+apps/e2e/test-results/
+apps/e2e/blob-report/

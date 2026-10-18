@@ -1,9 +1,8 @@
 import type { PublishedSocial } from 'types/models'
-import type { DirectChannel } from './contact-data'
 
 import { cache } from 'react'
+import { unwrap } from 'lib/api-result'
 import { getPublishedSocials } from 'actions/cache/socials'
-import { API_SOCIALS_FALLBACK } from 'constants/api-fallback'
 
 const formatPlatformLabel = (platform: string): string => {
 	switch (platform.toUpperCase()) {
@@ -35,11 +34,11 @@ const extractHandle = (platform: string, url: string): string => {
 
 		const pathname = parsed.pathname.replace(/^\/+|\/+$/g, '')
 
-		if (platform.toUpperCase() === 'LINKEDIN') return pathname || 'koushikpuppala'
+		if (platform.toUpperCase() === 'LINKEDIN') return pathname || parsed.hostname
 
-		if (platform.toUpperCase() === 'GITHUB') return `@${pathname || 'koushikpuppala'}`
+		if (platform.toUpperCase() === 'GITHUB') return pathname ? `@${pathname}` : parsed.hostname
 
-		if (platform.toUpperCase() === 'TWITTER') return `@${pathname || 'puppala_koushik'}`
+		if (platform.toUpperCase() === 'TWITTER') return pathname ? `@${pathname}` : parsed.hostname
 
 		return pathname || parsed.hostname
 	} catch {
@@ -48,37 +47,18 @@ const extractHandle = (platform: string, url: string): string => {
 }
 
 export const getSocialsData = cache(async (): Promise<PublishedSocial[]> => {
-	const { result, error } = await getPublishedSocials()
+	const result = unwrap(await getPublishedSocials(), 'socials')
 
-	if (error || !result) return API_SOCIALS_FALLBACK
+	if (!result) return []
 
 	return result.map((item, idx) => ({
 		id: String(item.id || `remote-soc-${idx}`),
-		platform: String(item.platform || 'OTHER'),
+		platform: item.platform,
 		label: String(item.label || formatPlatformLabel(item.platform || '')),
-		handle: extractHandle(item.platform || '', item.url || ''),
+		handle: item.handle ? String(item.handle) : extractHandle(item.platform || '', item.url || ''),
 		url: String(item.url),
 		icon: item.icon ? String(item.icon) : null,
 		featured: Boolean(item.featured),
 		sortOrder: Number(item.sortOrder ?? idx),
 	}))
 })
-
-export const socialsToDirectChannels = (socials: PublishedSocial[]): DirectChannel[] => {
-	return socials.map(s => {
-		const isEmail = s.platform.toUpperCase() === 'EMAIL' || s.url.startsWith('mailto:')
-
-		return {
-			id: s.id,
-			platform: s.platform.toUpperCase(),
-			label: s.label,
-			handle: s.handle || s.url,
-			url: s.url,
-			type: isEmail ? 'email' : 'link',
-			featured: Boolean(s.featured),
-			description: isEmail
-				? 'Direct channel for software architecture advisory, engineering roles, and inquiries.'
-				: `${s.label} profile and updates.`,
-		}
-	})
-}

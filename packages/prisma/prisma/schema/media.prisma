@@ -1,6 +1,5 @@
 model Media {
-  id      String @id @default(uuid()) @db.Uuid
-  version Int    @default(1)
+  id String @id @default(uuid()) @db.Uuid
 
   type         MediaType @default(IMAGE)
   fileName     String    @map("file_name")
@@ -12,6 +11,7 @@ model Media {
 
   bucket     String
   folder     String?
+  // Object key in the S3 bucket; url is the public CDN address of the same object.
   storageKey String  @unique @map("storage_key")
 
   url String?

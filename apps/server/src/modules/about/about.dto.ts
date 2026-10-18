@@ -1,13 +1,13 @@
-import type { AboutStat } from 'types'
+import { PublishableDto, PublishPageDto } from 'common/dto/publishable.dto'
+import type { AboutPillar, AboutStat, AboutValue } from 'types/models'
 
-import { Type } from 'class-transformer'
-import { PaginationDto } from 'common/dto/pagination.dto'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsInt, IsOptional, IsString, IsUUID } from 'class-validator'
+import { IsArray, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator'
 
-export class CreateAboutDto {
+export class CreateAboutDto extends PublishableDto {
 	@ApiProperty({ example: 'About Me' })
 	@IsString()
+	@IsNotEmpty()
 	title!: string
 
 	@ApiPropertyOptional({
@@ -64,7 +64,7 @@ export class CreateAboutDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	highlights?: string[] = []
+	highlights?: string[]
 
 	@ApiPropertyOptional({
 		example: ['NestJS', 'Next.js', 'PostgreSQL', 'Redis', 'AWS'],
@@ -73,7 +73,7 @@ export class CreateAboutDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	skills?: string[] = []
+	skills?: string[]
 
 	@ApiPropertyOptional({
 		example: [{ label: 'EXPERIENCE', value: '3+', detail: 'Years of Production Engineering' }],
@@ -87,13 +87,13 @@ export class CreateAboutDto {
 		],
 	})
 	@IsOptional()
-	values?: Array<{ title: string; description: string }> | string[]
+	values?: AboutValue[] | string[]
 
 	@ApiPropertyOptional({
 		example: [{ index: '01', title: 'Clean Boundaries', description: 'Strict module boundaries' }],
 	})
 	@IsOptional()
-	pillars?: Array<{ title: string; description: string; icon?: string }> | Record<string, unknown>[]
+	pillars?: AboutPillar[] | Record<string, unknown>[]
 
 	@ApiPropertyOptional({ example: 'Download Resume' })
 	@IsString()
@@ -104,29 +104,13 @@ export class CreateAboutDto {
 	@IsString()
 	@IsOptional()
 	ctaUrl?: string
-
-	@ApiPropertyOptional({ example: 0, default: 0 })
-	@IsInt()
-	@IsOptional()
-	sortOrder?: number = 0
-
-	@ApiPropertyOptional({ example: true, default: false })
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean = false
 }
 
 export class UpdateAboutDto extends PartialType(CreateAboutDto) {}
 
-export class QueryAboutDto extends PaginationDto {
+export class QueryAboutDto extends PublishPageDto {
 	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()
 	search?: string
-
-	@ApiPropertyOptional()
-	@Type(() => Boolean)
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean
 }

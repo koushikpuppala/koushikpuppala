@@ -1,6 +1,5 @@
 model Skill {
-  id      String @id @default(uuid()) @db.Uuid
-  version Int    @default(1)
+  id String @id @default(uuid()) @db.Uuid
 
   name        String
   category    String

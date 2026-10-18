@@ -1,31 +1,10 @@
 import type { PublishedExperience } from 'types/models'
 
 import { cache } from 'react'
-import { API_EXPERIENCE_FALLBACK } from 'constants/api-fallback'
+import { unwrap } from 'lib/api-result'
 import { getPublishedExperience } from 'actions/cache/experience'
 
-export const formatEmploymentType = (type: string): string => {
-	switch (type) {
-		case 'FULL_TIME':
-			return 'FULL-TIME'
-		case 'PART_TIME':
-			return 'PART-TIME'
-		case 'INTERN':
-			return 'INTERNSHIP'
-		case 'CONTRACT':
-			return 'CONTRACT'
-		case 'FREELANCE':
-			return 'FREELANCE'
-		default:
-			return type
-	}
-}
-
-export const formatPeriod = (
-	startDate: string,
-	endDate?: string | null,
-	isCurrent?: boolean,
-): string => {
+const formatPeriod = (startDate: string, endDate?: string | null, isCurrent?: boolean): string => {
 	const startYear = new Date(startDate).toLocaleDateString('en-US', {
 		month: 'short',
 		year: 'numeric',
@@ -39,14 +18,14 @@ export const formatPeriod = (
 }
 
 export const getExperienceData = cache(async (): Promise<PublishedExperience[]> => {
-	const { result, error } = await getPublishedExperience()
+	const result = unwrap(await getPublishedExperience(), 'experience')
 
-	if (error || !result) return API_EXPERIENCE_FALLBACK
+	if (!result) return []
 
 	return result.map((item, idx) => ({
 		id: String(item.id || `remote-exp-${idx}`),
 		title: String(item.title || ''),
-		company: String(item.company || ''),
+		organization: String(item.organization || ''),
 		location: String(item.location || ''),
 		employmentType: item.employmentType || 'FULL_TIME',
 		startDate: String(item.startDate || ''),

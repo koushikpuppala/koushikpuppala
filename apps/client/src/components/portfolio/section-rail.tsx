@@ -1,9 +1,11 @@
 'use client'
 
+import type { SectionRailProps } from 'types/components/client'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { classNames } from 'utils/classNames'
 
-export const SectionRail = ({ sections }: { sections: Array<{ id: string; label: string }> }) => {
+export const SectionRail = ({ sections }: SectionRailProps) => {
 	const [active, setActive] = useState(sections[0]?.id ?? '')
 
 	useEffect(() => {
@@ -37,7 +39,7 @@ export const SectionRail = ({ sections }: { sections: Array<{ id: string; label:
 					const isActive = active === section.id
 					return (
 						<li key={section.id}>
-							<a
+							<Link
 								href={`#${section.id}`}
 								aria-current={isActive ? 'true' : undefined}
 								className='group flex items-center justify-end gap-3'>
@@ -56,7 +58,7 @@ export const SectionRail = ({ sections }: { sections: Array<{ id: string; label:
 										isActive ? 'bg-signal w-7' : 'bg-border-strong w-3.5 group-hover:w-5',
 									)}
 								/>
-							</a>
+							</Link>
 						</li>
 					)
 				})}

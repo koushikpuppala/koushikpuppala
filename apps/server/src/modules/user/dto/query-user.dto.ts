@@ -1,7 +1,9 @@
 import { Transform } from 'class-transformer'
 import { UserRole, UserStatus } from '@repo/prisma'
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { IsEnum, IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
+import { IsDateString, IsEnum, IsIn, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
+
+const USER_SORT_FIELDS = ['displayName', 'email', 'role', 'status', 'createdAt'] as const
 
 export class QueryUserDto {
 	@ApiPropertyOptional({ type: 'integer', default: 1 })
@@ -35,10 +37,20 @@ export class QueryUserDto {
 	@IsEnum(UserStatus)
 	status?: UserStatus
 
-	@ApiPropertyOptional({ enum: ['displayName', 'email', 'createdAt'] })
+	@ApiPropertyOptional({ example: '2026-01-01', description: 'Joined on or after this date' })
 	@IsOptional()
-	@IsIn(['displayName', 'email', 'createdAt'])
-	sortBy: 'displayName' | 'email' | 'createdAt' = 'createdAt'
+	@IsDateString()
+	from?: string
+
+	@ApiPropertyOptional({ example: '2026-01-31', description: 'Joined on or before this date' })
+	@IsOptional()
+	@IsDateString()
+	to?: string
+
+	@ApiPropertyOptional({ enum: [...USER_SORT_FIELDS] })
+	@IsOptional()
+	@IsIn(USER_SORT_FIELDS)
+	sortBy: (typeof USER_SORT_FIELDS)[number] = 'createdAt'
 
 	@ApiPropertyOptional({ enum: ['asc', 'desc'] })
 	@IsOptional()

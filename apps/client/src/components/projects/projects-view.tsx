@@ -1,26 +1,21 @@
 'use client'
 
+import type { FilterChipProps, ProjectsViewProps } from 'types/components/client'
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Search, X } from 'components/icons'
 import { SiteShell } from 'components/site-shell'
-import { EmptyState, Reveal, Section, SectionHeader } from 'components/primitives'
+import { EmptyState } from 'components/primitives/feedback'
+import { Section, SectionHeader } from 'components/primitives/layout'
+import { Reveal } from 'components/primitives/motion'
 import { PageHero } from 'components/home/page-hero'
 import { FeaturedProjectRow, SupportingProjects } from 'components/portfolio/work-showcase'
 import { ContactCTA } from 'components/home/home-sections'
-import { Button } from 'components/ui/button'
+import { Button } from 'ui/button'
 import { classNames } from 'utils/classNames'
-import type { PublishedProject, PublishedSocial } from 'types/models'
+import { emailAddress } from 'lib/email'
 
-const FilterChip = ({
-	active,
-	onClick,
-	children,
-}: {
-	active: boolean
-	onClick: () => void
-	children: string
-}) => {
+const FilterChip = ({ active, onClick, children }: FilterChipProps) => {
 	return (
 		<button
 			type='button'
@@ -39,17 +34,11 @@ const FilterChip = ({
 	)
 }
 
-export const ProjectsView = ({
-	projects,
-	socials,
-}: {
-	projects: PublishedProject[]
-	socials: PublishedSocial[]
-}) => {
+export const ProjectsView = ({ projects, socials }: ProjectsViewProps) => {
 	const [search, setSearch] = useState('')
 	const [tag, setTag] = useState<string | null>(null)
 
-	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
+	const email = emailAddress(socials)
 	const tags = useMemo(
 		() => Array.from(new Set(projects.flatMap(p => p.tags || []))).sort(),
 		[projects],
@@ -59,11 +48,11 @@ export const ProjectsView = ({
 		const term = search.trim().toLowerCase()
 		return projects.filter(project => {
 			const projectTags = project.tags || []
-			const projectStack = project.stack || project.technologies || []
+			const projectStack = project.technologies
 			const matchesTag = !tag || projectTags.includes(tag)
 			const matchesTerm =
 				!term ||
-				[project.title, project.summary, ...projectStack, ...projectTags]
+				[project.title, project.shortDescription, ...projectStack, ...projectTags]
 					.join(' ')
 					.toLowerCase()
 					.includes(term)
@@ -95,7 +84,7 @@ export const ProjectsView = ({
 				}
 			/>
 
-			<Section className='pt-12 pb-0 lg:pt-16'>
+			<Section className='pt-12 pb-0 md:pt-12 md:pb-0 lg:pt-16 lg:pb-0'>
 				<div className='container-page'>
 					<Reveal className='border-border grid gap-5 border-y py-6 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:items-center lg:gap-10'>
 						<div className='relative'>
@@ -108,7 +97,7 @@ export const ProjectsView = ({
 								onChange={event => setSearch(event.target.value)}
 								placeholder='Search projects, stack, tags…'
 								aria-label='Search projects'
-								className='border-border bg-surface/60 text-foreground placeholder:text-muted-foreground/70 focus:border-border-strong h-11 w-full rounded-full border pr-10 pl-10 font-mono text-sm transition-colors focus:outline-none'
+								className='border-border bg-surface/60 text-foreground placeholder:text-muted-foreground/70 focus-ring:border-border-strong h-11 w-full rounded-full border pr-10 pl-10 font-mono text-sm transition-colors outline-none'
 							/>
 							{search ? (
 								<button
@@ -139,7 +128,7 @@ export const ProjectsView = ({
 				</div>
 			</Section>
 
-			<Section className='pt-14 lg:pt-20'>
+			<Section className='pt-14 md:pt-14 lg:pt-20'>
 				<div className='container-page'>
 					{filtered.length === 0 ? (
 						<EmptyState

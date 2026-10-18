@@ -3,6 +3,7 @@ model Session {
 
   userId String @map("user_id") @db.Uuid
 
+  // SHA-256 of the Firebase ID token; the raw token is never stored.
   tokenHash String @unique @map("token_hash")
 
   revoked   Boolean   @default(false)

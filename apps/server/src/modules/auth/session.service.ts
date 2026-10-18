@@ -1,4 +1,4 @@
-import type { AuthenticatedUser } from 'types/express'
+import type { AuthenticatedUser } from 'types/auth'
 
 import { createHash } from 'node:crypto'
 import { DecodedIdToken } from 'firebase-admin/auth'
@@ -19,8 +19,17 @@ export class SessionService {
 		private readonly redisService: RedisService,
 	) {}
 
+	// Only a hash of the ID token is stored, so a database or cache leak exposes no usable tokens.
 	private hashToken(token: string): string {
 		return createHash('sha256').update(token).digest('hex')
+	}
+
+	private async cacheRevocation(tokenHash: string, revoked: boolean): Promise<void> {
+		await this.redisService
+			// Firebase ID tokens live for an hour, so an active entry can expire with the token;
+			// a revoked entry is kept for a day to be safe.
+			.set(`session:revoked:${tokenHash}`, JSON.stringify(revoked), revoked ? 86400 : 3600)
+			.catch(() => undefined)
 	}
 
 	async createOrUpdateSession(
@@ -35,18 +44,16 @@ export class SessionService {
 		const expiresAt = new Date(decodedToken.exp * 1000)
 		const issuedAt = new Date(decodedToken.iat * 1000)
 
+		const activity = {
+			lastActivityAt: new Date(),
+			ipAddress: ip || null,
+			userAgent: userAgent || null,
+		}
+
 		const session = await this.prisma.session.upsert({
 			where: { tokenHash },
-			update: { lastActivityAt: new Date(), ipAddress: ip || null, userAgent: userAgent || null },
-			create: {
-				tokenHash,
-				userId,
-				issuedAt,
-				expiresAt,
-				lastActivityAt: new Date(),
-				ipAddress: ip || null,
-				userAgent: userAgent || null,
-			},
+			update: activity,
+			create: { tokenHash, userId, issuedAt, expiresAt, ...activity },
 		})
 
 		await this.auditLog.log({
@@ -58,11 +65,7 @@ export class SessionService {
 			userAgent,
 		})
 
-		try {
-			await this.redisService.set(`session:revoked:${tokenHash}`, JSON.stringify(false), 3600)
-		} catch {
-			// Non-blocking cache update
-		}
+		await this.cacheRevocation(tokenHash, false)
 
 		return session
 	}
@@ -76,11 +79,7 @@ export class SessionService {
 				data: { revoked: true, revokedAt: new Date() },
 			})
 
-			try {
-				await this.redisService.set(`session:revoked:${tokenHash}`, JSON.stringify(true), 86400)
-			} catch {
-				// Non-blocking cache update
-			}
+			await this.cacheRevocation(tokenHash, true)
 
 			await this.auditLog.log({
 				action: AuditAction.LOGOUT,
@@ -102,21 +101,32 @@ export class SessionService {
 				select: { revoked: true, expiresAt: true },
 			})
 
-			if (!session) return false
-			if (session.revoked) return true
-			if (session.expiresAt < new Date()) return true
-
-			return false
+			// A token without a session row is not treated as revoked: the session is created after sign-in.
+			return Boolean(session && (session.revoked || session.expiresAt < new Date()))
 		})
 	}
 
 	async getSessionsForUser(user: AuthenticatedUser): Promise<ApiResponse<unknown[]>> {
+		// Admins see every user's sessions; everyone else sees only their own.
 		const isElevated = user.role === UserRole.ADMIN
 
 		const sessions = await this.prisma.session.findMany({
 			where: isElevated ? {} : { userId: user.id },
 			orderBy: { lastActivityAt: 'desc' },
-			include: { user: { select: { email: true, displayName: true } } },
+			select: {
+				id: true,
+				userId: true,
+				revoked: true,
+				revokedBy: true,
+				revokedAt: true,
+				issuedAt: true,
+				expiresAt: true,
+				lastActivityAt: true,
+				ipAddress: true,
+				userAgent: true,
+				createdAt: true,
+				user: { select: { email: true, displayName: true } },
+			},
 		})
 
 		return successResponse(sessions, 'Sessions fetched successfully.', sessions.length)
@@ -148,23 +158,19 @@ export class SessionService {
 				data: { revoked: true, revokedAt: new Date(), revokedBy: user.id },
 			})
 
-			try {
-				await this.redisService.set(
-					`session:revoked:${session.tokenHash}`,
-					JSON.stringify(true),
-					86400,
-				)
-			} catch {
-				// Non-blocking cache update
-			}
+			await this.cacheRevocation(session.tokenHash, true)
+
+			// Keep token hashes out of the audit log.
+			const { tokenHash: _oldHash, ...oldData } = session
+			const { tokenHash: _newHash, ...newData } = updated
 
 			await this.auditLog.log({
 				action: AuditAction.DELETE,
 				entity: 'Session',
 				entityId: updated.id,
 				actorId: userId,
-				oldData: session,
-				newData: updated,
+				oldData,
+				newData,
 			})
 		}
 

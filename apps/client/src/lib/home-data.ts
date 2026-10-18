@@ -1,31 +1,26 @@
 import type { PublishedHome } from 'types/models'
 
 import { cache } from 'react'
+import { unwrap } from 'lib/api-result'
 import { getPublishedHome } from 'actions/cache/home'
-import { API_HOME_FALLBACK } from 'constants/api-fallback'
+import { EMPTY_HOME } from 'constants/empty-content'
 
 export const getHomeData = cache(async (): Promise<PublishedHome> => {
-	const { result, error } = await getPublishedHome()
+	const result = unwrap(await getPublishedHome(), 'home')
 
-	if (error || !result) return API_HOME_FALLBACK
+	if (!result) return EMPTY_HOME
 
 	return {
-		title: result.title || API_HOME_FALLBACK.title,
-		separator: result.separator || API_HOME_FALLBACK.separator,
-		subtitles:
-			Array.isArray(result.subtitles) && result.subtitles.length > 0
-				? result.subtitles
-				: API_HOME_FALLBACK.subtitles,
-		content: result.content || API_HOME_FALLBACK.content,
-		ctaLabel: result.ctaLabel || API_HOME_FALLBACK.ctaLabel,
-		ctaUrl: result.ctaUrl || API_HOME_FALLBACK.ctaUrl,
-		secondaryCtaLabel: result.secondaryCtaLabel || API_HOME_FALLBACK.secondaryCtaLabel,
-		secondaryCtaUrl: result.secondaryCtaUrl || API_HOME_FALLBACK.secondaryCtaUrl,
-		featuredSkills:
-			Array.isArray(result.featuredSkills) && result.featuredSkills.length > 0
-				? result.featuredSkills
-				: API_HOME_FALLBACK.featuredSkills,
-		stats: result.stats || API_HOME_FALLBACK.stats,
+		title: result.title || '',
+		separator: result.separator || '',
+		subtitles: Array.isArray(result.subtitles) ? result.subtitles : [],
+		content: result.content || '',
+		ctaLabel: result.ctaLabel || '',
+		ctaUrl: result.ctaUrl || '',
+		secondaryCtaLabel: result.secondaryCtaLabel || '',
+		secondaryCtaUrl: result.secondaryCtaUrl || '',
+		featuredSkills: Array.isArray(result.featuredSkills) ? result.featuredSkills : [],
+		stats: result.stats || {},
 		profileImageUrl: result.profileImage?.url || null,
 	}
 })

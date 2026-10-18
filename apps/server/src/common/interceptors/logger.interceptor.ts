@@ -19,6 +19,7 @@ export class LoggerInterceptor implements NestInterceptor {
 		const request = context.switchToHttp().getRequest<Request>()
 		const response = context.switchToHttp().getResponse<Response>()
 
+		// Health checks run every few seconds and would flood the metrics table.
 		if (request.path === '/api/health') return next.handle()
 
 		return next.handle().pipe(
@@ -32,13 +33,10 @@ export class LoggerInterceptor implements NestInterceptor {
 					requestId: request.requestId,
 					endpoint: `${request.method} ${request.originalUrl}`,
 					userAgent: request.context?.userAgent || request.headers['user-agent'] || 'unknown',
-					ip:
-						request.context?.ip ||
-						request?.ip ||
-						request.headers['x-forwarded-for']?.toString() ||
-						'unknown',
+					ip: request.context?.ip || request.ip || 'unknown',
 				}
 
+				// Fire and forget: recording a metric must never slow down or fail the response.
 				void this.apiMetricService.create(data).catch(error => {
 					this.logger.error('Failed to create API metric', LoggerInterceptor.name, error)
 				})

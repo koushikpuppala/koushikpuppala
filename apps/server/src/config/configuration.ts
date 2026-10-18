@@ -1,92 +1,135 @@
 import type { PoolConfig } from 'pg'
 import type { RedisOptions } from 'ioredis'
 import type { ServiceAccount } from 'firebase-admin'
+import type {
+	AppConfig,
+	AwsConfig,
+	LoggerConfig,
+	MailConfig,
+	RecaptchaConfig,
+	RevalidateConfig,
+	SentryConfig,
+} from 'types/server'
 
 export class Configuration {
 	readonly production = process.env.NODE_ENV === 'production'
 	readonly port: number
 	readonly appName: string
 	readonly frontend: string
+	readonly revalidate: RevalidateConfig
 	readonly origin: string[]
+	readonly trustProxy: boolean | number | string
 	readonly environment: string
 	readonly redis: RedisOptions
 	readonly database: PoolConfig
 	readonly firebase: ServiceAccount
-	readonly logger: { dir: string; level: string }
-	readonly sentry: { enabled: boolean; dsn?: string }
-	readonly app: { backendUrl: string; bypassAuth: boolean }
-	readonly aws: { region: string; s3Bucket: string; cdnUrl: string }
+	readonly logger: LoggerConfig
+	readonly sentry: SentryConfig
+	readonly recaptcha?: RecaptchaConfig
+	readonly mail?: MailConfig
+	readonly app: AppConfig
+	readonly aws: AwsConfig
 
 	constructor() {
-		this.appName = this.get('APP_NAME', 'koushikpuppala')
+		this.appName = this.required('APP_NAME')
 
-		this.port = this.number('PORT', this.number('SERVER_PORT', 8080))
+		this.port = this.number('PORT')
 
-		this.environment = this.get('NODE_ENV', 'development')
+		this.environment = this.required('NODE_ENV')
 
-		const defaultFrontend = this.production
-			? 'https://koushikpuppala.com'
-			: 'http://localhost:3000'
-		this.frontend = this.get('FRONTEND_URL', defaultFrontend)
+		this.frontend = this.required('NEXT_PUBLIC_DEPLOY_URL')
 
-		const defaultOrigins = this.production
-			? 'https://koushikpuppala.com,https://admin.koushikpuppala.com'
-			: 'http://localhost:3000,http://localhost:3001'
-		this.origin = this.get('ORIGIN', defaultOrigins)
+		this.revalidate = {
+			url: (this.optional('REVALIDATE_URL') ?? this.frontend).replace(/\/+$/, ''),
+			secret: this.optional('REVALIDATE_SECRET'),
+		}
+
+		this.origin = this.required('ORIGIN')
 			.split(',')
 			.map(o => o.trim())
 			.filter(Boolean)
 
+		// Express accepts a hop count, a boolean or a list of trusted addresses for 'trust proxy'.
+		const trustProxy = this.required('TRUST_PROXY').trim()
+		if (/^\d+$/.test(trustProxy)) this.trustProxy = Number.parseInt(trustProxy, 10)
+		else if (trustProxy === 'true' || trustProxy === 'false')
+			this.trustProxy = trustProxy === 'true'
+		else this.trustProxy = trustProxy
+
 		this.database = {
 			connectionString: this.required('DATABASE_URL'),
-			max: this.number('DATABASE_MAX_CONNECTIONS', 10),
-			idleTimeoutMillis: this.number('DATABASE_IDLE_TIMEOUT', 30_000),
-			connectionTimeoutMillis: this.number('DATABASE_CONNECTION_TIMEOUT', 10_000),
+			max: this.number('DATABASE_MAX_CONNECTIONS'),
+			idleTimeoutMillis: this.number('DATABASE_IDLE_TIMEOUT'),
+			connectionTimeoutMillis: this.number('DATABASE_CONNECTION_TIMEOUT'),
 		}
 
 		this.redis = {
-			host: this.get('REDIS_HOST', '127.0.0.1'),
-			port: this.number('REDIS_PORT', 6379),
+			host: this.required('REDIS_HOST'),
+			port: this.number('REDIS_PORT'),
 			username: this.optional('REDIS_USERNAME'),
-			password: this.production
-				? this.required('REDIS_PASSWORD')
-				: this.optional('REDIS_PASSWORD'),
-			db: this.number('REDIS_DB', 0),
-			keepAlive: this.number('REDIS_KEEP_ALIVE', 30_000),
-			lazyConnect: this.boolean('REDIS_LAZY_CONNECT', true),
-			connectTimeout: this.number('REDIS_CONNECT_TIMEOUT', 10_000),
-			maxRetriesPerRequest: this.number('REDIS_MAX_RETRIES_PER_REQUEST', 3),
-			...(this.boolean('REDIS_TLS', false) && { tls: {} }),
+			password: this.production ? this.required('REDIS_PASSWORD') : this.optional('REDIS_PASSWORD'),
+			db: this.number('REDIS_DB'),
+			keepAlive: this.number('REDIS_KEEP_ALIVE'),
+			lazyConnect: this.boolean('REDIS_LAZY_CONNECT'),
+			connectTimeout: this.number('REDIS_CONNECT_TIMEOUT'),
+			maxRetriesPerRequest: this.number('REDIS_MAX_RETRIES_PER_REQUEST'),
+			...(this.flag('REDIS_TLS') && { tls: {} }),
 		}
 
 		this.firebase = {
-			projectId: this.required('FIREBASE_PROJECT_ID'),
+			projectId: this.required('NEXT_PUBLIC_FIREBASE_PROJECT_ID'),
 			clientEmail: this.required('FIREBASE_CLIENT_EMAIL'),
+			// .env files store the key on one line with escaped newlines; PEM parsing needs real ones.
 			privateKey: this.required('FIREBASE_PRIVATE_KEY').replace(/\\n/g, '\n'),
 		}
 
 		this.sentry = {
-			enabled: this.boolean('ENABLE_SENTRY', false),
+			enabled: Boolean(this.optional('SENTRY_DSN')),
 			dsn: this.optional('SENTRY_DSN'),
 		}
 
+		// reCAPTCHA and email are required in production but optional locally, where they are skipped.
+		const recaptchaSecret = this.production
+			? this.required('RECAPTCHA_SECRET_KEY')
+			: this.optional('RECAPTCHA_SECRET_KEY')
+
+		if (recaptchaSecret) {
+			const minScore = Number.parseFloat(this.required('RECAPTCHA_MIN_SCORE'))
+
+			if (Number.isNaN(minScore) || minScore < 0 || minScore > 1)
+				throw new Error('Environment variable RECAPTCHA_MIN_SCORE must be a number from 0 to 1')
+
+			this.recaptcha = { secretKey: recaptchaSecret, minScore }
+		}
+
+		const mailFrom = this.production
+			? this.required('SES_FROM_EMAIL')
+			: this.optional('SES_FROM_EMAIL')
+
+		if (mailFrom)
+			this.mail = {
+				from: mailFrom,
+				contactTo: this.required('CONTACT_NOTIFY_EMAIL'),
+				adminUrl: this.required('ADMIN_URL').replace(/\/+$/, ''),
+			}
+
 		this.logger = {
-			dir: this.get('LOG_DIR', 'logs'),
+			dir: this.required('LOG_DIR'),
 			level: this.environment === 'production' ? 'info' : 'debug',
 		}
 
+		const cdn = this.required('CDN_URL').trim()
+
 		this.aws = {
-			region: this.get('AWS_REGION', 'ap-south-2'),
-			s3Bucket: this.get('S3_BUCKET', 'koushikpuppala'),
-			cdnUrl: this.get('CDN_URL', 'https://assets.koushikpuppala.com'),
+			region: this.required('AWS_REGION'),
+			s3Bucket: this.required('S3_BUCKET'),
+			cdnUrl: (/^https?:\/\//i.test(cdn) ? cdn : `https://${cdn}`).replace(/\/+$/, ''),
+			// Upload checks call S3, so they are skipped locally when no AWS credentials are configured.
+			verifyUploads: this.production || Boolean(this.optional('AWS_ACCESS_KEY_ID')),
 		}
 
-		const defaultBackend = this.production
-			? 'https://api.koushikpuppala.com'
-			: 'http://localhost:5000'
 		this.app = {
-			backendUrl: this.get('BACKEND_URL', defaultBackend),
-			bypassAuth: this.production ? false : this.boolean('BYPASS_AUTH', false),
+			backendUrl: this.required('NEXT_PUBLIC_BASE_URL'),
 		}
 	}
 
@@ -98,25 +141,29 @@ export class Configuration {
 		return value
 	}
 
-	private get(key: string, defaultValue: string): string {
-		return process.env[key] ?? defaultValue
-	}
-
 	private optional(key: string): string | undefined {
-		return process.env[key]
+		return process.env[key] || undefined
 	}
 
-	private number(key: string, defaultValue: number): number {
-		const value = process.env[key]
+	private number(key: string): number {
+		const value = Number.parseInt(this.required(key), 10)
 
-		return value ? Number.parseInt(value, 10) : defaultValue
+		if (Number.isNaN(value)) throw new Error(`Environment variable ${key} must be a number`)
+
+		return value
 	}
 
-	private boolean(key: string, defaultValue: boolean): boolean {
-		const value = process.env[key]
+	private boolean(key: string): boolean {
+		const value = this.required(key)
 
-		if (!value) return defaultValue
+		if (value !== 'true' && value !== 'false')
+			throw new Error(`Environment variable ${key} must be "true" or "false"`)
 
 		return value === 'true'
+	}
+
+	// Opt-in flags: unset means off, unlike boolean() which requires the variable.
+	private flag(key: string): boolean {
+		return process.env[key] === 'true'
 	}
 }

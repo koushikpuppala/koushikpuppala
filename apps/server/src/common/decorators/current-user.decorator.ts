@@ -1,14 +1,13 @@
 import type { ExecutionContext } from '@nestjs/common'
-import type { DecodedIdToken } from 'firebase-admin/auth'
+import type { Request } from 'express'
+import type { AuthenticatedUser } from 'types/auth'
 
 import { createParamDecorator } from '@nestjs/common'
 
 export const CurrentUser = createParamDecorator(
-	(data: keyof DecodedIdToken | undefined, context: ExecutionContext) => {
-		const request = context.switchToHttp().getRequest()
+	(field: keyof AuthenticatedUser | undefined, context: ExecutionContext) => {
+		const { user } = context.switchToHttp().getRequest<Request>()
 
-		const user = request.user
-
-		return data ? user?.[data] : user
+		return field ? user?.[field] : user
 	},
 )

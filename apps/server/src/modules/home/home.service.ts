@@ -1,15 +1,18 @@
 import { DatabaseService } from 'database'
+import { publishFields, publishUpdate } from 'common/utils/publish.util'
 import { Injectable } from '@nestjs/common'
-import { AuditAction, Prisma } from '@repo/prisma'
+import { Prisma } from '@repo/prisma'
 import { BaseService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CreateHomeDto, QueryHomeDto, UpdateHomeDto } from './home.dto'
+
+const ENTITY = 'Home'
 
 @Injectable()
 export class HomeService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
+		private readonly audit: CmsAuditService,
 	) {
 		super()
 	}
@@ -76,33 +79,19 @@ export class HomeService extends BaseService {
 	async create(dto: CreateHomeDto, actor = 'admin') {
 		const home = await this.prisma.home.create({
 			data: {
-				title: dto.title,
+				...dto,
 				separator: dto.separator ?? '|',
-				subtitles: dto.subtitles,
-				content: dto.content,
 				ctaLabel: dto.ctaLabel ?? 'View Projects',
 				ctaUrl: dto.ctaUrl ?? '/projects',
-				secondaryCtaLabel: dto.secondaryCtaLabel,
-				secondaryCtaUrl: dto.secondaryCtaUrl,
 				stats: dto.stats as Prisma.InputJsonValue | undefined,
 				featuredSkills: dto.featuredSkills ?? [],
-				profileImageId: dto.profileImageId,
 				sortOrder: dto.sortOrder ?? 0,
-				isPublished: dto.isPublished ?? false,
-				publishedAt: dto.isPublished ? new Date() : null,
+				...publishFields(dto.isPublished ?? false),
 			},
 			include: { profileImage: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'Home',
-			entityId: home.id,
-			actor,
-			newData: home as unknown as Record<string, unknown>,
-		})
-
-		return home
+		return this.audit.created(ENTITY, actor, home)
 	}
 
 	async update(id: string, dto: UpdateHomeDto, actor = 'admin') {
@@ -111,71 +100,29 @@ export class HomeService extends BaseService {
 		const home = await this.prisma.home.update({
 			where: { id },
 			data: {
-				...(dto.title !== undefined && { title: dto.title }),
-				...(dto.separator !== undefined && { separator: dto.separator }),
-				...(dto.subtitles !== undefined && { subtitles: dto.subtitles }),
-				...(dto.content !== undefined && { content: dto.content }),
-				...(dto.ctaLabel !== undefined && { ctaLabel: dto.ctaLabel }),
-				...(dto.ctaUrl !== undefined && { ctaUrl: dto.ctaUrl }),
-				...(dto.secondaryCtaLabel !== undefined && { secondaryCtaLabel: dto.secondaryCtaLabel }),
-				...(dto.secondaryCtaUrl !== undefined && { secondaryCtaUrl: dto.secondaryCtaUrl }),
-				...(dto.stats !== undefined && { stats: dto.stats as Prisma.InputJsonValue }),
-				...(dto.featuredSkills !== undefined && { featuredSkills: dto.featuredSkills }),
-				...(dto.profileImageId !== undefined && { profileImageId: dto.profileImageId }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-				...(dto.isPublished !== undefined && {
-					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
-				}),
+				...dto,
+				stats: dto.stats as Prisma.InputJsonValue | undefined,
+				...publishUpdate(dto.isPublished, existing.publishedAt),
 			},
 			include: { profileImage: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Home',
-			entityId: home.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: home as unknown as Record<string, unknown>,
-		})
-
-		return home
+		return this.audit.updated(ENTITY, actor, existing, home)
 	}
 
 	async togglePublish(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
-		const nextState = !existing.isPublished
 
-		const home = await this.prisma.home.update({
-			where: { id },
-			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
-		})
-
-		await this.auditLog.create({
-			action: nextState ? AuditAction.PUBLISH : AuditAction.UNPUBLISH,
-			entity: 'Home',
-			entityId: home.id,
-			actor,
-			newData: { isPublished: nextState },
-		})
-
-		return home
+		return this.audit.togglePublish(ENTITY, actor, existing, data =>
+			this.prisma.home.update({ where: { id }, data }),
+		)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.home.update({ where: { id }, data: { deletedAt: new Date() } })
-
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Home',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
-
-		return { id, deleted: true }
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.home.update({ where: { id }, data: { deletedAt: new Date() } }),
+		)
 	}
 }

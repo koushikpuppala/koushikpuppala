@@ -1,15 +1,19 @@
 import { DatabaseService } from 'database'
+import { publishFields, publishUpdate } from 'common/utils/publish.util'
+import { toDate } from 'common/utils/date.util'
 import { Injectable } from '@nestjs/common'
-import { AuditAction, Prisma } from '@repo/prisma'
+import { Prisma } from '@repo/prisma'
 import { BaseService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CreateEducationDto, QueryEducationDto, UpdateEducationDto } from './education.dto'
+
+const ENTITY = 'Education'
 
 @Injectable()
 export class EducationService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
+		private readonly audit: CmsAuditService,
 	) {
 		super()
 	}
@@ -43,7 +47,10 @@ export class EducationService extends BaseService {
 				where,
 				skip,
 				take,
-				orderBy: [{ sortOrder: 'asc' }, { startDate: 'desc' }],
+				orderBy: this.getOrderBy(query.sortBy, query.sortOrder, [
+					{ sortOrder: 'asc' },
+					{ startDate: 'desc' },
+				]),
 				include: { logo: true },
 			}),
 			this.prisma.education.count({ where }),
@@ -62,114 +69,62 @@ export class EducationService extends BaseService {
 	}
 
 	async create(dto: CreateEducationDto, actor = 'admin') {
+		this.assertDateRange(dto.startDate, dto.endDate)
+
 		const education = await this.prisma.education.create({
 			data: {
-				degree: dto.degree,
-				fieldOfStudy: dto.fieldOfStudy,
-				university: dto.university,
-				location: dto.location,
-				description: dto.description,
+				...dto,
 				achievements: dto.achievements ?? [],
 				focusAreas: dto.focusAreas ?? [],
 				startDate: new Date(dto.startDate),
-				endDate: dto.endDate ? new Date(dto.endDate) : null,
-				expectedDate: dto.expectedDate ? new Date(dto.expectedDate) : null,
+				endDate: toDate(dto.endDate),
+				expectedDate: toDate(dto.expectedDate),
 				isCurrent: dto.isCurrent ?? false,
-				website: dto.website,
-				logoId: dto.logoId,
 				sortOrder: dto.sortOrder ?? 0,
-				isPublished: dto.isPublished ?? false,
-				publishedAt: dto.isPublished ? new Date() : null,
+				...publishFields(dto.isPublished ?? false),
 			},
 			include: { logo: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'Education',
-			entityId: education.id,
-			actor,
-			newData: education as unknown as Record<string, unknown>,
-		})
-
-		return education
+		return this.audit.created(ENTITY, actor, education)
 	}
 
 	async update(id: string, dto: UpdateEducationDto, actor = 'admin') {
 		const existing = await this.findOne(id)
 
+		this.assertDateRange(
+			dto.startDate ?? existing.startDate,
+			dto.endDate !== undefined ? dto.endDate : existing.endDate,
+		)
+
 		const education = await this.prisma.education.update({
 			where: { id },
 			data: {
-				...(dto.degree !== undefined && { degree: dto.degree }),
-				...(dto.fieldOfStudy !== undefined && { fieldOfStudy: dto.fieldOfStudy }),
-				...(dto.university !== undefined && { university: dto.university }),
-				...(dto.location !== undefined && { location: dto.location }),
-				...(dto.description !== undefined && { description: dto.description }),
-				...(dto.achievements !== undefined && { achievements: dto.achievements }),
-				...(dto.focusAreas !== undefined && { focusAreas: dto.focusAreas }),
-				...(dto.startDate !== undefined && { startDate: new Date(dto.startDate) }),
-				...(dto.endDate !== undefined && { endDate: dto.endDate ? new Date(dto.endDate) : null }),
-				...(dto.expectedDate !== undefined && {
-					expectedDate: dto.expectedDate ? new Date(dto.expectedDate) : null,
-				}),
-				...(dto.isCurrent !== undefined && { isCurrent: dto.isCurrent }),
-				...(dto.website !== undefined && { website: dto.website }),
-				...(dto.logoId !== undefined && { logoId: dto.logoId }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-				...(dto.isPublished !== undefined && {
-					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
-				}),
+				...dto,
+				startDate: toDate(dto.startDate) ?? undefined,
+				endDate: toDate(dto.endDate),
+				expectedDate: toDate(dto.expectedDate),
+				...publishUpdate(dto.isPublished, existing.publishedAt),
 			},
 			include: { logo: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Education',
-			entityId: education.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: education as unknown as Record<string, unknown>,
-		})
-
-		return education
+		return this.audit.updated(ENTITY, actor, existing, education)
 	}
 
 	async togglePublish(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
-		const nextState = !existing.isPublished
 
-		const education = await this.prisma.education.update({
-			where: { id },
-			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
-		})
-
-		await this.auditLog.create({
-			action: nextState ? AuditAction.PUBLISH : AuditAction.UNPUBLISH,
-			entity: 'Education',
-			entityId: education.id,
-			actor,
-			newData: { isPublished: nextState },
-		})
-
-		return education
+		return this.audit.togglePublish(ENTITY, actor, existing, data =>
+			this.prisma.education.update({ where: { id }, data }),
+		)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.education.update({ where: { id }, data: { deletedAt: new Date() } })
-
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Education',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
-
-		return { id, deleted: true }
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.education.update({ where: { id }, data: { deletedAt: new Date() } }),
+		)
 	}
 }

@@ -2,15 +2,12 @@ import 'styles/globals.css'
 
 import type { Metadata, Viewport } from 'next'
 
-import {
-	DEFAULT_KEYWORDS,
-	DEFAULT_OG_IMAGE,
-	SITE_DOMAIN,
-	TWITTER_HANDLE,
-} from 'constants/api-fallback'
+import { DEFAULT_KEYWORDS, DEFAULT_OG_IMAGE, SITE_DOMAIN, TWITTER_HANDLE } from 'constants/site'
 
 import Script from 'next/script'
 import { classNames } from 'utils/classNames'
+import { KeyboardFocus } from 'ui/keyboard-focus'
+import { Analytics } from 'components/analytics'
 import { Geist, Geist_Mono, Bricolage_Grotesque } from 'next/font/google'
 
 const geistSans = Geist({ variable: '--font-geist-sans', display: 'swap' })
@@ -28,7 +25,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-	metadataBase: new URL(process.env.NEXT_PUBLIC_DEPLOY_URL || SITE_DOMAIN),
+	metadataBase: new URL(SITE_DOMAIN),
 	title: {
 		default: 'Koushik Puppala — Software Engineer, Full Stack',
 		template: '%s — Koushik Puppala',
@@ -90,6 +87,7 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
 	return (
 		<html lang='en' className='dark' data-palette='new' suppressHydrationWarning>
 			<head>
+				{/* Applies the saved theme before the first paint so the page never flashes the wrong theme. */}
 				<Script id='theme-init' strategy='beforeInteractive'>
 					{`(() => {
 						const e = document.documentElement
@@ -117,7 +115,9 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
 					bricolageGrotesque.variable,
 					'bg-background text-foreground selection:bg-signal min-h-screen font-sans antialiased selection:text-white',
 				)}>
+				<KeyboardFocus />
 				{children}
+				<Analytics />
 			</body>
 		</html>
 	)

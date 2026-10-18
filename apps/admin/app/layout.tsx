@@ -1,10 +1,12 @@
+import type { ChildrenProps } from 'types/components'
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono, Bricolage_Grotesque } from 'next/font/google'
-import './globals.css'
-import { ThemeProvider } from '@/lib/theme'
-import { AuthProvider } from '@/lib/auth'
-import { AdminShell } from '@/components/admin-shell'
-import { cn } from '@/lib/utils'
+import 'styles/globals.css'
+import { ThemeProvider } from 'lib/theme'
+import { AuthProvider } from 'lib/auth'
+import { AdminShell } from 'components/shell/admin-shell'
+import { classNames } from 'utils/classNames'
+import { KeyboardFocus } from 'ui/keyboard-focus'
 
 const geistSans = Geist({ variable: '--font-geist-sans', display: 'swap' })
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', display: 'swap' })
@@ -34,27 +36,25 @@ export const metadata: Metadata = {
 	},
 }
 
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode
-}>) {
+const RootLayout = ({ children }: Readonly<ChildrenProps>) => {
 	return (
 		<html lang='en' className='dark' suppressHydrationWarning>
 			<head>
+				{/* Applies the saved theme before the first paint so the page never flashes the wrong theme. */}
 				<script
 					dangerouslySetInnerHTML={{
-						__html: `(function(){try{var t=localStorage.getItem("kp.admin.theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){}})();`,
+						__html: `(()=>{try{var t=localStorage.getItem("kp.admin.theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){}})();`,
 					}}
 				/>
 			</head>
 			<body
-				className={cn(
+				className={classNames(
 					geistSans.variable,
 					geistMono.variable,
 					bricolageGrotesque.variable,
-					'min-h-screen bg-background text-foreground font-sans antialiased selection:bg-signal selection:text-white',
+					'bg-background text-foreground selection:bg-signal min-h-screen font-sans antialiased selection:text-white',
 				)}>
+				<KeyboardFocus />
 				<ThemeProvider>
 					<AuthProvider>
 						<AdminShell>{children}</AdminShell>
@@ -64,3 +64,5 @@ export default function RootLayout({
 		</html>
 	)
 }
+
+export default RootLayout

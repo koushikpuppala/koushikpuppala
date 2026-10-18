@@ -1,11 +1,11 @@
-import { Type } from 'class-transformer'
-import { PaginationDto } from 'common/dto/pagination.dto'
+import { PublishFilterDto, PublishableDto } from 'common/dto/publishable.dto'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsInt, IsOptional, IsString, IsUUID } from 'class-validator'
+import { IsArray, IsIn, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator'
 
-export class CreateServiceDto {
+export class CreateServiceDto extends PublishableDto {
 	@ApiProperty({ example: 'Full-Stack Web Development' })
 	@IsString()
+	@IsNotEmpty()
 	title!: string
 
 	@ApiPropertyOptional({ example: 'End-to-end Web Applications' })
@@ -18,6 +18,7 @@ export class CreateServiceDto {
 			'End-to-end web application development using modern frameworks, responsive designs, and robust architectures.',
 	})
 	@IsString()
+	@IsNotEmpty()
 	description!: string
 
 	@ApiPropertyOptional({ example: 'si:code' })
@@ -36,35 +37,26 @@ export class CreateServiceDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	features?: string[] = []
+	features?: string[]
 
 	@ApiPropertyOptional({ example: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' })
 	@IsUUID()
 	@IsOptional()
 	imageId?: string
-
-	@ApiPropertyOptional({ example: 0, default: 0 })
-	@IsInt()
-	@IsOptional()
-	sortOrder?: number = 0
-
-	@ApiPropertyOptional({ example: true, default: false })
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean = false
 }
 
 export class UpdateServiceDto extends PartialType(CreateServiceDto) {}
 
-export class QueryServiceDto extends PaginationDto {
+const SERVICE_SORT_FIELDS = ['title', 'isPublished', 'sortOrder', 'createdAt'] as const
+
+export class QueryServiceDto extends PublishFilterDto {
+	@ApiPropertyOptional({ enum: [...SERVICE_SORT_FIELDS] })
+	@IsIn(SERVICE_SORT_FIELDS)
+	@IsOptional()
+	sortBy?: (typeof SERVICE_SORT_FIELDS)[number]
+
 	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()
 	search?: string
-
-	@ApiPropertyOptional()
-	@Type(() => Boolean)
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean
 }

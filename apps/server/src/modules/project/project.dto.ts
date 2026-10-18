@@ -1,27 +1,30 @@
+import { PublishFilterDto, PublishableDto, SortableDto } from 'common/dto/publishable.dto'
 import {
 	IsArray,
 	IsBoolean,
 	IsDateString,
 	IsEnum,
-	IsInt,
+	IsIn,
+	IsNotEmpty,
 	IsObject,
 	IsOptional,
 	IsString,
-	IsUrl,
 	IsUUID,
+	IsUrl,
 } from 'class-validator'
-import { Type } from 'class-transformer'
 import { ProjectStatus } from '@repo/prisma'
-import { PaginationDto } from 'common/dto/pagination.dto'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
+import { ToBoolean } from 'common/decorators/to-boolean.decorator'
 
-export class CreateProjectDto {
+export class CreateProjectDto extends PublishableDto {
 	@ApiProperty({ example: 'koushikpuppala-portfolio' })
 	@IsString()
+	@IsNotEmpty()
 	slug!: string
 
 	@ApiProperty({ example: 'Personal Portfolio & CMS' })
 	@IsString()
+	@IsNotEmpty()
 	title!: string
 
 	@ApiProperty({ example: 'Full-stack monorepo with Next.js 16 and NestJS' })
@@ -45,12 +48,12 @@ export class CreateProjectDto {
 	@ApiPropertyOptional({ example: true, default: false })
 	@IsBoolean()
 	@IsOptional()
-	featured?: boolean = false
+	featured?: boolean
 
 	@ApiPropertyOptional({ enum: ProjectStatus, default: ProjectStatus.COMPLETED })
 	@IsEnum(ProjectStatus)
 	@IsOptional()
-	status?: ProjectStatus = ProjectStatus.COMPLETED
+	status?: ProjectStatus
 
 	@ApiPropertyOptional({ example: 'A production-grade portfolio and administrative CMS platform.' })
 	@IsString()
@@ -83,7 +86,7 @@ export class CreateProjectDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	tags?: string[] = []
+	tags?: string[]
 
 	@ApiPropertyOptional({
 		example: ['TypeScript', 'Tailwind CSS', 'Docker', 'Prisma'],
@@ -92,7 +95,7 @@ export class CreateProjectDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	technologies?: string[] = []
+	technologies?: string[]
 
 	@ApiPropertyOptional({ example: { lighthouseScore: 98, stars: 150 } })
 	@IsObject()
@@ -128,21 +131,27 @@ export class CreateProjectDto {
 	@IsUUID()
 	@IsOptional()
 	heroImageId?: string
-
-	@ApiPropertyOptional({ example: 0, default: 0 })
-	@IsInt()
-	@IsOptional()
-	sortOrder?: number = 0
-
-	@ApiPropertyOptional({ example: true, default: false })
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean = false
 }
 
 export class UpdateProjectDto extends PartialType(CreateProjectDto) {}
 
-export class QueryProjectDto extends PaginationDto {
+const PROJECT_SORT_FIELDS = [
+	'title',
+	'category',
+	'status',
+	'featured',
+	'isPublished',
+	'sortOrder',
+	'createdAt',
+	'updatedAt',
+] as const
+
+export class QueryProjectDto extends PublishFilterDto {
+	@ApiPropertyOptional({ enum: [...PROJECT_SORT_FIELDS] })
+	@IsIn(PROJECT_SORT_FIELDS)
+	@IsOptional()
+	sortBy?: (typeof PROJECT_SORT_FIELDS)[number]
+
 	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()
@@ -159,19 +168,13 @@ export class QueryProjectDto extends PaginationDto {
 	status?: ProjectStatus
 
 	@ApiPropertyOptional()
-	@Type(() => Boolean)
+	@ToBoolean()
 	@IsBoolean()
 	@IsOptional()
 	featured?: boolean
-
-	@ApiPropertyOptional()
-	@Type(() => Boolean)
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean
 }
 
-export class AddGalleryMediaDto {
+export class AddGalleryMediaDto extends SortableDto {
 	@ApiProperty({ example: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' })
 	@IsUUID()
 	mediaId!: string
@@ -199,17 +202,12 @@ export class AddGalleryMediaDto {
 	@ApiPropertyOptional({ example: false, default: false })
 	@IsBoolean()
 	@IsOptional()
-	isFeatured?: boolean = false
+	isFeatured?: boolean
 
 	@ApiPropertyOptional({ example: true, default: true })
 	@IsBoolean()
 	@IsOptional()
-	isVisible?: boolean = true
-
-	@ApiPropertyOptional({ example: 0, default: 0 })
-	@IsInt()
-	@IsOptional()
-	sortOrder?: number = 0
+	isVisible?: boolean
 }
 
 export class UpdateGalleryMediaDto extends PartialType(AddGalleryMediaDto) {}

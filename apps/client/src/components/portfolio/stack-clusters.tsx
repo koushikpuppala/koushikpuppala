@@ -1,19 +1,11 @@
 'use client'
 
-import { useId, useRef, useState } from 'react'
+import type { StackClustersProps } from 'types/components/client'
+import { useId, useRef, useState, type KeyboardEvent } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Reveal } from 'components/primitives'
-import { splitList } from 'lib/format'
 import { classNames } from 'utils/classNames'
-import type { PublishedService } from 'types/models'
 
-export function StackClusters({
-	services,
-	className,
-}: {
-	services: PublishedService[]
-	className?: string
-}) {
+export const StackClusters = ({ services, className }: StackClustersProps) => {
 	const [active, setActive] = useState(0)
 	const baseId = useId()
 	const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
@@ -26,7 +18,7 @@ export function StackClusters({
 		tabRefs.current[next]?.focus()
 	}
 
-	const onKeyDown = (event: React.KeyboardEvent, index: number) => {
+	const onKeyDown = (event: KeyboardEvent, index: number) => {
 		const keys: Record<string, number> = {
 			ArrowDown: index + 1,
 			ArrowRight: index + 1,
@@ -50,7 +42,7 @@ export function StackClusters({
 					aria-orientation='vertical'
 					className='bg-border flex snap-x gap-px overflow-x-auto lg:flex-col lg:overflow-visible'>
 					{services.map((service, i) => {
-						const items = splitList(service.description)
+						const items = service.features
 						const selected = i === active
 						return (
 							<button
@@ -104,7 +96,7 @@ export function StackClusters({
 						aria-hidden
 					/>
 					{services.map((service, i) => {
-						const items = splitList(service.description)
+						const items = service.features
 						const selected = i === active
 						return (
 							<div
@@ -144,35 +136,6 @@ export function StackClusters({
 					})}
 				</div>
 			</div>
-		</div>
-	)
-}
-
-export function StackList({
-	services,
-	className,
-}: {
-	services: PublishedService[]
-	className?: string
-}) {
-	return (
-		<div className={classNames('relative', className)}>
-			{services.map((service, i) => (
-				<Reveal key={service.id} delay={i * 45}>
-					<div className='group border-border grid gap-3 border-t py-6 last:border-b sm:grid-cols-[minmax(0,13rem)_minmax(0,1fr)] sm:gap-10'>
-						<h3 className='font-display text-lg font-medium tracking-tight'>{service.title}</h3>
-						<ul className='flex flex-wrap items-center gap-2'>
-							{splitList(service.description).map(item => (
-								<li key={item}>
-									<span className='border-border bg-background/60 text-muted-foreground hover:border-signal/50 hover:text-foreground inline-flex items-center rounded-md border px-2.5 py-1.5 font-mono text-[0.75rem] transition-all duration-400 ease-(--ease-out-expo) hover:-translate-y-0.5'>
-										{item}
-									</span>
-								</li>
-							))}
-						</ul>
-					</div>
-				</Reveal>
-			))}
 		</div>
 	)
 }

@@ -1,3 +1,5 @@
+import type { PublishedProjectQuery } from 'types/api'
+
 import {
 	AddGalleryMediaDto,
 	CreateProjectDto,
@@ -8,19 +10,26 @@ import {
 import { DatabaseService } from 'database'
 import { BaseService } from 'common/services/base-cms.service'
 import { AuditAction, Prisma, ProjectStatus } from '@repo/prisma'
+import { toDate } from 'common/utils/date.util'
 import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
+import { publishFields, publishUpdate } from 'common/utils/publish.util'
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+
+const ENTITY = 'Project'
+const GALLERY = 'ProjectGallery'
 
 @Injectable()
 export class ProjectService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
+		private readonly audit: CmsAuditService,
 		private readonly auditLog: AuditLogService,
 	) {
 		super()
 	}
 
-	async getPublished(query?: { category?: string; featured?: boolean }) {
+	async getPublished(query?: PublishedProjectQuery) {
 		const where: Prisma.ProjectWhereInput = { isPublished: true, deletedAt: null }
 
 		if (query?.category) where.category = query.category
@@ -63,7 +72,7 @@ export class ProjectService extends BaseService {
 				thumbnail: true,
 				heroImage: true,
 				gallery: {
-					where: { isVisible: true },
+					where: { isVisible: true, media: { deletedAt: null } },
 					orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
 					include: { media: true },
 				},
@@ -98,7 +107,10 @@ export class ProjectService extends BaseService {
 				where,
 				skip,
 				take,
-				orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
+				orderBy: this.getOrderBy(query.sortBy, query.sortOrder, [
+					{ sortOrder: 'asc' },
+					{ createdAt: 'desc' },
+				]),
 				include: {
 					thumbnail: { select: { id: true, url: true, fileName: true, altText: true } },
 					_count: { select: { gallery: true } },
@@ -127,182 +139,94 @@ export class ProjectService extends BaseService {
 	}
 
 	async create(dto: CreateProjectDto, actor = 'admin') {
-		const existing = await this.prisma.project.findUnique({
-			where: { slug: dto.slug },
-		})
-
-		if (existing) throw new ConflictException(`Project with slug '${dto.slug}' already exists`)
+		await this.assertSlugFree(dto.slug)
 
 		const project = await this.prisma.project.create({
 			data: {
-				slug: dto.slug,
-				title: dto.title,
-				subtitle: dto.subtitle,
-				category: dto.category,
-				projectType: dto.projectType,
-				role: dto.role,
+				...dto,
 				featured: dto.featured ?? false,
 				status: dto.status ?? ProjectStatus.COMPLETED,
-				shortDescription: dto.shortDescription,
-				descriptions: dto.descriptions,
-				caseStudy: dto.caseStudy,
 				tags: dto.tags ?? [],
 				technologies: dto.technologies ?? [],
 				metrics: dto.metrics as Prisma.InputJsonValue | undefined,
-				startDate: dto.startDate ? new Date(dto.startDate) : null,
-				endDate: dto.endDate ? new Date(dto.endDate) : null,
-				github: dto.github,
-				liveUrl: dto.liveUrl,
-				thumbnailId: dto.thumbnailId,
-				heroImageId: dto.heroImageId,
+				startDate: toDate(dto.startDate),
+				endDate: toDate(dto.endDate),
 				sortOrder: dto.sortOrder ?? 0,
-				isPublished: dto.isPublished ?? false,
-				publishedAt: dto.isPublished ? new Date() : null,
+				...publishFields(dto.isPublished ?? false),
 			},
 			include: { thumbnail: true, heroImage: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'Project',
-			entityId: project.id,
-			actor,
-			newData: project as unknown as Record<string, unknown>,
-		})
-
-		return project
+		return this.audit.created(ENTITY, actor, project)
 	}
 
 	async update(id: string, dto: UpdateProjectDto, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		if (dto.slug && dto.slug !== existing.slug) {
-			const slugExists = await this.prisma.project.findUnique({
-				where: { slug: dto.slug },
-			})
-
-			if (slugExists) throw new ConflictException(`Project with slug '${dto.slug}' already exists`)
-		}
+		if (dto.slug && dto.slug !== existing.slug) await this.assertSlugFree(dto.slug)
 
 		const project = await this.prisma.project.update({
 			where: { id },
 			data: {
-				...(dto.slug !== undefined && { slug: dto.slug }),
-				...(dto.title !== undefined && { title: dto.title }),
-				...(dto.subtitle !== undefined && { subtitle: dto.subtitle }),
-				...(dto.category !== undefined && { category: dto.category }),
-				...(dto.projectType !== undefined && { projectType: dto.projectType }),
-				...(dto.role !== undefined && { role: dto.role }),
-				...(dto.featured !== undefined && { featured: dto.featured }),
-				...(dto.status !== undefined && { status: dto.status }),
-				...(dto.shortDescription !== undefined && { shortDescription: dto.shortDescription }),
-				...(dto.descriptions !== undefined && { descriptions: dto.descriptions }),
-				...(dto.caseStudy !== undefined && { caseStudy: dto.caseStudy }),
-				...(dto.tags !== undefined && { tags: dto.tags }),
-				...(dto.technologies !== undefined && { technologies: dto.technologies }),
-				...(dto.metrics !== undefined && { metrics: dto.metrics as Prisma.InputJsonValue }),
-				...(dto.startDate !== undefined && {
-					startDate: dto.startDate ? new Date(dto.startDate) : null,
-				}),
-				...(dto.endDate !== undefined && {
-					endDate: dto.endDate ? new Date(dto.endDate) : null,
-				}),
-				...(dto.github !== undefined && { github: dto.github }),
-				...(dto.liveUrl !== undefined && { liveUrl: dto.liveUrl }),
-				...(dto.thumbnailId !== undefined && { thumbnailId: dto.thumbnailId }),
-				...(dto.heroImageId !== undefined && { heroImageId: dto.heroImageId }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-				...(dto.isPublished !== undefined && {
-					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
-				}),
+				...dto,
+				metrics: dto.metrics as Prisma.InputJsonValue | undefined,
+				startDate: toDate(dto.startDate),
+				endDate: toDate(dto.endDate),
+				...publishUpdate(dto.isPublished, existing.publishedAt),
 			},
 			include: { thumbnail: true, heroImage: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Project',
-			entityId: project.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: project as unknown as Record<string, unknown>,
-		})
-
-		return project
+		return this.audit.updated(ENTITY, actor, existing, project)
 	}
 
 	async togglePublish(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
-		const nextState = !existing.isPublished
 
-		const project = await this.prisma.project.update({
-			where: { id },
-			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
-		})
-
-		await this.auditLog.create({
-			action: nextState ? AuditAction.PUBLISH : AuditAction.UNPUBLISH,
-			entity: 'Project',
-			entityId: project.id,
-			actor,
-			newData: { isPublished: nextState },
-		})
-
-		return project
+		return this.audit.togglePublish(ENTITY, actor, existing, data =>
+			this.prisma.project.update({ where: { id }, data }),
+		)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.project.update({ where: { id }, data: { deletedAt: new Date() } })
-
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Project',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
-
-		return { id, deleted: true }
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.project.update({
+				where: { id },
+				// Free up the unique slug so a new project can reuse it.
+				data: { deletedAt: new Date(), slug: `${existing.slug}--deleted-${Date.now()}` },
+			}),
+		)
 	}
 
-	// --- Gallery Management ---
 	async addGalleryMedia(projectId: string, dto: AddGalleryMediaDto, actor = 'admin') {
 		await this.findOne(projectId)
 
+		const fields = {
+			title: dto.title,
+			description: dto.description,
+			caption: dto.caption,
+			altText: dto.altText,
+			isFeatured: dto.isFeatured ?? false,
+			isVisible: dto.isVisible ?? true,
+			sortOrder: dto.sortOrder ?? 0,
+		}
+
+		// Adding media that is already in the gallery updates its fields instead of failing.
 		const galleryItem = await this.prisma.projectGallery.upsert({
 			where: { projectId_mediaId: { projectId, mediaId: dto.mediaId } },
-			update: {
-				title: dto.title,
-				description: dto.description,
-				caption: dto.caption,
-				altText: dto.altText,
-				isFeatured: dto.isFeatured ?? false,
-				isVisible: dto.isVisible ?? true,
-				sortOrder: dto.sortOrder ?? 0,
-			},
-			create: {
-				projectId,
-				mediaId: dto.mediaId,
-				title: dto.title,
-				description: dto.description,
-				caption: dto.caption,
-				altText: dto.altText,
-				isFeatured: dto.isFeatured ?? false,
-				isVisible: dto.isVisible ?? true,
-				sortOrder: dto.sortOrder ?? 0,
-			},
+			update: fields,
+			create: { projectId, mediaId: dto.mediaId, ...fields },
 			include: { media: true },
 		})
 
 		await this.auditLog.create({
 			action: AuditAction.UPDATE,
-			entity: 'ProjectGallery',
+			entity: GALLERY,
 			entityId: `${projectId}:${dto.mediaId}`,
 			actor,
-			newData: galleryItem as unknown as Record<string, unknown>,
+			newData: galleryItem,
 		})
 
 		return galleryItem
@@ -314,44 +238,28 @@ export class ProjectService extends BaseService {
 		dto: UpdateGalleryMediaDto,
 		actor = 'admin',
 	) {
-		const existing = await this.prisma.projectGallery.findUnique({
-			where: { projectId_mediaId: { projectId, mediaId } },
-		})
-
-		if (!existing) throw new NotFoundException('Gallery media item not found')
+		const existing = await this.findGalleryItem(projectId, mediaId)
 
 		const updated = await this.prisma.projectGallery.update({
 			where: { projectId_mediaId: { projectId, mediaId } },
-			data: {
-				...(dto.title !== undefined && { title: dto.title }),
-				...(dto.description !== undefined && { description: dto.description }),
-				...(dto.caption !== undefined && { caption: dto.caption }),
-				...(dto.altText !== undefined && { altText: dto.altText }),
-				...(dto.isFeatured !== undefined && { isFeatured: dto.isFeatured }),
-				...(dto.isVisible !== undefined && { isVisible: dto.isVisible }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-			},
+			data: { ...dto },
 			include: { media: true },
 		})
 
 		await this.auditLog.create({
 			action: AuditAction.UPDATE,
-			entity: 'ProjectGallery',
+			entity: GALLERY,
 			entityId: `${projectId}:${mediaId}`,
 			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: updated as unknown as Record<string, unknown>,
+			oldData: existing,
+			newData: updated,
 		})
 
 		return updated
 	}
 
 	async removeGalleryMedia(projectId: string, mediaId: string, actor = 'admin') {
-		const existing = await this.prisma.projectGallery.findUnique({
-			where: { projectId_mediaId: { projectId, mediaId } },
-		})
-
-		if (!existing) throw new NotFoundException('Gallery media item not found')
+		const existing = await this.findGalleryItem(projectId, mediaId)
 
 		await this.prisma.projectGallery.delete({
 			where: { projectId_mediaId: { projectId, mediaId } },
@@ -359,12 +267,28 @@ export class ProjectService extends BaseService {
 
 		await this.auditLog.create({
 			action: AuditAction.DELETE,
-			entity: 'ProjectGallery',
+			entity: GALLERY,
 			entityId: `${projectId}:${mediaId}`,
 			actor,
-			oldData: existing as unknown as Record<string, unknown>,
+			oldData: existing,
 		})
 
 		return { projectId, mediaId, deleted: true }
+	}
+
+	private async assertSlugFree(slug: string): Promise<void> {
+		const taken = await this.prisma.project.findUnique({ where: { slug } })
+
+		if (taken) throw new ConflictException(`Project with slug '${slug}' already exists`)
+	}
+
+	private async findGalleryItem(projectId: string, mediaId: string) {
+		const item = await this.prisma.projectGallery.findUnique({
+			where: { projectId_mediaId: { projectId, mediaId } },
+		})
+
+		if (!item) throw new NotFoundException('Gallery media item not found')
+
+		return item
 	}
 }

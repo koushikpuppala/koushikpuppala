@@ -1,20 +1,16 @@
 'use client'
 
+import type { ErrorPageProps } from 'types/components'
+
 import { useEffect } from 'react'
 import Link from 'next/link'
-import * as Sentry from '@sentry/nextjs'
+import { captureException } from '@sentry/nextjs'
 import { Surface } from 'ui/surface'
 import { PageContainer } from 'ui/container'
 
-export default function RootError({
-	error,
-	reset,
-}: {
-	error: Error & { digest?: string }
-	reset: () => void
-}) {
+const RootError = ({ error, reset }: ErrorPageProps) => {
 	useEffect(() => {
-		Sentry.captureException(error)
+		captureException(error)
 	}, [error])
 
 	return (
@@ -47,12 +43,12 @@ export default function RootError({
 						<button
 							type='button'
 							onClick={() => reset()}
-							className='bg-signal text-signal-foreground shadow-signal/20 focus-visible:ring-signal inline-flex cursor-pointer items-center gap-2 rounded-xl px-6 py-3.5 font-mono text-xs font-semibold tracking-wider uppercase shadow-lg transition-all duration-200 hover:opacity-95 focus-visible:ring-2 focus-visible:outline-none'>
+							className='bg-signal-solid text-signal-foreground shadow-signal/20 focus-ring:ring-signal focus-ring:ring-2 inline-flex cursor-pointer items-center gap-2 rounded-xl px-6 py-3.5 font-mono text-xs font-semibold tracking-wider uppercase shadow-lg transition-all duration-200 outline-none hover:opacity-95'>
 							<span>RETRY EXECUTION</span>
 						</button>
 						<Link
 							href='/'
-							className='border-border bg-surface text-foreground hover:bg-surface-hover focus-visible:ring-signal inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 font-mono text-xs font-semibold tracking-wider uppercase transition-all duration-200 focus-visible:ring-2 focus-visible:outline-none'>
+							className='border-border bg-surface text-foreground hover:bg-surface-hover focus-ring:ring-signal focus-ring:ring-2 inline-flex items-center gap-2 rounded-xl border px-6 py-3.5 font-mono text-xs font-semibold tracking-wider uppercase transition-all duration-200 outline-none'>
 							<span>RETURN TO HOME</span>
 						</Link>
 					</div>
@@ -61,3 +57,5 @@ export default function RootError({
 		</main>
 	)
 }
+
+export default RootError

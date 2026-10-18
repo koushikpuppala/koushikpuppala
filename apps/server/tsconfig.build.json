@@ -7,7 +7,6 @@
 		"**/*spec.ts",
 		".prettierrc.mjs",
 		"eslint.config.mjs",
-		"jest.config.mjs",
-		"jest.config.ts"
+		"vitest.config.mts"
 	]
 }

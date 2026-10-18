@@ -1,18 +1,30 @@
+import type { EmploymentType, MetadataType, ProjectStatus, SocialPlatform } from '../enums/index'
+
 export type MediaFile = {
 	id: string
 	fileName: string
-	mimeType: string
-	url?: string
-	width?: number
-	height?: number
-	altText?: string
+	originalName?: string
+	storageKey?: string
+	mimeType?: string
+	size?: number
+	url?: string | null
+	width?: number | null
+	height?: number | null
+	altText?: string | null
+	caption?: string | null
+	createdAt?: string
 }
 
-export type ContentStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+export type MediaAsset = MediaFile & { url: string }
+
+export type PickedMedia = { id: string; url: string; fileName: string; altText?: string }
+
+export type UploadedMedia = { id: string; url: string; storageKey: string; fileName: string }
+
+export type PresignedUpload = { uploadUrl: string; storageKey: string; url: string }
 
 export type PublishedHome = {
 	id?: string
-	version?: number
 	title: string
 	separator: string
 	subtitles: string[]
@@ -21,7 +33,6 @@ export type PublishedHome = {
 	ctaUrl: string
 	secondaryCtaLabel?: string | null
 	secondaryCtaUrl?: string | null
-	ctas?: Array<{ label: string; href: string; variant?: 'primary' | 'ghost' | 'outline' }>
 	stats?: Record<string, unknown> | Array<{ label: string; value: string; detail?: string }> | null
 	featuredSkills: string[]
 	profileImageId?: string
@@ -33,8 +44,11 @@ export type PublishedHome = {
 	updatedAt?: Date | string
 	deletedAt?: Date | string | null
 	profileImage?: MediaFile
-	status?: ContentStatus | string
 }
+
+export type AboutValue = { title: string; description: string }
+
+export type AboutPillar = { title: string; description: string; icon?: string }
 
 export type AboutStat = {
 	label: string
@@ -44,24 +58,20 @@ export type AboutStat = {
 
 export type PublishedAbout = {
 	id?: string
-	version?: number
-	heading?: string
 	title: string
 	leadStatement: string
 	content: string
-	bio?: string
 	biography: string
-	description?: string
 	location: string
 	coordinates?: string
 	timezone?: string
-	status?: ContentStatus | string
+	status?: string
 	profileImageId?: string
 	profileImageUrl?: string | null
 	highlights: string[]
 	skills?: string[]
 	values?: string[]
-	pillars?: Array<{ title: string; description: string; icon?: string }>
+	pillars?: AboutPillar[]
 	stats: AboutStat[]
 	ctaLabel?: string
 	ctaUrl?: string
@@ -76,13 +86,10 @@ export type PublishedAbout = {
 
 export type PublishedExperience = {
 	id: string
-	version?: number
 	title: string
-	role?: string
-	company: string
-	organization?: string
+	organization: string
 	location: string
-	employmentType: 'FULL_TIME' | 'PART_TIME' | 'INTERN' | 'CONTRACT' | 'FREELANCE' | string
+	employmentType: EmploymentType
 	startDate: string
 	endDate?: string | null
 	periodFormatted?: string
@@ -91,12 +98,9 @@ export type PublishedExperience = {
 	description: string[]
 	achievements: string[]
 	technologies: string[]
-	highlights?: string[]
 	website?: string | null
 	logoId?: string
 	sortOrder: number
-	order?: number
-	status?: ContentStatus | string
 	isPublished?: boolean
 	publishedAt?: Date | string
 	createdAt?: Date | string
@@ -107,11 +111,8 @@ export type PublishedExperience = {
 
 export type PublishedEducation = {
 	id: string
-	version?: number
 	degree: string
 	fieldOfStudy: string
-	field?: string | null
-	institution?: string
 	university: string
 	location: string
 	periodFormatted?: string
@@ -119,16 +120,12 @@ export type PublishedEducation = {
 	endDate?: string | null
 	expectedDate?: Date | string | null
 	isCurrent: boolean
-	grade?: string | null
-	mentor?: string | null
 	description: string[]
 	achievements: string[]
 	focusAreas: string[]
 	website?: string | null
 	logoId?: string
 	sortOrder: number
-	order?: number
-	status?: ContentStatus | string
 	isPublished?: boolean
 	publishedAt?: Date | string
 	createdAt?: Date | string
@@ -147,13 +144,11 @@ export type PublishedProjectGalleryItem = {
 	caption?: string | null
 	altText?: string | null
 	sortOrder?: number
-	order?: number
 	media?: MediaFile
 }
 
 export type PublishedProject = {
 	id: string
-	version?: number
 	slug: string
 	title: string
 	subtitle: string
@@ -162,24 +157,19 @@ export type PublishedProject = {
 	category: string
 	projectType: string
 	featured: boolean
-	status: 'COMPLETED' | 'IN_PROGRESS' | 'ARCHIVED' | 'DRAFT' | 'PUBLISHED' | string
+	status: ProjectStatus
 	shortDescription: string
-	summary?: string
-	content?: string
 	descriptions: string[]
-	caseStudy?: string
+	caseStudy?: string | null
 	tags: string[]
 	technologies: string[]
-	stack?: string[]
 	metrics?: Record<string, unknown>
 	startDate?: Date | string
 	endDate?: Date | string
 	github?: string | null
-	repoUrl?: string | null
 	liveUrl?: string | null
 	imageUrl?: string | null
 	heroImageUrl?: string | null
-	coverImageUrl?: string | null
 	thumbnailId?: string
 	heroImageId?: string
 	sortOrder: number
@@ -193,38 +183,8 @@ export type PublishedProject = {
 	gallery?: PublishedProjectGalleryItem[]
 }
 
-export type PublishedSkill = {
-	id: string
-	version?: number
-	name: string
-	category: string
-	description?: string
-	proficiency?: number
-	icon?: string | null
-	mediaId?: string
-	featured: boolean
-	sortOrder: number
-	status?: ContentStatus | string
-	isPublished?: boolean
-	publishedAt?: Date | string
-	createdAt?: Date | string
-	updatedAt?: Date | string
-	deletedAt?: Date | string | null
-	media?: MediaFile
-}
-
-export type PublishedSkillCluster = {
-	id: string
-	index: string
-	title: string
-	categoryTag: string
-	description: string
-	skills: PublishedSkill[]
-}
-
 export type PublishedService = {
 	id: string
-	version?: number
 	title: string
 	subtitle?: string
 	description: string
@@ -233,8 +193,6 @@ export type PublishedService = {
 	imageId?: string
 	imageUrl?: string | null
 	sortOrder: number
-	order?: number
-	status?: ContentStatus | string
 	isPublished?: boolean
 	publishedAt?: Date | string
 	createdAt?: Date | string
@@ -258,19 +216,14 @@ export type ResumeStat = {
 
 export type PublishedResume = {
 	id?: string
-	version?: number | string
 	versionName?: string
 	title?: string
 	headline?: string
 	summary?: string
 	mediaId?: string
-	fileId?: string
 	fileSize?: number
 	fileSizeFormatted?: string
 	fileType?: string
-	formatLabel?: string
-	revisionYear?: string
-	lastUpdated?: string
 	downloadUrl?: string
 	previewUrl?: string
 	checksum?: string
@@ -278,44 +231,25 @@ export type PublishedResume = {
 	highlights?: ResumeHighlight[] | string[]
 	competencies?: string[]
 	stats?: ResumeStat[] | Record<string, unknown>
-	fileUrl?: string
 	sortOrder?: number
-	status?: ContentStatus | string
 	isPublished?: boolean
-	isVerified?: boolean
 	publishedAt?: Date | string
 	createdAt?: Date | string
 	updatedAt?: Date | string
 	deletedAt?: Date | string | null
 	media?: MediaFile
-	url?: string
 }
 
 export type PublishedSocial = {
 	id: string
-	version?: number
 	url: string
-	platform:
-		| 'LINKEDIN'
-		| 'GITHUB'
-		| 'DISCORD'
-		| 'TWITTER'
-		| 'INSTAGRAM'
-		| 'FACEBOOK'
-		| 'YOUTUBE'
-		| 'EMAIL'
-		| 'WEBSITE'
-		| string
-	label: string
+	platform: SocialPlatform
+	label: string | null
 	handle?: string | null
 	icon?: string | null
 	featured?: boolean
 	isVisible?: boolean
 	sortOrder: number
-	order?: number
-	status?: ContentStatus | string
-	isPublished?: boolean
-	publishedAt?: Date | string
 	createdAt?: Date | string
 	updatedAt?: Date | string
 	deletedAt?: Date | string | null
@@ -323,8 +257,7 @@ export type PublishedSocial = {
 
 export type PublishedMetadata = {
 	id?: string
-	version?: number
-	type?: 'PAGE' | 'LAYOUT'
+	type?: MetadataType
 	key?: string
 	value?: Record<string, unknown>
 	title?: string
@@ -340,51 +273,27 @@ export type PublishedMetadata = {
 	deletedAt?: Date | string | null
 }
 
-export type AuditLogModel = {
-	id: string
-	userId?: string | null
-	action: string
-	entity: string
-	entityId?: string | null
-	details?: Record<string, unknown> | null
-	ipAddress?: string | null
-	userAgent?: string | null
-	createdAt: Date | string
+export type MetadataRecord = {
+	id?: string
+	type: MetadataType
+	key: string
+	value: Record<string, unknown>
+	title?: string | null
+	description?: string | null
+	ogImage?: string | null
+	canonicalUrl?: string | null
+	robots?: string | null
+	keywords: string[]
+	isPublished: boolean
+	createdAt?: string
+	updatedAt?: string
 }
 
-export type ApiMetricModel = {
-	id: string
-	endpoint: string
-	method: string
-	statusCode: number
-	responseTimeMs: number
-	timestamp: Date | string
-}
-
-export type ContactModel = {
-	id: string
-	name: string
-	email: string
-	subject?: string | null
-	message: string
-	status: 'UNREAD' | 'READ' | 'REPLIED' | 'ARCHIVED' | string
-	createdAt: Date | string
-	updatedAt: Date | string
-}
-
-// Convenience model aliases
-export type Home = PublishedHome
 export type HomeContent = PublishedHome
-export type About = PublishedAbout
 export type AboutContent = PublishedAbout
 export type Experience = PublishedExperience
 export type Education = PublishedEducation
 export type Project = PublishedProject
-export type ProjectModel = PublishedProject
-export type Skill = PublishedSkill
 export type Service = PublishedService
-export type Resume = PublishedResume
 export type ResumeRecord = PublishedResume
 export type Social = PublishedSocial
-export type Metadata = PublishedMetadata
-

@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,17 +8,19 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { HomeService } from './home.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
 import { CreateHomeDto, QueryHomeDto, UpdateHomeDto } from './home.dto'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('Home')
+@RevalidateTags('home')
 @Controller('home')
 export class HomeController {
 	constructor(private readonly homeService: HomeService) {}
@@ -67,9 +67,7 @@ export class HomeController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/home',
 	})
-	async create(@Body() dto: CreateHomeDto, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async create(@Body() dto: CreateHomeDto, @Actor() actor: string) {
 		return this.homeService.create(dto, actor)
 	}
 
@@ -83,10 +81,8 @@ export class HomeController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateHomeDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.homeService.update(id, dto, actor)
 	}
 
@@ -97,9 +93,7 @@ export class HomeController {
 		method: 'PATCH',
 		endpoint: 'PATCH /api/v1/home/:id/publish',
 	})
-	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.homeService.togglePublish(id, actor)
 	}
 
@@ -110,9 +104,7 @@ export class HomeController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/home/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.homeService.remove(id, actor)
 	}
 }

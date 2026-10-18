@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,17 +8,19 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { ExperienceService } from './experience.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
 import { CreateExperienceDto, QueryExperienceDto, UpdateExperienceDto } from './experience.dto'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('Experience')
+@RevalidateTags('experience')
 @Controller('experience')
 export class ExperienceController {
 	constructor(private readonly experienceService: ExperienceService) {}
@@ -68,9 +68,7 @@ export class ExperienceController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/experience',
 	})
-	async create(@Body() dto: CreateExperienceDto, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async create(@Body() dto: CreateExperienceDto, @Actor() actor: string) {
 		return this.experienceService.create(dto, actor)
 	}
 
@@ -84,10 +82,8 @@ export class ExperienceController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateExperienceDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.experienceService.update(id, dto, actor)
 	}
 
@@ -98,9 +94,7 @@ export class ExperienceController {
 		method: 'PATCH',
 		endpoint: 'PATCH /api/v1/experience/:id/publish',
 	})
-	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.experienceService.togglePublish(id, actor)
 	}
 
@@ -111,9 +105,7 @@ export class ExperienceController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/experience/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.experienceService.remove(id, actor)
 	}
 }

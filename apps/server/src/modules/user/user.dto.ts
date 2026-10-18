@@ -15,6 +15,12 @@ export class UserResponseDto {
 
 	@ApiProperty({ example: 'ADMIN' })
 	role!: string
+
+	@ApiProperty({ example: 'ACTIVE' })
+	status!: string
+
+	@ApiProperty({ example: '2026-01-01T00:00:00.000Z' })
+	createdAt!: Date
 }
 
 export class AdminCreateUserDto {

@@ -2,25 +2,29 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight } from 'components/icons'
 import { SiteShell } from 'components/site-shell'
-import { EmptyState, Reveal, Section, SectionHeader } from 'components/primitives'
+import { EmptyState } from 'components/primitives/feedback'
+import { Section, SectionHeader } from 'components/primitives/layout'
+import { Reveal } from 'components/primitives/motion'
 import { PageHero } from 'components/home/page-hero'
 import { ExperienceTimeline } from 'components/portfolio/experience-timeline'
 import { ContactCTA } from 'components/home/home-sections'
-import { Button } from 'components/ui/button'
+import { Button } from 'ui/button'
 import { formatYear } from 'lib/format'
 import { getExperienceData } from 'lib/experience-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
+import { emailAddress } from 'lib/email'
 
 export const generateMetadata = async (): Promise<Metadata> => {
+	'use cache'
 	return resolveMetadataByPath('/experience')
 }
 
-export default async function ExperiencePage() {
+const ExperiencePage = async () => {
 	const [experiences, socials] = await Promise.all([getExperienceData(), getSocialsData()])
 
-	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
-	const current = experiences.find(item => !item.endDate)
+	const email = emailAddress(socials)
+	const current = experiences.find(item => item.isCurrent || !item.endDate)
 	const organizations = new Set(experiences.map(item => item.organization)).size
 	const earliest = experiences.reduce<string | null>(
 		(acc, item) => (!acc || item.startDate < acc ? item.startDate : acc),
@@ -34,7 +38,9 @@ export default async function ExperiencePage() {
 				title='Roles, internships and teams'
 				lines={['Roles, internships', 'and teams']}
 				lead="A full record of where I've shipped — product engineering, infrastructure work and the university platform I helped lead."
-				meta={[current ? `Now · ${current.organization}` : 'India', 'India']}
+				meta={[current ? `Now · ${current.organization}` : '', current?.location ?? ''].filter(
+					Boolean,
+				)}
 				actions={
 					<>
 						<Button asChild size='lg' variant='signal' className='group'>
@@ -92,3 +98,5 @@ export default async function ExperiencePage() {
 		</SiteShell>
 	)
 }
+
+export default ExperiencePage

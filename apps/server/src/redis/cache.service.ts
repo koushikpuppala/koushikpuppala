@@ -7,31 +7,21 @@ export class CacheService {
 	constructor(private readonly redis: RedisService) {}
 
 	async remember<T>(key: string, ttl: number, callback: () => Promise<T>): Promise<T> {
+		// Redis is only an accelerator: any read or write failure falls through to the callback,
+		// so a Redis outage degrades to direct database queries instead of failing the request.
 		try {
 			const cached = await this.redis.get(key)
 
 			if (cached) return JSON.parse(cached) as T
-		} catch {
-			// Fallback to source of truth on cache read failure
-		}
+		} catch {}
 
 		const value = await callback()
 
 		try {
 			await this.redis.set(key, JSON.stringify(value), ttl)
-		} catch {
-			// Non-blocking cache write failure
-		}
+		} catch {}
 
 		return value
-	}
-
-	async forget(key: string): Promise<void> {
-		try {
-			await this.redis.del(key)
-		} catch {
-			// Non-blocking cache eviction failure
-		}
 	}
 
 	async forgetByPattern(pattern: string): Promise<number> {

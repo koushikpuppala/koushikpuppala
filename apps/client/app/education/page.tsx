@@ -2,27 +2,30 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, GraduationCap } from 'components/icons'
 import { SiteShell } from 'components/site-shell'
-import { EmptyState, Section, SectionHeader } from 'components/primitives'
+import { EmptyState } from 'components/primitives/feedback'
+import { Section, SectionHeader } from 'components/primitives/layout'
 import { PageHero } from 'components/home/page-hero'
 import { ContactCTA, EducationBlock, LeadershipStrip } from 'components/home/home-sections'
-import { Button } from 'components/ui/button'
+import { Button } from 'ui/button'
 import { getEducationData } from 'lib/education-data'
 import { getExperienceData } from 'lib/experience-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
+import { emailAddress } from 'lib/email'
 
 export const generateMetadata = async (): Promise<Metadata> => {
+	'use cache'
 	return resolveMetadataByPath('/education')
 }
 
-export default async function EducationPage() {
+const EducationPage = async () => {
 	const [education, experience, socials] = await Promise.all([
 		getEducationData(),
 		getExperienceData(),
 		getSocialsData(),
 	])
 
-	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
+	const email = emailAddress(socials)
 	const primary = education[0]
 
 	return (
@@ -33,10 +36,10 @@ export default async function EducationPage() {
 				lines={['Foundations and', 'the teams behind them']}
 				lead={
 					primary
-						? `${primary.degree}${primary.field ? ` in ${primary.field}` : ''} at ${primary.institution}, alongside the student communities and university platforms I helped build.`
+						? `${primary.degree}${primary.fieldOfStudy ? ` in ${primary.fieldOfStudy}` : ''} at ${primary.university}, alongside the student communities and university platforms I helped build.`
 						: null
 				}
-				meta={['India']}
+				meta={primary?.location ? [primary.location] : []}
 				actions={
 					<Button asChild size='lg' variant='outline' className='group'>
 						<Link href='/experience'>
@@ -56,7 +59,7 @@ export default async function EducationPage() {
 					) : (
 						<>
 							<SectionHeader index='01' eyebrow='Academic' title='Degrees' size='md' />
-							<EducationBlock items={education} detailed className='mt-12' />
+							<EducationBlock items={education} className='mt-12' />
 						</>
 					)}
 				</div>
@@ -75,3 +78,5 @@ export default async function EducationPage() {
 		</SiteShell>
 	)
 }
+
+export default EducationPage

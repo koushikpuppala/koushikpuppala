@@ -1,17 +1,17 @@
-import { Type } from 'class-transformer'
-import { PaginationDto } from 'common/dto/pagination.dto'
+import { PublishableDto, PublishPageDto } from 'common/dto/publishable.dto'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsInt, IsObject, IsOptional, IsString, IsUUID } from 'class-validator'
+import { IsArray, IsNotEmpty, IsObject, IsOptional, IsString, IsUUID } from 'class-validator'
 
-export class CreateHomeDto {
+export class CreateHomeDto extends PublishableDto {
 	@ApiProperty({ example: 'Koushik Puppala' })
 	@IsString()
+	@IsNotEmpty()
 	title!: string
 
 	@ApiPropertyOptional({ example: '|', default: '|' })
 	@IsString()
 	@IsOptional()
-	separator?: string = '|'
+	separator?: string
 
 	@ApiProperty({
 		example: ['Software Engineer', 'Full Stack Developer', 'Open Source Contributor'],
@@ -31,12 +31,12 @@ export class CreateHomeDto {
 	@ApiPropertyOptional({ example: 'View Projects', default: 'View Projects' })
 	@IsString()
 	@IsOptional()
-	ctaLabel?: string = 'View Projects'
+	ctaLabel?: string
 
 	@ApiPropertyOptional({ example: '/projects', default: '/projects' })
 	@IsString()
 	@IsOptional()
-	ctaUrl?: string = '/projects'
+	ctaUrl?: string
 
 	@ApiPropertyOptional({ example: 'Contact Me' })
 	@IsString()
@@ -62,35 +62,19 @@ export class CreateHomeDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	featuredSkills?: string[] = []
+	featuredSkills?: string[]
 
 	@ApiPropertyOptional({ example: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11' })
 	@IsUUID()
 	@IsOptional()
 	profileImageId?: string
-
-	@ApiPropertyOptional({ example: 0, default: 0 })
-	@IsInt()
-	@IsOptional()
-	sortOrder?: number = 0
-
-	@ApiPropertyOptional({ example: true, default: false })
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean = false
 }
 
 export class UpdateHomeDto extends PartialType(CreateHomeDto) {}
 
-export class QueryHomeDto extends PaginationDto {
+export class QueryHomeDto extends PublishPageDto {
 	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()
 	search?: string
-
-	@ApiPropertyOptional()
-	@Type(() => Boolean)
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean
 }

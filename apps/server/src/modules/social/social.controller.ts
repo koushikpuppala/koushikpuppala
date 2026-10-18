@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,17 +8,19 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { SocialService } from './social.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
 import { CreateSocialDto, QuerySocialDto, UpdateSocialDto } from './social.dto'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('Social')
+@RevalidateTags('socials')
 @Controller('socials')
 export class SocialController {
 	constructor(private readonly socialService: SocialService) {}
@@ -68,9 +68,7 @@ export class SocialController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/socials',
 	})
-	async create(@Body() dto: CreateSocialDto, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async create(@Body() dto: CreateSocialDto, @Actor() actor: string) {
 		return this.socialService.create(dto, actor)
 	}
 
@@ -84,10 +82,8 @@ export class SocialController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateSocialDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.socialService.update(id, dto, actor)
 	}
 
@@ -98,9 +94,7 @@ export class SocialController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/socials/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.socialService.remove(id, actor)
 	}
 }

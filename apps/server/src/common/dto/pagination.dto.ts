@@ -1,6 +1,10 @@
+import type { SortOrder } from 'types/api'
+
 import { Type } from 'class-transformer'
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { IsInt, IsOptional, Max, Min } from 'class-validator'
+import { IsIn, IsInt, IsOptional, Max, Min } from 'class-validator'
+
+const SORT_ORDERS = ['asc', 'desc'] as const satisfies readonly SortOrder[]
 
 export class PaginationDto {
 	@ApiPropertyOptional({ default: 1 })
@@ -17,4 +21,11 @@ export class PaginationDto {
 	@Max(100)
 	@IsOptional()
 	limit = 10
+}
+
+export class SortablePaginationDto extends PaginationDto {
+	@ApiPropertyOptional({ enum: SORT_ORDERS })
+	@IsIn(SORT_ORDERS)
+	@IsOptional()
+	sortOrder?: SortOrder
 }

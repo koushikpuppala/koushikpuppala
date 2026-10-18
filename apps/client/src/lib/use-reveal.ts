@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 
+// One observer shared by every revealed element instead of one per component.
 let sharedObserver: IntersectionObserver | null = null
 
 const reveal = (el: Element) => {
@@ -38,6 +39,7 @@ export const useRevealRef = <T extends HTMLElement = HTMLDivElement>() => {
 
 		const observer = getObserver()
 
+		// Without IntersectionObserver, show content immediately rather than leave it hidden.
 		if (!observer) {
 			reveal(el)
 			return
@@ -45,6 +47,7 @@ export const useRevealRef = <T extends HTMLElement = HTMLDivElement>() => {
 
 		const rect = el.getBoundingClientRect()
 
+		// Elements already on screen at mount are revealed at once, avoiding a flash on load.
 		if (rect.top < window.innerHeight && rect.bottom > 0) {
 			reveal(el)
 			return
@@ -58,15 +61,7 @@ export const useRevealRef = <T extends HTMLElement = HTMLDivElement>() => {
 	return ref
 }
 
-export const useHydrated = () => {
-	const [hydrated, setHydrated] = useState(false)
-
-	useEffect(() => setHydrated(true), [])
-
-	return hydrated
-}
-
-export const useMediaQuery = (query: string) => {
+const useMediaQuery = (query: string) => {
 	const [matches, setMatches] = useState(false)
 
 	useEffect(() => {
@@ -84,6 +79,7 @@ export const useMediaQuery = (query: string) => {
 	return matches
 }
 
+// Pointer-driven effects only run for a mouse or trackpad, and never with reduced motion enabled.
 export const useInteractiveMotion = () => {
 	const fine = useMediaQuery('(pointer: fine)')
 

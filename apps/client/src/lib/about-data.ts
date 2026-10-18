@@ -1,33 +1,28 @@
 import type { PublishedAbout } from 'types/models'
 
 import { cache } from 'react'
+import { unwrap } from 'lib/api-result'
 import { getPublishedAbout } from 'actions/cache/about'
-import { API_ABOUT_FALLBACK } from 'constants/api-fallback'
+import { EMPTY_ABOUT } from 'constants/empty-content'
 
 export const getAboutData = cache(async (): Promise<PublishedAbout> => {
-	const { result, error } = await getPublishedAbout()
+	const result = unwrap(await getPublishedAbout(), 'about')
 
-	if (error || !result) return API_ABOUT_FALLBACK
+	if (!result) return EMPTY_ABOUT
 
 	return {
-		...API_ABOUT_FALLBACK,
-		title: String(result.title ?? API_ABOUT_FALLBACK.title),
-		leadStatement: String(result.leadStatement ?? API_ABOUT_FALLBACK.leadStatement),
-		content: String(result.content ?? API_ABOUT_FALLBACK.content),
-		biography: String(result.biography ?? API_ABOUT_FALLBACK.biography),
-		location: String(result.location ?? API_ABOUT_FALLBACK.location),
-		coordinates: String(result.coordinates ?? API_ABOUT_FALLBACK.coordinates),
-		timezone: String(result.timezone ?? API_ABOUT_FALLBACK.timezone),
-		status: String(result.status ?? API_ABOUT_FALLBACK.status),
-		highlights:
-			Array.isArray(result.highlights) && result.highlights.length > 0
-				? result.highlights
-				: API_ABOUT_FALLBACK.highlights,
-		stats:
-			Array.isArray(result.stats) && result.stats.length > 0
-				? result.stats
-				: API_ABOUT_FALLBACK.stats,
-		ctaLabel: String(result.ctaLabel ?? API_ABOUT_FALLBACK.ctaLabel),
-		ctaUrl: String(result.ctaUrl ?? API_ABOUT_FALLBACK.ctaUrl),
+		...EMPTY_ABOUT,
+		title: String(result.title ?? ''),
+		leadStatement: String(result.leadStatement ?? ''),
+		content: String(result.content ?? ''),
+		biography: String(result.biography ?? ''),
+		location: String(result.location ?? ''),
+		coordinates: String(result.coordinates ?? ''),
+		timezone: String(result.timezone ?? ''),
+		status: String(result.status ?? ''),
+		highlights: Array.isArray(result.highlights) ? result.highlights : [],
+		stats: Array.isArray(result.stats) ? result.stats : [],
+		ctaLabel: String(result.ctaLabel ?? ''),
+		ctaUrl: String(result.ctaUrl ?? ''),
 	}
 })

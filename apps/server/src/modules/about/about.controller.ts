@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,17 +8,19 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { AboutService } from './about.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
 import { CreateAboutDto, QueryAboutDto, UpdateAboutDto } from './about.dto'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('About')
+@RevalidateTags('about')
 @Controller('about')
 export class AboutController {
 	constructor(private readonly aboutService: AboutService) {}
@@ -67,9 +67,7 @@ export class AboutController {
 		endpoint: 'POST /api/v1/about',
 		summary: 'Create about entry (Admin)',
 	})
-	async create(@Body() dto: CreateAboutDto, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async create(@Body() dto: CreateAboutDto, @Actor() actor: string) {
 		return this.aboutService.create(dto, actor)
 	}
 
@@ -83,10 +81,8 @@ export class AboutController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateAboutDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.aboutService.update(id, dto, actor)
 	}
 
@@ -97,9 +93,7 @@ export class AboutController {
 		endpoint: 'PATCH /api/v1/about/:id/publish',
 		summary: 'Toggle publish status of about entry (Admin)',
 	})
-	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.aboutService.togglePublish(id, actor)
 	}
 
@@ -110,9 +104,7 @@ export class AboutController {
 		endpoint: 'DELETE /api/v1/about/:id',
 		summary: 'Soft-delete about entry (Admin)',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.aboutService.remove(id, actor)
 	}
 }

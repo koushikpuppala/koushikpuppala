@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,17 +8,19 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { ResumeService } from './resume.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
 import { CreateResumeDto, QueryResumeDto, UpdateResumeDto } from './resume.dto'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('Resume')
+@RevalidateTags('resume')
 @Controller('resume')
 export class ResumeController {
 	constructor(private readonly resumeService: ResumeService) {}
@@ -79,9 +79,7 @@ export class ResumeController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/resume',
 	})
-	async create(@Body() dto: CreateResumeDto, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async create(@Body() dto: CreateResumeDto, @Actor() actor: string) {
 		return this.resumeService.create(dto, actor)
 	}
 
@@ -95,10 +93,8 @@ export class ResumeController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateResumeDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.resumeService.update(id, dto, actor)
 	}
 
@@ -109,9 +105,7 @@ export class ResumeController {
 		method: 'PATCH',
 		endpoint: 'PATCH /api/v1/resume/:id/publish',
 	})
-	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.resumeService.togglePublish(id, actor)
 	}
 
@@ -122,9 +116,7 @@ export class ResumeController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/resume/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.resumeService.remove(id, actor)
 	}
 }

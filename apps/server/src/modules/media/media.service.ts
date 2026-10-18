@@ -9,26 +9,50 @@ import { randomUUID } from 'node:crypto'
 import { DatabaseService } from 'database'
 import { AuditAction, Prisma } from '@repo/prisma'
 import { Configuration } from 'config/configuration'
-import { S3Service } from 'common/storage/s3.service'
+import type { StorageService } from 'types/server'
+import { STORAGE_SERVICE } from 'common/storage/storage.token'
 import { BaseService } from 'common/services/base-cms.service'
-import { BadRequestException, Injectable } from '@nestjs/common'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { BadRequestException, ConflictException, Inject, Injectable } from '@nestjs/common'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
+import { ALLOWED_UPLOADS, MAX_UPLOAD_BYTES, STORAGE_KEY_PATTERN } from './media.constants'
+
+const ENTITY = 'Media'
 
 @Injectable()
 export class MediaService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
-		private readonly s3Service: S3Service,
+		private readonly audit: CmsAuditService,
+		@Inject(STORAGE_SERVICE) private readonly storage: StorageService,
 		private readonly config: Configuration,
 	) {
 		super()
 	}
 
-	async requestPresignedUpload(dto: RequestPresignedUploadDto) {
-		const extension = extname(dto.originalName).toLowerCase() || '.bin'
+	// The extension must match the declared MIME type so a file cannot be uploaded under a
+	// harmless type and then served with a dangerous extension.
+	private assertAllowedUpload(originalName: string, mimeType: string, size: number) {
+		const allowed = ALLOWED_UPLOADS[mimeType.toLowerCase()]
 
-		// Sanitize folder path: eliminate path traversal ('..') and illegal characters
+		if (!allowed) throw new BadRequestException(`File type '${mimeType}' is not allowed.`)
+
+		const extension = extname(originalName).toLowerCase()
+
+		if (!allowed.extensions.includes(extension))
+			throw new BadRequestException(
+				`File extension '${extension || '(none)'}' does not match type '${mimeType}'.`,
+			)
+
+		if (size > MAX_UPLOAD_BYTES)
+			throw new BadRequestException('File exceeds the 50 MB upload limit.')
+
+		return { extension, type: allowed.type }
+	}
+
+	async requestPresignedUpload(dto: RequestPresignedUploadDto) {
+		const { extension } = this.assertAllowedUpload(dto.originalName, dto.mimeType, dto.size)
+
+		// Strip anything that could escape the folder or form an unexpected S3 key, such as '..'.
 		const folder =
 			(dto.folder ?? 'general')
 				.replace(/[^a-zA-Z0-9_\-/]/g, '')
@@ -42,25 +66,34 @@ export class MediaService extends BaseService {
 		let uploadUrl = ''
 
 		try {
-			uploadUrl = await this.s3Service.getPresignedUploadUrl(storageKey, dto.mimeType, 900)
+			uploadUrl = await this.storage.getPresignedUploadUrl(
+				storageKey,
+				dto.mimeType.toLowerCase(),
+				dto.size,
+				900,
+			)
 		} catch {
 			throw new BadRequestException(
 				'Failed to generate upload URL. Please verify cloud storage configuration.',
 			)
 		}
 
-		const cdnUrl =
-			this.config.aws.cdnUrl ||
-			`${this.config.aws.s3Bucket}.s3.${this.config.aws.region}.amazonaws.com`
-
-		const fileUrl = `https://${cdnUrl}/${storageKey}`
+		const fileUrl = `${this.config.aws.cdnUrl}/${storageKey}`
 
 		return { uploadUrl, storageKey, url: fileUrl }
 	}
 
 	async completeUpload(dto: CompleteMediaUploadDto, userId?: string, actor = 'admin') {
-		if (this.config.production || process.env.AWS_ACCESS_KEY_ID) {
-			const exists = await this.s3Service.exists(dto.storageKey)
+		// Only keys in the format requestPresignedUpload issues are accepted, so a client cannot
+		// register an arbitrary object from the bucket as its own media.
+		if (!STORAGE_KEY_PATTERN.test(dto.storageKey))
+			throw new BadRequestException('Storage key was not issued by this service.')
+
+		this.assertAllowedUpload(dto.storageKey, dto.mimeType, dto.size)
+
+		// Confirm the browser actually finished the direct-to-S3 upload before creating the record.
+		if (this.config.aws.verifyUploads) {
+			const exists = await this.storage.exists(dto.storageKey)
 
 			if (!exists)
 				throw new BadRequestException(
@@ -72,11 +105,7 @@ export class MediaService extends BaseService {
 
 		const fileName = dto.storageKey.split('/').pop() ?? dto.originalName
 
-		const cdnUrl =
-			this.config.aws.cdnUrl ||
-			`${this.config.aws.s3Bucket}.s3.${this.config.aws.region}.amazonaws.com`
-
-		const fileUrl = `https://${cdnUrl}/${dto.storageKey}`
+		const fileUrl = `${this.config.aws.cdnUrl}/${dto.storageKey}`
 
 		const media = await this.prisma.media.create({
 			data: {
@@ -86,7 +115,7 @@ export class MediaService extends BaseService {
 				size: dto.size,
 				mimeType: dto.mimeType,
 				extension,
-				bucket: this.config.aws.s3Bucket || 'koushikpuppala-media',
+				bucket: this.config.aws.s3Bucket,
 				folder: dto.folder ?? null,
 				storageKey: dto.storageKey,
 				url: fileUrl,
@@ -98,15 +127,7 @@ export class MediaService extends BaseService {
 			},
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPLOAD,
-			entity: 'Media',
-			entityId: media.id,
-			actor,
-			newData: media as unknown as Record<string, unknown>,
-		})
-
-		return media
+		return this.audit.created(ENTITY, actor, media, AuditAction.UPLOAD)
 	}
 
 	async adminFindAll(query: QueryMediaDto) {
@@ -131,7 +152,7 @@ export class MediaService extends BaseService {
 				where,
 				skip,
 				take,
-				orderBy: { createdAt: 'desc' },
+				orderBy: this.getOrderBy(query.sortBy, query.sortOrder, [{ createdAt: 'desc' }]),
 			}),
 			this.prisma.media.count({ where }),
 		])
@@ -152,44 +173,61 @@ export class MediaService extends BaseService {
 
 		const media = await this.prisma.media.update({
 			where: { id },
-			data: {
-				...(dto.altText !== undefined && { altText: dto.altText }),
-				...(dto.caption !== undefined && { caption: dto.caption }),
+			data: { altText: dto.altText, caption: dto.caption },
+		})
+
+		return this.audit.updated(ENTITY, actor, existing, media)
+	}
+
+	// Lists live content that still references this media, so deleting it cannot leave broken images.
+	private async findUsages(id: string): Promise<string[]> {
+		const live = { where: { deletedAt: null } }
+
+		const media = await this.prisma.media.findUnique({
+			where: { id },
+			select: {
+				resume: { select: { deletedAt: true } },
+				_count: {
+					select: {
+						homes: live,
+						about: live,
+						skills: live,
+						services: live,
+						education: live,
+						experiences: live,
+						projectsHero: live,
+						projectsThumbnail: live,
+						projectGalleries: { where: { project: { deletedAt: null } } },
+					},
+				},
 			},
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Media',
-			entityId: media.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: media as unknown as Record<string, unknown>,
-		})
+		if (!media) return []
 
-		return media
+		const usages = Object.entries(media._count)
+			.filter(([, count]) => count > 0)
+			.map(([relation, count]) => `${relation} (${count})`)
+
+		if (media.resume && !media.resume.deletedAt) usages.push('resume (1)')
+
+		return usages
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.media.update({ where: { id }, data: { deletedAt: new Date() } })
+		const usages = await this.findUsages(id)
 
-		// Also delete from S3 storage if available
-		try {
-			await this.s3Service.delete(existing.storageKey)
-		} catch {
-			// Best effort deletion
-		}
+		if (usages.length > 0)
+			throw new ConflictException(
+				`Media file is still in use by: ${usages.join(', ')}. Remove those references first.`,
+			)
 
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Media',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
+		return this.audit.softDeleted(ENTITY, actor, existing, async () => {
+			await this.prisma.media.update({ where: { id }, data: { deletedAt: new Date() } })
+			// The record is already soft-deleted; a leftover S3 object is harmless, so ignore failures.
+			await this.storage.delete(existing.storageKey).catch(() => undefined)
 		})
-
-		return { id, deleted: true }
 	}
 }

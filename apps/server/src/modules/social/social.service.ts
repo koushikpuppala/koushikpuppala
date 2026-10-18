@@ -1,15 +1,17 @@
 import { DatabaseService } from 'database'
-import { AuditAction, Prisma } from '@repo/prisma'
+import { Prisma, type SocialPlatform } from '@repo/prisma'
 import { BaseService } from 'common/services/base-cms.service'
 import { ConflictException, Injectable } from '@nestjs/common'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CreateSocialDto, QuerySocialDto, UpdateSocialDto } from './social.dto'
+
+const ENTITY = 'Social'
 
 @Injectable()
 export class SocialService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
+		private readonly audit: CmsAuditService,
 	) {
 		super()
 	}
@@ -28,6 +30,13 @@ export class SocialService extends BaseService {
 
 		const where: Prisma.SocialWhereInput = { deletedAt: null }
 
+		if (query.search)
+			where.OR = [
+				{ label: { contains: query.search, mode: 'insensitive' } },
+				{ handle: { contains: query.search, mode: 'insensitive' } },
+				{ url: { contains: query.search, mode: 'insensitive' } },
+			]
+
 		if (query.platform) where.platform = query.platform
 
 		if (query.featured !== undefined) where.featured = query.featured
@@ -39,7 +48,10 @@ export class SocialService extends BaseService {
 				where,
 				skip,
 				take,
-				orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
+				orderBy: this.getOrderBy(query.sortBy, query.sortOrder, [
+					{ sortOrder: 'asc' },
+					{ createdAt: 'asc' },
+				]),
 			}),
 			this.prisma.social.count({ where }),
 		])
@@ -54,88 +66,45 @@ export class SocialService extends BaseService {
 	}
 
 	async create(dto: CreateSocialDto, actor = 'admin') {
-		const existing = await this.prisma.social.findFirst({
-			where: { platform: dto.platform, deletedAt: null },
-		})
-
-		if (existing)
-			throw new ConflictException(`Social link for platform '${dto.platform}' already exists`)
+		await this.assertPlatformFree(dto.platform)
 
 		const social = await this.prisma.social.create({
 			data: {
-				platform: dto.platform,
-				url: dto.url,
-				label: dto.label,
-				handle: dto.handle,
-				icon: dto.icon,
+				...dto,
 				featured: dto.featured ?? false,
 				isVisible: dto.isVisible ?? true,
 				sortOrder: dto.sortOrder ?? 0,
 			},
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'Social',
-			entityId: social.id,
-			actor,
-			newData: social as unknown as Record<string, unknown>,
-		})
-
-		return social
+		return this.audit.created(ENTITY, actor, social)
 	}
 
 	async update(id: string, dto: UpdateSocialDto, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		if (dto.platform && dto.platform !== existing.platform) {
-			const duplicate = await this.prisma.social.findFirst({
-				where: { platform: dto.platform, deletedAt: null },
-			})
+		if (dto.platform && dto.platform !== existing.platform)
+			await this.assertPlatformFree(dto.platform, id)
 
-			if (duplicate && duplicate.id !== id)
-				throw new ConflictException(`Social link for platform '${dto.platform}' already exists`)
-		}
+		const social = await this.prisma.social.update({ where: { id }, data: { ...dto } })
 
-		const social = await this.prisma.social.update({
-			where: { id },
-			data: {
-				...(dto.platform !== undefined && { platform: dto.platform }),
-				...(dto.url !== undefined && { url: dto.url }),
-				...(dto.label !== undefined && { label: dto.label }),
-				...(dto.handle !== undefined && { handle: dto.handle }),
-				...(dto.icon !== undefined && { icon: dto.icon }),
-				...(dto.featured !== undefined && { featured: dto.featured }),
-				...(dto.isVisible !== undefined && { isVisible: dto.isVisible }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-			},
-		})
-
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Social',
-			entityId: social.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: social as unknown as Record<string, unknown>,
-		})
-
-		return social
+		return this.audit.updated(ENTITY, actor, existing, social)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.social.update({ where: { id }, data: { deletedAt: new Date() } })
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.social.update({ where: { id }, data: { deletedAt: new Date() } }),
+		)
+	}
 
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Social',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
+	private async assertPlatformFree(platform: SocialPlatform, exceptId?: string): Promise<void> {
+		const duplicate = await this.prisma.social.findFirst({
+			where: { platform, deletedAt: null, ...(exceptId && { id: { not: exceptId } }) },
 		})
 
-		return { id, deleted: true }
+		if (duplicate)
+			throw new ConflictException(`Social link for platform '${platform}' already exists`)
 	}
 }

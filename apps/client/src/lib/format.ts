@@ -1,5 +1,6 @@
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
+// Dates are read in UTC so a month boundary never shifts with the visitor's time zone.
 export const formatMonthYear = (iso: string | null | undefined, fallback = 'Present') => {
 	if (!iso) return fallback
 
@@ -24,19 +25,32 @@ export const formatRange = (start: string, end: string | null | undefined) => {
 	return `${formatMonthYear(start, '—')} — ${formatMonthYear(end)}`
 }
 
-export const durationLabel = (start: string, end: string | null | undefined) => {
+export const durationLabel = (start: string, end: string | null | undefined, now?: Date | null) => {
 	const from = new Date(start)
 
-	const to = end ? new Date(end) : new Date('2026-03-01T00:00:00Z')
+	if (Number.isNaN(from.getTime())) return ''
 
-	if (Number.isNaN(from.getTime()) || Number.isNaN(to.getTime())) return ''
+	const span = (to: Date) =>
+		(to.getUTCFullYear() - from.getUTCFullYear()) * 12 + (to.getUTCMonth() - from.getUTCMonth())
 
-	const months = Math.max(
-		1,
-		(to.getUTCFullYear() - from.getUTCFullYear()) * 12 +
-			(to.getUTCMonth() - from.getUTCMonth()) +
-			1,
-	)
+	let months: number
+
+	if (end) {
+		const to = new Date(end)
+
+		if (Number.isNaN(to.getTime())) return ''
+
+		// Count both the start and end months, so Jan to Dec is 12 months.
+		months = span(to) + 1
+	} else {
+		// Ongoing roles need the current date, which is only passed in on the client to avoid a
+		// server and client mismatch.
+		if (!now) return ''
+
+		months = span(now) - (now.getUTCDate() < from.getUTCDate() ? 1 : 0)
+	}
+
+	months = Math.max(1, months)
 
 	const years = Math.floor(months / 12)
 
@@ -71,12 +85,4 @@ export const splitTitle = (title: string) => {
 	const [main, ...rest] = title.split(/\s+[—–]\s+/)
 
 	return { main: main ?? title, sub: rest.join(' — ') || null }
-}
-
-export const splitList = (value: string) => {
-	return value
-		.replace(/\.$/, '')
-		.split(/,\s*/)
-		.map(item => item.trim())
-		.filter(Boolean)
 }

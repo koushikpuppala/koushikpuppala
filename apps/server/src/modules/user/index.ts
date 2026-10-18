@@ -1,2 +1,3 @@
 export { UserModule } from './user.module'
-export { UserService } from './user.service'
+export { UserAccountService } from './user-account.service'
+export { fromFirebaseToken, toAuthenticatedUser } from './user.mapper'

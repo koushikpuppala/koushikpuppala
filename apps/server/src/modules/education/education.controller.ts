@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,17 +8,19 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { EducationService } from './education.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
 import { CreateEducationDto, QueryEducationDto, UpdateEducationDto } from './education.dto'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('Education')
+@RevalidateTags('education')
 @Controller('education')
 export class EducationController {
 	constructor(private readonly educationService: EducationService) {}
@@ -68,9 +68,7 @@ export class EducationController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/education',
 	})
-	async create(@Body() dto: CreateEducationDto, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async create(@Body() dto: CreateEducationDto, @Actor() actor: string) {
 		return this.educationService.create(dto, actor)
 	}
 
@@ -84,10 +82,8 @@ export class EducationController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateEducationDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.educationService.update(id, dto, actor)
 	}
 
@@ -98,9 +94,7 @@ export class EducationController {
 		method: 'PATCH',
 		endpoint: 'PATCH /api/v1/education/:id/publish',
 	})
-	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.educationService.togglePublish(id, actor)
 	}
 
@@ -111,9 +105,7 @@ export class EducationController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/education/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.educationService.remove(id, actor)
 	}
 }

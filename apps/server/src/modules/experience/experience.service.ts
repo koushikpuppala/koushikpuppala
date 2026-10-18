@@ -1,15 +1,19 @@
+import { publishFields, publishUpdate } from 'common/utils/publish.util'
+import { toDate } from 'common/utils/date.util'
 import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'database'
-import { AuditAction, Prisma } from '@repo/prisma'
+import { Prisma } from '@repo/prisma'
 import { BaseService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CreateExperienceDto, QueryExperienceDto, UpdateExperienceDto } from './experience.dto'
+
+const ENTITY = 'Experience'
 
 @Injectable()
 export class ExperienceService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
+		private readonly audit: CmsAuditService,
 	) {
 		super()
 	}
@@ -31,7 +35,7 @@ export class ExperienceService extends BaseService {
 		if (query.search)
 			where.OR = [
 				{ title: { contains: query.search, mode: 'insensitive' } },
-				{ company: { contains: query.search, mode: 'insensitive' } },
+				{ organization: { contains: query.search, mode: 'insensitive' } },
 				{ location: { contains: query.search, mode: 'insensitive' } },
 			]
 
@@ -46,7 +50,10 @@ export class ExperienceService extends BaseService {
 				where,
 				skip,
 				take,
-				orderBy: [{ sortOrder: 'asc' }, { startDate: 'desc' }],
+				orderBy: this.getOrderBy(query.sortBy, query.sortOrder, [
+					{ sortOrder: 'asc' },
+					{ startDate: 'desc' },
+				]),
 				include: { logo: true },
 			}),
 			this.prisma.experience.count({ where }),
@@ -65,112 +72,61 @@ export class ExperienceService extends BaseService {
 	}
 
 	async create(dto: CreateExperienceDto, actor = 'admin') {
+		this.assertDateRange(dto.startDate, dto.endDate)
+
 		const experience = await this.prisma.experience.create({
 			data: {
-				title: dto.title,
-				company: dto.company,
-				location: dto.location,
-				employmentType: dto.employmentType,
+				...dto,
 				startDate: new Date(dto.startDate),
-				endDate: dto.endDate ? new Date(dto.endDate) : null,
+				endDate: toDate(dto.endDate),
 				isCurrent: dto.isCurrent ?? false,
 				featured: dto.featured ?? false,
-				description: dto.description,
 				achievements: dto.achievements ?? [],
 				technologies: dto.technologies ?? [],
-				website: dto.website,
-				logoId: dto.logoId,
 				sortOrder: dto.sortOrder ?? 0,
-				isPublished: dto.isPublished ?? false,
-				publishedAt: dto.isPublished ? new Date() : null,
+				...publishFields(dto.isPublished ?? false),
 			},
 			include: { logo: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'Experience',
-			entityId: experience.id,
-			actor,
-			newData: experience as unknown as Record<string, unknown>,
-		})
-
-		return experience
+		return this.audit.created(ENTITY, actor, experience)
 	}
 
 	async update(id: string, dto: UpdateExperienceDto, actor = 'admin') {
 		const existing = await this.findOne(id)
 
+		this.assertDateRange(
+			dto.startDate ?? existing.startDate,
+			dto.endDate !== undefined ? dto.endDate : existing.endDate,
+		)
+
 		const experience = await this.prisma.experience.update({
 			where: { id },
 			data: {
-				...(dto.title !== undefined && { title: dto.title }),
-				...(dto.company !== undefined && { company: dto.company }),
-				...(dto.location !== undefined && { location: dto.location }),
-				...(dto.employmentType !== undefined && { employmentType: dto.employmentType }),
-				...(dto.startDate !== undefined && { startDate: new Date(dto.startDate) }),
-				...(dto.endDate !== undefined && { endDate: dto.endDate ? new Date(dto.endDate) : null }),
-				...(dto.isCurrent !== undefined && { isCurrent: dto.isCurrent }),
-				...(dto.featured !== undefined && { featured: dto.featured }),
-				...(dto.description !== undefined && { description: dto.description }),
-				...(dto.achievements !== undefined && { achievements: dto.achievements }),
-				...(dto.technologies !== undefined && { technologies: dto.technologies }),
-				...(dto.website !== undefined && { website: dto.website }),
-				...(dto.logoId !== undefined && { logoId: dto.logoId }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-				...(dto.isPublished !== undefined && {
-					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
-				}),
+				...dto,
+				startDate: toDate(dto.startDate) ?? undefined,
+				endDate: toDate(dto.endDate),
+				...publishUpdate(dto.isPublished, existing.publishedAt),
 			},
 			include: { logo: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Experience',
-			entityId: experience.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: experience as unknown as Record<string, unknown>,
-		})
-
-		return experience
+		return this.audit.updated(ENTITY, actor, existing, experience)
 	}
 
 	async togglePublish(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
-		const nextState = !existing.isPublished
 
-		const experience = await this.prisma.experience.update({
-			where: { id },
-			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
-		})
-
-		await this.auditLog.create({
-			action: nextState ? AuditAction.PUBLISH : AuditAction.UNPUBLISH,
-			entity: 'Experience',
-			entityId: experience.id,
-			actor,
-			newData: { isPublished: nextState },
-		})
-
-		return experience
+		return this.audit.togglePublish(ENTITY, actor, existing, data =>
+			this.prisma.experience.update({ where: { id }, data }),
+		)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.experience.update({ where: { id }, data: { deletedAt: new Date() } })
-
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Experience',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
-
-		return { id, deleted: true }
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.experience.update({ where: { id }, data: { deletedAt: new Date() } }),
+		)
 	}
 }

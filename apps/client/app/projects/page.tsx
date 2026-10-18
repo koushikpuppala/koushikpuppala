@@ -5,11 +5,14 @@ import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
 
 export const generateMetadata = async (): Promise<Metadata> => {
+	'use cache'
 	return resolveMetadataByPath('/projects')
 }
 
-export default async function ProjectsPage() {
+const ProjectsPage = async () => {
 	const [projects, socials] = await Promise.all([getProjectsData(), getSocialsData()])
 
 	return <ProjectsView projects={projects} socials={socials} />
 }
+
+export default ProjectsPage

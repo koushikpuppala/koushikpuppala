@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Button } from 'ui/button'
 
 export const metadata: Metadata = {
 	title: 'Page Not Found',
 	description: 'The requested administrative view or content collection could not be found.',
 }
 
-export default function AdminNotFound() {
+const AdminNotFound = () => {
 	return (
 		<div className='flex min-h-[60vh] flex-col items-center justify-center p-6 text-center'>
 			<div className='border-border/80 bg-surface/60 max-w-lg space-y-6 rounded-2xl border p-8 backdrop-blur-md sm:p-10'>
@@ -21,15 +21,13 @@ export default function AdminNotFound() {
 						Studio Resource Missing
 					</h1>
 					<p className='text-muted-foreground text-sm leading-relaxed'>
-						The requested administrative view or content collection could not be found. It may have been relocated or removed.
+						The requested administrative view or content collection could not be found. It may have
+						been relocated or removed.
 					</p>
 				</div>
 
 				<div className='flex justify-center pt-2'>
-					<Button
-						variant='signal'
-						asChild
-						className='font-mono text-xs uppercase'>
+					<Button variant='signal' asChild className='font-mono text-xs uppercase'>
 						<Link href='/'>Return to Dashboard</Link>
 					</Button>
 				</div>
@@ -37,3 +35,5 @@ export default function AdminNotFound() {
 		</div>
 	)
 }
+
+export default AdminNotFound

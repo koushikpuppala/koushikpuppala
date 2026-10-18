@@ -1,15 +1,9 @@
+import type { HealthStatusData } from 'types/api'
+
 import { Injectable } from '@nestjs/common'
 import { RedisService } from 'redis/redis.service'
 import { DatabaseService } from 'database/database.service'
 import { ApiResponse, successResponse } from 'common/interfaces/api-response.interface'
-
-export type HealthStatusData = {
-	uptime: number
-	timestamp: string
-	responseTime: string
-	status: 'ok' | 'degraded'
-	services: { database: string; redis: string }
-}
 
 @Injectable()
 export class HealthService {
@@ -39,6 +33,8 @@ export class HealthService {
 			services: { database, redis },
 			timestamp: new Date().toISOString(),
 			responseTime: `${Date.now() - started}ms`,
+			// Answers normally even when a dependency is down, so the Docker healthcheck only fails
+			// when the API itself is unreachable; dependency problems show up as 'degraded'.
 			status: database === 'up' && redis === 'up' ? 'ok' : 'degraded',
 		}
 

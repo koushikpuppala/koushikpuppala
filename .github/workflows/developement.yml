@@ -26,131 +26,144 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REGISTRY: docker.io
-  DOCKERFILE_PATH: 'Dockerfile'
-  IMAGE_PORT: ${{ vars.IMAGE_PORT }}
-  IMAGE_NAME: ${{ github.repository }}
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  ECR_REPOSITORY_PREFIX: ${{ vars.ECR_REPOSITORY_PREFIX || 'koushikpuppala' }}
 
 permissions:
   contents: read
-  packages: write
   id-token: write
 
 jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
   build:
+    name: Build ${{ matrix.app }}
+    needs: test
     environment: Development
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [client, admin, server]
+
     env:
-      IMAGE_TAG: ${{ vars.IMAGE_TAG }}
+      IMAGE_TAG: ${{ vars.IMAGE_TAG || 'latest' }}
 
     steps:
-      # Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v4.2.2
 
-      # Create .env file from secrets for Docker build
-      - name: Create .env file
-        run: |
-          echo "USER=${{ secrets.USER }}" >> .env
-          echo "PASS=${{ secrets.PASS }}" >> .env
-          echo "HOST=${{ secrets.HOST }}" >> .env
-          echo "DATABASE=${{ secrets.DATABASE }}" >> .env
-          echo "APP_NAME=${{ secrets.APP_NAME }}" >> .env
-          echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
-          echo "MONGO_API=${{ secrets.MONGO_API }}" >> .env
-          echo "SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}" >> .env
-          echo "NEXT_PUBLIC_DATASET=${{ secrets.NEXT_PUBLIC_DATASET }}" >> .env
-          echo "RECAPTCHA_SECRET_KEY=${{ secrets.RECAPTCHA_SECRET_KEY }}" >> .env
-          echo "NEXT_PUBLIC_SANITY_ID=${{ secrets.NEXT_PUBLIC_SANITY_ID }}" >> .env
-          echo "NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}" >> .env
-          echo "NEXT_PUBLIC_DEPLOY_URL=${{ secrets.NEXT_PUBLIC_DEPLOY_URL }}" >> .env
-          echo "NEXT_PUBLIC_GOOGLE_ANALYTICS=${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS }}" >> .env
-          echo "NEXT_PUBLIC_MICROSOFT_CLARITY=${{ secrets.NEXT_PUBLIC_MICROSOFT_CLARITY }}" >> .env
-          echo "NEXT_PUBLIC_RECAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}" >> .env
-
-      # Set up QEMU for multi-platform builds
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.3.0
-        with:
-          platforms: all
-
-      # Set up BuildKit Docker container builder to be able to build
-      # multi-platform images and export cache
-      # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.7.1
         with:
           platforms: linux/amd64
 
-      # Login against a Docker registry except on PR
-      # https://github.com/docker/login-action
-      - name: Log into registry
+      - name: Configure AWS credentials
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3.3.0
+        uses: aws-actions/configure-aws-credentials@v4.1.0
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # Extract metadata (tags, labels) for Docker
-      # https://github.com/docker/metadata-action
+      - name: Log into Amazon ECR
+        if: github.event_name != 'pull_request'
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2.0.1
+
       - name: Extract metadata from Dockerfile
         id: metadata
         uses: docker/metadata-action@v5.6.1
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: ${{ env.IMAGE_TAG }}
+          images: ${{ steps.ecr.outputs.registry || 'local' }}/${{ env.ECR_REPOSITORY_PREFIX }}/${{ matrix.app }}
+          tags: |
+            ${{ env.IMAGE_TAG }}
+            sha-${{ github.sha }}
 
-      # Build and push Docker image with Buildx except on pull requests
-      # https://github.com/docker/build-push-action
+      - name: Write .env file
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: printf '%s\n' "$ENV_FILE" > .env
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v6.9.0
         with:
           context: .
-          file: ${{ env.DOCKERFILE_PATH }}
+          file: docker/${{ matrix.app }}.Dockerfile
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ matrix.app }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.app }}
 
   deploy:
     if: github.event_name != 'pull_request'
     environment: Development
     runs-on: ubuntu-latest
-    needs: build # Ensure deploy only runs after build completes successfully
+    needs: build
 
     env:
-      HOST_PORT: ${{ vars.HOST_PORT }}
-      IMAGE_TAG: ${{ vars.IMAGE_TAG }}
+      IMAGE_TAG: ${{ vars.IMAGE_TAG || 'latest' }}
 
     steps:
-      # Set up SSH key for EC2 access
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Log into Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2.0.1
+
       - name: Set up SSH key for EC2
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
 
-      # Configure SSH known hosts for EC2 host key verification
       - name: Configure SSH Known Hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ vars.EC2_HOST }} >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-      # SSH into EC2 and deploy the Docker container
+      - name: Log EC2 into Amazon ECR
+        run: |
+          aws ecr get-login-password --region "${{ env.AWS_REGION }}" |
+            ssh ${{ vars.EC2_USER }}@${{ vars.EC2_HOST }} \
+              "docker login --username AWS --password-stdin ${{ steps.ecr.outputs.registry }}"
+
+      # The server goes first: its entrypoint applies database migrations before admin and client use them.
       - name: Deploy to EC2
         run: |
           ssh ${{ vars.EC2_USER }}@${{ vars.EC2_HOST }} << 'EOF'
-            # Pull the latest Docker image
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+            set -e
 
-            # Stop and remove any existing container
+            REGISTRY=${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY_PREFIX }}
+
+            deploy() {
+              IMAGE="$REGISTRY/$1:${{ env.IMAGE_TAG }}"
+              NAME="${{ vars.CLUSTER }}-$1"
+
+              docker pull "$IMAGE"
+
+              docker stop "$NAME" || true
+              docker rm "$NAME" || true
+
+              docker run -d --restart unless-stopped --name "$NAME" -p "$2:$3" "$IMAGE"
+            }
+
+            # Remove the container from before the per-app split, which held the client port.
             docker stop ${{ vars.CLUSTER }} || true
             docker rm ${{ vars.CLUSTER }} || true
 
-            # Run the new container
-            docker run -d --restart unless-stopped --name ${{ vars.CLUSTER }} -p ${{ env.HOST_PORT }}:${{ env.IMAGE_PORT }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+            deploy server ${{ vars.SERVER_HOST_PORT }} 8080
+            deploy admin ${{ vars.ADMIN_HOST_PORT }} 3001
+            deploy client ${{ vars.CLIENT_HOST_PORT }} 3000
           EOF

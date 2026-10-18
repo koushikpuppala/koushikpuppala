@@ -15,7 +15,7 @@
 
 		/* Modules */
 		"module": "CommonJS" /* Specify what module code is generated. */,
-		"moduleResolution": "Node" /* Specify how TypeScript looks up a file from a given module specifier. */,
+		"moduleResolution": "Bundler" /* Specify how TypeScript looks up a file from a given module specifier. */,
 
 		/* Emit */
 		"noEmit": false /* Enable emitting files from a compilation. */,

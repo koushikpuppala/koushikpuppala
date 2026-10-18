@@ -1,34 +1,28 @@
+import type { RecordRowProps } from 'types/components/client'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, Download } from 'components/icons'
 import { SiteShell } from 'components/site-shell'
-import { Chip, Reveal, Section, SectionHeader } from 'components/primitives'
+import { Chip, Section, SectionHeader } from 'components/primitives/layout'
+import { Reveal } from 'components/primitives/motion'
 import { PageHero } from 'components/home/page-hero'
 import { ContactCTA } from 'components/home/home-sections'
-import { Button } from 'components/ui/button'
-import { formatRange, splitList } from 'lib/format'
+import { Button } from 'ui/button'
+import { formatRange } from 'lib/format'
 import { getResumeData } from 'lib/resume-data'
 import { getExperienceData } from 'lib/experience-data'
 import { getEducationData } from 'lib/education-data'
 import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
+import { emailAddress } from 'lib/email'
 
 export const generateMetadata = async (): Promise<Metadata> => {
+	'use cache'
 	return resolveMetadataByPath('/resume')
 }
 
-function RecordRow({
-	period,
-	title,
-	meta,
-	detail,
-}: {
-	period: string
-	title: string
-	meta: string
-	detail?: string | null
-}) {
+const RecordRow = ({ period, title, meta, detail }: RecordRowProps) => {
 	return (
 		<div className='border-border grid gap-1.5 border-t py-6 last:border-b sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] sm:gap-10'>
 			<p className='numeric text-muted-foreground font-mono text-[0.75rem]'>{period}</p>
@@ -41,7 +35,7 @@ function RecordRow({
 	)
 }
 
-export default async function ResumePage() {
+const ResumePage = async () => {
 	const [resume, experiences, education, services, socials] = await Promise.all([
 		getResumeData(),
 		getExperienceData(),
@@ -50,14 +44,14 @@ export default async function ResumePage() {
 		getSocialsData(),
 	])
 
-	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
-	const downloadable = Boolean(resume.fileUrl && resume.fileUrl !== '#')
+	const email = emailAddress(socials)
+	const fileUrl = resume.downloadUrl && resume.downloadUrl !== '#' ? resume.downloadUrl : null
 	const updated = resume.updatedAt
 		? new Date(resume.updatedAt).toLocaleDateString('en-US', { dateStyle: 'medium' })
-		: '2026'
+		: null
 	const title = resume.title || 'Resume'
 	const summary = resume.summary || ''
-	const version = String(resume.version || '1.0')
+	const version = resume.versionName || ''
 
 	return (
 		<SiteShell socials={socials}>
@@ -65,14 +59,14 @@ export default async function ResumePage() {
 				eyebrow='Resume'
 				title={title}
 				lead={summary}
-				meta={[version, `Updated ${updated}`]}
+				meta={[version, updated ? `Updated ${updated}` : ''].filter(Boolean)}
 				actions={
-					downloadable ? (
+					fileUrl ? (
 						<>
 							<Button asChild size='lg' variant='signal'>
-								<a href={resume.fileUrl} target='_blank' rel='noreferrer noopener'>
-									<Download className='size-4' /> Download {version}
-								</a>
+								<Link href={fileUrl} target='_blank' rel='noreferrer noopener'>
+									<Download className='size-4' /> Download PDF
+								</Link>
 							</Button>
 							<Button asChild size='lg' variant='outline' className='group'>
 								<Link href='/contact'>
@@ -97,7 +91,7 @@ export default async function ResumePage() {
 				}
 			/>
 
-			{!downloadable ? (
+			{!fileUrl ? (
 				<div className='border-border bg-surface/50 border-b'>
 					<p className='container-page text-muted-foreground py-4 font-mono text-[0.75rem]'>
 						The resume file hasn&apos;t been published yet — the record below stays current.
@@ -113,8 +107,8 @@ export default async function ResumePage() {
 							<Reveal key={item.id}>
 								<RecordRow
 									period={formatRange(item.startDate, item.endDate)}
-									title={item.role || item.title || ''}
-									meta={item.organization || item.company || ''}
+									title={item.title}
+									meta={item.organization}
 									detail={item.location}
 								/>
 							</Reveal>
@@ -131,11 +125,9 @@ export default async function ResumePage() {
 							<Reveal key={item.id}>
 								<RecordRow
 									period={formatRange(item.startDate, item.endDate)}
-									title={`${item.degree}${item.field || item.fieldOfStudy ? ` · ${item.field || item.fieldOfStudy}` : ''}`}
-									meta={item.institution || item.university || ''}
-									detail={
-										Array.isArray(item.description) ? item.description.join(' ') : item.description
-									}
+									title={[item.degree, item.fieldOfStudy].filter(Boolean).join(' · ')}
+									meta={item.university}
+									detail={item.description.join(' ')}
 								/>
 							</Reveal>
 						))}
@@ -152,7 +144,7 @@ export default async function ResumePage() {
 								<div>
 									<p className='text-eyebrow'>{service.title}</p>
 									<div className='mt-3 flex flex-wrap gap-1.5'>
-										{splitList(service.description).map(item => (
+										{service.features.map(item => (
 											<Chip key={item} tone='outline'>
 												{item}
 											</Chip>
@@ -169,3 +161,5 @@ export default async function ResumePage() {
 		</SiteShell>
 	)
 }
+
+export default ResumePage

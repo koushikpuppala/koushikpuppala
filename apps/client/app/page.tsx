@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight } from 'components/icons'
 import { SiteShell } from 'components/site-shell'
-import { Reveal, Section, SectionHeader } from 'components/primitives'
+import { Section, SectionHeader } from 'components/primitives/layout'
+import { Reveal } from 'components/primitives/motion'
 import { Hero } from 'components/home/hero'
 import { SectionRail } from 'components/portfolio/section-rail'
 import { FeaturedProjectRow, SupportingProjects } from 'components/portfolio/work-showcase'
@@ -15,7 +16,7 @@ import {
 	LeadershipStrip,
 	TechTicker,
 } from 'components/home/home-sections'
-import { Button } from 'components/ui/button'
+import { Button } from 'ui/button'
 import { getHomeData } from 'lib/home-data'
 import { getAboutData } from 'lib/about-data'
 import { getExperienceData } from 'lib/experience-data'
@@ -24,8 +25,10 @@ import { getEducationData } from 'lib/education-data'
 import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
+import { emailAddress } from 'lib/email'
 
 export const generateMetadata = async (): Promise<Metadata> => {
+	'use cache'
 	return resolveMetadataByPath('/')
 }
 
@@ -38,7 +41,7 @@ const sections = [
 	{ id: 'contact', label: 'Contact' },
 ]
 
-export default async function HomePage() {
+const HomePage = async () => {
 	const [home, about, experience, projects, education, services, socials] = await Promise.all([
 		getHomeData(),
 		getAboutData(),
@@ -51,18 +54,17 @@ export default async function HomePage() {
 
 	const featured = projects.filter(project => project.featured)
 	const supporting = projects.filter(project => !project.featured)
-	const current = experience.find(item => !item.endDate) ?? experience[0]
-	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
+	const current = experience.find(item => item.isCurrent || !item.endDate) ?? experience[0]
+	const email = emailAddress(socials)
 
 	return (
 		<SiteShell socials={socials}>
 			<SectionRail sections={sections} />
 
-			<Hero home={home} socials={socials} current={current} />
+			<Hero home={home} socials={socials} current={current} location={about.location} />
 
 			<TechTicker services={services} />
 
-			{/* ------------------------------------------------------------ work */}
 			<Section id='work' labelledBy='work-title'>
 				<div className='container-page'>
 					<SectionHeader
@@ -113,7 +115,6 @@ export default async function HomePage() {
 				</div>
 			</Section>
 
-			{/* ----------------------------------------------------------- stack */}
 			<Section id='stack' labelledBy='stack-title' className='border-border bg-surface/30 border-t'>
 				<div className='container-page'>
 					<SectionHeader
@@ -134,7 +135,6 @@ export default async function HomePage() {
 				</div>
 			</Section>
 
-			{/* ------------------------------------------------------ experience */}
 			<Section id='experience' labelledBy='experience-title' className='border-border border-t'>
 				<div
 					className='pointer-events-none absolute top-0 -left-40 size-136 rounded-full opacity-40 blur-3xl'
@@ -162,7 +162,6 @@ export default async function HomePage() {
 				</div>
 			</Section>
 
-			{/* ------------------------------------------------------- education */}
 			<Section id='education' labelledBy='education-title' className='border-border border-t'>
 				<div className='container-page'>
 					<SectionHeader
@@ -186,14 +185,13 @@ export default async function HomePage() {
 				</div>
 			</Section>
 
-			{/* ----------------------------------------------------------- about */}
 			<Section id='about' labelledBy='about-title' className='border-border bg-surface/30 border-t'>
 				<div className='container-page'>
 					<SectionHeader
 						index='05'
 						eyebrow='About'
 						titleId='about-title'
-						title={about.heading}
+						title={about.title}
 						size='md'
 					/>
 					<AboutBlock
@@ -205,10 +203,11 @@ export default async function HomePage() {
 				</div>
 			</Section>
 
-			{/* --------------------------------------------------------- contact */}
 			<section id='contact' aria-labelledby='contact-title'>
 				<ContactCTA socials={socials} email={email} />
 			</section>
 		</SiteShell>
 	)
 }
+
+export default HomePage

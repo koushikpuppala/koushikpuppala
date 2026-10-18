@@ -1,27 +1,30 @@
+import { PublishFilterDto, PublishableDto } from 'common/dto/publishable.dto'
 import {
 	IsArray,
 	IsBoolean,
 	IsDateString,
 	IsEnum,
-	IsInt,
+	IsIn,
+	IsNotEmpty,
 	IsOptional,
 	IsString,
-	IsUrl,
 	IsUUID,
+	IsUrl,
 } from 'class-validator'
-import { Type } from 'class-transformer'
 import { EmploymentType } from '@repo/prisma'
-import { PaginationDto } from 'common/dto/pagination.dto'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
+import { ToBoolean } from 'common/decorators/to-boolean.decorator'
 
-export class CreateExperienceDto {
+export class CreateExperienceDto extends PublishableDto {
 	@ApiProperty({ example: 'Software Engineer' })
 	@IsString()
+	@IsNotEmpty()
 	title!: string
 
 	@ApiProperty({ example: 'Upraised®' })
 	@IsString()
-	company!: string
+	@IsNotEmpty()
+	organization!: string
 
 	@ApiProperty({ example: 'Bengaluru, Karnataka, India' })
 	@IsString()
@@ -43,12 +46,12 @@ export class CreateExperienceDto {
 	@ApiPropertyOptional({ example: true, default: false })
 	@IsBoolean()
 	@IsOptional()
-	isCurrent?: boolean = false
+	isCurrent?: boolean
 
 	@ApiPropertyOptional({ example: false, default: false })
 	@IsBoolean()
 	@IsOptional()
-	featured?: boolean = false
+	featured?: boolean
 
 	@ApiProperty({
 		example: [
@@ -68,7 +71,7 @@ export class CreateExperienceDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	achievements?: string[] = []
+	achievements?: string[]
 
 	@ApiPropertyOptional({
 		example: ['TypeScript', 'NestJS', 'React', 'PostgreSQL', 'Docker'],
@@ -77,7 +80,7 @@ export class CreateExperienceDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	technologies?: string[] = []
+	technologies?: string[]
 
 	@ApiPropertyOptional({ example: 'https://upraised.co' })
 	@IsUrl()
@@ -88,21 +91,25 @@ export class CreateExperienceDto {
 	@IsUUID()
 	@IsOptional()
 	logoId?: string
-
-	@ApiPropertyOptional({ example: 0, default: 0 })
-	@IsInt()
-	@IsOptional()
-	sortOrder?: number = 0
-
-	@ApiPropertyOptional({ example: true, default: false })
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean = false
 }
 
 export class UpdateExperienceDto extends PartialType(CreateExperienceDto) {}
 
-export class QueryExperienceDto extends PaginationDto {
+const EXPERIENCE_SORT_FIELDS = [
+	'title',
+	'organization',
+	'startDate',
+	'isPublished',
+	'sortOrder',
+	'createdAt',
+] as const
+
+export class QueryExperienceDto extends PublishFilterDto {
+	@ApiPropertyOptional({ enum: [...EXPERIENCE_SORT_FIELDS] })
+	@IsIn(EXPERIENCE_SORT_FIELDS)
+	@IsOptional()
+	sortBy?: (typeof EXPERIENCE_SORT_FIELDS)[number]
+
 	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()
@@ -114,14 +121,8 @@ export class QueryExperienceDto extends PaginationDto {
 	employmentType?: EmploymentType
 
 	@ApiPropertyOptional()
-	@Type(() => Boolean)
+	@ToBoolean()
 	@IsBoolean()
 	@IsOptional()
 	featured?: boolean
-
-	@ApiPropertyOptional()
-	@Type(() => Boolean)
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean
 }

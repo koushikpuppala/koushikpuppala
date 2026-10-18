@@ -1,7 +1,7 @@
 import { MediaType } from '@repo/prisma'
-import { PaginationDto } from 'common/dto/pagination.dto'
+import { SortablePaginationDto } from 'common/dto/pagination.dto'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsEnum, IsInt, IsOptional, IsString, Max, Min } from 'class-validator'
+import { IsEnum, IsInt, IsOptional, IsString, Max, Min, IsIn } from 'class-validator'
 
 export class RequestPresignedUploadDto {
 	@ApiProperty({ example: 'portfolio-hero.webp' })
@@ -15,7 +15,7 @@ export class RequestPresignedUploadDto {
 	@ApiProperty({ example: 1048576, description: 'File size in bytes (max 50MB)' })
 	@IsInt()
 	@Min(1)
-	@Max(52428800) // 50MB
+	@Max(52428800)
 	size!: number
 
 	@ApiProperty({ enum: MediaType, example: MediaType.IMAGE })
@@ -25,18 +25,7 @@ export class RequestPresignedUploadDto {
 	@ApiPropertyOptional({ example: 'projects', description: 'Folder or category for asset' })
 	@IsString()
 	@IsOptional()
-	folder?: string = 'general'
-}
-
-export class PresignedUploadResponseDto {
-	@ApiProperty({ example: 'https://s3.amazonaws.com/bucket/key?signature...' })
-	uploadUrl!: string
-
-	@ApiProperty({ example: 'projects/123456-portfolio-hero.webp' })
-	storageKey!: string
-
-	@ApiProperty({ example: 'https://cdn.koushikpuppala.com/projects/123456-portfolio-hero.webp' })
-	url!: string
+	folder?: string
 }
 
 export class CompleteMediaUploadDto {
@@ -99,7 +88,14 @@ export class UpdateMediaDto {
 	caption?: string
 }
 
-export class QueryMediaDto extends PaginationDto {
+const MEDIA_SORT_FIELDS = ['originalName', 'size', 'type', 'createdAt'] as const
+
+export class QueryMediaDto extends SortablePaginationDto {
+	@ApiPropertyOptional({ enum: [...MEDIA_SORT_FIELDS] })
+	@IsIn(MEDIA_SORT_FIELDS)
+	@IsOptional()
+	sortBy?: (typeof MEDIA_SORT_FIELDS)[number]
+
 	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()

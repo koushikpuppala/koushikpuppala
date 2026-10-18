@@ -3,27 +3,12 @@
 import type { ApiResponse } from 'types/api'
 import type { PublishedHome } from 'types/models'
 
-import { BASE_URL } from 'constants/base-url'
 import { cacheLife, cacheTag } from 'next/cache'
+import { fetchPublished } from 'lib/fetch-published'
 
 export const getPublishedHome = async (): Promise<ApiResponse<PublishedHome>> => {
 	cacheLife('weeks')
 	cacheTag('home')
 
-	try {
-		const response = await fetch(`${BASE_URL}/api/v1/home/published`, {
-			headers: { 'Content-Type': 'application/json' },
-		})
-
-		const data = await response.json()
-
-		if (!response.ok) throw new Error(data.message || 'Failed to fetch home data.')
-
-		return data
-	} catch (error) {
-		return {
-			error: true,
-			message: (error as Error).message || 'An error occurred while fetching home data.',
-		}
-	}
+	return fetchPublished<PublishedHome>('/api/v1/home/published', 'home data')
 }

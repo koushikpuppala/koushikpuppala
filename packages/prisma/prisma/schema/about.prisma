@@ -1,6 +1,5 @@
 model About {
-  id      String @id @default(uuid()) @db.Uuid
-  version Int    @default(1)
+  id String @id @default(uuid()) @db.Uuid
 
   title         String
   leadStatement String? @map("lead_statement") @db.Text

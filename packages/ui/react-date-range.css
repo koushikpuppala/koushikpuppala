@@ -1,0 +1,392 @@
+@import 'react-date-range/dist/styles.css' layer(components);
+
+@layer components {
+	.rdrCalendarWrapper {
+		@apply bg-surface text-foreground text-xs;
+	}
+
+	.rdrDateDisplayWrapper {
+		@apply bg-surface;
+	}
+
+	.rdrDateDisplay {
+		@apply m-1.5;
+	}
+
+	.rdrDateDisplayItem {
+		@apply border-border bg-surface text-foreground rounded-md border shadow-md;
+	}
+
+	.rdrDateDisplayItem input {
+		@apply text-muted-foreground h-8 w-full cursor-pointer border-0 bg-transparent leading-8;
+	}
+
+	.rdrDateDisplayItemActive {
+		@apply border-current;
+	}
+
+	.rdrDateDisplayItemActive input {
+		@apply text-foreground;
+	}
+
+	.rdrMonthAndYearWrapper {
+		@apply h-14 items-center;
+	}
+
+	.rdrMonthAndYearPickers {
+		@apply font-semibold;
+	}
+	.rdrMonthAndYearPickers select {
+		@apply text-foreground hover:bg-accent appearance-none rounded;
+
+		border: 0;
+		padding: 10px 30px 10px 10px;
+		outline: 0;
+		background: url("data:image/svg+xml;utf8,<svg width='9px' height='6px' viewBox='0 0 9 6' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><g id='Artboard' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' transform='translate(-636.000000, -171.000000)' fill-opacity='1'><g id='input' transform='translate(172.000000, 37.000000)' fill='%23808080' fill-rule='nonzero'><g id='Group-9' transform='translate(323.000000, 127.000000)'><path d='M142.280245,7.23952813 C141.987305,6.92353472 141.512432,6.92361662 141.219585,7.23971106 C140.926739,7.5558055 140.926815,8.06821394 141.219755,8.38420735 L145.498801,13 L149.780245,8.38162071 C150.073185,8.0656273 150.073261,7.55321886 149.780415,7.23712442 C149.487568,6.92102998 149.012695,6.92094808 148.719755,7.23694149 L145.498801,10.7113732 L142.280245,7.23952813 Z' id='arrow'></path></g></g></g></svg>")
+			no-repeat;
+		background-color: var(--surface);
+		background-position: right 8px center;
+		cursor: pointer;
+		text-align: center;
+	}
+
+	.rdrMonthAndYearPickers select option {
+		@apply bg-surface text-foreground hover:bg-accent;
+	}
+
+	.rdrMonthPicker,
+	.rdrYearPicker {
+		@apply mx-1;
+	}
+
+	.rdrNextPrevButton {
+		@apply bg-surface-strong hover:bg-accent mx-2 block h-6 w-6 rounded border-0 p-0;
+	}
+
+	.rdrNextPrevButton i {
+		display: block;
+		width: 0;
+		height: 0;
+		padding: 0;
+		text-align: center;
+		border-style: solid;
+		margin: auto;
+		transform: translate(-3px, 0px);
+	}
+
+	.rdrPprevButton i {
+		@apply border-r-foreground border-4 border-transparent;
+		transform: translate(-3px, 0);
+	}
+
+	.rdrNextButton i {
+		@apply border-l-foreground border-4 border-transparent;
+		transform: translate(3px, 0px);
+	}
+
+	.rdrWeekDays {
+		padding: 0 0.833em;
+	}
+
+	.rdrMonth {
+		padding: 0 0.833em 1.666em 0.833em;
+	}
+
+	.rdrMonth .rdrWeekDays {
+		@apply p-0;
+	}
+
+	.rdrMonths.rdrMonthsVertical .rdrMonth:first-child .rdrMonthName {
+		@apply hidden;
+	}
+
+	.rdrWeekDay {
+		@apply text-muted-foreground text-sm leading-6 font-normal;
+	}
+
+	.rdrDay {
+		@apply text-foreground h-10 border-0 bg-transparent p-0 text-center leading-10 select-none;
+	}
+
+	.rdrDay:focus {
+		@apply outline-none;
+	}
+
+	.rdrDayNumber {
+		@apply absolute top-1 right-0 bottom-1 left-0 flex items-center justify-center font-light outline-none;
+	}
+
+	.rdrDayNumber span {
+		@apply text-foreground;
+	}
+
+	.rdrDayToday .rdrDayNumber span {
+		@apply font-medium;
+	}
+
+	.rdrDayToday .rdrDayNumber span:after {
+		background-color: var(--signal);
+		@apply text-foreground absolute bottom-1 left-1/2 h-1 w-4 -translate-x-1/2 rounded content-[''];
+	}
+
+	.rdrDayToday:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span:after,
+	.rdrDayToday:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span:after,
+	.rdrDayToday:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span:after,
+	.rdrDayToday:not(.rdrDayPassive) .rdrSelected ~ .rdrDayNumber span:after {
+		@apply bg-accent;
+		@apply text-foreground;
+	}
+
+	.rdrDay:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span {
+		@apply text-foreground;
+	}
+	.rdrDay:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span,
+	.rdrDay:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span,
+	.rdrDay:not(.rdrDayPassive) .rdrSelected ~ .rdrDayNumber span {
+		@apply text-signal-foreground font-semibold;
+	}
+
+	.rdrSelected,
+	.rdrInRange,
+	.rdrStartEdge,
+	.rdrEndEdge {
+		@apply text-foreground;
+		background: currentColor;
+		position: absolute;
+		top: 5px;
+		left: 0;
+		right: 0;
+		bottom: 5px;
+	}
+
+	.rdrSelected {
+		@apply text-foreground;
+		left: 2px;
+		right: 2px;
+	}
+
+	.rdrInRange {
+		@apply bg-accent;
+	}
+
+	.rdrStartEdge {
+		@apply text-foreground;
+		border-top-left-radius: 1.042em;
+		border-bottom-left-radius: 1.042em;
+		left: 2px;
+	}
+
+	.rdrEndEdge {
+		@apply text-foreground;
+		border-top-right-radius: 1.042em;
+		border-bottom-right-radius: 1.042em;
+		right: 2px;
+	}
+
+	.rdrSelected {
+		@apply text-foreground;
+		border-radius: 1.042em;
+	}
+
+	.rdrDayStartOfMonth .rdrInRange,
+	.rdrDayStartOfMonth .rdrEndEdge,
+	.rdrDayStartOfWeek .rdrInRange,
+	.rdrDayStartOfWeek .rdrEndEdge {
+		@apply text-foreground;
+		border-top-left-radius: 1.042em;
+		border-bottom-left-radius: 1.042em;
+		left: 2px;
+	}
+
+	.rdrDayEndOfMonth .rdrInRange,
+	.rdrDayEndOfMonth .rdrStartEdge,
+	.rdrDayEndOfWeek .rdrInRange,
+	.rdrDayEndOfWeek .rdrStartEdge {
+		@apply text-foreground;
+		border-top-right-radius: 1.042em;
+		border-bottom-right-radius: 1.042em;
+		right: 2px;
+	}
+
+	.rdrDayStartOfMonth .rdrDayInPreview,
+	.rdrDayStartOfMonth .rdrDayEndPreview,
+	.rdrDayStartOfWeek .rdrDayInPreview,
+	.rdrDayStartOfWeek .rdrDayEndPreview {
+		@apply text-foreground;
+		border-top-left-radius: 1.333em;
+		border-bottom-left-radius: 1.333em;
+		border-left-width: 1px;
+		left: 0px;
+	}
+
+	.rdrDayEndOfMonth .rdrDayInPreview,
+	.rdrDayEndOfMonth .rdrDayStartPreview,
+	.rdrDayEndOfWeek .rdrDayInPreview,
+	.rdrDayEndOfWeek .rdrDayStartPreview {
+		@apply text-foreground;
+		border-top-right-radius: 1.333em;
+		border-bottom-right-radius: 1.333em;
+		border-right-width: 1px;
+		right: 0px;
+	}
+
+	.rdrDayStartPreview,
+	.rdrDayInPreview,
+	.rdrDayEndPreview {
+		@apply text-foreground;
+		background: color-mix(in oklab, var(--foreground) 6%, transparent);
+		position: absolute;
+		top: 3px;
+		left: 0px;
+		right: 0px;
+		bottom: 3px;
+		pointer-events: none;
+		border: 0px solid currentColor;
+		z-index: 1;
+	}
+
+	.rdrDayStartPreview {
+		@apply text-foreground;
+		border-top-width: 1px;
+		border-left-width: 1px;
+		border-bottom-width: 1px;
+		border-top-left-radius: 1.333em;
+		border-bottom-left-radius: 1.333em;
+		left: 0px;
+	}
+
+	.rdrDayInPreview {
+		@apply text-foreground;
+		border-top-width: 1px;
+		border-bottom-width: 1px;
+	}
+
+	.rdrDayEndPreview {
+		border-top-width: 1px;
+		border-right-width: 1px;
+		border-bottom-width: 1px;
+		border-top-right-radius: 1.333em;
+		border-bottom-right-radius: 1.333em;
+		right: 0px;
+	}
+
+	.rdrDefinedRangesWrapper {
+		@apply text-foreground;
+		font-size: 12px;
+		width: 226px;
+		border-right: solid 1px var(--border);
+		background: var(--surface);
+	}
+
+	.rdrDefinedRangesWrapper .rdrStaticRangeSelected {
+		@apply text-foreground;
+		font-weight: 600;
+	}
+
+	.rdrStaticRange {
+		@apply text-foreground;
+		border: 0;
+		cursor: pointer;
+		display: block;
+		outline: 0;
+		border-bottom: 1px solid var(--border);
+		padding: 0;
+		background: var(--surface);
+	}
+
+	.rdrStaticRange:hover .rdrStaticRangeLabel,
+	.rdrStaticRange:focus .rdrStaticRangeLabel {
+		background: var(--accent);
+	}
+
+	.rdrStaticRangeLabel {
+		display: block;
+		outline: 0;
+		line-height: 18px;
+		padding: 10px 20px;
+		text-align: left;
+	}
+
+	.rdrInputRanges {
+		padding: 10px 0;
+	}
+
+	.rdrInputRange {
+		align-items: center;
+		padding: 5px 20px;
+	}
+
+	.rdrInputRangeInput {
+		@apply text-foreground;
+		width: 30px;
+		height: 30px;
+		line-height: 30px;
+		border-radius: 4px;
+		text-align: center;
+		border: solid 1px var(--border);
+		margin-right: 10px;
+	}
+
+	.rdrInputRangeInput:focus,
+	.rdrInputRangeInput:hover {
+		@apply text-foreground;
+		border-color: var(--border-strong);
+		outline: 0;
+	}
+
+	.rdrCalendarWrapper:not(.rdrDateRangeWrapper) .rdrDayHovered .rdrDayNumber:after {
+		content: '';
+		border: 1px solid transparent;
+		border-radius: 1.333em;
+		position: absolute;
+		top: -2px;
+		bottom: -2px;
+		left: 0px;
+		right: 0px;
+		background: transparent;
+	}
+
+	.rdrDayPassive {
+		@apply text-muted-foreground/40 pointer-events-none;
+	}
+
+	.rdrDayPassive .rdrDayNumber span {
+		@apply text-muted-foreground/40;
+	}
+
+	.rdrDayPassive .rdrInRange,
+	.rdrDayPassive .rdrStartEdge,
+	.rdrDayPassive .rdrEndEdge,
+	.rdrDayPassive .rdrSelected,
+	.rdrDayPassive .rdrDayStartPreview,
+	.rdrDayPassive .rdrDayInPreview,
+	.rdrDayPassive .rdrDayEndPreview {
+		@apply hidden;
+	}
+
+	.rdrDayDisabled {
+		@apply text-muted-foreground/40;
+	}
+
+	.rdrDayDisabled .rdrDayNumber span {
+		@apply text-muted-foreground/40;
+	}
+
+	.rdrDayDisabled .rdrInRange,
+	.rdrDayDisabled .rdrStartEdge,
+	.rdrDayDisabled .rdrEndEdge,
+	.rdrDayDisabled .rdrSelected,
+	.rdrDayDisabled .rdrDayStartPreview,
+	.rdrDayDisabled .rdrDayInPreview,
+	.rdrDayDisabled .rdrDayEndPreview {
+		@apply hidden;
+	}
+
+	.rdrMonthName {
+		text-align: left;
+		font-weight: 600;
+
+		@apply text-foreground;
+		padding: 0.833em;
+	}
+}

@@ -1,20 +1,21 @@
+import { PublishFilterDto, PublishableDto } from 'common/dto/publishable.dto'
 import {
 	IsArray,
 	IsBoolean,
 	IsDateString,
-	IsInt,
+	IsIn,
+	IsNotEmpty,
 	IsOptional,
 	IsString,
-	IsUrl,
 	IsUUID,
+	IsUrl,
 } from 'class-validator'
-import { Type } from 'class-transformer'
-import { PaginationDto } from 'common/dto/pagination.dto'
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger'
 
-export class CreateEducationDto {
+export class CreateEducationDto extends PublishableDto {
 	@ApiProperty({ example: 'Bachelor of Technology (B.Tech)' })
 	@IsString()
+	@IsNotEmpty()
 	degree!: string
 
 	@ApiProperty({ example: 'Computer Science and Engineering' })
@@ -23,6 +24,7 @@ export class CreateEducationDto {
 
 	@ApiProperty({ example: 'Indian Institute of Information Technology Raichur' })
 	@IsString()
+	@IsNotEmpty()
 	university!: string
 
 	@ApiProperty({ example: 'Raichur, Karnataka, India' })
@@ -46,7 +48,7 @@ export class CreateEducationDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	achievements?: string[] = []
+	achievements?: string[]
 
 	@ApiPropertyOptional({
 		example: ['Data Structures & Algorithms', 'Distributed Systems', 'Database Management'],
@@ -55,7 +57,7 @@ export class CreateEducationDto {
 	@IsArray()
 	@IsString({ each: true })
 	@IsOptional()
-	focusAreas?: string[] = []
+	focusAreas?: string[]
 
 	@ApiProperty({ example: '2021-08-01T00:00:00.000Z' })
 	@IsDateString()
@@ -74,7 +76,7 @@ export class CreateEducationDto {
 	@ApiPropertyOptional({ example: true, default: false })
 	@IsBoolean()
 	@IsOptional()
-	isCurrent?: boolean = false
+	isCurrent?: boolean
 
 	@ApiPropertyOptional({ example: 'https://iiitr.ac.in' })
 	@IsUrl()
@@ -85,29 +87,27 @@ export class CreateEducationDto {
 	@IsUUID()
 	@IsOptional()
 	logoId?: string
-
-	@ApiPropertyOptional({ example: 0, default: 0 })
-	@IsInt()
-	@IsOptional()
-	sortOrder?: number = 0
-
-	@ApiPropertyOptional({ example: true, default: false })
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean = false
 }
 
 export class UpdateEducationDto extends PartialType(CreateEducationDto) {}
 
-export class QueryEducationDto extends PaginationDto {
+const EDUCATION_SORT_FIELDS = [
+	'degree',
+	'university',
+	'startDate',
+	'isPublished',
+	'sortOrder',
+	'createdAt',
+] as const
+
+export class QueryEducationDto extends PublishFilterDto {
+	@ApiPropertyOptional({ enum: [...EDUCATION_SORT_FIELDS] })
+	@IsIn(EDUCATION_SORT_FIELDS)
+	@IsOptional()
+	sortBy?: (typeof EDUCATION_SORT_FIELDS)[number]
+
 	@ApiPropertyOptional()
 	@IsString()
 	@IsOptional()
 	search?: string
-
-	@ApiPropertyOptional()
-	@Type(() => Boolean)
-	@IsBoolean()
-	@IsOptional()
-	isPublished?: boolean
 }

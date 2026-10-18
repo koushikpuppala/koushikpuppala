@@ -1,4 +1,4 @@
-import type { StorageService, UploadFileOptions, UploadFileResponse } from './storage.interface'
+import type { StorageService, UploadFileOptions, UploadFileResponse } from 'types/server'
 
 import {
 	DeleteObjectCommand,
@@ -26,6 +26,7 @@ export class S3Service implements StorageService {
 
 		const folder = options.folder?.replace(/^\/|\/$/g, '')
 
+		// A time-ordered UUID avoids name clashes and keeps the original file name out of the URL.
 		const fileName = `${randomUUIDv7()}${extension}`
 
 		const key = folder ? `${folder}/${fileName}` : fileName
@@ -43,7 +44,7 @@ export class S3Service implements StorageService {
 			key,
 			size: options.buffer.length,
 			bucket: this.config.aws.s3Bucket,
-			url: `https://${this.config.aws.cdnUrl}/${key}`,
+			url: `${this.config.aws.cdnUrl}/${key}`,
 		}
 	}
 
@@ -73,9 +74,22 @@ export class S3Service implements StorageService {
 		)
 	}
 
-	async getPresignedUploadUrl(Key: string, ContentType: string, expiresIn = 900): Promise<string> {
+	async getPresignedUploadUrl(
+		Key: string,
+		ContentType: string,
+		ContentLength: number,
+		expiresIn = 900,
+	): Promise<string> {
 		const Bucket = this.config.aws.s3Bucket
 
-		return getSignedUrl(this.s3, new PutObjectCommand({ Key, ContentType, Bucket }), { expiresIn })
+		return getSignedUrl(
+			this.s3,
+			new PutObjectCommand({ Key, ContentType, ContentLength, Bucket }),
+			{
+				expiresIn,
+				// Signing these headers makes S3 reject an upload whose type or size differs from what was approved.
+				signableHeaders: new Set(['content-type', 'content-length']),
+			},
+		)
 	}
 }

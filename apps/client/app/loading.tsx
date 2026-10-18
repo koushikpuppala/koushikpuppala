@@ -1,32 +1,54 @@
-import { PageContainer } from 'ui/container'
+import { Skeleton, SkeletonText } from 'ui/skeleton'
+import {
+	ContactCTASkeleton,
+	FeaturedRowSkeleton,
+	PageSkeleton,
+	ProjectListSkeleton,
+	SectionSkeleton,
+	StackClustersSkeleton,
+	TickerSkeleton,
+	TimelineSkeleton,
+} from 'components/skeletons'
 
-export default function RootLoading() {
+const HomeLoading = () => {
 	return (
-		<main className='bg-background text-foreground min-h-screen pt-24 pb-16 sm:pt-28'>
-			<PageContainer className='animate-pulse space-y-12 sm:space-y-16'>
-				{/* Header Skeleton */}
-				<div className='space-y-4'>
-					<div className='bg-surface-strong/60 h-4 w-32 rounded' />
-					<div className='bg-surface-strong/80 h-10 w-3/4 max-w-xl rounded-xl' />
-					<div className='bg-surface-strong/50 h-5 w-1/2 max-w-md rounded' />
-				</div>
-
-				{/* Content Grid Skeleton */}
-				<div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
-					{[0, 1, 2, 3, 4, 5].map(i => (
-						<div
-							key={i}
-							className='border-border/60 bg-surface/40 h-64 space-y-4 rounded-2xl border p-6'>
-							<div className='bg-surface-strong/50 h-4 w-24 rounded' />
-							<div className='bg-surface-strong/70 h-6 w-3/4 rounded' />
-							<div className='space-y-2 pt-2'>
-								<div className='bg-surface/60 h-3 w-full rounded' />
-								<div className='bg-surface/60 h-3 w-5/6 rounded' />
+		<PageSkeleton label='home page'>
+			<section className='border-border relative overflow-hidden'>
+				<div className='container-page pt-28 pb-16 sm:pt-32 lg:pt-40'>
+					<Skeleton className='h-3 w-72 max-w-full' />
+					<div className='mt-10 grid gap-12 lg:grid-cols-12'>
+						<div className='space-y-6 lg:col-span-7 xl:col-span-8'>
+							<Skeleton className='h-16 w-4/5 sm:h-24' />
+							<Skeleton className='h-16 w-3/5 sm:h-24' />
+							<Skeleton className='h-6 w-80 max-w-full' />
+							<SkeletonText lines={3} className='max-w-xl' lineClassName='h-4' />
+							<div className='flex gap-3'>
+								<Skeleton className='h-12 w-40 rounded-lg' />
+								<Skeleton className='h-12 w-36 rounded-lg' />
 							</div>
 						</div>
-					))}
+						<Skeleton className='mx-auto aspect-square w-full max-w-[24rem] rounded-full lg:col-span-5 xl:col-span-4' />
+					</div>
+					<Skeleton className='mt-14 h-20 w-full rounded-xl' />
 				</div>
-			</PageContainer>
-		</main>
+			</section>
+			<TickerSkeleton />
+			<SectionSkeleton>
+				<div className='space-y-20 lg:space-y-28'>
+					<FeaturedRowSkeleton />
+					<FeaturedRowSkeleton flip />
+					<ProjectListSkeleton />
+				</div>
+			</SectionSkeleton>
+			<SectionSkeleton className='bg-surface/30 border-t'>
+				<StackClustersSkeleton />
+			</SectionSkeleton>
+			<SectionSkeleton className='border-t'>
+				<TimelineSkeleton />
+			</SectionSkeleton>
+			<ContactCTASkeleton />
+		</PageSkeleton>
 	)
 }
+
+export default HomeLoading

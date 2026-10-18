@@ -14,7 +14,9 @@ import {
 } from '@nestjs/common'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { ContactService } from './contact.service'
+import { RecaptchaService } from './recaptcha.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { Throttle } from '@nestjs/throttler'
@@ -24,9 +26,13 @@ import { CreateContactDto, QueryContactDto, UpdateContactDto } from './contact.d
 @ApiTags('Contact')
 @Controller('contacts')
 export class ContactController {
-	constructor(private readonly contactService: ContactService) {}
+	constructor(
+		private readonly contactService: ContactService,
+		private readonly recaptcha: RecaptchaService,
+	) {}
 
 	@Public()
+	// Five submissions a minute per client, on top of the honeypot and reCAPTCHA checks.
 	@Throttle({ default: { limit: 5, ttl: 60_000 } })
 	@Post()
 	@ApiEndpoint({
@@ -38,6 +44,8 @@ export class ContactController {
 	async submit(@Body() dto: CreateContactDto, @Req() req: Request) {
 		const ip = req.context?.ip || req.ip
 		const userAgent = req.headers['user-agent']
+
+		await this.recaptcha.verify(dto.recaptchaToken, ip)
 
 		return this.contactService.submit(dto, ip, userAgent)
 	}
@@ -75,10 +83,8 @@ export class ContactController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateContactDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.contactService.update(id, dto, actor)
 	}
 
@@ -89,9 +95,7 @@ export class ContactController {
 		endpoint: 'DELETE /api/v1/contacts/:id',
 		summary: 'Delete contact message from inbox (Admin)',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.contactService.remove(id, actor)
 	}
 }

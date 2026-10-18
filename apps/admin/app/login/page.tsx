@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import { LoginClientView } from '@/components/views/login-client-view'
+import { LoginView } from 'components/auth/login-view'
 
 export const metadata: Metadata = {
 	title: 'Sign In',
 	description: 'Sign in to access the Koushik Puppala administrative content studio.',
 }
 
-export const LoginPage = () => {
-	return <LoginClientView />
+const LoginPage = () => {
+	return <LoginView />
 }
 
 export default LoginPage

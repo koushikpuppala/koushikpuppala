@@ -1,43 +1,34 @@
 import type { PublishedResume } from 'types/models'
 
 import { cache } from 'react'
+import { unwrap } from 'lib/api-result'
 import { getPublishedResume } from 'actions/cache/resume'
-import { API_RESUME_FALLBACK } from 'constants/api-fallback'
+import { EMPTY_RESUME } from 'constants/empty-content'
 
 export const getResumeData = cache(async (): Promise<PublishedResume> => {
-	const { result, error } = await getPublishedResume()
+	const result = unwrap(await getPublishedResume(), 'resume')
 
-	if (error || !result) return API_RESUME_FALLBACK
+	if (!result) return EMPTY_RESUME
 
-	const size = Number(result.fileSize || API_RESUME_FALLBACK.fileSize)
+	const size = Number(result.fileSize || result.media?.size || 0)
 
-	const sizeKb = Math.round(size / 1024)
-
-	const dl = result.downloadUrl || result.media?.url || API_RESUME_FALLBACK.downloadUrl
+	const dl = result.downloadUrl || result.media?.url || ''
 
 	return {
-		...API_RESUME_FALLBACK,
-		id: String(result.id || API_RESUME_FALLBACK.id),
-		title: result.title || API_RESUME_FALLBACK.title,
-		versionName: result.versionName || API_RESUME_FALLBACK.versionName,
+		...EMPTY_RESUME,
+		id: String(result.id || ''),
+		title: result.title || '',
+		versionName: result.versionName || '',
 		fileSize: size,
-		fileSizeFormatted: `${sizeKb} KB`,
+		fileSizeFormatted: size ? `${Math.round(size / 1024)} KB` : '',
+		fileType: result.fileType || '',
 		downloadUrl: dl,
 		previewUrl: dl,
-		headline: String(result.headline || API_RESUME_FALLBACK.headline),
-		summary: String(result.summary || API_RESUME_FALLBACK.summary),
-		highlights:
-			Array.isArray(result.highlights) && result.highlights.length > 0
-				? result.highlights
-				: API_RESUME_FALLBACK.highlights,
-		competencies:
-			Array.isArray(result.competencies) && result.competencies.length > 0
-				? result.competencies
-				: API_RESUME_FALLBACK.competencies,
-		stats:
-			Array.isArray(result.stats) && result.stats.length > 0
-				? result.stats
-				: API_RESUME_FALLBACK.stats,
-		isVerified: Boolean(result.isVerified || API_RESUME_FALLBACK.isVerified),
+		headline: String(result.headline || ''),
+		summary: String(result.summary || ''),
+		highlights: Array.isArray(result.highlights) ? result.highlights : [],
+		competencies: Array.isArray(result.competencies) ? result.competencies : [],
+		stats: Array.isArray(result.stats) ? result.stats : [],
+		updatedAt: result.updatedAt ? String(result.updatedAt) : undefined,
 	}
 })

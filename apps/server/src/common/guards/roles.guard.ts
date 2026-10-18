@@ -28,6 +28,7 @@ export class RolesGuard implements CanActivate {
 			context.getClass(),
 		])
 
+		// Routes without @Roles only need authentication, which FirebaseAuthGuard has already enforced.
 		if (!requiredRoles?.length) return true
 
 		const request = context.switchToHttp().getRequest<Request>()
@@ -36,6 +37,7 @@ export class RolesGuard implements CanActivate {
 
 		if (!user?.role) throw new ForbiddenException('User not authenticated.')
 
+		// The role comes from the database row loaded by FirebaseAuthGuard, never from token claims.
 		if (user.role === UserRole.ADMIN) return true
 
 		if (requiredRoles.includes(user.role)) return true

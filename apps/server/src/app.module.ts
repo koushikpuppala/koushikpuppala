@@ -1,33 +1,25 @@
-import type { MiddlewareConsumer, NestModule } from '@nestjs/common'
-
-// Nest
 import { Module } from '@nestjs/common'
 import { APP_GUARD } from '@nestjs/core'
 import { ScheduleModule } from '@nestjs/schedule'
 import { EventEmitterModule } from '@nestjs/event-emitter'
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 
-// Third-party
 import { SentryModule } from '@sentry/nestjs/setup'
 
-// Infrastructure
 import { RedisModule } from 'redis/redis.module'
 import { ConfigModule } from 'config/config.module'
 import { CommonModule } from 'common/common.module'
 import { DatabaseModule } from 'database/database.module'
+import { FirebaseModule } from 'firebase/firebase.module'
 import { LoggerModule } from 'common/logger/logger.module'
 import { StorageModule } from 'common/storage/storage.module'
-import { RequestIdMiddleware } from 'common/middlewares/request-id.middleware'
-import { RequestContextMiddleware } from 'common/middlewares/request-context.middleware'
 
-// Core Features
 import { AuthModule } from 'modules/auth/auth.module'
 import { UserModule } from 'modules/user/user.module'
 import { HealthModule } from 'modules/health/health.module'
 import { AuditLogModule } from 'modules/audit-log/audit-log.module'
 import { ApiMetricModule } from 'modules/api-metric/api-metric.module'
 
-// CMS & Portfolio Features
 import { HomeModule } from 'modules/home/home.module'
 import { AboutModule } from 'modules/about/about.module'
 import { SkillModule } from 'modules/skill/skill.module'
@@ -43,7 +35,6 @@ import { ExperienceModule } from 'modules/experience/experience.module'
 
 @Module({
 	imports: [
-		// Core Infrastructure
 		AuthModule,
 		UserModule,
 		RedisModule,
@@ -54,9 +45,9 @@ import { ExperienceModule } from 'modules/experience/experience.module'
 		StorageModule,
 		AuditLogModule,
 		DatabaseModule,
+		FirebaseModule,
 		ApiMetricModule,
 
-		// CMS & Portfolio Modules
 		HomeModule,
 		AboutModule,
 		SkillModule,
@@ -70,17 +61,13 @@ import { ExperienceModule } from 'modules/experience/experience.module'
 		EducationModule,
 		ExperienceModule,
 
-		// Framework Providers
 		SentryModule.forRoot(),
 		ScheduleModule.forRoot(),
 		EventEmitterModule.forRoot(),
+		// A generous global ceiling per client; sensitive public routes such as the contact form set their own.
 		ThrottlerModule.forRoot([{ ttl: 60_000, limit: 1000 }]),
 	],
 	controllers: [],
 	providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
-export class AppModule implements NestModule {
-	configure(consumer: MiddlewareConsumer) {
-		consumer.apply(RequestIdMiddleware, RequestContextMiddleware).forRoutes('*')
-	}
-}
+export class AppModule {}

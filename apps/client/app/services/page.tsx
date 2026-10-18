@@ -2,25 +2,27 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight } from 'components/icons'
 import { SiteShell } from 'components/site-shell'
-import { EmptyState, Section, SectionHeader } from 'components/primitives'
+import { EmptyState } from 'components/primitives/feedback'
+import { Section, SectionHeader } from 'components/primitives/layout'
 import { PageHero } from 'components/home/page-hero'
 import { StackClusters } from 'components/portfolio/stack-clusters'
 import { ContactCTA, TechTicker } from 'components/home/home-sections'
-import { Button } from 'components/ui/button'
-import { splitList } from 'lib/format'
+import { Button } from 'ui/button'
 import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
+import { emailAddress } from 'lib/email'
 
 export const generateMetadata = async (): Promise<Metadata> => {
+	'use cache'
 	return resolveMetadataByPath('/services')
 }
 
-export default async function ServicesPage() {
+const ServicesPage = async () => {
 	const [services, socials] = await Promise.all([getServicesData(), getSocialsData()])
 
-	const email = socials.find(social => social.platform === 'mail')?.handle ?? null
-	const total = services.reduce((acc, service) => acc + splitList(service.description).length, 0)
+	const email = emailAddress(socials)
+	const total = services.reduce((acc, service) => acc + service.features.length, 0)
 
 	return (
 		<SiteShell socials={socials}>
@@ -63,3 +65,5 @@ export default async function ServicesPage() {
 		</SiteShell>
 	)
 }
+
+export default ServicesPage

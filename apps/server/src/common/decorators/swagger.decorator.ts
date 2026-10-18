@@ -1,4 +1,6 @@
-import { applyDecorators, Type } from '@nestjs/common'
+import type { ApiEndpointOptions } from 'types/server'
+
+import { applyDecorators, type Type } from '@nestjs/common'
 import {
 	ApiBadRequestResponse,
 	ApiBearerAuth,
@@ -12,22 +14,6 @@ import {
 	getSchemaPath,
 } from '@nestjs/swagger'
 
-export interface ApiEndpointOptions {
-	summary: string
-	description?: string
-	type?: Type<unknown>
-	auth?: boolean
-	endpoint?: string
-	isArray?: boolean
-	notFound?: boolean
-	badRequest?: boolean
-	forbidden?: boolean
-	isPaginated?: boolean
-	unauthorized?: boolean
-	internalServerError?: boolean
-	method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
-}
-
 const statusMap: Record<ApiEndpointOptions['method'], number> = {
 	GET: 200,
 	POST: 201,
@@ -36,6 +22,39 @@ const statusMap: Record<ApiEndpointOptions['method'], number> = {
 	DELETE: 204,
 }
 
+const ENVELOPE = {
+	requestId: '7b4c7b17-f...',
+	timestamp: '2026-07-12T10:15:30.000Z',
+}
+
+const PAGINATION_SCHEMA = {
+	type: 'object',
+	properties: {
+		page: { type: 'number', example: 1 },
+		limit: { type: 'number', example: 10 },
+		total: { type: 'number', example: 100 },
+		totalPages: { type: 'number', example: 10 },
+	},
+}
+
+const errorExample = (statusCode: number, message: string, endpoint: string) => ({
+	schema: { example: { error: true, statusCode, message, endpoint, ...ENVELOPE } },
+})
+
+const resultSchema = (type: Type<unknown>, isArray: boolean, isPaginated: boolean) => {
+	const item = { $ref: getSchemaPath(type) }
+
+	if (isPaginated)
+		return {
+			type: 'object',
+			properties: { items: { type: 'array', items: item }, pagination: PAGINATION_SCHEMA },
+		}
+
+	return isArray ? { type: 'array', items: item } : item
+}
+
+// Documents an endpoint with the ResponseInterceptor envelope around its result, plus the
+// error responses it can return, so each controller method needs a single decorator.
 export const ApiEndpoint = ({
 	type,
 	method,
@@ -51,17 +70,19 @@ export const ApiEndpoint = ({
 	internalServerError = true,
 	endpoint = 'GET /api/v1/users',
 }: ApiEndpointOptions) => {
-	const decorators = []
+	const statusCode = statusMap[method]
 
-	const status = statusMap[method]
+	const success = {
+		message: 'Request successful.',
+		statusCode,
+		endpoint,
+		...ENVELOPE,
+	}
 
-	if (type) decorators.push(ApiExtraModels(type))
-
-	decorators.push(
+	return applyDecorators(
+		...(type ? [ApiExtraModels(type)] : []),
 		...(auth ? [ApiBearerAuth()] : []),
-
 		ApiOperation({ summary, description }),
-
 		ApiOkResponse({
 			description: 'Request successful.',
 			schema: type
@@ -69,156 +90,68 @@ export const ApiEndpoint = ({
 						allOf: [
 							{
 								type: 'object',
-								properties: {
-									success: { type: 'boolean', example: true },
-									statusCode: { type: 'number', example: status },
-									message: { type: 'string', example: 'Request successful.' },
-									requestId: { type: 'string', example: '7b4c7b17-f...' },
-									timestamp: {
-										type: 'string',
-										format: 'date-time',
-										example: '2026-07-12T10:15:30.000Z',
-									},
-									ip: { type: 'string', example: '127.0.0.1' },
-									endpoint: { type: 'string', example: endpoint },
-								},
+								properties: Object.fromEntries(
+									Object.entries(success).map(([key, example]) => [
+										key,
+										{ type: typeof example, example },
+									]),
+								),
 							},
 							{
 								type: 'object',
 								properties: {
-									data: isArray
-										? { type: 'array', items: { $ref: getSchemaPath(type) } }
-										: { $ref: getSchemaPath(type) },
-									...(isPaginated && {
-										pagination: {
-											type: 'object',
-											properties: {
-												page: { type: 'number', example: 1 },
-												limit: { type: 'number', example: 10 },
-												total: { type: 'number', example: 100 },
-												totalPages: { type: 'number', example: 10 },
-											},
-										},
-									}),
+									result: resultSchema(type, isArray, isPaginated),
+									count: { type: 'number', example: 1 },
 								},
 							},
 						],
 					}
 				: {
 						example: {
-							success: true,
-							statusCode: status,
-							endpoint,
-							message: 'Request successful.',
-							requestId: '7b4c7b17-f...',
-							timestamp: '2026-07-12T10:15:30.000Z',
-							ip: '127.0.0.1',
-							data: isArray ? [] : {},
-							pagination: isPaginated
-								? {
-										type: 'object',
-										properties: {
-											page: { type: 'number', example: 1 },
-											limit: { type: 'number', example: 10 },
-											total: { type: 'number', example: 100 },
-											totalPages: { type: 'number', example: 10 },
-										},
-									}
-								: undefined,
+							...success,
+							result: isPaginated ? { items: [], pagination: {} } : isArray ? [] : {},
 						},
 					},
 		}),
+		...(badRequest
+			? [
+					ApiBadRequestResponse({
+						description: 'Validation failed.',
+						...errorExample(400, 'Validation failed.', endpoint),
+					}),
+				]
+			: []),
+		...(unauthorized && auth
+			? [
+					ApiUnauthorizedResponse({
+						description: 'Unauthorized.',
+						...errorExample(401, 'Invalid or expired authentication token', endpoint),
+					}),
+				]
+			: []),
+		...(forbidden && auth
+			? [
+					ApiForbiddenResponse({
+						description: 'Forbidden.',
+						...errorExample(403, 'You do not have permission to access this resource.', endpoint),
+					}),
+				]
+			: []),
+		...(notFound
+			? [
+					ApiNotFoundResponse({
+						description: 'Resource not found.',
+						...errorExample(404, 'Resource not found.', endpoint),
+					}),
+				]
+			: []),
+		...(internalServerError
+			? [
+					ApiInternalServerErrorResponse({
+						description: 'Internal server error.',
+						...errorExample(500, 'Internal Server Error', endpoint),
+					}),
+				]
+			: []),
 	)
-
-	if (badRequest)
-		decorators.push(
-			ApiBadRequestResponse({
-				description: 'Validation failed.',
-				schema: {
-					example: {
-						success: false,
-						statusCode: 400,
-						message: 'Validation failed.',
-						requestId: '7b4c7b17-f...',
-						timestamp: '2026-07-12T10:15:30.000Z',
-						ip: '127.0.0.1',
-						endpoint,
-					},
-				},
-			}),
-		)
-
-	if (unauthorized && auth)
-		decorators.push(
-			ApiUnauthorizedResponse({
-				description: 'Unauthorized.',
-				schema: {
-					example: {
-						success: false,
-						statusCode: 401,
-						message: 'Invalid or expired authentication token',
-						requestId: '7b4c7b17-f...',
-						timestamp: '2026-07-12T10:15:30.000Z',
-						ip: '127.0.0.1',
-						endpoint,
-					},
-				},
-			}),
-		)
-
-	if (forbidden && auth)
-		decorators.push(
-			ApiForbiddenResponse({
-				description: 'Forbidden.',
-				schema: {
-					example: {
-						success: false,
-						statusCode: 403,
-						message: 'You do not have permission to access this resource.',
-						requestId: '7b4c7b17-f...',
-						timestamp: '2026-07-12T10:15:30.000Z',
-						ip: '127.0.0.1',
-						endpoint,
-					},
-				},
-			}),
-		)
-
-	if (notFound)
-		decorators.push(
-			ApiNotFoundResponse({
-				description: 'Resource not found.',
-				schema: {
-					example: {
-						success: false,
-						statusCode: 404,
-						message: 'Resource not found.',
-						requestId: '7b4c7b17-f...',
-						timestamp: '2026-07-12T10:15:30.000Z',
-						ip: '127.0.0.1',
-						endpoint,
-					},
-				},
-			}),
-		)
-
-	if (internalServerError)
-		decorators.push(
-			ApiInternalServerErrorResponse({
-				description: 'Internal server error.',
-				schema: {
-					example: {
-						success: false,
-						statusCode: 500,
-						message: 'Internal Server Error',
-						requestId: '7b4c7b17-f...',
-						timestamp: '2026-07-12T10:15:30.000Z',
-						ip: '127.0.0.1',
-						endpoint,
-					},
-				},
-			}),
-		)
-
-	return applyDecorators(...decorators)
 }

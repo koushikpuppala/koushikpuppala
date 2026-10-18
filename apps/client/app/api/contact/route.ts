@@ -1,8 +1,9 @@
+import type { ContactFormPayload } from 'types/api'
 import { NextResponse } from 'next/server'
 import { BASE_URL } from '../../../src/constants/base-url'
-import { validateContactForm, type ContactFormPayload } from '../../../src/lib/contact-data'
+import { validateContactForm } from '../../../src/lib/contact-data'
 
-export async function POST(req: Request) {
+export const POST = async (req: Request) => {
 	try {
 		const rawBody = await req.json()
 		const body: ContactFormPayload = {
@@ -13,7 +14,6 @@ export async function POST(req: Request) {
 			message: (rawBody.message || '').trim(),
 		}
 
-		// 1. Strict input validation
 		const { isValid, errors } = validateContactForm(body)
 		if (!isValid) {
 			return NextResponse.json(
@@ -26,8 +26,7 @@ export async function POST(req: Request) {
 			)
 		}
 
-		// 2. Anti-spam Honeypot Check
-		// If automated bots fill the invisible 'url' field, succeed silently without hitting backend
+		// Honeypot field: bots that fill it get a normal success reply, and nothing is sent to the API.
 		if (body.url && body.url.trim().length > 0) {
 			return NextResponse.json({
 				success: true,
@@ -35,8 +34,11 @@ export async function POST(req: Request) {
 			})
 		}
 
-		// 3. Connect to Authoritative Backend Contact Endpoint
 		const apiUrl = BASE_URL
+
+		// The last address is the one added by our own proxy; earlier entries can be forged by the client.
+		// It is forwarded so the API rate-limits and verifies reCAPTCHA against the visitor, not this server.
+		const clientIp = req.headers.get('x-forwarded-for')?.split(',').pop()?.trim()
 
 		try {
 			const backendRes = await fetch(`${apiUrl}/api/v1/contacts`, {
@@ -44,7 +46,7 @@ export async function POST(req: Request) {
 				headers: {
 					'Content-Type': 'application/json',
 					'User-Agent': req.headers.get('user-agent') || 'apps/client',
-					'X-Forwarded-For': req.headers.get('x-forwarded-for') || '127.0.0.1',
+					...(clientIp && { 'X-Forwarded-For': clientIp }),
 				},
 				body: JSON.stringify({
 					name: body.name.trim(),
@@ -52,6 +54,7 @@ export async function POST(req: Request) {
 					subject: body.subject.trim(),
 					message: body.message.trim(),
 					source: 'website',
+					...(typeof body.recaptchaToken === 'string' && { recaptchaToken: body.recaptchaToken }),
 				}),
 			})
 
@@ -77,7 +80,6 @@ export async function POST(req: Request) {
 				{ status: backendRes.status },
 			)
 		} catch {
-			// Backend service unreachable during local build, offline test, or maintenance
 			return NextResponse.json(
 				{
 					success: false,

@@ -1,9 +1,8 @@
 model Experience {
-  id      String @id @default(uuid()) @db.Uuid
-  version Int    @default(1)
+  id String @id @default(uuid()) @db.Uuid
 
   title          String
-  company        String
+  organization   String
   location       String
   employmentType EmploymentType @map("employment_type")
 

@@ -1,37 +1,23 @@
 'use client'
 
+import type {
+	AboutBlockProps,
+	ContactCTAProps,
+	EducationBlockProps,
+	LeadershipStripProps,
+	MetaRowProps,
+	TechTickerProps,
+} from 'types/components/client'
 import Link from 'next/link'
 import { LogoGlyph } from 'components/brand/logo'
-import { Chip, Magnetic, Marquee, Reveal, Spotlight } from 'components/primitives'
-import {
-	ArrowRight,
-	ArrowUpRight,
-	Discord,
-	Github,
-	Linkedin,
-	Mail,
-	Twitter,
-} from 'components/icons'
-import { Button } from 'components/ui/button'
-import { formatMonthYear, formatYear, splitList } from 'lib/format'
+import { Chip } from 'components/primitives/layout'
+import { Magnetic, Marquee, Reveal, Spotlight } from 'components/primitives/motion'
+import { ArrowRight, ArrowUpRight, socialIcon } from 'components/icons'
+import { Button } from 'ui/button'
+import { formatMonthYear, formatYear } from 'lib/format'
 import { classNames } from 'utils/classNames'
-import type {
-	PublishedAbout,
-	PublishedEducation,
-	PublishedExperience,
-	PublishedService,
-	PublishedSocial,
-} from 'types/models'
 
-export const socialIcons: Record<string, React.ComponentType<{ className?: string }>> = {
-	github: Github,
-	linkedin: Linkedin,
-	x: Twitter,
-	gmail: Mail,
-	discord: Discord,
-}
-
-const MetaRow = ({ label, value }: { label: string; value: string }) => {
+const MetaRow = ({ label, value }: MetaRowProps) => {
 	return (
 		<div className='border-border grid grid-cols-[6.5rem_minmax(0,1fr)] items-baseline gap-3 border-t py-3 first:border-t-0'>
 			<dt className='text-muted-foreground font-mono text-[0.625rem] tracking-[0.16em] uppercase'>
@@ -51,29 +37,21 @@ export const AboutBlock = ({
 	showLink = true,
 	showBio = true,
 	className,
-}: {
-	about: PublishedAbout
-	current?: PublishedExperience
-	education?: PublishedEducation
-	showLink?: boolean
-	showBio?: boolean
-	className?: string
-}) => {
-	const descStr = about.description || about.content || ''
-
-	const paragraphs = descStr.split('\n').filter(Boolean)
+}: AboutBlockProps) => {
+	const lead = about.leadStatement || about.biography
+	const paragraphs = about.content.split('\n').filter(Boolean)
 
 	return (
 		<div className={classNames('grid gap-12 lg:grid-cols-12 lg:gap-16', className)}>
 			<div className='lg:col-span-7'>
-				{showBio ? (
+				{showBio && lead ? (
 					<Reveal>
 						<p className='font-display text-2xl leading-[1.35] font-medium tracking-tight text-balance sm:text-[1.75rem]'>
-							{about.bio}
+							{lead}
 						</p>
 					</Reveal>
 				) : null}
-				<div className={classNames('space-y-5', showBio && 'mt-8')}>
+				<div className={classNames('space-y-5', showBio && lead && 'mt-8')}>
 					{paragraphs.map((paragraph, i) => (
 						<Reveal key={paragraph.slice(0, 24)} delay={70 + i * 55}>
 							<p
@@ -114,17 +92,13 @@ export const AboutBlock = ({
 							</span>
 						</div>
 						<dl className='p-6'>
-							{current ? (
-								<MetaRow label='Role' value={current.role || current.title || ''} />
-							) : null}
-							{current ? (
-								<MetaRow label='Company' value={current.organization || current.company || ''} />
-							) : null}
-							<MetaRow label='Based' value={current?.location ?? 'India'} />
+							{current ? <MetaRow label='Role' value={current.title} /> : null}
+							{current ? <MetaRow label='Organization' value={current.organization} /> : null}
+							{current?.location ? <MetaRow label='Based' value={current.location} /> : null}
 							{education ? (
 								<MetaRow
 									label='Degree'
-									value={`${education.degree}${education.field || education.fieldOfStudy ? ` · ${education.field || education.fieldOfStudy}` : ''}`}
+									value={[education.degree, education.fieldOfStudy].filter(Boolean).join(' · ')}
 								/>
 							) : null}
 						</dl>
@@ -135,15 +109,7 @@ export const AboutBlock = ({
 	)
 }
 
-export const EducationBlock = ({
-	items,
-	detailed = false,
-	className,
-}: {
-	items: PublishedEducation[]
-	detailed?: boolean
-	className?: string
-}) => {
+export const EducationBlock = ({ items, className }: EducationBlockProps) => {
 	return (
 		<div className={classNames('', className)}>
 			{items.map((item, i) => (
@@ -155,27 +121,13 @@ export const EducationBlock = ({
 						<div className='min-w-0'>
 							<h3 className='font-display text-lg font-medium tracking-tight text-balance sm:text-xl'>
 								{item.degree}
-								{item.field ? <span className='text-muted-foreground'> · {item.field}</span> : null}
+								{item.fieldOfStudy ? (
+									<span className='text-muted-foreground'> · {item.fieldOfStudy}</span>
+								) : null}
 							</h3>
-							<p className='text-foreground/85 mt-1.5 text-sm'>{item.institution}</p>
-							{item.description ? (
-								<p className='text-muted-foreground mt-1 text-sm'>{item.description}</p>
-							) : null}
-							{detailed && (item.grade || item.mentor) ? (
-								<dl className='text-muted-foreground mt-4 flex flex-wrap gap-x-10 gap-y-2 font-mono text-[0.6875rem] tracking-[0.08em] uppercase'>
-									{item.grade ? (
-										<div>
-											<dt className='inline'>Grade — </dt>
-											<dd className='text-foreground inline'>{item.grade}</dd>
-										</div>
-									) : null}
-									{item.mentor ? (
-										<div>
-											<dt className='inline'>Mentor — </dt>
-											<dd className='text-foreground inline'>{item.mentor}</dd>
-										</div>
-									) : null}
-								</dl>
+							<p className='text-foreground/85 mt-1.5 text-sm'>{item.university}</p>
+							{item.description.length ? (
+								<p className='text-muted-foreground mt-1 text-sm'>{item.description.join(' ')}</p>
 							) : null}
 						</div>
 					</div>
@@ -185,8 +137,8 @@ export const EducationBlock = ({
 	)
 }
 
-export function TechTicker({ services }: { services: PublishedService[] }) {
-	const items = services.flatMap(service => splitList(service.description))
+export const TechTicker = ({ services }: TechTickerProps) => {
+	const items = services.flatMap(service => service.features)
 	if (!items.length) return null
 
 	return (
@@ -206,15 +158,7 @@ export function TechTicker({ services }: { services: PublishedService[] }) {
 	)
 }
 
-/* ------------------------------------------------------------------- CTA */
-
-export function ContactCTA({
-	socials,
-	email,
-}: {
-	socials: PublishedSocial[]
-	email?: string | null
-}) {
+export const ContactCTA = ({ socials, email }: ContactCTAProps) => {
 	return (
 		<div className='border-border relative isolate overflow-hidden border-t'>
 			<div className='mesh-bloom pointer-events-none absolute inset-0 -z-10' aria-hidden />
@@ -242,7 +186,7 @@ export function ContactCTA({
 
 				<Reveal delay={170}>
 					<div className='mt-10 flex flex-wrap items-center gap-4'>
-						<Magnetic>
+						<Magnetic strength={0.1}>
 							<Button asChild size='xl' variant='signal' className='group'>
 								<Link href='/contact'>
 									Start a conversation
@@ -250,7 +194,7 @@ export function ContactCTA({
 								</Link>
 							</Button>
 						</Magnetic>
-						<Magnetic strength={0.18}>
+						<Magnetic strength={0.1}>
 							<Button asChild size='xl' variant='outline'>
 								<Link href='/resume'>View resume</Link>
 							</Button>
@@ -263,20 +207,20 @@ export function ContactCTA({
 						{email ? (
 							<div className='min-w-0'>
 								<p className='text-eyebrow'>Direct</p>
-								<a
+								<Link
 									href={`mailto:${email}`}
 									className='group font-display text-foreground mt-3 inline-flex max-w-full items-center gap-3 text-lg font-medium tracking-tight break-all sm:text-2xl'>
 									<span className='link-underline'>{email}</span>
 									<ArrowUpRight className='arrow-slide text-signal-ink size-4 shrink-0' />
-								</a>
+								</Link>
 							</div>
 						) : null}
 
 						<div className='flex flex-wrap items-center gap-2'>
 							{socials.map(social => {
-								const Icon = socialIcons[social.icon ?? ''] ?? ArrowUpRight
+								const Icon = socialIcon(social)
 								return (
-									<a
+									<Link
 										key={social.id}
 										href={social.url}
 										target='_blank'
@@ -284,7 +228,7 @@ export function ContactCTA({
 										className='group border-border bg-background/50 text-muted-foreground hover:border-signal/60 hover:text-foreground inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-all duration-300 hover:-translate-y-0.5'>
 										<Icon className='size-4' />
 										{social.label}
-									</a>
+									</Link>
 								)
 							})}
 						</div>
@@ -295,8 +239,8 @@ export function ContactCTA({
 	)
 }
 
-export function LeadershipStrip({ experience }: { experience: PublishedExperience[] }) {
-	const lead = experience.find(item => /lead|mentor/i.test(item.role || item.title || ''))
+export const LeadershipStrip = ({ experience }: LeadershipStripProps) => {
+	const lead = experience.find(item => /lead|mentor/i.test(item.title))
 	if (!lead) return null
 
 	return (
@@ -305,7 +249,7 @@ export function LeadershipStrip({ experience }: { experience: PublishedExperienc
 				<div className='min-w-0'>
 					<p className='text-eyebrow'>Leadership</p>
 					<h3 className='font-display mt-3 text-xl font-medium tracking-tight text-balance sm:text-2xl'>
-						{lead.role || lead.title} · {lead.organization || lead.company}
+						{lead.title} · {lead.organization}
 					</h3>
 					<p className='text-muted-foreground mt-2 text-sm'>
 						{formatMonthYear(lead.startDate, '—')} — {formatMonthYear(lead.endDate)}

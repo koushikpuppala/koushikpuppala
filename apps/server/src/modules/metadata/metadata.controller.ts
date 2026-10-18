@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,17 +8,19 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { MetadataService } from './metadata.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
 import { CreateMetadataDto, QueryMetadataDto, UpdateMetadataDto } from './metadata.dto'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('Metadata')
+@RevalidateTags('metadata')
 @Controller('metadata')
 export class MetadataController {
 	constructor(private readonly metadataService: MetadataService) {}
@@ -94,9 +94,7 @@ export class MetadataController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/metadata',
 	})
-	async create(@Body() dto: CreateMetadataDto, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async create(@Body() dto: CreateMetadataDto, @Actor() actor: string) {
 		return this.metadataService.create(dto, actor)
 	}
 
@@ -110,10 +108,8 @@ export class MetadataController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateMetadataDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.metadataService.update(id, dto, actor)
 	}
 
@@ -124,9 +120,7 @@ export class MetadataController {
 		method: 'PATCH',
 		endpoint: 'PATCH /api/v1/metadata/:id/publish',
 	})
-	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.metadataService.togglePublish(id, actor)
 	}
 
@@ -137,9 +131,7 @@ export class MetadataController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/metadata/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.metadataService.remove(id, actor)
 	}
 }

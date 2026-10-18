@@ -1,9 +1,8 @@
-import * as dotenv from 'dotenv'
-import * as path from 'node:path'
+import { config } from 'dotenv'
+import { resolve } from 'node:path'
 import { defineConfig, env } from 'prisma/config'
 
-// Only load dotenv when not running on Vercel
-if (!process.env.VERCEL) dotenv.config({ path: path.resolve(process.cwd(), '.env') })
+if (!process.env.VERCEL) config({ path: resolve(process.cwd(), '.env') })
 else
 	console.log(
 		'Running on Vercel, skipping dotenv configuration - using platform environment variables instead.',

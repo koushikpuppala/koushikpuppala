@@ -1,5 +1,3 @@
-import type { Request } from 'express'
-
 import {
 	Body,
 	Controller,
@@ -10,17 +8,19 @@ import {
 	Patch,
 	Post,
 	Query,
-	Req,
 } from '@nestjs/common'
 import { UserRole } from '@repo/prisma'
 import { ApiTags } from '@nestjs/swagger'
+import { Actor } from 'common/decorators/actor.decorator'
 import { SkillService } from './skill.service'
 import { Roles } from 'common/decorators/roles.decorator'
 import { Public } from 'common/decorators/public.decorator'
 import { ApiEndpoint } from 'common/decorators/swagger.decorator'
 import { CreateSkillDto, QuerySkillDto, UpdateSkillDto } from './skill.dto'
+import { RevalidateTags } from 'common/decorators/revalidate.decorator'
 
 @ApiTags('Skills')
+@RevalidateTags('skills')
 @Controller('skills')
 export class SkillController {
 	constructor(private readonly skillService: SkillService) {}
@@ -68,9 +68,7 @@ export class SkillController {
 		method: 'POST',
 		endpoint: 'POST /api/v1/skills',
 	})
-	async create(@Body() dto: CreateSkillDto, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async create(@Body() dto: CreateSkillDto, @Actor() actor: string) {
 		return this.skillService.create(dto, actor)
 	}
 
@@ -84,10 +82,8 @@ export class SkillController {
 	async update(
 		@Param('id', ParseUUIDPipe) id: string,
 		@Body() dto: UpdateSkillDto,
-		@Req() req: Request,
+		@Actor() actor: string,
 	) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
 		return this.skillService.update(id, dto, actor)
 	}
 
@@ -98,9 +94,7 @@ export class SkillController {
 		method: 'PATCH',
 		endpoint: 'PATCH /api/v1/skills/:id/publish',
 	})
-	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async togglePublish(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.skillService.togglePublish(id, actor)
 	}
 
@@ -111,9 +105,7 @@ export class SkillController {
 		method: 'DELETE',
 		endpoint: 'DELETE /api/v1/skills/:id',
 	})
-	async remove(@Param('id', ParseUUIDPipe) id: string, @Req() req: Request) {
-		const actor = req.user?.email ?? req.user?.id ?? 'admin'
-
+	async remove(@Param('id', ParseUUIDPipe) id: string, @Actor() actor: string) {
 		return this.skillService.remove(id, actor)
 	}
 }

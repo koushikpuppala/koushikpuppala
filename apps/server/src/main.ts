@@ -1,77 +1,28 @@
-import './instrument'
-
 import 'dotenv/config'
 
-import helmet from 'helmet'
+// Sentry must be initialised before any other module is imported so it can instrument them.
+import './instrument'
+
 import redoc from 'redoc-express'
-import compression from 'compression'
 import { AppModule } from './app.module'
+import { NestFactory } from '@nestjs/core'
+import { configureApp } from './bootstrap'
 import { Configuration } from 'config/configuration'
-import { NestFactory, Reflector } from '@nestjs/core'
 import { LoggerService } from 'common/logger/logger.service'
-import { ValidationPipe, VersioningType } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { ResponseInterceptor } from 'common/interceptors/response.interceptor'
-import { RequestIdMiddleware } from 'common/middlewares/request-id.middleware'
-import { RequestContextMiddleware } from 'common/middlewares/request-context.middleware'
 
 const bootstrap = async () => {
+	// rawBody keeps the unparsed request body available for handlers that need the exact bytes.
 	const app = await NestFactory.create(AppModule, { rawBody: true })
 
-	const express = app.getHttpAdapter().getInstance()
 	const logger = app.get(LoggerService)
 	const settings = app.get(Configuration)
 
-	express.set('trust proxy', true)
-
-	app.use(new RequestIdMiddleware().use)
-	app.use(new RequestContextMiddleware().use)
+	configureApp(app)
 
 	app.enableShutdownHooks()
 
-	app.enableCors({
-		credentials: true,
-		origin: settings.origin,
-		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-	})
-
-	app.setGlobalPrefix('api')
-
-	app.use(compression({ threshold: '1kb' }))
-
-	app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' })
-
-	app.use(
-		helmet({
-			contentSecurityPolicy: {
-				directives: {
-					defaultSrc: ["'self'"],
-					scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-					styleSrc: ["'self'", "'unsafe-inline'"],
-					imgSrc: ["'self'", 'data:', 'https:'],
-					fontSrc: ["'self'", 'https:', 'data:'],
-					connectSrc: ["'self'", 'https:'],
-					frameAncestors: ["'none'"],
-					baseUri: ["'self'"],
-					formAction: ["'self'"],
-				},
-			},
-			crossOriginEmbedderPolicy: false,
-			crossOriginResourcePolicy: { policy: 'cross-origin' },
-		}),
-	)
-
-	app.useGlobalPipes(
-		new ValidationPipe({
-			transform: true,
-			whitelist: true,
-			forbidNonWhitelisted: true,
-			transformOptions: { enableImplicitConversion: true },
-		}),
-	)
-
-	app.useGlobalInterceptors(new ResponseInterceptor(app.get(Reflector)))
-
+	// Route Nest's internal logs through Winston so they share the same format, files and redaction.
 	app.useLogger({
 		log: message => logger.info(message, 'Application/Nest'),
 
@@ -109,6 +60,7 @@ const bootstrap = async () => {
 
 	const document = SwaggerModule.createDocument(app, config)
 
+	// API docs are only exposed outside production.
 	if (settings.environment !== 'production') {
 		SwaggerModule.setup('api/docs', app, document)
 

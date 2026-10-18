@@ -1,15 +1,18 @@
 import { DatabaseService } from 'database'
+import { Prisma } from '@repo/prisma'
 import { Injectable } from '@nestjs/common'
-import { AuditAction, Prisma } from '@repo/prisma'
 import { BaseService } from 'common/services/base-cms.service'
-import { AuditLogService } from 'modules/audit-log/audit-log.service'
+import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
+import { publishFields, publishUpdate } from 'common/utils/publish.util'
 import { CreateServiceDto, QueryServiceDto, UpdateServiceDto } from './service.dto'
+
+const ENTITY = 'Service'
 
 @Injectable()
 export class ServiceService extends BaseService {
 	constructor(
 		private readonly prisma: DatabaseService,
-		private readonly auditLog: AuditLogService,
+		private readonly audit: CmsAuditService,
 	) {
 		super()
 	}
@@ -41,7 +44,10 @@ export class ServiceService extends BaseService {
 				where,
 				skip,
 				take,
-				orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
+				orderBy: this.getOrderBy(query.sortBy, query.sortOrder, [
+					{ sortOrder: 'asc' },
+					{ createdAt: 'desc' },
+				]),
 				include: { image: true },
 			}),
 			this.prisma.service.count({ where }),
@@ -62,28 +68,15 @@ export class ServiceService extends BaseService {
 	async create(dto: CreateServiceDto, actor = 'admin') {
 		const service = await this.prisma.service.create({
 			data: {
-				title: dto.title,
-				subtitle: dto.subtitle,
-				description: dto.description,
+				...dto,
 				features: dto.features ?? [],
-				icon: dto.icon,
-				imageId: dto.imageId,
 				sortOrder: dto.sortOrder ?? 0,
-				isPublished: dto.isPublished ?? false,
-				publishedAt: dto.isPublished ? new Date() : null,
+				...publishFields(dto.isPublished ?? false),
 			},
 			include: { image: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.CREATE,
-			entity: 'Service',
-			entityId: service.id,
-			actor,
-			newData: service as unknown as Record<string, unknown>,
-		})
-
-		return service
+		return this.audit.created(ENTITY, actor, service)
 	}
 
 	async update(id: string, dto: UpdateServiceDto, actor = 'admin') {
@@ -91,67 +84,26 @@ export class ServiceService extends BaseService {
 
 		const service = await this.prisma.service.update({
 			where: { id },
-			data: {
-				...(dto.title !== undefined && { title: dto.title }),
-				...(dto.subtitle !== undefined && { subtitle: dto.subtitle }),
-				...(dto.description !== undefined && { description: dto.description }),
-				...(dto.features !== undefined && { features: dto.features }),
-				...(dto.icon !== undefined && { icon: dto.icon }),
-				...(dto.imageId !== undefined && { imageId: dto.imageId }),
-				...(dto.sortOrder !== undefined && { sortOrder: dto.sortOrder }),
-				...(dto.isPublished !== undefined && {
-					isPublished: dto.isPublished,
-					publishedAt: dto.isPublished ? (existing.publishedAt ?? new Date()) : null,
-				}),
-			},
+			data: { ...dto, ...publishUpdate(dto.isPublished, existing.publishedAt) },
 			include: { image: true },
 		})
 
-		await this.auditLog.create({
-			action: AuditAction.UPDATE,
-			entity: 'Service',
-			entityId: service.id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-			newData: service as unknown as Record<string, unknown>,
-		})
-
-		return service
+		return this.audit.updated(ENTITY, actor, existing, service)
 	}
 
 	async togglePublish(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
-		const nextState = !existing.isPublished
 
-		const service = await this.prisma.service.update({
-			where: { id },
-			data: { isPublished: nextState, publishedAt: nextState ? new Date() : null },
-		})
-
-		await this.auditLog.create({
-			action: nextState ? AuditAction.PUBLISH : AuditAction.UNPUBLISH,
-			entity: 'Service',
-			entityId: service.id,
-			actor,
-			newData: { isPublished: nextState },
-		})
-
-		return service
+		return this.audit.togglePublish(ENTITY, actor, existing, data =>
+			this.prisma.service.update({ where: { id }, data }),
+		)
 	}
 
 	async remove(id: string, actor = 'admin') {
 		const existing = await this.findOne(id)
 
-		await this.prisma.service.update({ where: { id }, data: { deletedAt: new Date() } })
-
-		await this.auditLog.create({
-			action: AuditAction.DELETE,
-			entity: 'Service',
-			entityId: id,
-			actor,
-			oldData: existing as unknown as Record<string, unknown>,
-		})
-
-		return { id, deleted: true }
+		return this.audit.softDeleted(ENTITY, actor, existing, () =>
+			this.prisma.service.update({ where: { id }, data: { deletedAt: new Date() } }),
+		)
 	}
 }
