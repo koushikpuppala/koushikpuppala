@@ -1,6 +1,14 @@
 'use client'
 
-import type { HeroMetaCellProps, HeroProps } from 'types/components/client'
+import type {
+	HeroActionsProps,
+	HeroEyebrowProps,
+	HeroFactsProps,
+	HeroLink,
+	HeroMetaCellProps,
+	HeroProps,
+	HeroSocialsProps,
+} from 'types/components/client'
 
 import Link from 'next/link'
 import { toDisplayLines } from 'lib/format'
@@ -36,13 +44,100 @@ const MetaCell = ({ label, value, mono }: HeroMetaCellProps) => {
 	)
 }
 
+const ctaLink = (
+	label: string | null | undefined,
+	href: string | null | undefined,
+): HeroLink | null => (label && href ? { label, href } : null)
+
+const HeroEyebrow = ({ role, location, current, separator }: HeroEyebrowProps) => (
+	<div className='enter-item text-muted-foreground flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[0.6875rem] tracking-[0.16em] uppercase'>
+		{role ? (
+			<span className='text-foreground flex items-center gap-2'>
+				<PulseDot />
+				{role}
+			</span>
+		) : null}
+		{role && location ? (
+			<span aria-hidden className='text-signal-ink'>
+				{separator}
+			</span>
+		) : null}
+		{location ? <span>{location}</span> : null}
+		{current ? (
+			<span className='hidden items-center gap-5 sm:flex'>
+				<span aria-hidden className='text-signal-ink'>
+					{separator}
+				</span>
+				{current.organization}
+			</span>
+		) : null}
+	</div>
+)
+
+const HeroActions = ({ primary, secondary }: HeroActionsProps) => (
+	<div className='enter-item enter-delay-6 mt-9 flex flex-wrap items-center gap-3'>
+		{primary ? (
+			<Magnetic>
+				<Button asChild size='xl' variant='signal' className='group'>
+					<Link href={primary.href}>
+						{primary.label}
+						<ArrowRight className='arrow-slide size-4' />
+					</Link>
+				</Button>
+			</Magnetic>
+		) : null}
+		{secondary ? (
+			<Magnetic strength={0.18}>
+				<Button asChild size='xl' variant='outline'>
+					<Link href={secondary.href}>{secondary.label}</Link>
+				</Button>
+			</Magnetic>
+		) : null}
+	</div>
+)
+
+const HeroSocials = ({ socials }: HeroSocialsProps) => (
+	<div className='enter-item enter-delay-6 mt-9 flex flex-wrap items-center gap-x-3 gap-y-4'>
+		{socials.map(social => {
+			const Icon = socialIcon(social)
+			return (
+				<Link
+					key={social.id}
+					href={social.url}
+					target='_blank'
+					rel='noreferrer noopener'
+					aria-label={social.label ?? social.platform}
+					className='group border-border text-muted-foreground hover:border-signal/60 hover:text-signal-ink grid size-10 place-items-center rounded-lg border transition-all duration-300 hover:-translate-y-0.5'>
+					<Icon className='size-4' />
+				</Link>
+			)
+		})}
+		<Link
+			href='/resume'
+			className='link-underline text-muted-foreground hover:text-foreground ml-1 inline-flex items-center gap-1.5 py-2 font-mono text-[0.8125rem] transition-colors'>
+			Resume <ArrowUpRight className='size-3.5' />
+		</Link>
+	</div>
+)
+
+const HeroFacts = ({ current, tenure, focus }: HeroFactsProps) => (
+	<div className='enter-item enter-delay-6 mt-16 lg:mt-20'>
+		<div className='hairline-grid border-border bg-surface/40 grid overflow-hidden rounded-xl border sm:grid-cols-3'>
+			{current?.location ? <MetaCell label='Based in' value={current.location} /> : null}
+			{current ? (
+				<MetaCell label='Currently' value={`${current.title} · ${current.organization}`} />
+			) : null}
+			{tenure || focus ? (
+				<MetaCell label={tenure ? 'Experience' : 'Focus'} value={tenure ?? focus} mono />
+			) : null}
+		</div>
+	</div>
+)
+
 export const Hero = ({ home, socials, current, location }: HeroProps) => {
 	const lines = toDisplayLines(home.title, 2)
-	const primary = home.ctaLabel && home.ctaUrl ? { label: home.ctaLabel, href: home.ctaUrl } : null
-	const secondary =
-		home.secondaryCtaLabel && home.secondaryCtaUrl
-			? { label: home.secondaryCtaLabel, href: home.secondaryCtaUrl }
-			: null
+	const primary = ctaLink(home.ctaLabel, home.ctaUrl)
+	const secondary = ctaLink(home.secondaryCtaLabel, home.secondaryCtaUrl)
 	const subtitles = home.subtitles || []
 	const role = subtitles[0]
 	const focus = subtitles.slice(1).join(' · ')
@@ -67,28 +162,7 @@ export const Hero = ({ home, socials, current, location }: HeroProps) => {
 			<div className='beam-sweep beam-sweep-delayed pointer-events-none absolute inset-x-0 bottom-40 -z-10 h-px' />
 
 			<div className='container-page relative pt-28 sm:pt-32 lg:pt-40'>
-				<div className='enter-item text-muted-foreground flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[0.6875rem] tracking-[0.16em] uppercase'>
-					{role ? (
-						<span className='text-foreground flex items-center gap-2'>
-							<PulseDot />
-							{role}
-						</span>
-					) : null}
-					{role && location ? (
-						<span aria-hidden className='text-signal-ink'>
-							{home.separator}
-						</span>
-					) : null}
-					{location ? <span>{location}</span> : null}
-					{current ? (
-						<span className='hidden items-center gap-5 sm:flex'>
-							<span aria-hidden className='text-signal-ink'>
-								{home.separator}
-							</span>
-							{current.organization}
-						</span>
-					) : null}
-				</div>
+				<HeroEyebrow role={role} location={location} current={current} separator={home.separator} />
 
 				<div className='mt-10 grid items-start gap-x-10 gap-y-14 lg:mt-14 lg:grid-cols-12'>
 					<div className='lg:col-span-7 xl:col-span-8'>
@@ -105,47 +179,9 @@ export const Hero = ({ home, socials, current, location }: HeroProps) => {
 
 						<p className='enter-item enter-delay-5 text-lead mt-7 max-w-xl'>{home.content}</p>
 
-						<div className='enter-item enter-delay-6 mt-9 flex flex-wrap items-center gap-3'>
-							{primary ? (
-								<Magnetic>
-									<Button asChild size='xl' variant='signal' className='group'>
-										<Link href={primary.href}>
-											{primary.label}
-											<ArrowRight className='arrow-slide size-4' />
-										</Link>
-									</Button>
-								</Magnetic>
-							) : null}
-							{secondary ? (
-								<Magnetic strength={0.18}>
-									<Button asChild size='xl' variant='outline'>
-										<Link href={secondary.href}>{secondary.label}</Link>
-									</Button>
-								</Magnetic>
-							) : null}
-						</div>
+						<HeroActions primary={primary} secondary={secondary} />
 
-						<div className='enter-item enter-delay-6 mt-9 flex flex-wrap items-center gap-x-3 gap-y-4'>
-							{socials.map(social => {
-								const Icon = socialIcon(social)
-								return (
-									<Link
-										key={social.id}
-										href={social.url}
-										target='_blank'
-										rel='noreferrer noopener'
-										aria-label={social.label ?? social.platform}
-										className='group border-border text-muted-foreground hover:border-signal/60 hover:text-signal-ink grid size-10 place-items-center rounded-lg border transition-all duration-300 hover:-translate-y-0.5'>
-										<Icon className='size-4' />
-									</Link>
-								)
-							})}
-							<Link
-								href='/resume'
-								className='link-underline text-muted-foreground hover:text-foreground ml-1 inline-flex items-center gap-1.5 py-2 font-mono text-[0.8125rem] transition-colors'>
-								Resume <ArrowUpRight className='size-3.5' />
-							</Link>
-						</div>
+						<HeroSocials socials={socials} />
 					</div>
 
 					<div className='enter-fade enter-delay-6 lg:col-span-5 lg:pt-6 xl:col-span-4'>
@@ -155,17 +191,7 @@ export const Hero = ({ home, socials, current, location }: HeroProps) => {
 					</div>
 				</div>
 
-				<div className='enter-item enter-delay-6 mt-16 lg:mt-20'>
-					<div className='hairline-grid border-border bg-surface/40 grid overflow-hidden rounded-xl border sm:grid-cols-3'>
-						{current?.location ? <MetaCell label='Based in' value={current.location} /> : null}
-						{current ? (
-							<MetaCell label='Currently' value={`${current.title} · ${current.organization}`} />
-						) : null}
-						{tenure || focus ? (
-							<MetaCell label={tenure ? 'Experience' : 'Focus'} value={tenure ?? focus} mono />
-						) : null}
-					</div>
-				</div>
+				<HeroFacts current={current} tenure={tenure} focus={focus} />
 
 				<div className='flex justify-center pt-10 pb-14 lg:pt-14'>
 					<Link

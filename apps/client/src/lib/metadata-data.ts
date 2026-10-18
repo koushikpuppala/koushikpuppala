@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import type { PublishedMetadata } from 'types/models'
-import type { MetadataPageKey, PageDefaults } from 'types/components/client'
+import type { MetadataPageKey, PageDefaults, ResolvedPageMetadata } from 'types/components/client'
 
 import { cache } from 'react'
 import { getPublishedMetadataByPath } from 'actions/cache/metadata'
@@ -30,77 +30,93 @@ const PAGE_DEFAULTS: Record<MetadataPageKey, PageDefaults> = {
 	contact: { title: 'Contact', canonicalUrl: `${SITE_DOMAIN}/contact` },
 }
 
-export const resolveMetadataByPath = cache(
-	async (pathname: string, customFallback?: Partial<PublishedMetadata>): Promise<Metadata> => {
-		const cleanPath = pathname.startsWith('/') ? pathname : `/${pathname}`
-		const key = pathToKeyMap[cleanPath] || (cleanPath.replace(/^\//, '') as MetadataPageKey)
-		const defaults = PAGE_DEFAULTS[key] ?? { title: 'Koushik Puppala', canonicalUrl: SITE_DOMAIN }
+const FALLBACK_DEFAULTS: PageDefaults = { title: 'Koushik Puppala', canonicalUrl: SITE_DOMAIN }
 
-		let backend: PublishedMetadata | null = null
-		try {
-			const res = await getPublishedMetadataByPath(cleanPath)
-			// The API falls back to the site-wide record when a page has none. Only accept an exact
-			// match, so each page keeps its own title and canonical URL from PAGE_DEFAULTS.
-			if (res && !res.error && res.result && [key, cleanPath].includes(res.result.key ?? ''))
-				backend = res.result
-		} catch {}
+// The API falls back to the site-wide record when a page has none. Only accept an exact match, so
+// each page keeps its own title and canonical URL from PAGE_DEFAULTS.
+const fetchPageMetadata = async (path: string, key: string): Promise<PublishedMetadata | null> => {
+	try {
+		const res = await getPublishedMetadataByPath(path)
 
-		const isHome = cleanPath === '/'
-		const robots = (backend?.robots ?? '').toLowerCase()
-		const index = !robots.includes('noindex')
-		const follow = !robots.includes('nofollow')
-		const rawTitle = backend?.title || customFallback?.title || defaults.title
-		// The home page title skips the layout's title template.
-		const title = isHome ? { absolute: rawTitle } : rawTitle
-		const socialTitle = isHome ? rawTitle : `${rawTitle} — Koushik Puppala`
+		return !res?.error && res?.result && [key, path].includes(res.result.key ?? '')
+			? res.result
+			: null
+	} catch {
+		return null
+	}
+}
 
-		const description = backend?.description || customFallback?.description || undefined
+const resolveFields = (
+	path: string,
+	key: MetadataPageKey,
+	backend: PublishedMetadata | null,
+	fallback: Partial<PublishedMetadata> | undefined,
+): ResolvedPageMetadata => {
+	const defaults = PAGE_DEFAULTS[key]
+	const robots = (backend?.robots ?? '').toLowerCase()
 
-		const canonical =
+	return {
+		title: backend?.title || fallback?.title || (defaults ?? FALLBACK_DEFAULTS).title,
+		description: backend?.description || fallback?.description || undefined,
+		canonical:
 			backend?.canonicalUrl ||
-			customFallback?.canonicalUrl ||
-			(PAGE_DEFAULTS[key] ? defaults.canonicalUrl : `${SITE_DOMAIN}${cleanPath}`)
+			fallback?.canonicalUrl ||
+			(defaults ? defaults.canonicalUrl : `${SITE_DOMAIN}${path}`),
+		ogImage: backend?.ogImage || fallback?.ogImage || DEFAULT_OG_IMAGE,
+		keywords: backend?.keywords?.length ? backend.keywords : fallback?.keywords || DEFAULT_KEYWORDS,
+		isHome: path === '/',
+		index: !robots.includes('noindex'),
+		follow: !robots.includes('nofollow'),
+	}
+}
 
-		const ogImage = backend?.ogImage || customFallback?.ogImage || DEFAULT_OG_IMAGE
+const toMetadata = (page: ResolvedPageMetadata): Metadata => {
+	const { title, description, canonical, ogImage, keywords, isHome, index, follow } = page
+	const socialTitle = isHome ? title : `${title} — Koushik Puppala`
 
-		const keywords =
-			backend?.keywords && backend.keywords.length > 0
-				? backend.keywords
-				: customFallback?.keywords || DEFAULT_KEYWORDS
-
-		return {
-			title,
+	return {
+		// The home page title skips the layout's title template.
+		title: isHome ? { absolute: title } : title,
+		description,
+		keywords,
+		alternates: { canonical },
+		openGraph: {
+			title: socialTitle,
 			description,
-			keywords,
-			alternates: { canonical },
-			openGraph: {
-				title: socialTitle,
-				description,
-				url: canonical,
-				siteName: 'Koushik Puppala',
-				type: 'website',
-				locale: 'en_US',
-				images: [{ url: ogImage, width: 1200, height: 630, alt: rawTitle }],
-			},
-			twitter: {
-				card: 'summary_large_image',
-				title: socialTitle,
-				description,
-				site: TWITTER_HANDLE,
-				creator: TWITTER_HANDLE,
-				images: [ogImage],
-			},
-			robots: {
+			url: canonical,
+			siteName: 'Koushik Puppala',
+			type: 'website',
+			locale: 'en_US',
+			images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: socialTitle,
+			description,
+			site: TWITTER_HANDLE,
+			creator: TWITTER_HANDLE,
+			images: [ogImage],
+		},
+		robots: {
+			index,
+			follow,
+			googleBot: {
 				index,
 				follow,
-				googleBot: {
-					index,
-					follow,
-					'max-video-preview': -1,
-					'max-image-preview': 'large',
-					'max-snippet': -1,
-				},
+				'max-video-preview': -1,
+				'max-image-preview': 'large',
+				'max-snippet': -1,
 			},
-		}
+		},
+	}
+}
+
+export const resolveMetadataByPath = cache(
+	async (pathname: string, customFallback?: Partial<PublishedMetadata>): Promise<Metadata> => {
+		const path = pathname.startsWith('/') ? pathname : `/${pathname}`
+		const key = pathToKeyMap[path] || (path.replace(/^\//, '') as MetadataPageKey)
+		const backend = await fetchPageMetadata(path, key)
+
+		return toMetadata(resolveFields(path, key, backend, customFallback))
 	},
 )

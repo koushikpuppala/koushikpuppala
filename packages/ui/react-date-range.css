@@ -89,7 +89,7 @@
 	}
 
 	.rdrMonth {
-		padding: 0 0.833em 1.666em 0.833em;
+		padding: 0 0.833em 1.666em;
 	}
 
 	.rdrMonth .rdrWeekDays {
@@ -163,6 +163,7 @@
 		@apply text-foreground;
 		left: 2px;
 		right: 2px;
+		border-radius: 1.042em;
 	}
 
 	.rdrInRange {
@@ -181,11 +182,6 @@
 		border-top-right-radius: 1.042em;
 		border-bottom-right-radius: 1.042em;
 		right: 2px;
-	}
-
-	.rdrSelected {
-		@apply text-foreground;
-		border-radius: 1.042em;
 	}
 
 	.rdrDayStartOfMonth .rdrInRange,

@@ -16,6 +16,14 @@ import { AuthProvider, Prisma, UserRole, UserStatus } from '@repo/prisma'
 const EMULATOR = `http://${process.env.FIREBASE_AUTH_EMULATOR_HOST}`
 const PROJECT = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
 
+// Compares the parsed host rather than the URL text, so a host such as revalidate.test.example
+// can never pass for the revalidation endpoint.
+export const isRevalidateRequest = (input: unknown): boolean => {
+	const url = input instanceof Request ? input.url : String(input)
+
+	return URL.canParse(url) && new URL(url).host === new URL(TEST_ENV.REVALIDATE_URL).host
+}
+
 export const createFakeS3 = () => ({
 	upload: vi.fn(),
 	exists: vi.fn(async () => true),

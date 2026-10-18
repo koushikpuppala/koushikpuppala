@@ -11,7 +11,7 @@ export class CreateSocialDto extends SortableDto {
 	platform!: SocialPlatform
 
 	@ApiProperty({ example: 'https://github.com/koushikpuppala' })
-	@Matches(/^(https?:\/\/\S+|mailto:[^\s@]+@[^\s@]+\.[^\s@]+)$/, {
+	@Matches(/^(https?:\/\/\S+|mailto:[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+)$/, {
 		message: 'url must be an http(s) URL or a mailto: address',
 	})
 	url!: string

@@ -34,13 +34,7 @@ import type {
 import type { DataTableFilters, DataTableOptions } from '../index'
 
 export type ButtonVariant =
-	| 'default'
-	| 'signal'
-	| 'destructive'
-	| 'outline'
-	| 'secondary'
-	| 'ghost'
-	| 'link'
+	'default' | 'signal' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
 
 export type ButtonSize = 'default' | 'sm' | 'lg' | 'xl' | 'icon' | 'icon-sm'
 
@@ -217,6 +211,62 @@ export type DateRangeFilterProps = {
 export type VisibleColumn = { id: string; label: string; visible: boolean; toggle: () => void }
 
 export type ColumnVisibilityMenuProps = { columns: VisibleColumn[]; hidden: boolean }
+
+export type DataTableInitialStateOptions = {
+	searchParams: URLSearchParams
+	prefix: string
+	filters: DataTableFilters[] | undefined
+	pageSize: number
+}
+
+export type DataTableInitialState = {
+	sorting: SortingState
+	columnVisibility: ColumnVisibilityState
+	columnFilters: ColumnFiltersState
+	search: string
+	date: DateRangeValue
+	pagination: TablePagination
+}
+
+export type DataTableToolbarProps = {
+	search: string
+	onSearch: (search: string) => void
+	disableSearch: boolean
+	filters: DataTableFilters[] | undefined
+	filterValue: (id: string) => string | undefined
+	onFilter: (id: string, value: string) => void
+	date: DateRangeValue
+	onDate: (date: DateRangeValue) => void
+	disableDateRange: boolean
+	onClear: () => void
+	disableClearFilters: boolean
+	columns: VisibleColumn[]
+	disableColumnVisibility: boolean
+}
+
+export type DataTableSortDirection = 'asc' | 'desc'
+
+export type DataTableHeadCellProps = {
+	label: string
+	sortable: boolean
+	sorted: DataTableSortDirection | false
+	onSort: ((event: unknown) => void) | undefined
+	sticky: boolean
+	children: ReactNode
+}
+
+export type DataTableBodyCell = { id: string; sticky: boolean; content: ReactNode }
+
+export type DataTableBodyRow = { id: string; cells: DataTableBodyCell[] }
+
+export type DataTableBodyProps = {
+	loading: boolean
+	skeletonRows: number
+	columnIds: string[]
+	rows: DataTableBodyRow[]
+	emptyState: DataTableEmptyState | undefined
+	hasActiveFilters: boolean
+}
 
 export type DataTablePagerProps = {
 	pagination: TablePagination

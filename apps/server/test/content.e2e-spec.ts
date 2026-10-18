@@ -1,6 +1,6 @@
 import { UserRole } from '@repo/prisma'
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { bootApp, createUser, resetState, type TestApp } from './helpers'
+import { bootApp, createUser, isRevalidateRequest, resetState, type TestApp } from './helpers'
 
 const project = (slug: string) => ({
 	slug,
@@ -147,9 +147,7 @@ describe('CMS content (e2e)', () => {
 		const fetchSpy = vi
 			.spyOn(globalThis, 'fetch')
 			.mockImplementation((input, init) =>
-				String(input).startsWith('http://revalidate.test')
-					? Promise.resolve(new Response('{}'))
-					: realFetch(input, init),
+				isRevalidateRequest(input) ? Promise.resolve(new Response('{}')) : realFetch(input, init),
 			)
 
 		try {
@@ -166,9 +164,7 @@ describe('CMS content (e2e)', () => {
 					}),
 				),
 			)
-			const revalidations = fetchSpy.mock.calls.filter(([url]) =>
-				String(url).includes('revalidate'),
-			)
+			const revalidations = fetchSpy.mock.calls.filter(([url]) => isRevalidateRequest(url))
 			expect(revalidations).toHaveLength(1)
 		} finally {
 			fetchSpy.mockRestore()

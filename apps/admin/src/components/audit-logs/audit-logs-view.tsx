@@ -9,6 +9,7 @@ import { Button } from 'ui/button'
 import { User, Shield, Eye } from 'components/icons'
 import { auditLogsActions } from 'actions/audit-logs'
 import { useLatestRequest } from 'lib/use-server-list'
+import { toPageQuery } from 'lib/list-query'
 import { CountCard } from 'components/cms/count-card'
 import { PageHeader } from 'components/cms/page-header'
 import { ErrorBanner } from 'components/ui/error-banner'
@@ -16,6 +17,8 @@ import { RefreshButton } from 'components/cms/refresh-button'
 import { ActionBadge, AuditLogDialog } from 'components/audit-logs/audit-log-dialog'
 
 const PAGE_SIZE = 25
+
+const AUDIT_FILTERS = ['search', 'action', 'entity', 'from', 'to'] as const
 
 export const AuditLogsView = () => {
 	const searchParams = useSearchParams()
@@ -74,28 +77,14 @@ export const AuditLogsView = () => {
 		setLoading(true)
 		setError(null)
 		try {
-			const search = searchParams.get('search') || ''
-			const actionFilter = searchParams.get('action') || ''
-			const entityFilter = searchParams.get('entity') || ''
-			const from = searchParams.get('from') || ''
-			const to = searchParams.get('to') || ''
-
-			const query = new URLSearchParams({
-				page: searchParams.get('page') || '1',
-				limit: searchParams.get('pageSize') || String(PAGE_SIZE),
-			})
-			if (search) query.set('search', search)
-			if (actionFilter) query.set('action', actionFilter)
-			if (entityFilter) query.set('entity', entityFilter)
-			if (from) query.set('from', from)
-			if (to) query.set('to', to)
-
-			const res = await auditLogsActions.list<AuditLogItem>(query, signal)
+			const res = await auditLogsActions.list<AuditLogItem>(
+				toPageQuery(searchParams, AUDIT_FILTERS, PAGE_SIZE),
+				signal,
+			)
 			if (res.aborted) return
 			if (res.data) {
 				setLogs(res.data)
-				const total = res.count || res.data.length
-				setTotalCount(total)
+				setTotalCount(res.count || res.data.length)
 			} else if (res.error) {
 				setError(res.error)
 			}

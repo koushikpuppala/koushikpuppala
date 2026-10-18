@@ -14,7 +14,7 @@ export const adminFetch = async <T>(
 		Accept: 'application/json',
 		// FormData bodies need the browser to set the multipart boundary itself.
 		...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
-		...((options.headers as Record<string, string>) || {}),
+		...(options.headers as Record<string, string>),
 	}
 
 	try {

@@ -8,7 +8,7 @@ export const resumeFileName = (title?: string | null, versionName?: string | nul
 		.join(' ')
 		.toLowerCase()
 		.replace(/[^a-z0-9.]+/g, '_')
-		.replace(/^_+|_+$/g, '')
+		.replace(/^_|_$/g, '')
 
 	return `${base || 'resume'}.pdf`
 }

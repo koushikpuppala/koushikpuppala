@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { publishFilter, toListQuery } from './list-query'
+import { publishFilter, toListQuery, toPageQuery } from './list-query'
 
 const query = (url: string, options?: Parameters<typeof toListQuery>[1]) =>
 	toListQuery(new URLSearchParams(url), options).toString()
@@ -31,5 +31,20 @@ describe('toListQuery', () => {
 
 	it("ignores parameters that are not the table's to send", () => {
 		expect(query('id=42&hide_status=true&priority=HIGH')).toBe('')
+	})
+})
+
+describe('toPageQuery', () => {
+	const page = (url: string) =>
+		toPageQuery(new URLSearchParams(url), ['search', 'method'], 25).toString()
+
+	it('always sends a page and the table page size', () => {
+		expect(page('')).toBe('page=1&limit=25')
+	})
+
+	it('keeps the table page, page size and the listed filters that have a value', () => {
+		expect(page('page=2&pageSize=50&search=users&method=&other=x')).toBe(
+			'page=2&limit=50&search=users',
+		)
 	})
 })

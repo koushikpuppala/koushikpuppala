@@ -67,6 +67,23 @@ describe('media (e2e)', () => {
 			.expect(400)
 	})
 
+	it('cleans the folder name into a safe S3 prefix', async () => {
+		const presign = await t
+			.http()
+			.post('/api/v1/media/presigned-url')
+			.set(auth)
+			.send({
+				originalName: 'hero.png',
+				mimeType: 'image/png',
+				size: 2048,
+				type: MediaType.IMAGE,
+				folder: `${'/'.repeat(5000)}projects//../covers///`,
+			})
+			.expect(201)
+
+		expect(presign.body.result.storageKey).toMatch(/^projects\/covers\/[0-9a-f-]{36}\.png$/)
+	})
+
 	it('refuses to register a storage key it did not issue', async () => {
 		await t
 			.http()

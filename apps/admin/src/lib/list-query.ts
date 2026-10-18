@@ -38,3 +38,24 @@ export const toListQuery = (
 
 	return query
 }
+
+// For tables that always ask for their own page size: page and limit with defaults, plus each
+// listed filter that has a value.
+export const toPageQuery = (
+	params: ReadableParams,
+	filters: readonly string[],
+	pageSize: number,
+): URLSearchParams => {
+	const query = new URLSearchParams({
+		page: params.get('page') || '1',
+		limit: params.get('pageSize') || String(pageSize),
+	})
+
+	for (const key of filters) {
+		const value = params.get(key)
+
+		if (value) query.set(key, value)
+	}
+
+	return query
+}

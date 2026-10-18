@@ -9,6 +9,7 @@ import { Badge } from 'components/ui/badge'
 import { Server, Database, Radio, Clock } from 'components/icons'
 import { apiMetricsActions } from 'actions/api-metrics'
 import { useLatestRequest } from 'lib/use-server-list'
+import { toPageQuery } from 'lib/list-query'
 import { ApiMetricsSkeleton } from 'components/skeletons'
 import { ServiceTile } from './service-tile'
 import { AutoRefreshToggle } from './auto-refresh-toggle'
@@ -18,6 +19,8 @@ import { ErrorBanner } from 'components/ui/error-banner'
 import { RefreshButton } from 'components/cms/refresh-button'
 
 const PAGE_SIZE = 25
+
+const METRIC_FILTERS = ['search', 'method', 'from', 'to'] as const
 
 export const ApiMetricsView = () => {
 	const searchParams = useSearchParams()
@@ -53,30 +56,18 @@ export const ApiMetricsView = () => {
 		setLoading(true)
 		setError(null)
 		try {
-			const healthRes = await apiMetricsActions.health<HealthStatusData>(signal)
-			if (healthRes.aborted) return
+			const [healthRes, statsRes, metricsRes] = await Promise.all([
+				apiMetricsActions.health<HealthStatusData>(signal),
+				apiMetricsActions.stats<MetricsStats>(signal),
+				apiMetricsActions.list<ApiMetricItem>(
+					toPageQuery(searchParams, METRIC_FILTERS, PAGE_SIZE),
+					signal,
+				),
+			])
+			if (signal.aborted) return
+
 			if (healthRes.data) setHealth(healthRes.data)
-
-			const statsRes = await apiMetricsActions.stats<MetricsStats>(signal)
-			if (statsRes.aborted) return
 			if (statsRes.data) setStats(statsRes.data)
-
-			const search = searchParams.get('search') || ''
-			const methodFilter = searchParams.get('method') || ''
-			const from = searchParams.get('from') || ''
-			const to = searchParams.get('to') || ''
-
-			const query = new URLSearchParams({
-				page: searchParams.get('page') || '1',
-				limit: searchParams.get('pageSize') || String(PAGE_SIZE),
-			})
-			if (search) query.set('search', search)
-			if (methodFilter) query.set('method', methodFilter)
-			if (from) query.set('from', from)
-			if (to) query.set('to', to)
-
-			const metricsRes = await apiMetricsActions.list<ApiMetricItem>(query, signal)
-			if (metricsRes.aborted) return
 			if (metricsRes.data) {
 				setMetrics(metricsRes.data)
 				setTotalMetrics(metricsRes.count || metricsRes.data.length)

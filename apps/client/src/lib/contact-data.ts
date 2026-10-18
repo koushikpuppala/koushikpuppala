@@ -11,10 +11,12 @@ export const validateContactForm = (payload: ContactFormPayload): ContactValidat
 	else if (name.length < 2) errors.name = 'Name must be at least 2 characters.'
 	else if (name.length > 100) errors.name = 'Name cannot exceed 100 characters.'
 
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+	// Each part excludes the character that ends it, so there is only one way to match and the check
+	// stays linear (an overlapping pattern backtracks badly on input like '!@!.!.!.').
+	const emailRegex = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/
 
 	if (!email) errors.email = 'Please provide a return email address.'
-	else if (!emailRegex.test(email))
+	else if (email.length > 254 || !emailRegex.test(email))
 		errors.email = 'Please enter a valid email address (e.g. name@domain.com).'
 
 	const resolvedSubject = subject || 'Portfolio Inquiry'

@@ -52,12 +52,14 @@ export class MediaService extends BaseService {
 	async requestPresignedUpload(dto: RequestPresignedUploadDto) {
 		const { extension } = this.assertAllowedUpload(dto.originalName, dto.mimeType, dto.size)
 
-		// Strip anything that could escape the folder or form an unexpected S3 key, such as '..'.
+		// Keep only safe characters (no dots, so no '..'), then drop empty segments, which trims and
+		// collapses slashes. Splitting avoids a slash-trimming regex that is slow on long runs of '/'.
 		const folder =
 			(dto.folder ?? 'general')
 				.replace(/[^a-zA-Z0-9_\-/]/g, '')
-				.replace(/\.{2,}/g, '')
-				.replace(/^\/+|\/+$/g, '') || 'general'
+				.split('/')
+				.filter(Boolean)
+				.join('/') || 'general'
 
 		const fileId = randomUUID()
 

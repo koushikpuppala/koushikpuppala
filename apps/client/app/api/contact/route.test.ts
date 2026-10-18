@@ -27,6 +27,23 @@ describe('POST /api/contact', () => {
 		expect(Object.keys(body.errors)).toEqual(expect.arrayContaining(['email', 'message']))
 	})
 
+	it.each([
+		['invalid JSON', 'not json'],
+		['a null body', 'null'],
+		['a non-string field', JSON.stringify({ ...valid, name: 42 })],
+	])('answers %s as malformed', async (_label, raw) => {
+		const res = await POST(
+			new Request('http://site.test/api/contact', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: raw,
+			}),
+		)
+
+		expect(res.status).toBe(400)
+		expect((await res.json()).message).toBe('Malformed request payload received.')
+	})
+
 	it('answers the honeypot without reaching the API', async () => {
 		const res = await POST(request({ ...valid, url: 'http://spam.example' }))
 

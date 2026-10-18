@@ -32,6 +32,17 @@ export type MetadataPageKey =
 
 export type PageDefaults = { title: string; canonicalUrl: string }
 
+export type ResolvedPageMetadata = {
+	title: string
+	description: string | undefined
+	canonical: string
+	ogImage: string
+	keywords: string[]
+	isHome: boolean
+	index: boolean
+	follow: boolean
+}
+
 export type TopicOption = {
 	id: string
 	label: string
@@ -135,6 +146,16 @@ export type TimelineEntryProps = {
 }
 
 export type ExperienceTimelineProps = { items: PublishedExperience[] }
+
+export type TimelineMarkerProps = { current: boolean }
+
+export type TimelinePartProps = { item: PublishedExperience; current: boolean }
+
+export type TimelineAchievementsProps = {
+	panelId: string
+	achievements: string[]
+	defaultOpen: boolean
+}
 
 export type SectionRailProps = { sections: SectionLink[] }
 
@@ -313,6 +334,25 @@ export type StatStripSkeletonProps = { cells?: number }
 export type ThemeToggleProps = { className?: string }
 
 export type HeroMetaCellProps = { label: string; value: string; mono?: boolean }
+
+export type HeroLink = { label: string; href: string }
+
+export type HeroEyebrowProps = {
+	role: string | undefined
+	location: string | undefined
+	current: PublishedExperience | undefined
+	separator: string | null | undefined
+}
+
+export type HeroActionsProps = { primary: HeroLink | null; secondary: HeroLink | null }
+
+export type HeroSocialsProps = { socials: PublishedSocial[] }
+
+export type HeroFactsProps = {
+	current: PublishedExperience | undefined
+	tenure: string | undefined
+	focus: string
+}
 
 export type NotFoundViewProps = {
 	eyebrow: string

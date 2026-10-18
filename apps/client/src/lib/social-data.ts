@@ -1,6 +1,7 @@
 import type { PublishedSocial } from 'types/models'
 
 import { cache } from 'react'
+import { trimSlashes } from 'utils/trimSlashes'
 import { unwrap } from 'lib/api-result'
 import { getPublishedSocials } from 'actions/cache/socials'
 
@@ -32,7 +33,7 @@ const extractHandle = (platform: string, url: string): string => {
 
 		const parsed = new URL(url)
 
-		const pathname = parsed.pathname.replace(/^\/+|\/+$/g, '')
+		const pathname = trimSlashes(parsed.pathname)
 
 		if (platform.toUpperCase() === 'LINKEDIN') return pathname || parsed.hostname
 
