@@ -6,7 +6,6 @@ export const TEST_ENV = {
 	APP_NAME: 'koushikpuppala-test',
 	PORT: '0',
 	NEXT_PUBLIC_DEPLOY_URL: 'http://frontend.test',
-	NEXT_PUBLIC_BASE_URL: 'http://api.test',
 	ORIGIN: 'http://frontend.test',
 	DATABASE_URL: 'postgresql://test:test@127.0.0.1:55432/portfolio_test',
 	DATABASE_MAX_CONNECTIONS: '5',

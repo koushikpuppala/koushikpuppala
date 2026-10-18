@@ -134,7 +134,6 @@ export type LoggerConfig = { dir: string; level: string }
 export type SentryConfig = { enabled: boolean; dsn?: string }
 export type RecaptchaConfig = { secretKey: string; minScore: number }
 export type MailConfig = { from: string; contactTo: string; adminUrl: string }
-export type AppConfig = { backendUrl: string }
 export type AwsConfig = { region: string; s3Bucket: string; cdnUrl: string; verifyUploads: boolean }
 
 export type PublishFields = { isPublished: boolean; publishedAt: Date | null }

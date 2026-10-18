@@ -2,7 +2,6 @@ import type { PoolConfig } from 'pg'
 import type { RedisOptions } from 'ioredis'
 import type { ServiceAccount } from 'firebase-admin'
 import type {
-	AppConfig,
 	AwsConfig,
 	LoggerConfig,
 	MailConfig,
@@ -27,7 +26,6 @@ export class Configuration {
 	readonly sentry: SentryConfig
 	readonly recaptcha?: RecaptchaConfig
 	readonly mail?: MailConfig
-	readonly app: AppConfig
 	readonly aws: AwsConfig
 
 	constructor() {
@@ -126,10 +124,6 @@ export class Configuration {
 			cdnUrl: (/^https?:\/\//i.test(cdn) ? cdn : `https://${cdn}`).replace(/\/+$/, ''),
 			// Upload checks call S3, so they are skipped locally when no AWS credentials are configured.
 			verifyUploads: this.production || Boolean(this.optional('AWS_ACCESS_KEY_ID')),
-		}
-
-		this.app = {
-			backendUrl: this.required('NEXT_PUBLIC_BASE_URL'),
 		}
 	}
 
