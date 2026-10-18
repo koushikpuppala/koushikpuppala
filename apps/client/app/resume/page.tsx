@@ -71,7 +71,7 @@ const ResumePage = async () => {
 							</Button>
 							<Button asChild size='lg' variant='outline' className='group'>
 								<Link href='/contact'>
-									Request a copy <ArrowRight className='arrow-slide size-4' />
+									Contact me <ArrowRight className='arrow-slide size-4' />
 								</Link>
 							</Button>
 						</>
