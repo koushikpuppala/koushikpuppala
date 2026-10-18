@@ -64,7 +64,8 @@ const ResumePage = async () => {
 					fileUrl ? (
 						<>
 							<Button asChild size='lg' variant='signal'>
-								<Link href={fileUrl} target='_blank' rel='noreferrer noopener'>
+								{/* No prefetch: prefetching this route would call it and count a download. */}
+								<Link href='/resume/download' prefetch={false} rel='nofollow'>
 									<Download className='size-4' /> Download PDF
 								</Link>
 							</Button>

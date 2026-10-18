@@ -11,7 +11,6 @@ import {
 	metadataPages,
 	projects,
 	published,
-	resume,
 	services,
 	SITE_DOMAIN,
 	skills,
@@ -43,7 +42,7 @@ export const createSeed = (bucket: string, clientUrl: string) => {
 		return tx.media.upsert({ where: { storageKey }, create: { storageKey, ...data }, update: data })
 	}
 
-	// For content with a single live record (home, about, resume): update the oldest one or create it.
+	// For content with a single live record (home, about): update the oldest one or create it.
 	const upsertSingleton = async <T extends { id: string }>(
 		find: () => Promise<T | null>,
 		update: (id: string) => Promise<unknown>,
@@ -177,19 +176,5 @@ export const createSeed = (bucket: string, clientUrl: string) => {
 				update: data,
 			})
 		}
-
-		console.log('  → Resume')
-		const pdf = await upsertPublicFile(
-			tx,
-			'resume/koushikpuppala_resume.pdf',
-			MediaType.DOCUMENT,
-			'application/pdf',
-		)
-		const resumeData = { ...resume, mediaId: pdf.id, fileSize: pdf.size, ...published() }
-		await upsertSingleton(
-			() => tx.resume.findFirst({ where: { deletedAt: null }, orderBy: { createdAt: 'asc' } }),
-			id => tx.resume.update({ where: { id }, data: resumeData }),
-			() => tx.resume.create({ data: resumeData }),
-		)
 	}
 }

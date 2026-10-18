@@ -225,6 +225,7 @@ export type PublishedResume = {
 	fileSizeFormatted?: string
 	fileType?: string
 	downloadUrl?: string
+	downloadFileName?: string
 	previewUrl?: string
 	checksum?: string
 	downloads?: number

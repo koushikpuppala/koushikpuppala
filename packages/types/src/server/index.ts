@@ -93,11 +93,15 @@ export type UploadFileResponse = {
 	size: number
 }
 
+export type SignedDownload = { fileName: string; contentType?: string }
+
+export type ResumeNaming = { title: string; versionName: string | null }
+
 export type StorageService = {
 	upload(options: UploadFileOptions): Promise<UploadFileResponse>
 	delete(key: string): Promise<void>
 	exists(key: string): Promise<boolean>
-	getSignedUrl(key: string, expiresIn?: number): Promise<string>
+	getSignedUrl(key: string, expiresIn?: number, download?: SignedDownload): Promise<string>
 	getPresignedUploadUrl(
 		Key: string,
 		ContentType: string,

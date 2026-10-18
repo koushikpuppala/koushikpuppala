@@ -1,4 +1,9 @@
-import type { StorageService, UploadFileOptions, UploadFileResponse } from 'types/server'
+import type {
+	SignedDownload,
+	StorageService,
+	UploadFileOptions,
+	UploadFileResponse,
+} from 'types/server'
 
 import {
 	DeleteObjectCommand,
@@ -62,14 +67,23 @@ export class S3Service implements StorageService {
 		}
 	}
 
-	async getSignedUrl(key: string, expiresIn = 3600): Promise<string> {
+	async getSignedUrl(key: string, expiresIn = 3600, download?: SignedDownload): Promise<string> {
 		const exists = await this.exists(key)
 
 		if (!exists) throw new NotFoundException('File not found')
 
 		return getSignedUrl(
 			this.s3,
-			new GetObjectCommand({ Bucket: this.config.aws.s3Bucket, Key: key }),
+			new GetObjectCommand({
+				Bucket: this.config.aws.s3Bucket,
+				Key: key,
+				// S3 returns these as response headers when the signed link asks for them, so the
+				// browser saves the file under this name instead of opening it.
+				...(download && {
+					ResponseContentDisposition: `attachment; filename="${download.fileName}"`,
+					ResponseContentType: download.contentType,
+				}),
+			}),
 			{ expiresIn },
 		)
 	}

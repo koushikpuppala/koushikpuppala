@@ -293,10 +293,7 @@ export const skills = skillClusters.flatMap(({ category, skills: list }) =>
 	})),
 ) satisfies Prisma.SkillUncheckedCreateInput[]
 
-type ProjectSeed = Omit<
-	Prisma.ProjectUncheckedCreateInput,
-	'thumbnailId' | 'heroImageId'
-> & {
+type ProjectSeed = Omit<Prisma.ProjectUncheckedCreateInput, 'thumbnailId' | 'heroImageId'> & {
 	image?: string
 }
 
@@ -501,56 +498,3 @@ export const metadataPages: {
 		keywords: ['Contact Koushik Puppala', 'Hire Full Stack Developer', 'Engineering Roles'],
 	},
 ]
-
-export const resume = {
-	title: 'Koushik Puppala — Resume',
-	versionName: 'Software Engineer – Full Stack',
-	headline: 'Software Engineer – Full Stack',
-	summary:
-		'Full Stack Developer with 3 years of experience building end-to-end web features using React, Next.js, Node.js and PostgreSQL, with a focus on scalable, high-performance applications, frontend performance, clean architecture and backend integration.',
-	highlights: [
-		{
-			number: '01',
-			title: 'PRODUCTION ENGINEERING',
-			description:
-				'Full Stack Developer at Earnest Data Analytics: SEO-friendly Next.js architecture, Node.js and Express APIs, and AWS infrastructure for production workloads.',
-		},
-		{
-			number: '02',
-			title: 'PRODUCT DELIVERY',
-			description:
-				'Built authentication and payment flows at Upraised® with React, TypeScript, Node.js and Docker, improving performance by about 30%.',
-		},
-		{
-			number: '03',
-			title: 'TEAM LEADERSHIP',
-			description:
-				'Led and mentored the IIIT Raichur website team, improving team productivity and website performance by 20% and traffic by 15%.',
-		},
-		{
-			number: '04',
-			title: 'EDUCATION',
-			description:
-				'B.Tech in Computer Science and Engineering from the Indian Institute of Information Technology, Raichur.',
-		},
-	],
-	competencies: [
-		'React',
-		'Next.js',
-		'TypeScript',
-		'Node.js',
-		'Express',
-		'NestJS',
-		'PostgreSQL',
-		'MongoDB',
-		'AWS',
-		'Docker',
-		'Tailwind CSS',
-	],
-	stats: [
-		{ label: 'FORMAT', value: 'PDF' },
-		{ label: 'FILE SIZE', value: '207 KB' },
-	],
-	fileType: 'application/pdf',
-	sortOrder: 0,
-} satisfies Omit<Prisma.ResumeUncheckedCreateInput, 'mediaId'>

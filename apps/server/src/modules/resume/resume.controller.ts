@@ -3,6 +3,8 @@ import {
 	Controller,
 	Delete,
 	Get,
+	HttpCode,
+	HttpStatus,
 	Param,
 	ParseUUIDPipe,
 	Patch,
@@ -38,15 +40,19 @@ export class ResumeController {
 	}
 
 	@Public()
-	@Get('download')
+	@Post('download')
+	@HttpCode(HttpStatus.OK)
+	// An empty list overrides the class tags: counting a download must not refresh the public site.
+	@RevalidateTags()
 	@ApiEndpoint({
-		summary: 'Track download count and retrieve download URL (Public)',
-		method: 'GET',
+		summary: 'Count a download and return a short-lived link to the resume PDF (Public)',
+		method: 'POST',
 		auth: false,
-		endpoint: 'GET /api/v1/resume/download',
+		notFound: true,
+		endpoint: 'POST /api/v1/resume/download',
 	})
-	async trackDownload() {
-		return this.resumeService.trackDownloadAndGetUrl()
+	async download() {
+		return this.resumeService.download()
 	}
 
 	@Get()

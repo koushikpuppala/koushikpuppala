@@ -6,6 +6,7 @@ import { Download, File } from 'components/icons'
 
 export const ResumeFileCard = ({
 	fileUrl,
+	downloadFileName,
 	downloads,
 	uploading,
 	onUpload,
@@ -30,6 +31,11 @@ export const ResumeFileCard = ({
 					<p className='text-muted-foreground truncate font-mono text-[0.6875rem]'>
 						{fileUrl || 'No file URL'}
 					</p>
+					{downloadFileName ? (
+						<p className='text-muted-foreground truncate font-mono text-[0.6875rem]'>
+							Visitors download it as <span className='text-foreground'>{downloadFileName}</span>
+						</p>
+					) : null}
 				</div>
 			</div>
 

@@ -24,4 +24,5 @@ export const CONTENT = {
 	publishedProject: { slug: 'payments-platform', title: 'Payments Platform' },
 	draftProject: { slug: 'secret-project', title: 'Secret Project' },
 	thumbnailMediaName: 'in-use-cover.png',
+	resume: { title: 'E2E Resume', mediaName: 'e2e-resume.pdf' },
 } as const

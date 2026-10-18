@@ -67,7 +67,7 @@ export const adminFetch = async <T>(
 
 // Three steps: the API issues a presigned URL, the browser uploads straight to S3, then the
 // API checks the object exists and creates the media record.
-export const uploadMediaToS3 = async (file: File): Promise<UploadedMedia> => {
+export const uploadMediaToS3 = async (file: File, folder = 'general'): Promise<UploadedMedia> => {
 	const mediaType = file.type.startsWith('image/')
 		? 'IMAGE'
 		: file.type.includes('pdf')
@@ -85,7 +85,7 @@ export const uploadMediaToS3 = async (file: File): Promise<UploadedMedia> => {
 			mimeType: file.type,
 			size: file.size,
 			type: mediaType,
-			folder: 'general',
+			folder,
 		}),
 	})
 
@@ -120,7 +120,7 @@ export const uploadMediaToS3 = async (file: File): Promise<UploadedMedia> => {
 			mimeType: file.type,
 			size: file.size,
 			type: mediaType,
-			folder: 'general',
+			folder,
 		}),
 	})
 

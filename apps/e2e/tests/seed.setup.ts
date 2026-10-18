@@ -66,5 +66,24 @@ setup('seed database and accounts', async () => {
 		project(CONTENT.draftProject.slug, CONTENT.draftProject.title, { thumbnailId: media.id }),
 	)
 
+	const pdf = await prisma.media.create({
+		data: {
+			fileName: CONTENT.resume.mediaName,
+			originalName: CONTENT.resume.mediaName,
+			size: 2048,
+			mimeType: 'application/pdf',
+			extension: 'pdf',
+			bucket: 'e2e',
+			folder: 'resume',
+			storageKey: `resume/${CONTENT.resume.mediaName}`,
+			url: `https://assets.e2e.test/resume/${CONTENT.resume.mediaName}`,
+		},
+	})
+	await api.post('/api/v1/resume', {
+		title: CONTENT.resume.title,
+		mediaId: pdf.id,
+		isPublished: true,
+	})
+
 	await prisma.$disconnect()
 })

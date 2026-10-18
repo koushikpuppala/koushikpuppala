@@ -59,6 +59,7 @@ pnpm --filter admin lint
 - Client side checks alone do not grant administrative access; apps/server enforces all RBAC rules.
 - `next.config.ts` sets `experimental.instantInsights.validationLevel: 'manual-warning'`: `AdminShell` renders pages only after client-side Firebase sign-in, so the server never renders them and implicit instant-navigation validation would flag every route as a dropped segment.
 - Page content scrolls inside `<main>`, which is `relative` so absolutely positioned elements (such as `sr-only` text) stay inside it instead of stretching the document past the fixed shell.
+- The resume upload accepts only a PDF of at most 10 MB (checked before uploading, and again by the API on save) and stores it in the `resume` S3 folder. The file card shows `downloadFileName`, the name visitors' browsers save it as.
 - Destructive actions require confirmation dialogs before invoking server mutations.
 - Form choices and dates use `Select` (`ui/select`) and `DatePicker` (`ui/date-picker`), never a native `<select>` or `type='date'`. End to end tests pick an option by clicking the button, then `page.getByRole('option', …)`.
 - `DialogContent` defaults to `max-w-lg`; pass `max-w-*` in its `className` for a wider dialog (`classNames` merges them, so yours wins).

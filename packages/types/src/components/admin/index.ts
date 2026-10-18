@@ -443,6 +443,7 @@ export type AboutStatsFieldProps = {
 
 export type ResumeFileCardProps = {
 	fileUrl: string
+	downloadFileName?: string
 	downloads: number
 	uploading: boolean
 	onUpload: (event: ChangeEvent<HTMLInputElement>) => void

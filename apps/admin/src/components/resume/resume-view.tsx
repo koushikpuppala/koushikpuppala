@@ -8,6 +8,7 @@ import { resumeActions } from 'actions/resume'
 import { Notice } from 'components/cms/notice'
 import { Field } from 'components/form/field'
 import { uploadMediaToS3 } from 'lib/api-client'
+import { RESUME_MAX_BYTES } from 'constants/resume'
 import { ResumeFileCard } from './resume-file-card'
 import { SingletonFormSkeleton } from 'components/skeletons'
 import { useSingletonEditor } from 'lib/use-singleton-editor'
@@ -41,6 +42,7 @@ const merge = (resume: ResumeRecord, saved: ResumeRecord): ResumeRecord => ({
 	...resume,
 	id: saved.id,
 	isPublished: Boolean(saved.isPublished),
+	downloadFileName: saved.downloadFileName,
 })
 
 export const ResumeView = () => {
@@ -68,8 +70,14 @@ export const ResumeView = () => {
 
 		if (!file) return
 
+		// The API rejects anything else on save; checking first avoids uploading a file that can't be used.
 		if (file.type !== 'application/pdf') {
-			editor.setNotice('Please upload a valid PDF document.')
+			editor.setError('The resume must be a PDF document.')
+			return
+		}
+
+		if (file.size > RESUME_MAX_BYTES) {
+			editor.setError('The resume PDF must be 10 MB or smaller.')
 			return
 		}
 
@@ -77,7 +85,7 @@ export const ResumeView = () => {
 		editor.setNotice(null)
 
 		try {
-			const uploaded = await uploadMediaToS3(file)
+			const uploaded = await uploadMediaToS3(file, 'resume')
 
 			update(current => ({
 				...current,
@@ -151,6 +159,7 @@ export const ResumeView = () => {
 
 				<ResumeFileCard
 					fileUrl={resume.media?.url ?? ''}
+					downloadFileName={resume.downloadFileName}
 					downloads={resume.downloads ?? 0}
 					uploading={uploading}
 					onUpload={uploadPdf}
