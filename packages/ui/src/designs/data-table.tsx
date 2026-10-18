@@ -214,7 +214,7 @@ export const DataTable = <TData extends RowData>(props: DataTableProps<TData>) =
 		}))
 
 	return (
-		<div className='flex w-full flex-col gap-4'>
+		<div className='relative flex w-full flex-col gap-4'>
 			<div className='text-foreground flex items-center justify-between gap-2'>
 				<div className='flex w-full flex-wrap items-center gap-2'>
 					<div className={classNames('relative w-full max-w-3xs', { hidden: disableSearch })}>

@@ -45,7 +45,7 @@ export const AdminShell = ({ children }: ChildrenProps) => {
 				<main
 					// biome-ignore lint/a11y/noNoninteractiveTabindex: focusable scroll container (WCAG 2.1.1)
 					tabIndex={0}
-					className='focus-ring:ring-signal/40 focus-ring:ring-2 focus-ring:ring-inset mx-auto w-full max-w-7xl flex-1 overflow-y-auto p-4 outline-none sm:p-6 lg:p-8'>
+					className='focus-ring:ring-signal/40 focus-ring:ring-2 focus-ring:ring-inset relative mx-auto w-full max-w-7xl flex-1 overflow-y-auto p-4 outline-none sm:p-6 lg:p-8'>
 					{children}
 				</main>
 			</div>

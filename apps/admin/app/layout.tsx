@@ -48,6 +48,7 @@ const RootLayout = ({ children }: Readonly<ChildrenProps>) => {
 				/>
 			</head>
 			<body
+				suppressHydrationWarning
 				className={classNames(
 					geistSans.variable,
 					geistMono.variable,

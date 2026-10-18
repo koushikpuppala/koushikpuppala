@@ -109,6 +109,7 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
 				</Script>
 			</head>
 			<body
+				suppressHydrationWarning
 				className={classNames(
 					geistSans.variable,
 					geistMono.variable,

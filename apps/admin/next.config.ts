@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
 	reactStrictMode: true,
 	cacheComponents: true,
 	partialPrefetching: true,
+	// Pages only render after Firebase sign-in in the browser, so the server never renders them and
+	// implicit instant-navigation validation would report every route as a dropped segment.
+	experimental: { instantInsights: { validationLevel: 'manual-warning' } },
 	output: process.env.ENVIRONMENT === 'docker' ? 'standalone' : undefined,
 	images: {
 		formats: ['image/avif', 'image/webp'],

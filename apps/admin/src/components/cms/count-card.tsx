@@ -10,12 +10,12 @@ export const CountCard = ({ label, value, loaded, valueClassName, indicator }: C
 			</p>
 			{indicator && <span className='bg-signal-ink h-2 w-2 animate-pulse rounded-full' />}
 		</div>
-		<p
+		<div
 			className={classNames(
 				'font-display text-3xl font-bold',
 				valueClassName ?? 'text-foreground',
 			)}>
 			{loaded ? value : <StatValueSkeleton />}
-		</p>
+		</div>
 	</div>
 )
