@@ -41,8 +41,7 @@ export const FeaturedProjectRow = ({
 		<article ref={ref} className='group relative'>
 			<Link
 				href={`/projects/${project.slug}`}
-				className='block outline-none'
-				aria-label={`${project.title} — case study`}>
+				className='block outline-none'>
 				<Reveal>
 					<div className='text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[0.6875rem] tracking-[0.18em] uppercase'>
 						<span className='text-signal-ink'>{number}</span>

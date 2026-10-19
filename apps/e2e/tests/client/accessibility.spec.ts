@@ -14,6 +14,9 @@ const PAGES = [
 	'/contact',
 ]
 
+// Entrance animations fade text in, and axe measures contrast on whatever opacity it catches mid fade.
+test.use({ reducedMotion: 'reduce' })
+
 for (const path of PAGES)
 	test(`${path} has no serious accessibility violations`, async ({ page }) => {
 		await page.goto(path)
