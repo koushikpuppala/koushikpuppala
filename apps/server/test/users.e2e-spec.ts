@@ -45,6 +45,21 @@ describe('user management (e2e)', () => {
 		await t.http().delete(`/api/v1/users/${user.id}`).set(auth).expect(400)
 	})
 
+	it('stops an admin from deactivating their own account', async () => {
+		const { auth, user } = await createUser(t.prisma, UserRole.ADMIN)
+
+		const deactivate = await t
+			.http()
+			.patch(`/api/v1/users/${user.id}`)
+			.set(auth)
+			.send({ status: 'INACTIVE' })
+			.expect(400)
+		expect(deactivate.body.message).toMatch(/cannot deactivate their own/i)
+
+		const stored = await t.prisma.user.findUnique({ where: { id: user.id } })
+		expect(stored?.status).toBe('ACTIVE')
+	})
+
 	it('lets an admin demote another admin', async () => {
 		const { auth } = await createUser(t.prisma, UserRole.ADMIN)
 		const { user: other } = await createUser(t.prisma, UserRole.ADMIN)

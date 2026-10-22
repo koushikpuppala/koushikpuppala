@@ -4,12 +4,15 @@ run-name: Test - ${{ github.ref_name }}
 on:
   # Every pull request runs the full test suite; merging needs it green (branch protection on master).
   pull_request:
-  # Also run as the first job of the production workflow, so no image is built from failing code.
+  # Also the first job of each deploy workflow (client, admin, server), so no image is built from
+  # failing code.
   workflow_call:
 
+# A newer push to a pull request makes its older test run pointless, so that one is cancelled. A
+# deploy's test job is never cancelled, or a second merge would fail the release already running.
 concurrency:
   group: test-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read

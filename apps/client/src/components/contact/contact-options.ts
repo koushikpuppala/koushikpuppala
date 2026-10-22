@@ -2,8 +2,6 @@ import type { ContactFormFields } from 'types/api'
 import type { TopicOption } from 'types/components/client'
 import { z } from 'zod'
 
-export const DEFAULT_SUBJECT = 'Portfolio Inquiry'
-
 export const MIN_MESSAGE = 20
 
 export const RECAPTCHA_ACTION = 'contact_form_submit'

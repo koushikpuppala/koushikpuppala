@@ -15,7 +15,7 @@ const firstFailure = (rules: ValidationRule[]): string | undefined =>
 export const validateContactForm = (payload: ContactFormPayload): ContactValidation => {
 	const name = (payload.name || '').trim()
 	const email = (payload.email || '').trim()
-	const subject = (payload.subject || '').trim() || 'Portfolio Inquiry'
+	const subject = (payload.subject || '').trim()
 	const message = (payload.message || '').trim()
 
 	const failures: ContactValidationErrors = {

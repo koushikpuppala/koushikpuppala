@@ -27,9 +27,18 @@ const isRaw = (data: unknown, response: Response): boolean =>
 	(isRecord(data) && 'stream' in data) ||
 	(response.getHeader('content-type')?.toString() ?? '').includes('application/pdf')
 
+const ENVELOPE_KEYS = new Set(['result', 'message', 'error', 'count'])
+
 // Services may return a plain value or an ApiResponse-shaped object with their own message and count.
+// Only an object made of envelope keys counts as one: a record such as a contact has its own `message`
+// field and must be returned whole.
+const isEnvelope = (data: unknown): data is Record<string, unknown> =>
+	isRecord(data) &&
+	('result' in data || 'message' in data) &&
+	Object.keys(data).every(key => ENVELOPE_KEYS.has(key))
+
 const unwrap = (data: unknown, message: string): UnwrappedBody => {
-	if (!isRecord(data) || !('result' in data || 'message' in data)) return { result: data, message }
+	if (!isEnvelope(data)) return { result: data, message }
 
 	return {
 		result: data.result,

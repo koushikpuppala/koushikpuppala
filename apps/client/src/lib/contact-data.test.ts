@@ -16,6 +16,16 @@ describe('validateContactForm email check', () => {
 		},
 	)
 
+	it('accepts an address of exactly 254 characters and rejects one of 255', () => {
+		const address = (length: number) => `${'a'.repeat(length - '@example.com'.length)}@example.com`
+
+		expect(address(254)).toHaveLength(254)
+		expect(withEmail(address(254)).errors.email).toBeUndefined()
+		expect(withEmail(address(255)).errors.email).toBe(
+			'Please enter a valid email address (e.g. name@domain.com).',
+		)
+	})
+
 	it('stays fast on the input CodeQL flagged for backtracking', () => {
 		const started = performance.now()
 		withEmail(`!@!.${'!.'.repeat(50_000)}`)
@@ -24,15 +34,26 @@ describe('validateContactForm email check', () => {
 })
 
 describe('validateContactForm', () => {
-	it('passes a complete message with no errors, defaulting the subject', () => {
+	it('passes a complete message with no errors', () => {
 		expect(
 			validateContactForm({
 				name: ' Ada ',
 				email: 'ada@example.com',
-				subject: '',
+				subject: 'Hello',
 				message: 'A message long enough.',
 			}),
 		).toEqual({ isValid: true, errors: {} })
+	})
+
+	it('checks the subject it is given, leaving the default to the route', () => {
+		expect(
+			validateContactForm({
+				name: 'Ada',
+				email: 'ada@example.com',
+				subject: '',
+				message: 'A message long enough.',
+			}).errors.subject,
+		).toBe('Subject must be at least 3 characters.')
 	})
 
 	it('reports only failing fields, each with its first failing rule', () => {

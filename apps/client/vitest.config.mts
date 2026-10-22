@@ -15,6 +15,12 @@ export default defineConfig({
 		],
 	},
 	test: {
+		coverage: {
+			provider: 'v8',
+			include: ['src/**/*.{ts,tsx}', 'app/**/*.{ts,tsx}'],
+			exclude: ['**/*.test.{ts,tsx}', '**/*.d.ts'],
+			reportsDirectory: 'coverage',
+		},
 		environment: 'jsdom',
 		setupFiles: ['./test/setup.ts'],
 		include: ['**/*.test.{ts,tsx}'],

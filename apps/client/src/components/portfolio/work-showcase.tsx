@@ -39,6 +39,7 @@ export const FeaturedProjectRow = ({
 
 	return (
 		<article ref={ref} className='group relative'>
+			{/* No aria-label: a shorter name than the card's visible text fails axe label-content-name-mismatch. */}
 			<Link
 				href={`/projects/${project.slug}`}
 				className='block outline-none'>

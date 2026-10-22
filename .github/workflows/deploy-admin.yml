@@ -19,7 +19,8 @@ on:
       - '.github/workflows/deploy-admin.yml'
   workflow_dispatch:
 
-# Queue releases instead of cancelling: stopping a running deploy could leave the container half replaced.
+# A running release is never cancelled: stopping it could leave the container half replaced. While
+# one runs, GitHub keeps only the newest waiting run, which already contains the older commits.
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
@@ -44,6 +45,16 @@ jobs:
       tag: ${{ steps.tag.outputs.tag }}
 
     steps:
+      # Fail before any work when the repository prefix is missing, instead of at the image push.
+      - name: Check required variables
+        env:
+          ECR_REPOSITORY_PREFIX: ${{ vars.ECR_REPOSITORY_PREFIX }}
+        run: |
+          if [ -z "$ECR_REPOSITORY_PREFIX" ]; then
+            echo "::error::Missing repository variable: ECR_REPOSITORY_PREFIX"
+            exit 1
+          fi
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4.1.0
         with:

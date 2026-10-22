@@ -1,7 +1,7 @@
 import type { Prisma } from '@repo/prisma'
 import { DatabaseService } from 'database'
 import { Injectable } from '@nestjs/common'
-import { getDateRange } from 'common/utils/date-range.util'
+import { createdAtRange } from 'common/utils/date-range.util'
 import { QueryApiMetricDto } from './dto/query-api-metric.dto'
 import { successResponse } from 'common/interfaces/api-response.interface'
 
@@ -21,11 +21,8 @@ export class ApiMetricService {
 		if (status) where.status = status
 		if (method) where.method = { equals: method, mode: 'insensitive' }
 
-		if (from || to) {
-			const { from: startDate, to: endDate } = getDateRange({ from, to })
-
-			where.createdAt = { ...(from && { gte: startDate }), ...(to && { lte: endDate }) }
-		}
+		const createdAt = createdAtRange(from, to)
+		if (createdAt) where.createdAt = createdAt
 
 		const keyword = search?.trim()
 

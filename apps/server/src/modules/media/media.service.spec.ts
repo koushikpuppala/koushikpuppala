@@ -107,6 +107,28 @@ describe('MediaService', () => {
 				}),
 			).rejects.toThrow(BadRequestException)
 		})
+
+		it('rejects an upload that never reached storage when verification is on', async () => {
+			const verifying = new MediaService(
+				prisma as unknown as DatabaseService,
+				new CmsAuditService({ create: vi.fn() } as unknown as AuditLogService),
+				s3 as unknown as StorageService,
+				{ ...config, aws: { ...config.aws, verifyUploads: true } } as Configuration,
+			)
+			const storageKey = 'general/0b5e1f8e-3c1d-4a4e-9a57-1f2b3c4d5e6f.png'
+			s3.exists.mockResolvedValueOnce(false)
+
+			await expect(
+				verifying.completeUpload({
+					storageKey,
+					originalName: 'a.png',
+					mimeType: 'image/png',
+					size: 10,
+					type: MediaType.IMAGE,
+				}),
+			).rejects.toThrow(/does not exist in storage/)
+			expect(s3.exists).toHaveBeenCalledWith(storageKey)
+		})
 	})
 
 	describe('remove', () => {

@@ -1,7 +1,7 @@
 import type { DeliveryNoticeProps } from 'types/components/client'
 import Link from 'next/link'
 import { Check, Copy, Mail } from 'components/icons'
-import { DEFAULT_SUBJECT } from './contact-options'
+import { DEFAULT_SUBJECT } from 'constants/contact'
 
 export const DeliveryNotice = ({
 	error,

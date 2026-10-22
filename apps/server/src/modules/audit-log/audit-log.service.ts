@@ -1,7 +1,7 @@
 import type { AuditLogCreateParams, AuditLogEntry, AuditLogParams } from 'types/server'
 
 import { Injectable } from '@nestjs/common'
-import { getDateRange } from 'common/utils/date-range.util'
+import { createdAtRange } from 'common/utils/date-range.util'
 import { DatabaseService } from 'database/database.service'
 import { QueryAuditLogDto } from './dto/query-audit-log.dto'
 import { Prisma } from '@repo/prisma'
@@ -85,11 +85,8 @@ export class AuditLogService {
 		if (action) where.action = action
 		if (entity) where.entity = { contains: entity, mode: 'insensitive' }
 
-		if (from || to) {
-			const { from: startDate, to: endDate } = getDateRange({ from, to })
-
-			where.createdAt = { ...(from && { gte: startDate }), ...(to && { lte: endDate }) }
-		}
+		const createdAt = createdAtRange(from, to)
+		if (createdAt) where.createdAt = createdAt
 
 		const keyword = search?.trim()
 

@@ -4,7 +4,8 @@ import type { ContactFieldErrors, ContactFormFields, ContactReceipt } from 'type
 import type { ContactField, ContactFormState, TopicOption } from 'types/components/client'
 import { useEffect, useRef, useState, type SubmitEvent } from 'react'
 import { useReCaptcha } from 'next-recaptcha-v3'
-import { contactSchema, DEFAULT_SUBJECT, EMPTY_VALUES, RECAPTCHA_ACTION } from './contact-options'
+import { DEFAULT_SUBJECT } from 'constants/contact'
+import { contactSchema, EMPTY_VALUES, RECAPTCHA_ACTION } from './contact-options'
 
 const MIN_FILL_MS = 2500
 const COPIED_MS = 2200

@@ -1,6 +1,7 @@
 import type { ContactFormPayload } from 'types/api'
 import { NextResponse } from 'next/server'
 import { BASE_URL } from '../../../src/constants/base-url'
+import { DEFAULT_SUBJECT } from '../../../src/constants/contact'
 import { validateContactForm } from '../../../src/lib/contact-data'
 
 const RECEIVED = {
@@ -19,7 +20,7 @@ const readPayload = async (req: Request): Promise<ContactFormPayload> => {
 		...raw,
 		name: (raw.name || '').trim(),
 		email: (raw.email || '').trim(),
-		subject: (raw.subject || '').trim() || 'Portfolio Inquiry',
+		subject: (raw.subject || '').trim() || DEFAULT_SUBJECT,
 		message: (raw.message || '').trim(),
 	}
 }

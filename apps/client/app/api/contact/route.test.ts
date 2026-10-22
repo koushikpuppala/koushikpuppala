@@ -3,6 +3,7 @@ import { POST } from './route'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 import { API, server } from '../../../test/msw'
+import { DEFAULT_SUBJECT } from '../../../src/constants/contact'
 
 const valid = {
 	name: 'Ada Lovelace',
@@ -67,6 +68,21 @@ describe('POST /api/contact', () => {
 		expect(res.status).toBe(201)
 		expect(forwardedFor).toBe('203.0.113.9')
 		expect(sent).toEqual({ ...valid, source: 'website' })
+	})
+
+	it('forwards a blank subject as the default subject', async () => {
+		let sent: { subject?: string } | null = null
+		server.use(
+			http.post(`${API}/api/v1/contacts`, async ({ request: apiRequest }) => {
+				sent = (await apiRequest.json()) as { subject?: string }
+				return HttpResponse.json({ result: { id: 'c3' } }, { status: 201 })
+			}),
+		)
+
+		const res = await POST(request({ ...valid, subject: '   ' }))
+
+		expect(res.status).toBe(201)
+		expect(sent).toMatchObject({ subject: DEFAULT_SUBJECT })
 	})
 
 	it('forwards the reCAPTCHA token for the API to verify', async () => {

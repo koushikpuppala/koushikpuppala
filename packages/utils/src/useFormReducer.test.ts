@@ -72,4 +72,79 @@ describe('useFormReducer', () => {
 		expect(result.current.values).toEqual({ email: '' })
 		expect(result.current.submitError).toBeNull()
 	})
+
+	it('validates while typing only after the field was blurred', () => {
+		const { result } = setup()
+
+		act(() => result.current.handleChange('email', 'bad'))
+		expect(result.current.errors.email).toBeUndefined()
+
+		act(() => result.current.handleBlur('email'))
+		expect(result.current.touched.email).toBe(true)
+		expect(result.current.errors.email).toBe('Invalid email')
+
+		act(() => result.current.handleChange('email', 'a@b.co'))
+		expect(result.current.errors.email).toBeUndefined()
+
+		act(() => result.current.handleChange('email', 'still bad'))
+		expect(result.current.errors.email).toBe('Invalid email')
+	})
+
+	it('keeps only the first issue per field and ignores issues without a field', async () => {
+		const multi: ZodSchemaLike<Values> = {
+			safeParse: () => ({
+				success: false,
+				error: {
+					issues: [
+						{ path: [], message: 'Form level' },
+						{ path: ['email'], message: 'First' },
+						{ path: ['email'], message: 'Second' },
+					],
+				},
+			}),
+		}
+		const { result } = renderHook(() => useFormReducer<Values>({ initialValues: { email: '' }, schema: multi, onSubmit: vi.fn() }))
+
+		await act(() => result.current.handleSubmit())
+
+		expect(result.current.errors).toEqual({ email: 'First' })
+	})
+
+	it('clears a field error when the schema reports issues only for other fields', () => {
+		const other: ZodSchemaLike<Values> = {
+			safeParse: () => ({ success: false, error: { issues: [{ path: ['name'], message: 'Name needed' }] } }),
+		}
+		const { result } = renderHook(() => useFormReducer<Values>({ initialValues: { email: '' }, schema: other, onSubmit: vi.fn() }))
+
+		act(() => result.current.handleBlur('email'))
+		act(() => result.current.handleChange('email', 'x'))
+
+		expect(result.current.errors.email).toBeUndefined()
+	})
+
+	it('submits without a schema, prevents the browser submit and reports non Error failures', async () => {
+		const onSubmit = vi.fn().mockRejectedValue('nope')
+		const { result } = renderHook(() => useFormReducer<Values>({ initialValues: { email: '' }, onSubmit }))
+		const preventDefault = vi.fn()
+
+		act(() => result.current.handleChange('email', 'anything'))
+		act(() => result.current.handleBlur('email'))
+		await act(() => result.current.handleSubmit({ preventDefault } as never))
+
+		expect(preventDefault).toHaveBeenCalled()
+		expect(onSubmit).toHaveBeenCalledWith({ email: 'anything' })
+		expect(result.current.submitError).toBe('An error occurred during submission.')
+		expect(result.current.isSubmitting).toBe(false)
+	})
+
+	it('replaces all values and resets back to the initial ones', () => {
+		const { result } = setup()
+
+		act(() => result.current.setValues({ email: 'set@b.co' }))
+		expect(result.current.values.email).toBe('set@b.co')
+
+		act(() => result.current.reset())
+		expect(result.current.values.email).toBe('')
+		expect(result.current.touched).toEqual({})
+	})
 })

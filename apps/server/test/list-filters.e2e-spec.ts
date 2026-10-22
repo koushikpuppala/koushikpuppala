@@ -192,6 +192,21 @@ describe('admin list filters (e2e)', () => {
 			.expect(400)
 	})
 
+	it.each(['mailto:a@b', 'mailto:a@b..c', 'mailto:a@.b.c', 'mailto:a b@c.d'])(
+		'refuses the malformed mailto address %s',
+		async url => {
+			const { auth } = await createUser(t.prisma, UserRole.ADMIN)
+
+			const res = await t
+				.http()
+				.post('/api/v1/socials')
+				.set(auth)
+				.send({ platform: 'EMAIL', url })
+				.expect(400)
+			expect(JSON.stringify(res.body)).toMatch(/http\(s\) URL or a mailto: address/)
+		},
+	)
+
 	it('reads isPublished=false as false', async () => {
 		const { auth } = await createUser(t.prisma, UserRole.ADMIN)
 		const base = { features: [], description: 'Text' }
