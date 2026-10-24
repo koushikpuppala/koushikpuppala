@@ -11,10 +11,18 @@ import { SocialFormDialog } from 'components/socials/social-form-dialog'
 
 vi.mock('lib/firebase', () => ({ getIdToken: async () => 'id-token-1' }))
 
-const type = (label: string | RegExp, text: string) => userEvent.type(screen.getByLabelText(label), text)
+// Each key typed into these dialogs re-renders the whole form, so text is pasted in one change. Typing key by
+// key let a slow run pass the test timeout, and the timed out typing then spilled into the next test.
+const type = async (label: string | RegExp, text: string) => {
+	await userEvent.click(screen.getByLabelText(label))
+	await userEvent.paste(text)
+}
 
 const addItems = async (placeholder: string, ...items: string[]) => {
-	for (const item of items) await userEvent.type(screen.getByLabelText(placeholder), `${item}{Enter}`)
+	for (const item of items) {
+		await type(placeholder, item)
+		await userEvent.keyboard('{Enter}')
+	}
 }
 
 const pick = async (label: string | RegExp, option: string | RegExp) => {

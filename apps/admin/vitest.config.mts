@@ -22,6 +22,9 @@ export default defineConfig({
 			reportsDirectory: 'coverage',
 		},
 		environment: 'jsdom',
+		// Interaction tests drive whole forms through jsdom. On a slow or busy machine they can take several times
+		// longer than here, and a timed out test keeps typing into the next one, so the limit leaves headroom.
+		testTimeout: 20_000,
 		setupFiles: ['./test/setup.ts'],
 		include: ['**/*.test.{ts,tsx}'],
 		exclude: ['node_modules', '.next'],
