@@ -2,17 +2,14 @@ name: Test
 run-name: Test - ${{ github.ref_name }}
 
 on:
-  # Every pull request runs the full test suite; merging needs it green (branch protection on master).
+  # Every pull request runs this; merging needs it green (branch protection on master). The deploy
+  # workflows rely on that and do not test again.
   pull_request:
-  # Also the first job of each deploy workflow (client, admin, server), so no image is built from
-  # failing code.
-  workflow_call:
 
-# A newer push to a pull request makes its older test run pointless, so that one is cancelled. A
-# deploy's test job is never cancelled, or a second merge would fail the release already running.
+# A newer push to a pull request makes its older test run pointless.
 concurrency:
   group: test-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -22,8 +19,34 @@ env:
   DATABASE_URL: postgresql://test:test@127.0.0.1:55432/portfolio_test
 
 jobs:
+  # Docs, deploy scripts copied to EC2 by hand, deploy workflows and GitHub templates are not exercised by
+  # any test, so a pull request touching only those skips the suites. A skipped job still satisfies a
+  # required check.
+  changes:
+    name: Detect code changes
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.diff.outputs.code }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Compare with the base branch
+        id: diff
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          CODE=$(git diff --name-only "$BASE_SHA...$HEAD_SHA" | grep -vE \
+            '^docs/|^docker/deploy/|\.md$|\.gif$|^\.github/(ISSUE_TEMPLATE|PULL_REQUEST_TEMPLATE)/|^\.github/(FUNDING|dependabot)\.yml$|^\.github/workflows/deploy-[a-z]+\.yml$' || true)
+          if [ -n "$CODE" ]; then echo "code=true" >> "$GITHUB_OUTPUT"; else echo "code=false" >> "$GITHUB_OUTPUT"; fi
+
   unit:
     name: Lint and unit tests
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -89,6 +112,8 @@ jobs:
 
   integration:
     name: API integration tests
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -117,6 +142,8 @@ jobs:
 
   e2e:
     name: End to end tests
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -141,8 +168,25 @@ jobs:
       - name: Build shared packages
         run: pnpm --filter @repo/prisma db:generate && pnpm turbo run build --filter=server^...
 
+      # Chromium is cached per Playwright version; its system libraries are not, so they install either way.
+      - name: Read Playwright version
+        id: playwright
+        run: echo "version=$(pnpm --filter e2e exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browser
+        id: playwright-cache
+        uses: actions/cache@v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+
       - name: Install Playwright browser
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: pnpm --filter e2e exec playwright install --with-deps chromium
+
+      - name: Install Playwright system dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm --filter e2e exec playwright install-deps chromium
 
       - name: End to end tests
         run: pnpm --filter e2e test:e2e

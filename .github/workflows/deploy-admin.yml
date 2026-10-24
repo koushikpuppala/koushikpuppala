@@ -12,7 +12,6 @@ on:
       - 'packages/**'
       - 'docker/admin.Dockerfile'
       - 'docker/env-for.sh'
-      - 'docker/deploy/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -35,10 +34,8 @@ permissions:
   contents: read
   id-token: write
 
+# No test job: master only changes through pull requests, and test.yml must pass on each one first.
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
-
   # DD-MM-YYYYv<n> in Indian time, where n counts this app's releases pushed to ECR that day.
   tag:
     name: Pick image tag
@@ -81,7 +78,7 @@ jobs:
 
   build:
     name: Build admin
-    needs: [test, tag]
+    needs: [tag]
     runs-on: ubuntu-latest
 
     steps:
@@ -152,7 +149,6 @@ jobs:
         run: docker push --all-tags "$IMAGE"
 
   deploy:
-    if: false # Disabled until the admin is ready to be deployed.
     name: Deploy admin
     runs-on: ubuntu-latest
     needs: [tag, build]

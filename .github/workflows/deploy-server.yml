@@ -14,7 +14,6 @@ on:
       - 'packages/prisma/**'
       - 'docker/server.Dockerfile'
       - 'docker/env-for.sh'
-      - 'docker/deploy/**'
       - 'docker/entrypoint.server.sh'
       - 'package.json'
       - 'pnpm-lock.yaml'
@@ -38,10 +37,8 @@ permissions:
   contents: read
   id-token: write
 
+# No test job: master only changes through pull requests, and test.yml must pass on each one first.
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
-
   # DD-MM-YYYYv<n> in Indian time, where n counts this app's releases pushed to ECR that day.
   tag:
     name: Pick image tag
@@ -84,7 +81,7 @@ jobs:
 
   build:
     name: Build server
-    needs: [test, tag]
+    needs: [tag]
     runs-on: ubuntu-latest
 
     steps:
@@ -155,7 +152,6 @@ jobs:
         run: docker push --all-tags "$IMAGE"
 
   deploy:
-    if: false # Disabled until the server is ready to be deployed.
     name: Deploy server
     runs-on: ubuntu-latest
     needs: [tag, build]
