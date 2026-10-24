@@ -1,0 +1,13 @@
+language js
+
+or {
+	JsFunctionDeclaration(),
+	JsFunctionExportDefaultDeclaration(),
+	JsFunctionExpression()
+} as $fn where {
+	register_diagnostic(
+		span = $fn,
+		message = "Use an arrow function (const x = () => {}) instead of the function keyword.",
+		severity = "error"
+	)
+}

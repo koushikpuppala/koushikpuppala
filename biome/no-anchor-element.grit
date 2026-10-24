@@ -1,0 +1,16 @@
+language js
+
+or {
+	JsxElement(opening_element = $open),
+	JsxSelfClosingElement() as $open
+} where {
+	$open <: or {
+		JsxOpeningElement(name = `a`),
+		JsxSelfClosingElement(name = `a`)
+	},
+	register_diagnostic(
+		span = $open,
+		message = "Use Link from next/link instead of a raw <a> element.",
+		severity = "error"
+	)
+}

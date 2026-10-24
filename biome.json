@@ -1,0 +1,119 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.6.3/schema.json",
+	"plugins": [
+		"./biome/no-function-declaration.grit",
+		"./biome/no-anchor-element.grit",
+		{
+			"path": "./biome/no-local-type-declaration.grit",
+			"includes": [
+				"**/*.ts",
+				"**/*.tsx",
+				"!**/packages/types/**",
+				"!**/packages/prisma/src/generated/**",
+				"!**/apps/server/src/augmentations/**",
+				"!**/environment.d.ts",
+				"!**/next-env.d.ts",
+				"!**/*.test.ts",
+				"!**/*.test.tsx",
+				"!**/*.spec.ts",
+				"!**/*.e2e-spec.ts",
+				"!**/apps/server/test/**",
+				"!**/apps/e2e/**",
+				"!**/packages/prisma/src/seed.ts",
+				"!**/packages/prisma/src/seed/**"
+			]
+		}
+	],
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": true,
+		"includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"lineEnding": "lf",
+		"lineWidth": 100,
+		"bracketSameLine": true,
+		"expand": "auto"
+	},
+	"linter": {
+		"enabled": true,
+		"domains": {
+			"project": "recommended",
+			"types": "recommended"
+		},
+		"rules": {
+			"suspicious": {
+				"noUnknownAtRules": "off"
+			},
+			"performance": {
+				"noNamespaceImport": "error"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"jsxQuoteStyle": "single",
+			"trailingCommas": "all",
+			"semicolons": "asNeeded",
+			"arrowParentheses": "asNeeded",
+			"quoteStyle": "single"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		}
+	},
+	"html": {
+		"formatter": {
+			"indentScriptAndStyle": true,
+			"selfCloseVoidElements": "always"
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		},
+		"formatter": {
+			"quoteStyle": "single"
+		}
+	},
+	"assist": {
+		"actions": {
+			"source": {
+				"recommended": true,
+				"organizeImports": "off"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["apps/client/**/*", "packages/ui/**/*"],
+			"linter": {
+				"domains": {
+					"react": "recommended",
+					"next": "recommended"
+				}
+			}
+		},
+		{
+			"includes": ["apps/server/**/*"],
+			"linter": {
+				"domains": {
+					"react": "none",
+					"next": "none"
+				},
+				"rules": {
+					"style": {
+						"useImportType": "off"
+					}
+				}
+			}
+		}
+	]
+}

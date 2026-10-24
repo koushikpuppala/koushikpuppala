@@ -1,0 +1,12 @@
+{
+	"extends": "@repo/config/tsconfig.node",
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"noEmit": true,
+		"lib": ["ESNext", "DOM"],
+		"types": ["node"]
+	},
+	"include": ["**/*.ts"],
+	"exclude": ["node_modules", "playwright-report", "test-results"]
+}

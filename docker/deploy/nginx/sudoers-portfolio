@@ -1,0 +1,3 @@
+# Install with: sudo visudo -f /etc/sudoers.d/portfolio (paste this line). Lets deploy.sh check and
+# reload nginx without a password, and nothing else.
+ubuntu ALL=(root) NOPASSWD: /usr/sbin/nginx -t, /usr/bin/systemctl reload nginx

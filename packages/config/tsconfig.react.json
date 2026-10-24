@@ -1,0 +1,17 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "React with Typescript",
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		/* Language and Environment */
+		"lib": [
+			"DOM",
+			"DOM.Iterable",
+			"ESNext"
+		] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+		"jsx": "react-jsx" /* Specify what JSX code is generated. */,
+
+		/* Emit */
+		"noEmit": true /* Disable emitting files from a compilation. */
+	}
+}

@@ -1,0 +1,19 @@
+model ApiMetric {
+  id String @id @default(uuid()) @db.Uuid
+
+  ip        String
+  method    String
+  status    Int
+  duration  Int
+  endpoint  String
+  requestId String @map("request_id")
+  userAgent String @map("user_agent")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([status], map: "api_metric_status_index")
+  @@index([endpoint], map: "api_metric_endpoint_index")
+  @@index([createdAt], map: "api_metric_created_at_index")
+  @@index([method, endpoint], map: "api_metric_method_endpoint_index")
+  @@map("api_metrics")
+}
