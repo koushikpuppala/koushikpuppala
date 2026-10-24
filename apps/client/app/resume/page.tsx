@@ -15,6 +15,8 @@ import { getEducationData } from 'lib/education-data'
 import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
+import { JsonLd } from 'components/json-ld'
+import { buildPageGraph, buildPerson } from 'lib/structured-data'
 import { emailAddress } from 'lib/email'
 import { DownloadUnavailableNotice } from 'components/resume/download-unavailable-notice'
 
@@ -56,6 +58,16 @@ const ResumePage = async () => {
 
 	return (
 		<SiteShell socials={socials}>
+			<JsonLd
+				data={buildPageGraph({
+					path: '/resume',
+					type: 'ProfilePage',
+					name: 'Resume',
+					dateModified: resume.updatedAt,
+					person: buildPerson({ experience: experiences, education, services, socials }),
+				})}
+			/>
+
 			<PageHero
 				eyebrow='Resume'
 				title={title}

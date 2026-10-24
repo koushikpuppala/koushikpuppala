@@ -1,6 +1,7 @@
 import type { CSSProperties, ElementType, ReactNode, SubmitEvent } from 'react'
 import type { ContactFieldErrors, ContactFormFields, ContactReceipt } from '../../api/index'
 import type { MetadataRoute } from 'next'
+import type { Graph, Thing } from 'schema-dts'
 import type {
 	PublishedAbout,
 	PublishedEducation,
@@ -417,3 +418,33 @@ export type ProjectCaseStudyProps = { project: PublishedProject }
 export type ProjectDetailsProps = { stack: string[]; tags: string[]; updated: string | null }
 
 export type NextProjectProps = { project: PublishedProject }
+
+// schema.org shapes, so the client builds JSON-LD against the schema without depending on schema-dts.
+export type StructuredData = Graph
+export type StructuredDataNode = Thing
+
+export type JsonLdProps = { data: StructuredData }
+
+export type PersonGraphInput = {
+	home?: PublishedHome
+	about?: PublishedAbout
+	experience?: PublishedExperience[]
+	education?: PublishedEducation[]
+	services?: PublishedService[]
+	socials?: PublishedSocial[]
+}
+
+export type StructuredPageType =
+	'ProfilePage' | 'AboutPage' | 'ContactPage' | 'CollectionPage' | 'WebPage'
+
+export type BreadcrumbCrumb = { name: string; path: string }
+
+export type PageGraphInput = {
+	path: string
+	type: StructuredPageType
+	name: string
+	person: StructuredDataNode
+	mainEntity?: StructuredDataNode
+	crumbs?: BreadcrumbCrumb[]
+	dateModified?: Date | string | null
+}

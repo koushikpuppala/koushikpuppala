@@ -11,6 +11,8 @@ import { getEducationData } from 'lib/education-data'
 import { getExperienceData } from 'lib/experience-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
+import { JsonLd } from 'components/json-ld'
+import { buildPageGraph, buildPerson } from 'lib/structured-data'
 import { emailAddress } from 'lib/email'
 
 export const generateMetadata = async (): Promise<Metadata> => {
@@ -30,6 +32,15 @@ const EducationPage = async () => {
 
 	return (
 		<SiteShell socials={socials}>
+			<JsonLd
+				data={buildPageGraph({
+					path: '/education',
+					type: 'ProfilePage',
+					name: 'Education',
+					person: buildPerson({ education, experience, socials }),
+				})}
+			/>
+
 			<PageHero
 				eyebrow='Education'
 				title='Foundations and the teams behind them'

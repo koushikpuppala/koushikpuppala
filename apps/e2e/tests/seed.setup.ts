@@ -29,6 +29,34 @@ setup('seed database and accounts', async () => {
 		content: 'Seeded by the end to end suite.',
 		isPublished: true,
 	})
+	await api.post('/api/v1/about', {
+		title: 'About the engineer',
+		leadStatement: 'Builds web platforms end to end.',
+		content: 'Seeded by the end to end suite.',
+		location: CONTENT.about.location,
+		skills: [CONTENT.about.skill],
+		isPublished: true,
+	})
+	await api.post('/api/v1/experience', {
+		...CONTENT.experience,
+		location: 'Remote',
+		employmentType: 'FULL_TIME',
+		startDate: '2024-01-01',
+		isCurrent: true,
+		description: ['Builds the payments API.'],
+		technologies: ['NestJS'],
+		website: 'https://e2e-corp.example.com',
+		isPublished: true,
+	})
+	await api.post('/api/v1/education', {
+		...CONTENT.education,
+		location: 'Hyderabad, India',
+		description: ['Seeded by the end to end suite.'],
+		startDate: '2019-07-01',
+		endDate: '2023-05-01',
+		isCurrent: false,
+		isPublished: true,
+	})
 	await api.post('/api/v1/socials', {
 		platform: 'GITHUB',
 		url: 'https://github.com/e2e',

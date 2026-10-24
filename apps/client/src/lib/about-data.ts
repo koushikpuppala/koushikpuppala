@@ -21,8 +21,12 @@ export const getAboutData = cache(async (): Promise<PublishedAbout> => {
 		timezone: String(result.timezone ?? ''),
 		status: String(result.status ?? ''),
 		highlights: Array.isArray(result.highlights) ? result.highlights : [],
+		skills: Array.isArray(result.skills) ? result.skills : [],
+		profileImageUrl: result.profileImage?.url || null,
 		stats: Array.isArray(result.stats) ? result.stats : [],
 		ctaLabel: String(result.ctaLabel ?? ''),
 		ctaUrl: String(result.ctaUrl ?? ''),
+		createdAt: result.createdAt ? String(result.createdAt) : undefined,
+		updatedAt: result.updatedAt ? String(result.updatedAt) : undefined,
 	}
 })

@@ -46,6 +46,8 @@ const toProject = (item: PublishedProject, index: number): PublishedProject => (
 	metrics: metricsOf(item.metrics),
 	role: text(item.role),
 	year: yearOf(item.startDate),
+	startDate: optionalText(item.startDate),
+	publishedAt: optionalText(item.publishedAt),
 	sortOrder: Number(item.sortOrder ?? index),
 })
 

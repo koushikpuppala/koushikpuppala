@@ -37,7 +37,7 @@ Monorepo for Koushik Puppala's digital presence, comprising a public portfolio w
 
 ## Stack & Tooling
 
-- **Language & Runtime**: TypeScript 7.0 (apps/server stays on 6.0 until Nest CLI supports 7, see apps/server/AGENTS.md) / Node.js 22.x
+- **Language & Runtime**: TypeScript 7.0 (apps/server stays on 6.0 until Nest CLI supports 7, see apps/server/AGENTS.md) / Node.js 24.x (CI pins 24 to match the `node:lts` Docker images)
 - **Package Manager**: pnpm 12.14 (workspace protocol, `--filter` scoping)
 - **Build System**: Turborepo 2.x
 - **Frontend Framework**: Next.js 16.4 (App Router), React 19.3

@@ -11,6 +11,8 @@ import { Button } from 'ui/button'
 import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
+import { JsonLd } from 'components/json-ld'
+import { buildPageGraph, buildPerson, buildServiceList } from 'lib/structured-data'
 import { emailAddress } from 'lib/email'
 
 export const generateMetadata = async (): Promise<Metadata> => {
@@ -26,6 +28,16 @@ const ServicesPage = async () => {
 
 	return (
 		<SiteShell socials={socials}>
+			<JsonLd
+				data={buildPageGraph({
+					path: '/services',
+					type: 'CollectionPage',
+					name: 'Services',
+					person: buildPerson({ services, socials }),
+					mainEntity: buildServiceList(services),
+				})}
+			/>
+
 			<PageHero
 				eyebrow='Skills'
 				title='The stack I build with'

@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import type { SlugPageProps } from 'types/components/client'
 import { notFound } from 'next/navigation'
 import { SiteShell } from 'components/site-shell'
+import { JsonLd } from 'components/json-ld'
+import { buildPageGraph, buildPerson, buildProject } from 'lib/structured-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
 import { Section } from 'components/primitives/layout'
@@ -58,6 +60,21 @@ const ProjectDetailPage = async ({ params }: SlugPageProps) => {
 
 	return (
 		<SiteShell socials={socials}>
+			<JsonLd
+				data={buildPageGraph({
+					path: `/projects/${project.slug}`,
+					type: 'WebPage',
+					name: project.title,
+					dateModified: project.updatedAt,
+					person: buildPerson({ socials }),
+					mainEntity: buildProject(project),
+					crumbs: [
+						{ name: 'Projects', path: '/projects' },
+						{ name: project.title, path: `/projects/${project.slug}` },
+					],
+				})}
+			/>
+
 			<ProjectHero project={project} updated={updated} />
 
 			<div className='container-page -mt-px'>

@@ -13,6 +13,8 @@ import { formatYear } from 'lib/format'
 import { getExperienceData } from 'lib/experience-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
+import { JsonLd } from 'components/json-ld'
+import { buildPageGraph, buildPerson } from 'lib/structured-data'
 import { emailAddress } from 'lib/email'
 
 export const generateMetadata = async (): Promise<Metadata> => {
@@ -33,6 +35,15 @@ const ExperiencePage = async () => {
 
 	return (
 		<SiteShell socials={socials}>
+			<JsonLd
+				data={buildPageGraph({
+					path: '/experience',
+					type: 'ProfilePage',
+					name: 'Experience',
+					person: buildPerson({ experience: experiences, socials }),
+				})}
+			/>
+
 			<PageHero
 				eyebrow='Experience'
 				title='Roles, internships and teams'

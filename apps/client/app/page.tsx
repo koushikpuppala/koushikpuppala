@@ -26,6 +26,9 @@ import { getServicesData } from 'lib/skills-data'
 import { getSocialsData } from 'lib/social-data'
 import { resolveMetadataByPath } from 'lib/metadata-data'
 import { emailAddress } from 'lib/email'
+import { SITE_NAME } from 'constants/site'
+import { JsonLd } from 'components/json-ld'
+import { buildPageGraph, buildPerson } from 'lib/structured-data'
 
 export const generateMetadata = async (): Promise<Metadata> => {
 	'use cache'
@@ -59,6 +62,16 @@ const HomePage = async () => {
 
 	return (
 		<SiteShell socials={socials}>
+			<JsonLd
+				data={buildPageGraph({
+					path: '/',
+					type: 'ProfilePage',
+					name: SITE_NAME,
+					dateModified: about.updatedAt,
+					person: buildPerson({ home, about, experience, education, services, socials }),
+				})}
+			/>
+
 			<SectionRail sections={sections} />
 
 			<Hero home={home} socials={socials} current={current} location={about.location} />

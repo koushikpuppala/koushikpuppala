@@ -25,4 +25,7 @@ export const CONTENT = {
 	draftProject: { slug: 'secret-project', title: 'Secret Project' },
 	thumbnailMediaName: 'in-use-cover.png',
 	resume: { title: 'E2E Resume', mediaName: 'e2e-resume.pdf' },
+	about: { location: 'Hyderabad, India', skill: 'PostgreSQL' },
+	experience: { title: 'Software Engineer', organization: 'E2E Corp' },
+	education: { degree: 'B.Tech', fieldOfStudy: 'Computer Science', university: 'E2E University' },
 } as const
