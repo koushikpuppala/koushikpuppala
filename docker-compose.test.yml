@@ -1,0 +1,43 @@
+name: koushikpuppala-test
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: portfolio_test
+    # The data is thrown away, so skip the disk syncs that make writes durable (much faster tests)
+    command: postgres -c fsync=off -c synchronous_commit=off -c full_page_writes=off
+    ports:
+      - "55432:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d portfolio_test"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  redis:
+    image: redis:7-alpine
+    # Cache only: no snapshots or append-only file
+    command: redis-server --save '' --appendonly no
+    ports:
+      - "56379:6379"
+    tmpfs:
+      - /data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  firebase-auth:
+    # Health check, non-root user and signal handling come from the image
+    image: koushikpuppala/firebase-emulator:test
+    build:
+      context: .
+      dockerfile: docker/firebase-emulator.Dockerfile
+    ports:
+      - "9099:9099"

@@ -1,0 +1,14 @@
+language js
+
+or {
+	TsTypeAliasDeclaration(),
+	TsInterfaceDeclaration(),
+	TsEnumDeclaration(),
+	TsObjectType()
+} as $type where {
+	register_diagnostic(
+		span = $type,
+		message = "Define types in packages/types and import them with `import type`.",
+		severity = "error"
+	)
+}

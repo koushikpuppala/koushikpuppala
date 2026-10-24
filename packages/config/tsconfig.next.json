@@ -1,0 +1,26 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"display": "Next.js with TypeScript",
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		/* Language and Environment */
+		"lib": [
+			"DOM",
+			"DOM.Iterable",
+			"ESNext"
+		] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+		"jsx": "react-jsx" /* Specify what JSX code is generated. */,
+
+		/* Modules */
+		"paths": {
+			"*": ["./src/*"]
+		} /* Specify a set of entries that re-map imports to additional lookup locations. */,
+
+		/* Emit */
+		"noEmit": true /* Disable emitting files from a compilation. */,
+
+		"plugins": [
+			{ "name": "next" }
+		] /* Use TypeScript-specific functionality in Next.js pages and API routes. */
+	}
+}
