@@ -1,15 +1,50 @@
 packages:
   - apps/*
   - packages/*
-allowBuilds:
-  '@firebase/util': true
-  '@prisma/engines': true
-  '@scarf/scarf': true
-  '@swc/core': true
-  '@sentry/node-cpu-profiler': true
-  esbuild: true
-  prisma: true
-  protobufjs: true
+minimumReleaseAgeExclude:
+  - '@next/env@16.4.3'
+  - '@next/swc-darwin-arm64@16.4.3'
+  - '@next/swc-darwin-x64@16.4.3'
+  - '@next/swc-linux-arm64-gnu@16.4.3'
+  - '@next/swc-linux-arm64-musl@16.4.3'
+  - '@next/swc-linux-x64-gnu@16.4.3'
+  - '@next/swc-linux-x64-musl@16.4.3'
+  - '@next/swc-win32-arm64-msvc@16.4.3'
+  - '@next/swc-win32-x64-msvc@16.4.3'
+  - '@next/third-parties@16.4.3'
+  - '@sentry/browser-utils@11.9.0'
+  - '@sentry/browser@11.9.0'
+  - '@sentry/bundler-plugins@11.9.0'
+  - '@sentry/cloudflare@11.9.0'
+  - '@sentry/feedback@11.9.0'
+  - '@sentry/nestjs@11.9.0'
+  - '@sentry/nextjs@11.9.0'
+  - '@sentry/node@11.9.0'
+  - '@sentry/opentelemetry@11.9.0'
+  - '@sentry/profiling-node@11.9.0'
+  - '@sentry/react@11.9.0'
+  - '@sentry/replay-canvas@11.9.0'
+  - '@sentry/replay@11.9.0'
+  - '@sentry/server-runtime-injection@11.9.0'
+  - '@sentry/server-utils@11.9.0'
+  - '@sentry/vercel-edge@11.9.0'
+  - next@16.4.3
 permissions:
+  '@firebase/util':
+    build: true
+  '@prisma/engines':
+    build: true
+  '@scarf/scarf':
+    build: true
+  '@sentry/node-cpu-profiler':
+    build: true
+  '@swc/core':
+    build: true
   '@tanstack/react-table':
     skills: true
+  esbuild:
+    build: true
+  prisma:
+    build: true
+  protobufjs:
+    build: true
