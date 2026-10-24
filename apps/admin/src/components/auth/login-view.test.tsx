@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import { LoginView } from './login-view'
+import { LoginView } from 'components/auth/login-view'
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 

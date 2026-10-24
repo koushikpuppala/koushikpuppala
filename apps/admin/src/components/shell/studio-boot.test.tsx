@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
-import { StudioBoot } from './studio-boot'
+import { StudioBoot } from 'components/shell/studio-boot'
 
 describe('StudioBoot', () => {
 	it('shows the session check as the active step first', () => {

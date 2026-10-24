@@ -1,6 +1,11 @@
 # Authoritative NestJS API. Build from the repository root:
-#   docker build -f docker/server.Dockerfile -t koushikpuppala/server .
-# Settings come from the root .env file, copied into the server (dotenv) and Prisma (prisma.config.ts).
+#   docker build -f docker/server.Dockerfile --secret id=env,src=.env -t koushikpuppala/server .
+# The build reads its settings from the `env` BuildKit secret, which never lands in an image layer or
+# the build cache, and the image holds no settings. Mount them at runtime for the server (dotenv) and
+# Prisma (prisma.config.ts):
+#   docker run -v /path/to/server.env:/app/apps/server/.env:ro \
+#     -v /path/to/server.env:/app/packages/prisma/.env:ro koushikpuppala/server
+# docker/deploy/server/ holds the compose file and deploy.sh used on EC2.
 # The entrypoint applies pending migrations before the server starts.
 
 # Use the Node.js LTS Alpine image as the base image for the build
@@ -9,10 +14,8 @@ FROM node:lts-alpine AS base
 # Enable Corepack, which installs the pnpm version pinned in package.json "packageManager"
 RUN corepack enable
 
-# Keep Corepack's pnpm in a shared location, so a non-root runtime user can use it without a download
-# (the server entrypoint runs migrations through pnpm)
-ENV COREPACK_HOME=/usr/local/share/corepack \
-  COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+# Let Corepack fetch the pinned pnpm without an interactive prompt during the build
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 # Install dependencies for building native modules
 RUN apk add --no-cache libc6-compat curl bash
@@ -46,24 +49,27 @@ COPY --from=dependencies /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
 # Copy the pnpm settings (node linker, peer dependencies) to the working directory
 COPY .npmrc .npmrc
 
-# Install project dependencies using pnpm
-RUN pnpm install --frozen-lockfile
+# Install project dependencies using pnpm. pnpm-workspace.yaml approves a package's agent skills, and pnpm
+# fails without a folder to link them into; turbo prune leaves the repo's skill folders out of the image.
+RUN mkdir -p .claude/skills .agents/skills && pnpm install --frozen-lockfile
 
 # Copy the rest of the application files to the working directory
 COPY --from=dependencies /app/out/full/ .
 
-# Copy the .env file to the server and Prisma project directories
-COPY .env ./apps/server/.env
-COPY .env ./packages/prisma/.env
-
 # Copy the turbo.json file to the working directory
 COPY turbo.json turbo.json
 
-# Generate Prisma client code for the database
-RUN pnpm --filter @repo/prisma db:generate
+# Generate Prisma client code and build the application, with the settings mounted as a secret
+# (prisma.config.ts refuses to load without DATABASE_URL)
+RUN --mount=type=secret,id=env,target=/app/apps/server/.env,required=true \
+  --mount=type=secret,id=env,target=/app/packages/prisma/.env,required=true \
+  pnpm --filter @repo/prisma db:generate && \
+  pnpm exec turbo build --filter=server... && \
+  rm -rf .turbo
 
-# Build the application using pnpm
-RUN pnpm exec turbo build --filter=server...
+# Drop build and test tooling so the runtime image carries only production dependencies (the prisma
+# CLI stays, as a dependency of @repo/prisma, for the entrypoint's migrations)
+RUN pnpm prune --prod --ignore-scripts
 
 # Create a new stage called "runner" based on the "base" image
 FROM base AS runner
@@ -80,8 +86,8 @@ RUN addgroup --system --gid 1001 koushikpuppala && \
 # Copy the built application files from the "builder" stage to the "runner" stage
 COPY --from=builder --chown=portfolio:koushikpuppala /app .
 
-# Install the pinned pnpm into the shared Corepack cache, used by the entrypoint's migration step
-RUN corepack install
+# Remove the base image's npm, which nothing runs and which carries its own vulnerable dependencies
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 # Copy the entrypoint script to the root directory of the container and set its permissions to be executable
 COPY --chmod=755 docker/entrypoint.server.sh /entrypoint.sh

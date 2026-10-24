@@ -11,7 +11,7 @@ import {
 	useRef,
 	useState,
 } from 'react'
-import { allDestinations } from './navigation'
+import { allDestinations } from 'components/shell/navigation'
 
 export const QuickPalette = ({ open, onOpenChange, socials }: QuickPaletteProps) => {
 	const router = useRouter()

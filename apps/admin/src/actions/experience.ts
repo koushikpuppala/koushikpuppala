@@ -1,7 +1,7 @@
 import type { Experience } from 'types/models'
 
 import { DTO_FIELDS } from 'types/api'
-import { createCollectionActions } from './collection'
+import { createCollectionActions } from 'actions/collection'
 
 export const experienceActions = createCollectionActions<Experience>(
 	'/api/v1/experience',

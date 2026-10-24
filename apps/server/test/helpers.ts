@@ -27,6 +27,7 @@ export const isRevalidateRequest = (input: unknown): boolean => {
 export const createFakeS3 = () => ({
 	upload: vi.fn(),
 	exists: vi.fn(async () => true),
+	stat: vi.fn(async () => null),
 	delete: vi.fn(async () => undefined),
 	getSignedUrl: vi.fn(async (key: string) => `https://signed.test/${key}`),
 	getPresignedUploadUrl: vi.fn(async (key: string) => `https://upload.test/${key}`),
@@ -112,7 +113,11 @@ export const createUser = async (
 
 	if (!response.ok) throw new Error(`Emulator sign up failed: ${await response.text()}`)
 
-	const { idToken, localId } = (await response.json()) as { idToken: string; localId: string }
+	const { idToken, localId, refreshToken } = (await response.json()) as {
+		idToken: string
+		localId: string
+		refreshToken: string
+	}
 
 	const user = await prisma.user.create({
 		data: {
@@ -126,5 +131,18 @@ export const createUser = async (
 		},
 	})
 
-	return { user, token: idToken, auth: { Authorization: `Bearer ${idToken}` } }
+	return { user, token: idToken, refreshToken, auth: { Authorization: `Bearer ${idToken}` } }
+}
+
+// Asks the emulator for a fresh ID token the way a signed in browser does, or null when it refuses.
+export const refreshIdToken = async (refreshToken: string): Promise<string | null> => {
+	const response = await fetch(`${EMULATOR}/securetoken.googleapis.com/v1/token?key=test`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: refreshToken }),
+	})
+
+	if (!response.ok) return null
+
+	return ((await response.json()) as { id_token: string }).id_token
 }

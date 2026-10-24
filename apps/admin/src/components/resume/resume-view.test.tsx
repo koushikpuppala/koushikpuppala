@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import userEvent from '@testing-library/user-event'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { ResumeView } from './resume-view'
+import { ResumeView } from 'components/resume/resume-view'
 import { API, server } from '../../../test/msw'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -74,17 +74,35 @@ describe('ResumeView', () => {
 	it('uploads a PDF to S3, then saves it as a new version', async () => {
 		let saved: Record<string, unknown> | null = null
 		server.use(
-			http.get(`${API}/api/v1/resume`, () => HttpResponse.json({ result: { items: [] }, statusCode: 200 })),
+			http.get(`${API}/api/v1/resume`, () =>
+				HttpResponse.json({ result: { items: [] }, statusCode: 200 }),
+			),
 			http.post(`${API}/api/v1/media/presigned-url`, () =>
-				HttpResponse.json({ result: { uploadUrl: 'https://bucket.test/upload', storageKey: 'resume/new.pdf', url: '' } }),
+				HttpResponse.json({
+					result: {
+						uploadUrl: 'https://bucket.test/upload',
+						storageKey: 'resume/new.pdf',
+						url: '',
+					},
+				}),
 			),
 			http.put('https://bucket.test/upload', () => new HttpResponse(null, { status: 200 })),
 			http.post(`${API}/api/v1/media/complete`, () =>
-				HttpResponse.json({ result: { id: 'media-2', fileName: 'new.pdf', url: 'https://cdn.test/resume/new.pdf', storageKey: 'resume/new.pdf' } }),
+				HttpResponse.json({
+					result: {
+						id: 'media-2',
+						fileName: 'new.pdf',
+						url: 'https://cdn.test/resume/new.pdf',
+						storageKey: 'resume/new.pdf',
+					},
+				}),
 			),
 			http.post(`${API}/api/v1/resume`, async ({ request }) => {
 				saved = (await request.json()) as Record<string, unknown>
-				return HttpResponse.json({ result: { ...saved, id: 'resume-2', downloadFileName: 'ada_2026.2.pdf' } }, { status: 201 })
+				return HttpResponse.json(
+					{ result: { ...saved, id: 'resume-2', downloadFileName: 'ada_2026.2.pdf' } },
+					{ status: 201 },
+				)
 			}),
 		)
 		render(<ResumeView />)

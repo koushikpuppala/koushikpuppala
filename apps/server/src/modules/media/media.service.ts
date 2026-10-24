@@ -94,13 +94,21 @@ export class MediaService extends BaseService {
 		this.assertAllowedUpload(dto.storageKey, dto.mimeType, dto.size)
 
 		// Confirm the browser actually finished the direct-to-S3 upload before creating the record.
+		// The type and size are compared with the stored object because the request body is the
+		// browser's claim, and the resume check relies on the stored values.
 		if (this.config.aws.verifyUploads) {
-			const exists = await this.storage.exists(dto.storageKey)
+			const stored = await this.storage.stat(dto.storageKey)
 
-			if (!exists)
+			if (!stored)
 				throw new BadRequestException(
 					'Uploaded file does not exist in storage or upload was incomplete.',
 				)
+
+			if (
+				stored.contentType?.toLowerCase() !== dto.mimeType.toLowerCase() ||
+				stored.size !== dto.size
+			)
+				throw new BadRequestException('Uploaded file does not match the declared type or size.')
 		}
 
 		const extension = extname(dto.originalName).toLowerCase().replace('.', '')

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { durationLabel } from './format'
+import { durationLabel } from 'lib/format'
 
 describe('durationLabel', () => {
 	it('counts a current role up to today, not a fixed date', () => {

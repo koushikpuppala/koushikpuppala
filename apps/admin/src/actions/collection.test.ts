@@ -1,6 +1,6 @@
 import { delay, http, HttpResponse } from 'msw'
 import { DTO_FIELDS } from 'types/api'
-import { createCollectionActions } from './collection'
+import { createCollectionActions } from 'actions/collection'
 import { API, server } from '../../test/msw'
 import { describe, expect, it, vi } from 'vitest'
 

@@ -1,7 +1,7 @@
 import type { FetchResult, ListResult } from 'types/api'
 import { adminFetch } from 'lib/api-client'
 import { pickFields } from 'lib/utils'
-import { toItems } from './collection'
+import { toItems } from 'actions/collection'
 
 export const createSingletonActions = <T>(base: string, fields?: readonly string[]) => ({
 	// Edit the published record when there is one; otherwise fall back to the newest draft.

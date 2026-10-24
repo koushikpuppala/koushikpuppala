@@ -1,7 +1,7 @@
 import type { SidebarProps } from 'types/components/admin'
 import Link from 'next/link'
 import { LogoMark } from 'ui/logo'
-import { NavLinks } from './nav-links'
+import { NavLinks } from 'components/shell/nav-links'
 
 export const Sidebar = ({ pathname }: SidebarProps) => (
 	<aside className='border-border bg-sidebar hidden h-full w-64 shrink-0 flex-col border-r lg:flex'>

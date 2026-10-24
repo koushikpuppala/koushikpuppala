@@ -1,6 +1,6 @@
 import type { BadgeStyle, ValueBadgeProps } from 'types/components/admin'
 import { Badge } from 'components/ui/badge'
-import { PRIORITY_STYLES, STATUS_STYLES } from './message-options'
+import { PRIORITY_STYLES, STATUS_STYLES } from 'components/messages/message-options'
 
 const styleOf = (styles: Record<string, BadgeStyle>, value: string): BadgeStyle =>
 	styles[value] ?? { variant: 'outline', label: value }

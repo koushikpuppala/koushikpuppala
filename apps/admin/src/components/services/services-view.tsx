@@ -12,7 +12,7 @@ import { toPublishState } from 'lib/publish-state'
 import { useCollectionView } from 'lib/use-collection-view'
 import { publishFilter } from 'lib/list-query'
 import { servicesActions } from 'actions/services'
-import { ServiceFormDialog } from './service-form-dialog'
+import { ServiceFormDialog } from 'components/services/service-form-dialog'
 
 const LIST_OPTIONS: ListQueryOptions = {
 	sort: { status: 'isPublished' },

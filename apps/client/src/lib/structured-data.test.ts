@@ -17,7 +17,7 @@ import {
 	buildProject,
 	buildProjectList,
 	buildServiceList,
-} from './structured-data'
+} from 'lib/structured-data'
 
 const home = {
 	featuredSkills: ['Next.js', 'NestJS'],

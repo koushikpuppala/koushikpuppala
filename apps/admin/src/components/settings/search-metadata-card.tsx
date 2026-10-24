@@ -4,7 +4,7 @@ import { Select } from 'ui/select'
 import { Textarea } from 'ui/textarea'
 import { Globe } from 'components/icons'
 import { Field } from 'components/form/field'
-import { ROBOTS_OPTIONS } from './settings-presets'
+import { ROBOTS_OPTIONS } from 'components/settings/settings-presets'
 
 const HINT = 'text-muted-foreground text-[11px]'
 

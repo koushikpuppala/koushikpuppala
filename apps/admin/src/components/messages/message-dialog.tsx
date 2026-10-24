@@ -19,7 +19,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from 'components/ui/dialog'
-import { PRIORITY_OPTIONS, STATUS_OPTIONS } from './message-options'
+import { PRIORITY_OPTIONS, STATUS_OPTIONS } from 'components/messages/message-options'
 
 const FAILED = 'Saving the triage status failed.'
 

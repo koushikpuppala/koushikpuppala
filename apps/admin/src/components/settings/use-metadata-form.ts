@@ -7,7 +7,7 @@ import { toItems } from 'actions/collection'
 import { SITE_URL } from 'constants/site-url'
 import { metadataActions } from 'actions/metadata'
 import { useLatestRequest } from 'lib/use-server-list'
-import { FORM_KEYS } from './settings-presets'
+import { FORM_KEYS } from 'components/settings/settings-presets'
 
 const SAVED_MS = 3500
 

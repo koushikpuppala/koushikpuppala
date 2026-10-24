@@ -57,6 +57,10 @@ export class FirebaseService implements OnModuleInit {
 		return this.auth.updateUser(uid, properties)
 	}
 
+	revokeRefreshTokens(uid: string): Promise<void> {
+		return this.auth.revokeRefreshTokens(uid)
+	}
+
 	deleteUser(uid: string): Promise<void> {
 		return this.auth.deleteUser(uid)
 	}

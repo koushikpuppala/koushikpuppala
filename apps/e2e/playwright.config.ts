@@ -111,6 +111,7 @@ export default defineConfig({
 			timeout: 420_000,
 			env: {
 				NEXT_PUBLIC_BASE_URL: API_URL,
+				API_INTERNAL_URL: API_URL,
 				NEXT_PUBLIC_DEPLOY_URL: CLIENT_URL,
 				REVALIDATE_SECRET,
 				ENVIRONMENT: 'local',

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildDashboardMetrics, firstError, listTotal } from './dashboard-metrics'
+import { buildDashboardMetrics, firstError, listTotal } from 'lib/dashboard-metrics'
 
 const ok = <T>(data: T, count?: number) => ({ data, error: null, count })
 

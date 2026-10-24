@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { Field } from './field'
+import { Field } from 'components/form/field'
 
 describe('Field', () => {
 	it('shows an asterisk outside the label for required fields', () => {

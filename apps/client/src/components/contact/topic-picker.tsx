@@ -1,7 +1,7 @@
 import type { TopicPickerProps } from 'types/components/client'
 import { Label } from 'ui/label'
 import { classNames } from 'utils/classNames'
-import { TOPIC_PRESETS } from './contact-options'
+import { TOPIC_PRESETS } from 'components/contact/contact-options'
 
 export const TopicPicker = ({ selected, onSelect }: TopicPickerProps) => (
 	<div className='space-y-2.5'>

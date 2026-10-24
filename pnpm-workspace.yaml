@@ -29,6 +29,12 @@ minimumReleaseAgeExclude:
   - '@sentry/server-utils@11.9.0'
   - '@sentry/vercel-edge@11.9.0'
   - next@16.4.3
+# Security fixes for transitive dependencies whose parents still pin a vulnerable range: multer through
+# @nestjs/platform-express, serialize-javascript through next-pwa's workbox build, grpc-js through firebase.
+overrides:
+  'multer@<2.5.0': ~2.5.0
+  'serialize-javascript@<7.1.3': ^7.1.3
+  '@grpc/grpc-js@<1.13.6': ^1.14.6
 permissions:
   '@firebase/util':
     build: true

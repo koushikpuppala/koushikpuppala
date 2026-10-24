@@ -30,6 +30,7 @@ export default defineConfig({
 		exclude: ['node_modules', '.next'],
 		env: {
 			NEXT_PUBLIC_BASE_URL: 'http://api.test',
+			API_INTERNAL_URL: 'http://api.test',
 			NEXT_PUBLIC_DEPLOY_URL: 'https://site.test',
 			REVALIDATE_SECRET: 'test-secret',
 		},

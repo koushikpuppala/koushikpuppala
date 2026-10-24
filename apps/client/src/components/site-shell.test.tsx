@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event'
 import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { SiteShell } from './site-shell'
+import { SiteShell } from 'components/site-shell'
 
 const push = vi.fn()
 vi.mock('next/navigation', () => ({
@@ -10,8 +10,22 @@ vi.mock('next/navigation', () => ({
 }))
 
 const SOCIALS = [
-	{ id: 's1', platform: 'GITHUB', url: 'https://github.com/ada', label: 'GitHub', handle: '@ada', sortOrder: 0 },
-	{ id: 's2', platform: 'LINKEDIN', url: 'https://linkedin.com/in/ada', label: 'LinkedIn', handle: 'in/ada', sortOrder: 1 },
+	{
+		id: 's1',
+		platform: 'GITHUB',
+		url: 'https://github.com/ada',
+		label: 'GitHub',
+		handle: '@ada',
+		sortOrder: 0,
+	},
+	{
+		id: 's2',
+		platform: 'LINKEDIN',
+		url: 'https://linkedin.com/in/ada',
+		label: 'LinkedIn',
+		handle: 'in/ada',
+		sortOrder: 1,
+	},
 ] as const
 
 const renderShell = () =>
@@ -113,7 +127,11 @@ describe('SiteShell', () => {
 		await userEvent.hover(within(palette()).getByRole('button', { name: /linkedin/i }))
 		await userEvent.click(within(palette()).getByRole('button', { name: /linkedin/i }))
 
-		expect(open).toHaveBeenCalledWith('https://linkedin.com/in/ada', '_blank', 'noopener,noreferrer')
+		expect(open).toHaveBeenCalledWith(
+			'https://linkedin.com/in/ada',
+			'_blank',
+			'noopener,noreferrer',
+		)
 	})
 
 	it('wraps the selection past the last item and closes on Enter there', async () => {
@@ -201,7 +219,9 @@ describe('SiteShell', () => {
 
 		expect(header.innerHTML).not.toBe(before)
 		expect(
-			within(screen.getByRole('navigation', { name: 'Primary' })).getByRole('link', { name: 'Projects' }),
+			within(screen.getByRole('navigation', { name: 'Primary' })).getByRole('link', {
+				name: 'Projects',
+			}),
 		).toHaveAttribute('aria-current', 'page')
 
 		Object.defineProperty(window, 'scrollY', { value: 0, configurable: true })

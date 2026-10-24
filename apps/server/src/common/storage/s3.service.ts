@@ -1,6 +1,7 @@
 import type {
 	SignedDownload,
 	StorageService,
+	StoredObject,
 	UploadFileOptions,
 	UploadFileResponse,
 } from 'types/server'
@@ -64,6 +65,18 @@ export class S3Service implements StorageService {
 			return true
 		} catch {
 			return false
+		}
+	}
+
+	async stat(key: string): Promise<StoredObject | null> {
+		try {
+			const head = await this.s3.send(
+				new HeadObjectCommand({ Key: key, Bucket: this.config.aws.s3Bucket }),
+			)
+
+			return { contentType: head.ContentType, size: head.ContentLength }
+		} catch {
+			return null
 		}
 	}
 

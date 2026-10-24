@@ -28,7 +28,9 @@ lerna-debug.log*
 # Yarn Integrity file
 .yarn-integrity
 
-# Local dotenv environment variable files (the root .env is kept: the docker/*.Dockerfile builds copy it)
+# Local dotenv environment variable files. The builds take settings from a BuildKit secret instead, so no
+# .env can reach an image layer or the build cache.
+.env
 .env.*
 **/.env*.local
 

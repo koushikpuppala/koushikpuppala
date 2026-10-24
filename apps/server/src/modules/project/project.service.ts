@@ -19,6 +19,11 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 const ENTITY = 'Project'
 const GALLERY = 'ProjectGallery'
 
+// Public responses carry only what the site renders, never the bucket, storage key or uploader.
+const PUBLIC_MEDIA = {
+	select: { id: true, url: true, fileName: true, altText: true, width: true, height: true },
+} satisfies Prisma.MediaDefaultArgs
+
 @Injectable()
 export class ProjectService extends BaseService {
 	constructor(
@@ -55,9 +60,7 @@ export class ProjectService extends BaseService {
 				liveUrl: true,
 				github: true,
 				sortOrder: true,
-				thumbnail: {
-					select: { id: true, url: true, fileName: true, altText: true, width: true, height: true },
-				},
+				thumbnail: PUBLIC_MEDIA,
 				createdAt: true,
 			},
 		})
@@ -69,12 +72,12 @@ export class ProjectService extends BaseService {
 		const project = await this.prisma.project.findFirst({
 			where: { slug, isPublished: true, deletedAt: null },
 			include: {
-				thumbnail: true,
-				heroImage: true,
+				thumbnail: PUBLIC_MEDIA,
+				heroImage: PUBLIC_MEDIA,
 				gallery: {
 					where: { isVisible: true, media: { deletedAt: null } },
 					orderBy: [{ sortOrder: 'asc' }, { createdAt: 'asc' }],
-					include: { media: true },
+					include: { media: PUBLIC_MEDIA },
 				},
 			},
 		})

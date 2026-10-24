@@ -2,7 +2,7 @@ import userEvent from '@testing-library/user-event'
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ThemeProvider } from 'lib/theme'
-import { AdminShell } from './admin-shell'
+import { AdminShell } from 'components/shell/admin-shell'
 
 const nav = vi.hoisted(() => ({ pathname: '/', replace: vi.fn(), push: vi.fn() }))
 vi.mock('next/navigation', () => ({
@@ -12,7 +12,10 @@ vi.mock('next/navigation', () => ({
 }))
 
 const auth = vi.hoisted(() => ({
-	user: { email: 'ada@example.test', displayName: 'Ada', role: 'ADMIN' } as Record<string, string> | null,
+	user: { email: 'ada@example.test', displayName: 'Ada', role: 'ADMIN' } as Record<
+		string,
+		string
+	> | null,
 	loading: false,
 	stage: 'ready',
 	logout: vi.fn(async () => undefined),
@@ -20,7 +23,10 @@ const auth = vi.hoisted(() => ({
 vi.mock('lib/auth', () => ({ useAuth: () => auth }))
 
 const setMediaQuery = (query: string, matches: boolean) =>
-	(globalThis as unknown as { setMediaQuery: (q: string, m: boolean) => void }).setMediaQuery(query, matches)
+	(globalThis as unknown as { setMediaQuery: (q: string, m: boolean) => void }).setMediaQuery(
+		query,
+		matches,
+	)
 
 const renderShell = () =>
 	render(
@@ -151,11 +157,17 @@ describe('AdminShell', () => {
 			expect(palette()).toBeInTheDocument()
 
 			fireEvent.keyDown(paletteInput(), { key: 'Escape' })
-			await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Command palette' })).not.toBeInTheDocument())
+			await waitFor(() =>
+				expect(screen.queryByRole('dialog', { name: 'Command palette' })).not.toBeInTheDocument(),
+			)
 
 			await userEvent.click(screen.getByRole('button', { name: /search commands/i }))
-			await userEvent.click(within(palette()).getByRole('button', { name: 'Close command palette' }))
-			await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Command palette' })).not.toBeInTheDocument())
+			await userEvent.click(
+				within(palette()).getByRole('button', { name: 'Close command palette' }),
+			)
+			await waitFor(() =>
+				expect(screen.queryByRole('dialog', { name: 'Command palette' })).not.toBeInTheDocument(),
+			)
 		})
 
 		it('ignores K without a modifier', () => {
@@ -211,7 +223,9 @@ describe('AdminShell', () => {
 			renderShell()
 			fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
 
-			await userEvent.click(within(palette()).getByRole('button', { name: new RegExp(label.replace(/[()&]/g, '.')) }))
+			await userEvent.click(
+				within(palette()).getByRole('button', { name: new RegExp(label.replace(/[()&]/g, '.')) }),
+			)
 
 			expect(nav.push).toHaveBeenCalledWith(href)
 		})
@@ -221,11 +235,15 @@ describe('AdminShell', () => {
 			renderShell()
 
 			fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
-			await userEvent.click(within(palette()).getByRole('button', { name: /switch to (light|dark) mode/i }))
+			await userEvent.click(
+				within(palette()).getByRole('button', { name: /switch to (light|dark) mode/i }),
+			)
 			expect(localStorage.getItem('kp.admin.theme')).not.toBeNull()
 
 			fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
-			await userEvent.click(within(palette()).getByRole('button', { name: /open live portfolio site/i }))
+			await userEvent.click(
+				within(palette()).getByRole('button', { name: /open live portfolio site/i }),
+			)
 			expect(open).toHaveBeenCalledWith(expect.any(String), '_blank', 'noopener,noreferrer')
 
 			fireEvent.keyDown(window, { key: 'k', ctrlKey: true })

@@ -1,0 +1,29 @@
+# Copy to ~/services/portfolio/admin on EC2, next to deploy.sh and app.env, and run ./deploy.sh <tag>.
+# The image holds no settings, so app.env is mounted where the app reads its .env. It is not named
+# .env because compose reads that file for its own variable substitution.
+services:
+  admin:
+    image: '${ECR_REGISTRY:?Missing environment variable: ECR_REGISTRY}/${ECR_REPOSITORY:?Missing environment variable: ECR_REPOSITORY}:${IMAGE_TAG:?IMAGE_TAG is required}'
+    container_name: portfolio-admin
+    restart: unless-stopped
+    # Localhost only: nginx on this host is the one way in, so it alone sets X-Forwarded-For.
+    ports:
+      - target: 3001
+        published: 3020
+        protocol: tcp
+        host_ip: 127.0.0.1
+    volumes:
+      - ./app.env:/app/apps/admin/.env:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+    networks:
+      - shared-server
+
+# The server wide network Postgres, Redis and the other services already join, so containers reach
+# each other by name.
+networks:
+  shared-server:
+    external: true

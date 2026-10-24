@@ -104,7 +104,6 @@ const nextConfig = nextPWA({
 			source: '/__/auth/:params',
 			destination: 'https://koushikpuppala.firebaseapp.com/__/auth/:params',
 		},
-		{ source: '/api/:path*', destination: `${process.env.NEXT_PUBLIC_BASE_URL}/api/:path*` },
 	],
 	redirects: async () => [
 		{ source: '/skills', destination: '/services', permanent: true },

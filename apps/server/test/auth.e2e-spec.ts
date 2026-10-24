@@ -1,6 +1,6 @@
 import { UserRole, UserStatus } from '@repo/prisma'
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
-import { bootApp, createUser, resetState, type TestApp } from './helpers'
+import { bootApp, createUser, refreshIdToken, resetState, type TestApp } from './helpers'
 
 describe('authentication and roles (e2e)', () => {
 	let t: TestApp
@@ -55,6 +55,20 @@ describe('authentication and roles (e2e)', () => {
 		await t.http().get('/api/v1/auth/me').set(auth).expect(200)
 		await t.http().post('/api/v1/auth/logout').set(auth).expect(204)
 		await t.http().get('/api/v1/auth/me').set(auth).expect(401)
+	})
+
+	it('rejects tokens refreshed after logout', async () => {
+		const { auth, refreshToken } = await createUser(t.prisma, UserRole.EDITOR)
+
+		await t.http().post('/api/v1/auth/login').set(auth).expect(201)
+		// Firebase compares revocation times in whole seconds, so wait for the token's second to pass.
+		await new Promise(resolve => setTimeout(resolve, 1100))
+		await t.http().post('/api/v1/auth/logout').set(auth).expect(204)
+
+		const fresh = await refreshIdToken(refreshToken)
+
+		if (fresh)
+			await t.http().get('/api/v1/auth/me').set('Authorization', `Bearer ${fresh}`).expect(401)
 	})
 
 	it('records the login in the audit log with the actor name', async () => {

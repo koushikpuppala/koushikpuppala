@@ -9,9 +9,9 @@ import { motion } from 'motion/react'
 import { usePathname } from 'next/navigation'
 import { ScrollProgress } from 'components/primitives/motion'
 import { ThemeToggle } from 'components/theme-toggle'
-import { navItems } from './navigation'
-import { WordMark } from './word-mark'
-import { useScrolled } from './use-scrolled'
+import { navItems } from 'components/shell/navigation'
+import { WordMark } from 'components/shell/word-mark'
+import { useScrolled } from 'components/shell/use-scrolled'
 
 export const SiteHeader = ({ onOpenMenu, onOpenPalette }: SiteHeaderProps) => {
 	const scrolled = useScrolled()

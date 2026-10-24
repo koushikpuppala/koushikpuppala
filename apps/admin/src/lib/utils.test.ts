@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { pickFields } from './utils'
+import { pickFields } from 'lib/utils'
 
 describe('pickFields', () => {
 	it('keeps only listed keys and drops undefined values', () => {

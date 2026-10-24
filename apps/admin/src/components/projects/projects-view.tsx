@@ -13,7 +13,7 @@ import { toPublishState } from 'lib/publish-state'
 import { useCollectionView } from 'lib/use-collection-view'
 import { publishFilter } from 'lib/list-query'
 import { projectsActions } from 'actions/projects'
-import { ProjectFormDialog } from './project-form-dialog'
+import { ProjectFormDialog } from 'components/projects/project-form-dialog'
 
 const LIST_OPTIONS: ListQueryOptions = {
 	sort: { status: 'isPublished' },

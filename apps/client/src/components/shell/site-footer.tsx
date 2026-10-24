@@ -2,8 +2,8 @@ import type { SiteFooterProps } from 'types/components/client'
 import Link from 'next/link'
 import { LogoGlyph } from 'components/brand/logo'
 import { PulseDot } from 'components/primitives/layout'
-import { navItems } from './navigation'
-import { WordMark } from './word-mark'
+import { navItems } from 'components/shell/navigation'
+import { WordMark } from 'components/shell/word-mark'
 
 export const SiteFooter = ({ socials }: SiteFooterProps) => {
 	return (

@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw'
-import { adminFetch } from './api-client'
+import { adminFetch } from 'lib/api-client'
 import { API, server } from '../../test/msw'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { breadcrumbsFor, isActivePath } from './navigation'
+import { breadcrumbsFor, isActivePath } from 'lib/navigation'
 
 describe('navigation', () => {
 	it('matches the dashboard only on the root path', () => {

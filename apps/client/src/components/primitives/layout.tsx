@@ -4,7 +4,7 @@ import type {
 	SectionHeaderProps,
 	SectionProps,
 } from 'types/components/client'
-import { Reveal } from './motion'
+import { Reveal } from 'components/primitives/motion'
 import { classNames } from 'utils/classNames'
 
 export const Section = ({ children, className, id, labelledBy }: SectionProps) => {

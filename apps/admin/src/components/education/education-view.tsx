@@ -12,7 +12,7 @@ import { toPublishState } from 'lib/publish-state'
 import { useCollectionView } from 'lib/use-collection-view'
 import { publishFilter } from 'lib/list-query'
 import { educationActions } from 'actions/education'
-import { EducationFormDialog } from './education-form-dialog'
+import { EducationFormDialog } from 'components/education/education-form-dialog'
 
 const LIST_OPTIONS: ListQueryOptions = {
 	sort: { institution: 'university', dates: 'startDate', status: 'isPublished' },

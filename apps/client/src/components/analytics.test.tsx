@@ -25,7 +25,7 @@ const renderAnalytics = async (env: { ga?: string; clarity?: string }) => {
 	vi.stubEnv('NEXT_PUBLIC_GOOGLE_ANALYTICS', env.ga ?? '')
 	vi.stubEnv('NEXT_PUBLIC_MICROSOFT_CLARITY', env.clarity ?? '')
 	vi.resetModules()
-	const { Analytics } = await import('./analytics')
+	const { Analytics } = await import('components/analytics')
 	return render(<Analytics />)
 }
 

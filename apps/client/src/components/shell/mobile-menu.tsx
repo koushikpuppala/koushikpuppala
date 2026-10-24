@@ -7,8 +7,8 @@ import { Button } from 'ui/button'
 import { AnimatePresence, motion } from 'motion/react'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
-import { allDestinations } from './navigation'
-import { WordMark } from './word-mark'
+import { allDestinations } from 'components/shell/navigation'
+import { WordMark } from 'components/shell/word-mark'
 
 export const MobileMenu = ({ open, onClose, socials }: MobileMenuProps) => {
 	useEffect(() => {

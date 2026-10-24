@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { getHomeData } from './home-data'
+import { getHomeData } from 'lib/home-data'
 import { http, HttpResponse } from 'msw'
 import { API, server } from '../../test/msw'
 import { describe, expect, it } from 'vitest'

@@ -45,10 +45,10 @@ export class AdminCreateUserDto {
 	@IsNotEmpty()
 	role!: UserRole
 
-	@ApiProperty({ example: 'password123' })
+	@ApiProperty({ example: 'correct-horse-battery' })
 	@IsString()
 	@IsNotEmpty()
-	@MinLength(6)
+	@MinLength(12)
 	password!: string
 
 	@ApiProperty({ example: 'password123', required: false })
@@ -84,9 +84,9 @@ export class AdminUpdateUserDto {
 	@IsOptional()
 	status?: UserStatus
 
-	@ApiProperty({ example: 'newpassword123', required: false })
+	@ApiProperty({ example: 'new-horse-battery', required: false })
 	@IsString()
 	@IsOptional()
-	@MinLength(6)
+	@MinLength(12)
 	password?: string
 }

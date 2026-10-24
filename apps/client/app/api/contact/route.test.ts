@@ -3,7 +3,7 @@ import { POST } from './route'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 import { API, server } from '../../../test/msw'
-import { DEFAULT_SUBJECT } from '../../../src/constants/contact'
+import { DEFAULT_SUBJECT } from 'constants/contact'
 
 const valid = {
 	name: 'Ada Lovelace',

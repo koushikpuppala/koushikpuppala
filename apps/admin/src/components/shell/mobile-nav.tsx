@@ -1,7 +1,7 @@
 import type { MobileNavProps } from 'types/components/admin'
 import { LogoMark } from 'ui/logo'
 import { LogOut, X } from 'components/icons'
-import { NavLinks } from './nav-links'
+import { NavLinks } from 'components/shell/nav-links'
 
 export const MobileNav = ({ pathname, onClose, onSignOut }: MobileNavProps) => (
 	<div className='fixed inset-0 z-50 lg:hidden'>

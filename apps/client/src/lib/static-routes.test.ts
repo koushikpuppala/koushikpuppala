@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-import { findStaticRoutes, toStaticRoute } from './static-routes'
+import { findStaticRoutes, toStaticRoute } from 'lib/static-routes'
 
 describe('toStaticRoute', () => {
 	it('maps page files to URL paths', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { validateContactForm } from './contact-data'
+import { validateContactForm } from 'lib/contact-data'
 
 const withEmail = (email: string) =>
 	validateContactForm({ name: 'Ada', email, subject: 'Hello', message: 'A message long enough.' })

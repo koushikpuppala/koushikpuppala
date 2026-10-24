@@ -12,7 +12,7 @@ import { CollectionManager } from 'components/cms/collection-manager'
 import { toPublishState } from 'lib/publish-state'
 import { useCollectionView } from 'lib/use-collection-view'
 import { socialsActions } from 'actions/socials'
-import { SocialFormDialog } from './social-form-dialog'
+import { SocialFormDialog } from 'components/socials/social-form-dialog'
 
 const LIST_OPTIONS: ListQueryOptions = {
 	sort: { status: 'isVisible' },

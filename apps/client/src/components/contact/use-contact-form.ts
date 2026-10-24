@@ -5,7 +5,7 @@ import type { ContactField, ContactFormState, TopicOption } from 'types/componen
 import { useEffect, useRef, useState, type SubmitEvent } from 'react'
 import { useReCaptcha } from 'next-recaptcha-v3'
 import { DEFAULT_SUBJECT } from 'constants/contact'
-import { contactSchema, EMPTY_VALUES, RECAPTCHA_ACTION } from './contact-options'
+import { contactSchema, EMPTY_VALUES, RECAPTCHA_ACTION } from 'components/contact/contact-options'
 
 const MIN_FILL_MS = 2500
 const COPIED_MS = 2200

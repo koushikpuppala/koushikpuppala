@@ -15,9 +15,9 @@ import { PageHeader } from 'components/cms/page-header'
 import { ErrorBanner } from 'components/ui/error-banner'
 import { ConfirmDialog } from 'components/cms/confirm-dialog'
 import { RefreshButton } from 'components/cms/refresh-button'
-import { MessageDialog } from './message-dialog'
-import { MESSAGE_FILTERS } from './message-options'
-import { PriorityBadge, StatusBadge } from './message-badges'
+import { MessageDialog } from 'components/messages/message-dialog'
+import { MESSAGE_FILTERS } from 'components/messages/message-options'
+import { PriorityBadge, StatusBadge } from 'components/messages/message-badges'
 
 const listMessages = (query: URLSearchParams, signal: AbortSignal) =>
 	contactsActions.list<ContactMessage>(query, signal)

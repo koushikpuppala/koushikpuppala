@@ -2,7 +2,7 @@ import type { ContactIntroProps } from 'types/components/client'
 import Link from 'next/link'
 import { PulseDot } from 'components/primitives/layout'
 import { ArrowUpRight, MapPin, socialIcon } from 'components/icons'
-import { LocalTimeCard } from './local-time-card'
+import { LocalTimeCard } from 'components/contact/local-time-card'
 
 export const ContactIntro = ({ socials, location }: ContactIntroProps) => (
 	<div className='space-y-8 lg:col-span-5'>

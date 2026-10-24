@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { API, server } from '../../../test/msw'
-import { SettingsView } from './settings-view'
+import { SettingsView } from 'components/settings/settings-view'
 
 vi.mock('lib/firebase', () => ({ getIdToken: async () => 'id-token-1' }))
 vi.mock('next/navigation', () => ({
@@ -24,20 +24,36 @@ const home = {
 	keywords: ['Ada'],
 	isPublished: true,
 }
-const about = { ...home, id: 'meta-about', key: '/about', title: 'About Ada', keywords: [], isPublished: false }
+const about = {
+	...home,
+	id: 'meta-about',
+	key: '/about',
+	title: 'About Ada',
+	keywords: [],
+	isPublished: false,
+}
 
 let requests: Array<{ method: string; path: string; body: unknown }>
 
 const serve = () =>
 	server.use(
-		http.get(`${API}/api/v1/metadata`, () => HttpResponse.json({ result: { items: [home, about], pagination: { total: 2 } } })),
+		http.get(`${API}/api/v1/metadata`, () =>
+			HttpResponse.json({ result: { items: [home, about], pagination: { total: 2 } } }),
+		),
 		http.patch(`${API}/api/v1/metadata/:id`, async ({ request }) => {
-			requests.push({ method: 'PATCH', path: new URL(request.url).pathname, body: await request.json() })
+			requests.push({
+				method: 'PATCH',
+				path: new URL(request.url).pathname,
+				body: await request.json(),
+			})
 			return HttpResponse.json({ result: home })
 		}),
 		http.post(`${API}/api/v1/metadata`, async ({ request }) => {
 			requests.push({ method: 'POST', path: '/api/v1/metadata', body: await request.json() })
-			return HttpResponse.json({ result: { ...home, id: 'meta-new', key: '/contact' } }, { status: 201 })
+			return HttpResponse.json(
+				{ result: { ...home, id: 'meta-new', key: '/contact' } },
+				{ status: 201 },
+			)
 		}),
 	)
 
@@ -126,7 +142,11 @@ describe('SettingsView', () => {
 
 	it('shows the error when saving fails', async () => {
 		serve()
-		server.use(http.patch(`${API}/api/v1/metadata/:id`, () => HttpResponse.json({ message: 'Title too long' }, { status: 400 })))
+		server.use(
+			http.patch(`${API}/api/v1/metadata/:id`, () =>
+				HttpResponse.json({ message: 'Title too long' }, { status: 400 }),
+			),
+		)
 		render(<SettingsView />)
 		await screen.findByDisplayValue('Ada Lovelace')
 
@@ -136,13 +156,19 @@ describe('SettingsView', () => {
 	})
 
 	it('shows a load error with a retry', async () => {
-		server.use(http.get(`${API}/api/v1/metadata`, () => HttpResponse.json({ message: 'Metadata store down' }, { status: 503 })))
+		server.use(
+			http.get(`${API}/api/v1/metadata`, () =>
+				HttpResponse.json({ message: 'Metadata store down' }, { status: 503 }),
+			),
+		)
 		render(<SettingsView />)
 
 		expect((await screen.findAllByText(/Metadata store down/)).length).toBeGreaterThan(0)
 
 		serve()
-		await userEvent.click(screen.getAllByRole('button', { name: /retry|refresh/i })[0] as HTMLElement)
+		await userEvent.click(
+			screen.getAllByRole('button', { name: /retry|refresh/i })[0] as HTMLElement,
+		)
 
 		expect(await screen.findByDisplayValue('Ada Lovelace')).toBeInTheDocument()
 	})
@@ -153,7 +179,15 @@ describe('SettingsView', () => {
 			http.get(`${API}/api/v1/media`, () =>
 				HttpResponse.json({
 					result: {
-						items: [{ id: 'm1', fileName: 'og.png', originalName: 'og.png', url: 'https://assets.example.com/og.png', mimeType: 'image/png' }],
+						items: [
+							{
+								id: 'm1',
+								fileName: 'og.png',
+								originalName: 'og.png',
+								url: 'https://assets.example.com/og.png',
+								mimeType: 'image/png',
+							},
+						],
 						pagination: { total: 1 },
 					},
 				}),

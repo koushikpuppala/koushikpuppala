@@ -21,7 +21,7 @@ describe('user management (e2e)', () => {
 			.send({
 				fullName: 'New Editor',
 				email: 'new.editor@example.test',
-				password: 'password123',
+				password: 'long-password-123',
 				role: 'EDITOR',
 			})
 			.expect(201)

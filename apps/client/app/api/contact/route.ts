@@ -1,8 +1,8 @@
 import type { ContactFormPayload } from 'types/api'
 import { NextResponse } from 'next/server'
-import { BASE_URL } from '../../../src/constants/base-url'
-import { DEFAULT_SUBJECT } from '../../../src/constants/contact'
-import { validateContactForm } from '../../../src/lib/contact-data'
+import { API_INTERNAL_URL } from 'constants/api-internal-url'
+import { DEFAULT_SUBJECT } from 'constants/contact'
+import { validateContactForm } from 'lib/contact-data'
 
 const RECEIVED = {
 	success: true,
@@ -30,7 +30,7 @@ const forwardToApi = (req: Request, body: ContactFormPayload) => {
 	// It is forwarded so the API rate-limits and verifies reCAPTCHA against the visitor, not this server.
 	const clientIp = req.headers.get('x-forwarded-for')?.split(',').pop()?.trim()
 
-	return fetch(`${BASE_URL}/api/v1/contacts`, {
+	return fetch(`${API_INTERNAL_URL}/api/v1/contacts`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

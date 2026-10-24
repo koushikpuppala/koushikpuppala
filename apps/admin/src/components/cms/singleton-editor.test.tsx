@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { SingletonEditor } from './singleton-editor'
+import { SingletonEditor } from 'components/cms/singleton-editor'
 
 describe('SingletonEditor', () => {
 	it('shows the page skeleton while the record loads', () => {

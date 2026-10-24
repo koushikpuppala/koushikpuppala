@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import { ConfirmDialog } from './confirm-dialog'
+import { ConfirmDialog } from 'components/cms/confirm-dialog'
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 

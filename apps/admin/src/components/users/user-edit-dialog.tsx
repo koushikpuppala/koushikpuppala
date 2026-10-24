@@ -7,7 +7,7 @@ import { usersActions } from 'actions/users'
 import { Field } from 'components/form/field'
 import { useFormDialog } from 'lib/use-form-dialog'
 import { FormDialog } from 'components/form/form-dialog'
-import { ROLE_DETAIL_OPTIONS, STATUS_DETAIL_OPTIONS } from './user-options'
+import { ROLE_DETAIL_OPTIONS, STATUS_DETAIL_OPTIONS } from 'components/users/user-options'
 
 const EMPTY: Partial<UpdateUserPayload> = { role: 'EDITOR', status: 'ACTIVE' }
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { FormError, errorMessage } from './form-error'
+import { FormError, errorMessage } from 'components/ui/form-error'
 
 describe('FormError', () => {
 	it('announces the message as an alert', () => {

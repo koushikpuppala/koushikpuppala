@@ -1,7 +1,14 @@
 import userEvent from '@testing-library/user-event'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './dialog'
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from 'components/ui/dialog'
 
 // jsdom has no layout, so offsetParent is always null; the dialog uses it to skip hidden controls.
 const original = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetParent')
@@ -63,7 +70,9 @@ describe('Dialog', () => {
 		renderDialog()
 		const save = screen.getByRole('button', { name: 'Save' })
 		const name = screen.getByLabelText('Name')
-		const first = screen.getAllByRole('button').find(b => b.closest('[role="dialog"]')) as HTMLElement
+		const first = screen
+			.getAllByRole('button')
+			.find(b => b.closest('[role="dialog"]')) as HTMLElement
 
 		save.focus()
 		fireEvent.keyDown(window, { key: 'Tab' })

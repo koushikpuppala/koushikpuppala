@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { API, server } from '../../../test/msw'
-import { MediaPickerModal } from './media-picker-modal'
+import { MediaPickerModal } from 'components/cms/media-picker-modal'
 
 vi.mock('lib/firebase', () => ({ getIdToken: async () => 'id-token-1' }))
 
@@ -23,8 +23,12 @@ const serve = (total = 3) =>
 		http.get(`${API}/api/v1/media`, ({ request }) => {
 			const query = new URL(request.url).searchParams
 			queries.push(query.toString())
-			if (query.get('search') === 'none') return HttpResponse.json({ result: { items: [], pagination: { total: 0 } } })
-			const items = query.get('page') === '2' ? [asset('third')] : [asset('first', { altText: 'First image' }), asset('second')]
+			if (query.get('search') === 'none')
+				return HttpResponse.json({ result: { items: [], pagination: { total: 0 } } })
+			const items =
+				query.get('page') === '2'
+					? [asset('third')]
+					: [asset('first', { altText: 'First image' }), asset('second')]
 			return HttpResponse.json({ result: { items, pagination: { total } } })
 		}),
 	)
@@ -32,7 +36,9 @@ const serve = (total = 3) =>
 const renderPicker = () => {
 	const onSelect = vi.fn()
 	const onOpenChange = vi.fn()
-	const { container } = render(<MediaPickerModal open onOpenChange={onOpenChange} onSelect={onSelect} title='Pick a cover' />)
+	const { container } = render(
+		<MediaPickerModal open onOpenChange={onOpenChange} onSelect={onSelect} title='Pick a cover' />,
+	)
 	return { onSelect, onOpenChange, container }
 }
 
@@ -49,7 +55,12 @@ describe('MediaPickerModal', () => {
 
 		await userEvent.click(within(dialog).getAllByRole('button').at(-1) as HTMLElement)
 
-		expect(onSelect).toHaveBeenCalledWith({ id: 'first', url: 'https://cdn.test/first.png', fileName: 'first.png', altText: 'First image' })
+		expect(onSelect).toHaveBeenCalledWith({
+			id: 'first',
+			url: 'https://cdn.test/first.png',
+			fileName: 'first.png',
+			altText: 'First image',
+		})
 		expect(onOpenChange).toHaveBeenCalledWith(false)
 	})
 
@@ -83,32 +94,60 @@ describe('MediaPickerModal', () => {
 		serve()
 		server.use(
 			http.post(`${API}/api/v1/media/presigned-url`, () =>
-				HttpResponse.json({ result: { uploadUrl: 'https://bucket.test/upload', storageKey: 'general/new.png', url: '' } }),
+				HttpResponse.json({
+					result: {
+						uploadUrl: 'https://bucket.test/upload',
+						storageKey: 'general/new.png',
+						url: '',
+					},
+				}),
 			),
 			http.put('https://bucket.test/upload', () => new HttpResponse(null, { status: 200 })),
 			http.post(`${API}/api/v1/media/complete`, () =>
-				HttpResponse.json({ result: { id: 'new', fileName: 'new.png', url: 'https://cdn.test/new.png', storageKey: 'general/new.png' } }),
+				HttpResponse.json({
+					result: {
+						id: 'new',
+						fileName: 'new.png',
+						url: 'https://cdn.test/new.png',
+						storageKey: 'general/new.png',
+					},
+				}),
 			),
 		)
 		const { onSelect, container } = renderPicker()
 		const dialog = await screen.findByRole('dialog')
 		await within(dialog).findByRole('button', { name: /second\.png/ })
 
-		await userEvent.upload(container.ownerDocument.querySelector('input[type="file"]') as HTMLInputElement, new File(['png'], 'new.png', { type: 'image/png' }))
+		await userEvent.upload(
+			container.ownerDocument.querySelector('input[type="file"]') as HTMLInputElement,
+			new File(['png'], 'new.png', { type: 'image/png' }),
+		)
 		await waitFor(() => expect(within(dialog).getAllByRole('button').at(-1)).toBeEnabled())
 		await userEvent.click(within(dialog).getAllByRole('button').at(-1) as HTMLElement)
 
-		expect(onSelect).toHaveBeenCalledWith({ id: 'new', url: 'https://cdn.test/new.png', fileName: 'new.png', altText: undefined })
+		expect(onSelect).toHaveBeenCalledWith({
+			id: 'new',
+			url: 'https://cdn.test/new.png',
+			fileName: 'new.png',
+			altText: undefined,
+		})
 	})
 
 	it('shows the upload error', async () => {
 		serve()
-		server.use(http.post(`${API}/api/v1/media/presigned-url`, () => HttpResponse.json({ message: 'Too large' }, { status: 400 })))
+		server.use(
+			http.post(`${API}/api/v1/media/presigned-url`, () =>
+				HttpResponse.json({ message: 'Too large' }, { status: 400 }),
+			),
+		)
 		const { container } = renderPicker()
 		const dialog = await screen.findByRole('dialog')
 		await within(dialog).findByRole('button', { name: /second\.png/ })
 
-		await userEvent.upload(container.ownerDocument.querySelector('input[type="file"]') as HTMLInputElement, new File(['png'], 'x.png', { type: 'image/png' }))
+		await userEvent.upload(
+			container.ownerDocument.querySelector('input[type="file"]') as HTMLInputElement,
+			new File(['png'], 'x.png', { type: 'image/png' }),
+		)
 
 		expect(await within(dialog).findByText(/Too large/)).toBeInTheDocument()
 	})

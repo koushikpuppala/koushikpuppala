@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { publishFilter, toListQuery, toPageQuery } from './list-query'
+import { publishFilter, toListQuery, toPageQuery } from 'lib/list-query'
 
 const query = (url: string, options?: Parameters<typeof toListQuery>[1]) =>
 	toListQuery(new URLSearchParams(url), options).toString()

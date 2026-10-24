@@ -1,7 +1,7 @@
 import type { ApiResponse, ResumeDownload } from 'types/api'
 
 import { connection } from 'next/server'
-import { BASE_URL } from 'constants/base-url'
+import { API_INTERNAL_URL } from 'constants/api-internal-url'
 import { DOWNLOAD_UNAVAILABLE_HASH } from 'constants/resume'
 
 const redirect = (location: string) =>
@@ -27,7 +27,7 @@ export const GET = async (request: Request) => {
 		const clientIp = request.headers.get('x-forwarded-for')?.split(',').pop()?.trim()
 		const userAgent = request.headers.get('user-agent')
 
-		const res = await fetch(`${BASE_URL}/api/v1/resume/download`, {
+		const res = await fetch(`${API_INTERNAL_URL}/api/v1/resume/download`, {
 			method: 'POST',
 			cache: 'no-store',
 			headers: {

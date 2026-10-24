@@ -3,7 +3,7 @@ import { Input } from 'ui/input'
 import { Badge } from 'components/ui/badge'
 import { classNames } from 'utils/classNames'
 import { Field } from 'components/form/field'
-import { PATHNAME_PRESETS } from './settings-presets'
+import { PATHNAME_PRESETS } from 'components/settings/settings-presets'
 
 export const PathnamePicker = ({ form, setField, routeRecords, onSelect }: PathnamePickerProps) => (
 	<div className='border-border bg-surface space-y-4 rounded-2xl border p-6 shadow-xs'>

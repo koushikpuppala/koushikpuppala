@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { server } from '../../../test/msw'
 import { socials } from '../../../test/fixtures'
 import { DEFAULT_SUBJECT } from 'constants/contact'
-import { ContactView } from './contact-view'
+import { ContactView } from 'components/contact/contact-view'
 
 const recaptcha = vi.hoisted(() => ({
 	reCaptchaKey: undefined as string | undefined,
@@ -37,7 +37,12 @@ const enter = async (label: RegExp, value?: string) => {
 	await userEvent.paste(value)
 }
 
-const fill = async (values: { name?: string; email?: string; subject?: string; message?: string }) => {
+const fill = async (values: {
+	name?: string
+	email?: string
+	subject?: string
+	message?: string
+}) => {
 	await enter(/your name/i, values.name)
 	await enter(/your email/i, values.email)
 	await enter(/subject/i, values.subject)
@@ -99,7 +104,9 @@ describe('ContactView', () => {
 
 		await userEvent.type(name, 'Grace')
 
-		await waitFor(() => expect(screen.queryByText(/please enter your name/i)).not.toBeInTheDocument())
+		await waitFor(() =>
+			expect(screen.queryByText(/please enter your name/i)).not.toBeInTheDocument(),
+		)
 	})
 
 	it('marks every invalid field on submit and sends nothing', async () => {
@@ -119,7 +126,9 @@ describe('ContactView', () => {
 		await userEvent.click(topic)
 
 		expect(topic).toHaveAttribute('aria-pressed', 'true')
-		expect(screen.getByLabelText(/subject/i)).toHaveValue('Opportunity: Engineering Role Discussion')
+		expect(screen.getByLabelText(/subject/i)).toHaveValue(
+			'Opportunity: Engineering Role Discussion',
+		)
 
 		await userEvent.click(topic)
 

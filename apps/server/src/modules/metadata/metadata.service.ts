@@ -34,46 +34,28 @@ export class MetadataService extends BaseService {
 		return p
 	}
 
+	// Resolves from the one cached list of published records instead of caching per requested path,
+	// so a public caller cannot fill Redis by asking for endless made up paths.
 	async getPublishedByPath(pathname: string) {
 		const normalized = this.normalizePath(pathname)
+		const published = await this.getAllPublished()
 
-		const cacheKey = `metadata:path:${normalized}`
+		// Lookup order: exact path, the same key without a leading slash, the project detail
+		// template for /projects/<slug>, and finally the site-wide default.
+		const candidates = [
+			[normalized],
+			[normalized === '/' ? 'home' : normalized.slice(1)],
+			normalized.startsWith('/projects/')
+				? ['/projects/[slug]', '/projects/:slug', 'projects/[slug]']
+				: [],
+			['/', 'home', 'global-seo', 'root', 'default'],
+		]
 
-		return this.cache.remember(cacheKey, 3600, async () => {
-			let meta = await this.prisma.metadata.findFirst({
-				where: { key: normalized, isPublished: true, deletedAt: null },
-			})
+		const meta = candidates
+			.map(keys => published.find(record => keys.includes(record.key)))
+			.find(Boolean)
 
-			// Lookup order: exact path, the same key without a leading slash, the project detail
-			// template for /projects/<slug>, and finally the site-wide default.
-			if (!meta) {
-				const strippedKey = normalized === '/' ? 'home' : normalized.slice(1)
-
-				meta = await this.prisma.metadata.findFirst({
-					where: { key: strippedKey, isPublished: true, deletedAt: null },
-				})
-			}
-
-			if (!meta && normalized.startsWith('/projects/'))
-				meta = await this.prisma.metadata.findFirst({
-					where: {
-						key: { in: ['/projects/[slug]', '/projects/:slug', 'projects/[slug]'] },
-						isPublished: true,
-						deletedAt: null,
-					},
-				})
-
-			if (!meta)
-				meta = await this.prisma.metadata.findFirst({
-					where: {
-						key: { in: ['/', 'home', 'global-seo', 'root', 'default'] },
-						isPublished: true,
-						deletedAt: null,
-					},
-				})
-
-			return this.ensureExists(meta, `Metadata for path '${pathname}' not found`)
-		})
+		return this.ensureExists(meta ?? null, `Metadata for path '${pathname}' not found`)
 	}
 
 	async getAllPublished() {

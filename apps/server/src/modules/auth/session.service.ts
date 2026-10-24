@@ -7,6 +7,7 @@ import { DatabaseService } from 'database/database.service'
 import { AuditLogService } from 'modules/audit-log/audit-log.service'
 import { CacheService } from 'redis/cache.service'
 import { RedisService } from 'redis/redis.service'
+import { FirebaseService } from 'firebase/firebase.service'
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { ApiResponse, successResponse } from 'common/interfaces/api-response.interface'
 
@@ -17,6 +18,7 @@ export class SessionService {
 		private readonly auditLog: AuditLogService,
 		private readonly cacheService: CacheService,
 		private readonly redisService: RedisService,
+		private readonly firebase: FirebaseService,
 	) {}
 
 	// Only a hash of the ID token is stored, so a database or cache leak exposes no usable tokens.
@@ -70,26 +72,42 @@ export class SessionService {
 		return session
 	}
 
+	// The session row only blocks one ID token, and the refresh token can mint new ones at any
+	// time. Revoking the refresh tokens makes Firebase reject every token issued before now.
+	private async revokeFirebaseTokens(userId: string): Promise<void> {
+		const user = await this.prisma.user.findUnique({
+			where: { id: userId },
+			select: { firebaseUid: true },
+		})
+
+		if (user) await this.firebase.revokeRefreshTokens(user.firebaseUid)
+	}
+
 	async revokeSession(token: string) {
 		const tokenHash = this.hashToken(token)
 
-		try {
-			const session = await this.prisma.session.update({
-				where: { tokenHash },
-				data: { revoked: true, revokedAt: new Date() },
-			})
+		const existing = await this.prisma.session.findUnique({
+			where: { tokenHash },
+			select: { userId: true },
+		})
 
-			await this.cacheRevocation(tokenHash, true)
+		if (!existing) throw new NotFoundException('Session not found.')
 
-			await this.auditLog.log({
-				action: AuditAction.LOGOUT,
-				entity: 'Session',
-				entityId: session.id,
-				actorId: session.userId,
-			})
-		} catch {
-			throw new NotFoundException('Session not found.')
-		}
+		await this.revokeFirebaseTokens(existing.userId)
+
+		const session = await this.prisma.session.update({
+			where: { tokenHash },
+			data: { revoked: true, revokedAt: new Date() },
+		})
+
+		await this.cacheRevocation(tokenHash, true)
+
+		await this.auditLog.log({
+			action: AuditAction.LOGOUT,
+			entity: 'Session',
+			entityId: session.id,
+			actorId: session.userId,
+		})
 	}
 
 	async isSessionRevoked(token: string): Promise<boolean> {
@@ -153,6 +171,8 @@ export class SessionService {
 			throw new UnauthorizedException('You do not have permission to revoke this session.')
 
 		if (!session.revoked) {
+			await this.revokeFirebaseTokens(session.userId)
+
 			const updated = await this.prisma.session.update({
 				where: { id: session.id },
 				data: { revoked: true, revokedAt: new Date(), revokedBy: user.id },

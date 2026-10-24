@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw'
-import { apiMetricsActions } from './api-metrics'
+import { apiMetricsActions } from 'actions/api-metrics'
 import { API, server } from '../../test/msw'
 import { describe, expect, it, vi } from 'vitest'
 

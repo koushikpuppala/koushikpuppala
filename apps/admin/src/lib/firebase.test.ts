@@ -29,7 +29,7 @@ const ENV = {
 // The module caches the Auth instance, so each test loads a fresh copy.
 const load = async () => {
 	vi.resetModules()
-	return import('./firebase')
+	return import('lib/firebase')
 }
 
 describe('firebase', () => {
@@ -77,7 +77,9 @@ describe('firebase', () => {
 
 		getFirebaseAuth()
 
-		expect(sdk.connectAuthEmulator).toHaveBeenCalledWith(sdk.auth, 'http://127.0.0.1:9099', { disableWarnings: true })
+		expect(sdk.connectAuthEmulator).toHaveBeenCalledWith(sdk.auth, 'http://127.0.0.1:9099', {
+			disableWarnings: true,
+		})
 	})
 
 	it('names every missing setting when Firebase is not configured', async () => {

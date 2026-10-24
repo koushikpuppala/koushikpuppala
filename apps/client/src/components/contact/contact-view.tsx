@@ -5,10 +5,10 @@ import { emailAddress } from 'lib/email'
 import { SiteShell } from 'components/site-shell'
 import { Section } from 'components/primitives/layout'
 import { Reveal } from 'components/primitives/motion'
-import { ContactForm } from './contact-form'
-import { ContactIntro } from './contact-intro'
-import { useContactForm } from './use-contact-form'
-import { ContactReceiptCard } from './contact-receipt'
+import { ContactForm } from 'components/contact/contact-form'
+import { ContactIntro } from 'components/contact/contact-intro'
+import { useContactForm } from 'components/contact/use-contact-form'
+import { ContactReceiptCard } from 'components/contact/contact-receipt'
 
 export const ContactView = ({ socials, location }: ContactViewProps) => {
 	const form = useContactForm()

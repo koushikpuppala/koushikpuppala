@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 import { SITE_DOMAIN } from 'constants/site'
 import { API, server } from '../../test/msw'
 import { describe, expect, it } from 'vitest'
-import { resolveMetadataByPath } from './metadata-data'
+import { resolveMetadataByPath } from 'lib/metadata-data'
 
 const noMetadata = () =>
 	server.use(

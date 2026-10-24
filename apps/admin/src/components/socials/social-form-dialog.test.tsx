@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { SocialFormDialog } from './social-form-dialog'
+import { SocialFormDialog } from 'components/socials/social-form-dialog'
 import { render, screen } from '@testing-library/react'
 
 const renderModal = (onSave: () => Promise<void>) => {

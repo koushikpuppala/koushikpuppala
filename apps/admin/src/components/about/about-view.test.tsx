@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { API, server } from '../../../test/msw'
-import { AboutView } from './about-view'
+import { AboutView } from 'components/about/about-view'
 
 vi.mock('lib/firebase', () => ({ getIdToken: async () => 'id-token-1' }))
 
@@ -30,7 +30,11 @@ const serve = (live: unknown[] = [about], drafts: unknown[] = []) =>
 			return HttpResponse.json({ result: { items: onlyLive ? live : drafts }, statusCode: 200 })
 		}),
 		http.patch(`${API}/api/v1/about/:id`, async ({ request }) => {
-			requests.push({ method: 'PATCH', path: new URL(request.url).pathname, body: await request.json() })
+			requests.push({
+				method: 'PATCH',
+				path: new URL(request.url).pathname,
+				body: await request.json(),
+			})
 			return HttpResponse.json({ result: { ...about, isPublished: true } })
 		}),
 		http.patch(`${API}/api/v1/about/:id/publish`, async ({ request }) => {
@@ -59,7 +63,8 @@ describe('AboutView', () => {
 		await userEvent.click(screen.getByLabelText('New stat detail'))
 		await userEvent.paste('shipped')
 		let statRow = screen.getByLabelText('New stat label').parentElement as HTMLElement
-		while (!within(statRow).queryByRole('button', { name: /^add$/i })) statRow = statRow.parentElement as HTMLElement
+		while (!within(statRow).queryByRole('button', { name: /^add$/i }))
+			statRow = statRow.parentElement as HTMLElement
 		await userEvent.click(within(statRow).getByRole('button', { name: /^add$/i }))
 		await userEvent.click(screen.getByRole('button', { name: 'Remove Years stat' }))
 		await userEvent.click(screen.getByPlaceholderText(/add a way you work/i))
@@ -88,7 +93,9 @@ describe('AboutView', () => {
 		await userEvent.type(heading, ' extra')
 		await userEvent.click(screen.getByRole('button', { name: /discard/i }))
 
-		await waitFor(() => expect(screen.getByLabelText(/heading title/i)).toHaveValue('Engineer and mathematician'))
+		await waitFor(() =>
+			expect(screen.getByLabelText(/heading title/i)).toHaveValue('Engineer and mathematician'),
+		)
 	})
 
 	it('unpublishes the page', async () => {
@@ -99,7 +106,9 @@ describe('AboutView', () => {
 		await userEvent.click(screen.getByRole('button', { name: 'Unpublish' }))
 
 		expect(await screen.findByText(/moved back to draft/i)).toBeInTheDocument()
-		expect(requests).toContainEqual(expect.objectContaining({ path: '/api/v1/about/about-1/publish' }))
+		expect(requests).toContainEqual(
+			expect.objectContaining({ path: '/api/v1/about/about-1/publish' }),
+		)
 	})
 
 	it('falls back to the newest draft when nothing is published', async () => {
@@ -124,19 +133,31 @@ describe('AboutView', () => {
 
 	it('shows save and load errors, and retries the load', async () => {
 		serve()
-		server.use(http.patch(`${API}/api/v1/about/:id`, () => HttpResponse.json({ message: 'Bio too long' }, { status: 400 })))
+		server.use(
+			http.patch(`${API}/api/v1/about/:id`, () =>
+				HttpResponse.json({ message: 'Bio too long' }, { status: 400 }),
+			),
+		)
 		const { unmount } = render(<AboutView />)
 		await userEvent.type(await screen.findByLabelText(/lead statement/i), '!')
 		await userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
 		expect(await screen.findByText('Bio too long')).toBeInTheDocument()
 		unmount()
 
-		server.use(http.get(`${API}/api/v1/about`, () => HttpResponse.json({ message: 'About offline' }, { status: 503 })))
+		server.use(
+			http.get(`${API}/api/v1/about`, () =>
+				HttpResponse.json({ message: 'About offline' }, { status: 503 }),
+			),
+		)
 		render(<AboutView />)
 		expect(await screen.findByText('About offline')).toBeInTheDocument()
 
 		serve()
-		await userEvent.click(within(screen.getByText('About offline').closest('div')?.parentElement as HTMLElement).getByRole('button', { name: /retry/i }))
+		await userEvent.click(
+			within(
+				screen.getByText('About offline').closest('div')?.parentElement as HTMLElement,
+			).getByRole('button', { name: /retry/i }),
+		)
 		expect(await screen.findByDisplayValue('Engineer and mathematician')).toBeInTheDocument()
 	})
 })

@@ -12,7 +12,7 @@ import { toPublishState } from 'lib/publish-state'
 import { useCollectionView } from 'lib/use-collection-view'
 import { publishFilter } from 'lib/list-query'
 import { experienceActions } from 'actions/experience'
-import { ExperienceFormDialog } from './experience-form-dialog'
+import { ExperienceFormDialog } from 'components/experience/experience-form-dialog'
 
 const LIST_OPTIONS: ListQueryOptions = {
 	sort: { role: 'title', dates: 'startDate', status: 'isPublished' },

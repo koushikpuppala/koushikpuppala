@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { UserCreateDialog } from './user-create-dialog'
+import { UserCreateDialog } from 'components/users/user-create-dialog'
 
 const create = vi.fn()
 
@@ -15,7 +15,7 @@ const fill = async () => {
 	await userEvent.click(screen.getByLabelText('Email Address'))
 	await userEvent.paste('alex@example.com')
 	await userEvent.click(screen.getByLabelText('Initial Password'))
-	await userEvent.paste('secret123')
+	await userEvent.paste('secret-phrase-123')
 }
 
 describe('UserCreateDialog', () => {

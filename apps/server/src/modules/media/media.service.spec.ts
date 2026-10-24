@@ -35,7 +35,7 @@ const noUsage = {
 }
 
 describe('MediaService', () => {
-	let s3: { getPresignedUploadUrl: Mock; exists: Mock; delete: Mock }
+	let s3: { getPresignedUploadUrl: Mock; exists: Mock; stat: Mock; delete: Mock }
 	let prisma: { media: { findFirst: Mock; findUnique: Mock; update: Mock } }
 	let service: MediaService
 
@@ -43,6 +43,7 @@ describe('MediaService', () => {
 		s3 = {
 			getPresignedUploadUrl: vi.fn(async () => 'https://signed.example.com'),
 			exists: vi.fn(async () => true),
+			stat: vi.fn(async () => ({ contentType: 'image/png', size: 10 })),
 			delete: vi.fn(async () => undefined),
 		}
 		prisma = {
@@ -116,7 +117,7 @@ describe('MediaService', () => {
 				{ ...config, aws: { ...config.aws, verifyUploads: true } } as Configuration,
 			)
 			const storageKey = 'general/0b5e1f8e-3c1d-4a4e-9a57-1f2b3c4d5e6f.png'
-			s3.exists.mockResolvedValueOnce(false)
+			s3.stat.mockResolvedValueOnce(null)
 
 			await expect(
 				verifying.completeUpload({
@@ -127,7 +128,30 @@ describe('MediaService', () => {
 					type: MediaType.IMAGE,
 				}),
 			).rejects.toThrow(/does not exist in storage/)
-			expect(s3.exists).toHaveBeenCalledWith(storageKey)
+			expect(s3.stat).toHaveBeenCalledWith(storageKey)
+		})
+
+		it.each([
+			['type', { contentType: 'text/html', size: 10 }],
+			['size', { contentType: 'image/png', size: 9999 }],
+		])('rejects an upload whose stored %s differs from the request', async (_field, stored) => {
+			const verifying = new MediaService(
+				prisma as unknown as DatabaseService,
+				new CmsAuditService({ create: vi.fn() } as unknown as AuditLogService),
+				s3 as unknown as StorageService,
+				{ ...config, aws: { ...config.aws, verifyUploads: true } } as Configuration,
+			)
+			s3.stat.mockResolvedValueOnce(stored)
+
+			await expect(
+				verifying.completeUpload({
+					storageKey: 'general/0b5e1f8e-3c1d-4a4e-9a57-1f2b3c4d5e6f.png',
+					originalName: 'a.png',
+					mimeType: 'image/png',
+					size: 10,
+					type: MediaType.IMAGE,
+				}),
+			).rejects.toThrow(/does not match/)
 		})
 	})
 

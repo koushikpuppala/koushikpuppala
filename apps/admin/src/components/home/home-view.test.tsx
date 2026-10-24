@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { HomeView } from './home-view'
+import { HomeView } from 'components/home/home-view'
 import { API, server } from '../../../test/msw'
 import { describe, expect, it, vi } from 'vitest'
 

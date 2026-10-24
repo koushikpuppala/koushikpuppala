@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { changedFields, displayValue, fieldLabel, recordFields } from './audit-log-fields'
+import {
+	changedFields,
+	displayValue,
+	fieldLabel,
+	recordFields,
+} from 'components/audit-logs/audit-log-fields'
 
 describe('audit log fields', () => {
 	it('labels keys in plain words', () => {

@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw'
-import { createSingletonActions } from './singleton'
+import { createSingletonActions } from 'actions/singleton'
 import { API, server } from '../../test/msw'
 import { describe, expect, it, vi } from 'vitest'
 

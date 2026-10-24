@@ -3,7 +3,7 @@ import { cacheLife } from 'next/cache'
 import { http, HttpResponse } from 'msw'
 import { API, server } from '../../test/msw'
 import { describe, expect, it } from 'vitest'
-import { getFeaturedProjects, getProjectBySlug, getProjectsData } from './projects-data'
+import { getFeaturedProjects, getProjectBySlug, getProjectsData } from 'lib/projects-data'
 
 const apiProject = {
 	id: 'p1',

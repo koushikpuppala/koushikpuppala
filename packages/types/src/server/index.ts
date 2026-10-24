@@ -99,10 +99,13 @@ export type LatestResume = WithDownloadFileName<
 	Prisma.ResumeGetPayload<{ include: { media: { select: { size: true; mimeType: true } } } }>
 > & { hasFile: boolean }
 
+export type StoredObject = { contentType?: string; size?: number }
+
 export type StorageService = {
 	upload(options: UploadFileOptions): Promise<UploadFileResponse>
 	delete(key: string): Promise<void>
 	exists(key: string): Promise<boolean>
+	stat(key: string): Promise<StoredObject | null>
 	getSignedUrl(key: string, expiresIn?: number, download?: SignedDownload): Promise<string>
 	getPresignedUploadUrl(
 		Key: string,

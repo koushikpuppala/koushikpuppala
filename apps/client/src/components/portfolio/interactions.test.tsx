@@ -3,14 +3,17 @@ import { act, fireEvent, render, screen, waitFor, within } from '@testing-librar
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Magnetic, Marquee, Reveal, Spotlight } from 'components/primitives/motion'
 import { ProjectVisual } from 'components/projects/project-visual'
-import { SectionRail } from './section-rail'
-import { StackClusters } from './stack-clusters'
-import { SupportingProjects } from './work-showcase'
+import { SectionRail } from 'components/portfolio/section-rail'
+import { StackClusters } from 'components/portfolio/stack-clusters'
+import { SupportingProjects } from 'components/portfolio/work-showcase'
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/' }))
 
 const setMediaQuery = (query: string, matches: boolean) =>
-	(globalThis as unknown as { setMediaQuery: (q: string, m: boolean) => void }).setMediaQuery(query, matches)
+	(globalThis as unknown as { setMediaQuery: (q: string, m: boolean) => void }).setMediaQuery(
+		query,
+		matches,
+	)
 const intersectAll = () => (globalThis as unknown as { intersectAll: () => void }).intersectAll()
 
 afterEach(() => setMediaQuery('(pointer: fine)', false))
@@ -95,7 +98,11 @@ describe('SectionRail', () => {
 
 		act(() => intersectAll())
 
-		expect(within(rail).getAllByRole('link').some(link => link.getAttribute('aria-current'))).toBe(true)
+		expect(
+			within(rail)
+				.getAllByRole('link')
+				.some(link => link.getAttribute('aria-current')),
+		).toBe(true)
 	})
 
 	it('does nothing when none of its sections are on the page', () => {
@@ -109,20 +116,27 @@ describe('SupportingProjects', () => {
 	it('lists each project with its number, stack and summary', () => {
 		render(<SupportingProjects projects={[project('1'), project('2')]} startIndex={3} />)
 
-		expect(screen.getByRole('link', { name: /Project 1/ })).toHaveAttribute('href', '/projects/project-1')
+		expect(screen.getByRole('link', { name: /Project 1/ })).toHaveAttribute(
+			'href',
+			'/projects/project-1',
+		)
 		expect(screen.getByText('03')).toBeInTheDocument()
 		expect(screen.getAllByText('React · Node.js · Redis')).toHaveLength(2)
 	})
 
 	it('follows the pointer with a preview of the hovered project on a fine pointer', async () => {
 		setMediaQuery('(pointer: fine)', true)
-		const { container } = render(<SupportingProjects projects={[project('1', { imageUrl: '/p1.webp' })]} />)
+		const { container } = render(
+			<SupportingProjects projects={[project('1', { imageUrl: '/p1.webp' })]} />,
+		)
 		const link = screen.getByRole('link', { name: /Project 1/ })
 
 		fireEvent.mouseEnter(link)
 		fireEvent.mouseMove(container.firstChild as Element, { clientX: 100, clientY: 200 })
 
-		await waitFor(() => expect(container.querySelector('[aria-hidden="true"].fixed')).not.toBeNull())
+		await waitFor(() =>
+			expect(container.querySelector('[aria-hidden="true"].fixed')).not.toBeNull(),
+		)
 
 		fireEvent.mouseLeave(link)
 		fireEvent.focus(link)
@@ -176,7 +190,10 @@ describe('motion primitives', () => {
 		)
 		const spot = screen.getByText('Spot').parentElement as HTMLElement
 
-		fireEvent.pointerMove(screen.getByText('Magnet').parentElement as HTMLElement, { clientX: 40, clientY: 40 })
+		fireEvent.pointerMove(screen.getByText('Magnet').parentElement as HTMLElement, {
+			clientX: 40,
+			clientY: 40,
+		})
 		fireEvent.pointerLeave(screen.getByText('Magnet').parentElement as HTMLElement)
 		fireEvent.pointerMove(spot, { clientX: 30, clientY: 20 })
 
@@ -209,7 +226,9 @@ describe('motion primitives', () => {
 		)
 
 		expect(screen.getAllByText('Item')).toHaveLength(2)
-		expect(container.querySelector('.animate-marquee')).toHaveStyle({ animationDirection: 'reverse' })
+		expect(container.querySelector('.animate-marquee')).toHaveStyle({
+			animationDirection: 'reverse',
+		})
 	})
 })
 
@@ -217,7 +236,10 @@ describe('ProjectVisual', () => {
 	it('uses the cover image when there is one', () => {
 		render(<ProjectVisual slug='a' title='Alpha' coverImageUrl='/alpha.webp' index='Fig. 01' />)
 
-		expect(screen.getByRole('img', { name: /alpha/i })).toHaveAttribute('src', expect.stringContaining('alpha.webp'))
+		expect(screen.getByRole('img', { name: /alpha/i })).toHaveAttribute(
+			'src',
+			expect.stringContaining('alpha.webp'),
+		)
 	})
 
 	it('draws seeded artwork from the slug when there is no image, the same every time', () => {

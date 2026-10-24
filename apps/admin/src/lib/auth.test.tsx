@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { AuthProvider, useAuth } from './auth'
+import { AuthProvider, useAuth } from 'lib/auth'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 

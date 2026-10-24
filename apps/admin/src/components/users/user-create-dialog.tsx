@@ -10,7 +10,7 @@ import { Field } from 'components/form/field'
 import { createUserSchema } from 'validations/user'
 import { useFormReducer } from 'utils/useFormReducer'
 import { FormDialog } from 'components/form/form-dialog'
-import { ROLE_OPTIONS, STATUS_OPTIONS } from './user-options'
+import { ROLE_OPTIONS, STATUS_OPTIONS } from 'components/users/user-options'
 
 const INITIAL: CreateUserPayload = {
 	fullName: '',

@@ -18,7 +18,7 @@ vi.mock('next/web-vitals', () => ({
 	},
 }))
 
-import { WebVitals } from './web-vitals'
+import { WebVitals } from 'components/web-vitals'
 
 const cls: NextWebVitalsMetric = {
 	id: 'v1-cls',

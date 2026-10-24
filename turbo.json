@@ -1,24 +1,32 @@
 {
-  "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": ["**/.env", "**/.env.*local"],
-  "tasks": {
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "build": {
-      "dependsOn": ["^build"],
-      "env": ["ENVIRONMENT", "NEXT_PUBLIC_*", "SENTRY_*", "CDN_URL", "AWS_REGION", "S3_BUCKET"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
-    },
-    "lint": {},
-    "test": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
-    },
-    "test:e2e": {
-      "dependsOn": ["^build"],
-      "cache": false
-    }
-  }
+	"$schema": "https://turborepo.dev/schema.json",
+	"globalDependencies": ["**/.env", "**/.env.*local"],
+	"tasks": {
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"build": {
+			"dependsOn": ["^build"],
+			"env": [
+				"ENVIRONMENT",
+				"NEXT_PUBLIC_*",
+				"SENTRY_*",
+				"CDN_URL",
+				"AWS_REGION",
+				"S3_BUCKET",
+				"API_INTERNAL_URL"
+			],
+			"outputs": [".next/**", "!.next/cache/**", "dist/**"]
+		},
+		"lint": {},
+		"test": {
+			"dependsOn": ["^build"],
+			"outputs": ["coverage/**"]
+		},
+		"test:e2e": {
+			"dependsOn": ["^build"],
+			"cache": false
+		}
+	}
 }
