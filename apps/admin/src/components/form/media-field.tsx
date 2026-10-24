@@ -1,4 +1,5 @@
 import type { MediaFieldProps } from 'types/components/admin'
+import Image from 'next/image'
 import { Button } from 'ui/button'
 import { Label } from 'ui/label'
 import { classNames } from 'utils/classNames'
@@ -31,7 +32,13 @@ export const MediaField = ({
 						large ? 'size-20 rounded-2xl' : 'size-14 rounded-lg',
 					)}>
 					{url ? (
-						<img src={url} alt={alt} className='size-full object-cover' />
+						<Image
+							src={url}
+							alt={alt}
+							fill
+							sizes={large ? '80px' : '56px'}
+							className='object-cover'
+						/>
 					) : (
 						<ImageIcon
 							className={classNames('text-muted-foreground/40', large ? 'size-6' : 'size-5')}

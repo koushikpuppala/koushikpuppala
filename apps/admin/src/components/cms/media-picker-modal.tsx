@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 import type { MediaAsset } from 'types/models'
 import type { MediaPickerModalProps } from 'types/components/admin'
@@ -164,12 +165,14 @@ export const MediaPickerModal = ({
 										)}>
 										<div className='bg-surface-strong relative grid aspect-video w-full place-items-center overflow-hidden rounded-lg'>
 											<ImageIcon className='text-muted-foreground/30 absolute size-5' />
-											<img
+											<Image
 												src={media.url}
 												alt={media.altText || media.originalName || media.fileName}
-												className='relative size-full object-cover'
+												fill
+												sizes='(min-width: 768px) 192px, (min-width: 640px) 33vw, 50vw'
+												className='object-cover'
 												onError={e => {
-													;(e.target as HTMLElement).style.display = 'none'
+													e.currentTarget.style.display = 'none'
 												}}
 											/>
 											{isSelected && (

@@ -1,6 +1,45 @@
 import { type SentryBuildOptions, withSentryConfig } from '@sentry/nextjs/config'
 
 import nextPWA from '@ducanh2912/next-pwa'
+import { requireEnv } from 'utils/requireEnv'
+
+// The image optimizer fetches remote images on the server, so it only accepts the media CDN rather than
+// acting as an open proxy for any image on the internet.
+const cdn = new URL(requireEnv(process.env.CDN_URL, 'CDN_URL'))
+
+const sentryDsn = process.env.NEXT_PUBLIC_CLIENT_SENTRY_DSN
+
+// Pages stay prerendered, and Next.js inlines its own bootstrap scripts, so scripts keep 'unsafe-inline'.
+// The policy still limits which origins can run scripts, receive data or be framed.
+const contentSecurityPolicy = [
+	"default-src 'self'",
+	[
+		"script-src 'self' 'unsafe-inline'",
+		'https://www.googletagmanager.com',
+		'https://www.clarity.ms https://*.clarity.ms',
+		'https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/',
+		process.env.NODE_ENV === 'development' ? "'unsafe-eval'" : '',
+	].join(' '),
+	"style-src 'self' 'unsafe-inline'",
+	"img-src 'self' blob: data: https:",
+	"font-src 'self' data:",
+	[
+		"connect-src 'self'",
+		// Google Analytics 4 collection endpoints, as listed in Google's content security policy guide.
+		'https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com',
+		'https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com',
+		'https://*.clarity.ms',
+		// Production sends Sentry events through the same-origin /monitoring tunnel; elsewhere they go to the DSN.
+		sentryDsn ? new URL(sentryDsn).origin : '',
+	].join(' '),
+	'frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/',
+	"object-src 'none'",
+	"base-uri 'self'",
+	"form-action 'self'",
+	"frame-ancestors 'none'",
+]
+	.map(directive => directive.trim())
+	.join('; ')
 
 const nextConfig = nextPWA({
 	dest: 'public',
@@ -21,7 +60,9 @@ const nextConfig = nextPWA({
 	images: {
 		formats: ['image/avif', 'image/webp'],
 		minimumCacheTTL: 86400,
-		remotePatterns: [{ protocol: 'https', hostname: '**', port: '', pathname: '**' }],
+		remotePatterns: [
+			{ protocol: 'https', hostname: cdn.hostname, port: cdn.port, pathname: '/**' },
+		],
 	},
 	headers: async () => [
 		{
@@ -46,6 +87,10 @@ const nextConfig = nextPWA({
 				{
 					key: 'Referrer-Policy',
 					value: 'strict-origin-when-cross-origin',
+				},
+				{
+					key: 'Content-Security-Policy',
+					value: contentSecurityPolicy,
 				},
 				{
 					key: 'Permissions-Policy',

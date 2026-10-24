@@ -1,5 +1,6 @@
 import type { ChildrenProps } from 'types/components'
 import type { Metadata, Viewport } from 'next'
+import { headers } from 'next/headers'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import 'styles/globals.css'
 import { ThemeProvider } from 'lib/theme'
@@ -34,12 +35,20 @@ export const metadata: Metadata = {
 	},
 }
 
-const RootLayout = ({ children }: Readonly<ChildrenProps>) => {
+// The content security policy needs a fresh nonce in every page, so the studio renders per request instead
+// of from a prerendered shell. Its pages only fill in after Firebase sign-in in the browser anyway.
+export const instant = false
+
+const RootLayout = async ({ children }: Readonly<ChildrenProps>) => {
+	// proxy.ts sets a fresh nonce per request; the inline theme script must carry it to run under the policy.
+	const nonce = (await headers()).get('x-nonce') ?? undefined
+
 	return (
 		<html lang='en' className='dark' suppressHydrationWarning>
 			<head>
 				{/* Applies the saved theme before the first paint so the page never flashes the wrong theme. */}
 				<script
+					nonce={nonce}
 					dangerouslySetInnerHTML={{
 						__html: `(()=>{try{var t=localStorage.getItem("kp.admin.theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){}})();`,
 					}}

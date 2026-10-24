@@ -134,7 +134,8 @@ describe('ProjectFormDialog', () => {
 
 		expect(screen.getByText('Edit Project')).toBeInTheDocument()
 		expect(screen.getByLabelText('Category')).toHaveValue('Full Stack')
-		expect(screen.getAllByRole('img').some(img => img.getAttribute('src') === 'https://cdn.test/c.png')).toBe(true)
+		// next/image serves the thumbnail through the optimizer, which fetches it from the CDN.
+		expect(screen.getAllByRole('img').some(img => img.getAttribute('src')?.includes(encodeURIComponent('https://cdn.test/c.png')))).toBe(true)
 	})
 })
 

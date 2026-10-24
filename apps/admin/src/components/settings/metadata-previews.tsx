@@ -1,4 +1,5 @@
 import type { MetadataFieldsProps } from 'types/components/admin'
+import Image from 'next/image'
 import { SITE_URL } from 'constants/site-url'
 import { Eye, Image as ImageIcon, Share2 } from 'components/icons'
 
@@ -34,9 +35,15 @@ export const MetadataPreviews = ({ form }: Pick<MetadataFieldsProps, 'form'>) =>
 				Social OpenGraph Card
 			</h3>
 			<div className='border-border bg-background overflow-hidden rounded-xl border text-left'>
-				<div className='bg-surface/70 border-border flex aspect-1200/630 items-center justify-center overflow-hidden border-b'>
+				<div className='bg-surface/70 border-border relative flex aspect-1200/630 items-center justify-center overflow-hidden border-b'>
 					{form.ogImage ? (
-						<img src={form.ogImage} alt='OG Preview' className='h-full w-full object-cover' />
+						<Image
+							src={form.ogImage}
+							alt='OG Preview'
+							fill
+							sizes='400px'
+							className='object-cover'
+						/>
 					) : (
 						<div className='text-muted-foreground flex flex-col items-center justify-center p-4 text-center'>
 							<ImageIcon className='mb-2 size-8 opacity-50' />

@@ -17,12 +17,15 @@ export const configureApp = (app: INestApplication): INestApplication => {
 	// Needed behind the load balancer so req.ip and req.protocol reflect the real client.
 	express.set('trust proxy', settings.trustProxy)
 
+	// CORS answers preflight requests before helmet runs, so the framework header is turned off here too.
+	express.disable('x-powered-by')
+
 	// Order matters: the request context reads the request id that the first middleware sets.
 	app.use(new RequestIdMiddleware().use)
 	app.use(new RequestContextMiddleware().use)
 
+	// Auth is a bearer header, never a cookie, so cross-origin requests are not allowed to carry credentials.
 	app.enableCors({
-		credentials: true,
 		origin: settings.origin,
 		methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
 	})
@@ -35,18 +38,15 @@ export const configureApp = (app: INestApplication): INestApplication => {
 
 	app.use(
 		helmet({
+			// The API only returns JSON, so its responses may load nothing. The docs pages, which exist
+			// outside production only, get their own relaxed policy in main.ts.
 			contentSecurityPolicy: {
+				useDefaults: false,
 				directives: {
-					defaultSrc: ["'self'"],
-					// Swagger UI and Redoc load inline scripts, so the docs pages need these relaxed.
-					scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-					styleSrc: ["'self'", "'unsafe-inline'"],
-					imgSrc: ["'self'", 'data:', 'https:'],
-					fontSrc: ["'self'", 'https:', 'data:'],
-					connectSrc: ["'self'", 'https:'],
+					defaultSrc: ["'none'"],
 					frameAncestors: ["'none'"],
-					baseUri: ["'self'"],
-					formAction: ["'self'"],
+					baseUri: ["'none'"],
+					formAction: ["'none'"],
 				},
 			},
 			crossOriginEmbedderPolicy: false,

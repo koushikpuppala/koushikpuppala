@@ -2,9 +2,10 @@ import { DatabaseService } from 'database'
 import { Prisma } from '@repo/prisma'
 import { publishFields, publishUpdate } from 'common/utils/publish.util'
 import { BaseService } from 'common/services/base-cms.service'
-import { ConflictException, Injectable } from '@nestjs/common'
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common'
 import { CmsAuditService } from 'modules/audit-log/cms-audit.service'
 import { CacheService } from 'redis/cache.service'
+import { Configuration } from 'config/configuration'
 import { CreateMetadataDto, QueryMetadataDto, UpdateMetadataDto } from './metadata.dto'
 
 const ENTITY = 'Metadata'
@@ -15,6 +16,7 @@ export class MetadataService extends BaseService {
 		private readonly prisma: DatabaseService,
 		private readonly audit: CmsAuditService,
 		private readonly cache: CacheService,
+		private readonly config: Configuration,
 	) {
 		super()
 	}
@@ -122,6 +124,7 @@ export class MetadataService extends BaseService {
 	}
 
 	async create(dto: CreateMetadataDto, actor = 'admin') {
+		this.assertCdnImage(dto.ogImage)
 		await this.assertKeyFree(dto.key)
 
 		const metadata = await this.prisma.metadata.create({
@@ -138,6 +141,8 @@ export class MetadataService extends BaseService {
 	}
 
 	async update(id: string, dto: UpdateMetadataDto, actor = 'admin') {
+		this.assertCdnImage(dto.ogImage)
+
 		const existing = await this.findOne(id)
 
 		if (dto.key && dto.key !== existing.key) await this.assertKeyFree(dto.key, id)
@@ -172,6 +177,13 @@ export class MetadataService extends BaseService {
 				this.prisma.metadata.update({ where: { id }, data: { deletedAt: new Date() } }),
 			),
 		)
+	}
+
+	// Every image the sites show comes from uploaded media on our CDN, never an outside host. The trailing
+	// slash stops look-alike hosts such as https://cdn.example.com.evil.net from passing the prefix check.
+	private assertCdnImage(url?: string | null): void {
+		if (url && !url.startsWith(`${this.config.aws.cdnUrl}/`))
+			throw new BadRequestException('ogImage must be an uploaded media URL served from the CDN')
 	}
 
 	private async assertKeyFree(key: string, exceptId?: string): Promise<void> {

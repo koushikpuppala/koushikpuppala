@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 import type {
 	CollectionColumn,
@@ -40,9 +41,15 @@ export const ProjectsView = () => {
 			header: 'Project Details',
 			render: p => (
 				<div className='flex items-center gap-3'>
-					<div className='bg-surface-strong border-border grid size-10 shrink-0 place-items-center overflow-hidden rounded-lg border'>
+					<div className='bg-surface-strong border-border relative grid size-10 shrink-0 place-items-center overflow-hidden rounded-lg border'>
 						{p.thumbnail?.url ? (
-							<img src={p.thumbnail.url} alt={p.title} className='size-full object-cover' />
+							<Image
+								src={p.thumbnail.url}
+								alt={p.title}
+								fill
+								sizes='40px'
+								className='object-cover'
+							/>
 						) : (
 							<FolderKanban className='text-muted-foreground size-4' />
 						)}

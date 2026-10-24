@@ -116,6 +116,7 @@ export default defineConfig({
 				ENVIRONMENT: 'local',
 				NEXT_PUBLIC_CLIENT_SENTRY_DSN: '',
 				NEXT_PUBLIC_RECAPTCHA_SITE_KEY: '',
+				CDN_URL: 'https://cdn.e2e.test',
 			},
 		},
 		{
@@ -135,6 +136,9 @@ export default defineConfig({
 				NEXT_PUBLIC_FIREBASE_APP_ID: 'e2e-app',
 				NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST: AUTH_EMULATOR_HOST,
 				NEXT_PUBLIC_ADMIN_SENTRY_DSN: '',
+				AWS_REGION: 'us-east-1',
+				S3_BUCKET: 'e2e-bucket',
+				CDN_URL: 'https://cdn.e2e.test',
 			},
 		},
 	],

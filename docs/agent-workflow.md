@@ -19,151 +19,119 @@ The agent should:
 ## Core Loop
 
 ```text
-/architect → Build → /review → Ship
-                 ↓
-/imprint  (after UI components)
-                 ↓
-/remember (start/end sessions)
-                 ↓
-/recover  (when something breaks)
+/scope → /architect → /develop → /test → /check verify → /check review → Ship
+                                    ↑
+                    /debug  (when something breaks)
 ```
+
+## Where the skills live
+
+The workflow skills (`/scope`, `/architect`, `/develop`, `/test`, `/debug`, `/check`, `/review`, `/audit`) are installed per developer in `~/.claude/skills/`, not in this repository. `.claude/skills/` in the repository only holds links to skills shipped by dependencies (TanStack Table), and its contents are not committed. A contributor without the workflow skills follows the same steps by hand.
+
+## Context
+
+- `AGENTS.md` (root and per package) is the durable project context every skill reads first. When a change adds a rule, a required setting or a gotcha, update the nearest `AGENTS.md` in the same change. `CLAUDE.md` only imports it.
+- Claude Code's own memory keeps personal preferences between sessions. Anything the whole team needs belongs in `AGENTS.md` instead.
+- `/audit` bootstraps or fills gaps in the `AGENTS.md` files. It never overwrites curated lines.
 
 ## Skills
 
+### `/scope`
+
+Turns a product idea into a coarse scope in `docs/scope/` and keeps it current: plan the next slice, enroll one feature, or run with no argument to reconcile after shipping.
+
 ### `/architect`
 
-Use before meaningful feature work.
-
-Think through the implementation as a senior engineer.
+Use before meaningful feature work, or when `/develop` says a decision is owed. It asks questions, recommends an answer and writes a build spec to `docs/specs/`.
 
 Expected output:
 
 - Problem understanding
 - Relevant constraints
-- Architecture considerations
-- Affected boundaries
+- Affected boundaries (client, admin, server, packages)
 - Implementation plan
 - Verification plan
 
 Do not use a full architecture ceremony for trivial changes.
 
-### `/remember`
+### `/develop`
 
-Use at the start and end of meaningful sessions.
+Builds a feature from an approved spec plus `AGENTS.md`. If something load bearing is undecided, it stops and routes to `/architect`.
+
+### `/test`
+
+Writes tests for uncommitted changes, picking the layer from the table in `AGENTS.md` (unit, component, contract, API integration, end to end). Never mock what an integration or end to end test can exercise for real.
+
+### `/debug`
+
+Use when a test fails for an unclear reason or behavior is wrong. It runs a loop: reproduce, localize, form one hypothesis, test it, fix the root cause, verify. It makes the smallest fix and adds a regression test.
+
+Do not repeatedly patch symptoms. If the cause is a flawed decision rather than a coding mistake, go back to `/architect`.
+
+### `/check`
 
 ```text
-/remember restore
+/check verify
 ```
 
-Restores durable project context.
+Drives the real app to prove the change against the spec.
 
 ```text
-/remember save
+/check review
 ```
 
-Persists useful context for future sessions.
-
-Memory should prioritize:
-
-- Decisions
-- Constraints
-- Current architecture
-- Important implementation details
-- Unfinished work
-- Known issues
-
-Avoid storing unnecessary noise.
+A senior code review on a fresh model that did not write the code. Run it before opening a pull request. Both write to `docs/reviews/`, which is excluded locally (`.git/info/exclude`) and never committed.
 
 ### `/review`
 
-Use after meaningful feature work.
+After building a feature: plan alignment, system integrity, production readiness. A working implementation is not automatically a correct implementation.
 
-Review:
+### Security
 
-1. Plan alignment
-2. System integrity
-3. Production readiness
+- `/security-best-practices` reviews the code against framework specific guidance and writes a report. Keep reports with live findings out of the repository: it is public.
+- `/security-scan` audits the Claude Code configuration (`.claude/`, `CLAUDE.md`, MCP servers, hooks).
 
-A working implementation is not automatically a correct implementation.
+## Verification
 
-### `/recover`
+Before calling any change done:
 
-Use when a problem occurs.
+1. `pnpm lint`
+2. `pnpm build` (or the affected apps)
+3. `pnpm test`
+4. When the change crosses the API, the database or the browser: `docker compose -f docker-compose.test.yml up -d --wait`, then `pnpm --filter server test:e2e` and `pnpm --filter e2e test:e2e`
 
-Classify it before patching:
-
-```text
-Targeted fix
-    Isolated failure with a clear root cause.
-
-Hard reset
-    The session/context has become polluted and continuing would
-    likely produce more patches instead of a clean solution.
-
-Rethink
-    The foundation or design is wrong and debugging cannot fix it.
-```
-
-Do not repeatedly patch symptoms.
-
-### `/imprint`
-
-Use after meaningful UI component work.
-
-```text
-/imprint
-```
-
-Capture the recently built component's visual patterns.
-
-```text
-/imprint [file]
-```
-
-Capture patterns from a specific file.
-
-```text
-/imprint audit
-```
-
-Audit the codebase and establish a UI consistency baseline.
+Report failures as they are. CI (`.github/workflows/test.yml`) runs the same layers on every pull request.
 
 ## Practical Workflow
 
 ### Feature
 
 ```text
-/remember restore
-      ↓
 /architect
       ↓
-Implement
+/develop
       ↓
-/imprint       ← UI work
+/test
       ↓
-/review
+Verify (lint, build, tests)
       ↓
-Verify / test
+/check verify
       ↓
-/remember save
+/check review
+      ↓
+Update AGENTS.md if a rule changed
 ```
 
 ### Bug
 
 ```text
-/remember restore
-      ↓
-/recover
+/debug
       ↓
 Reproduce
       ↓
-Root-cause fix
+Root-cause fix + regression test
       ↓
-Test
-      ↓
-Review / verify
-      ↓
-/remember save
+Verify (lint, build, tests)
 ```
 
 ### Small Change
@@ -180,4 +148,4 @@ Do not over-process trivial work.
 
 ## Source
 
-The workflow is based on the JSM Skills model provided for this repository. The repository should use the actual installed skill definitions when available; this document describes how those skills fit into the project's engineering process and does not replace the skill implementations.
+This document describes how the installed skills fit into the project's engineering process. The skill definitions themselves are authoritative; when they change, update this file to match.

@@ -1,6 +1,11 @@
 import type { NextConfig } from 'next'
 
 import { type SentryBuildOptions, withSentryConfig } from '@sentry/nextjs/config'
+import { requireEnv } from 'utils/requireEnv'
+
+// Media is only ever served from the CDN, and the image optimizer fetches remote images on the server,
+// so it accepts that one host rather than acting as an open proxy for any image on the internet.
+const cdn = new URL(requireEnv(process.env.CDN_URL, 'CDN_URL'))
 
 const nextConfig: NextConfig = {
 	reactStrictMode: true,
@@ -13,7 +18,9 @@ const nextConfig: NextConfig = {
 	images: {
 		formats: ['image/avif', 'image/webp'],
 		minimumCacheTTL: 86400,
-		remotePatterns: [{ protocol: 'https', hostname: '**', port: '', pathname: '**' }],
+		remotePatterns: [
+			{ protocol: 'https', hostname: cdn.hostname, port: cdn.port, pathname: '/**' },
+		],
 	},
 	headers: async () => [
 		{

@@ -67,7 +67,6 @@ describe('SettingsView', () => {
 		await userEvent.click(screen.getByRole('button', { name: /^add$/i }))
 		await userEvent.click(screen.getByRole('button', { name: 'Remove keyword Math' }))
 		await userEvent.click(screen.getByRole('switch', { name: 'Publish these SEO tags' }))
-		await userEvent.type(screen.getByLabelText('OpenGraph image URL'), 'https://assets.example.com/og.png')
 		await save()
 
 		expect(await screen.findByText('Settings updated successfully')).toBeInTheDocument()
@@ -78,7 +77,6 @@ describe('SettingsView', () => {
 				title: 'Ada | Engineer',
 				keywords: ['Ada', 'Engines'],
 				isPublished: false,
-				ogImage: 'https://assets.example.com/og.png',
 			}),
 		})
 	})
@@ -157,13 +155,29 @@ describe('SettingsView', () => {
 		render(<SettingsView />)
 		await screen.findByDisplayValue('Ada Lovelace')
 
-		await userEvent.click(screen.getByRole('button', { name: 'Choose from S3' }))
-		const picker = await screen.findByRole('dialog')
-		await userEvent.click(await within(picker).findByRole('button', { name: /og\.png/i }))
-		await userEvent.click(within(picker).getAllByRole('button').at(-1) as HTMLElement)
+		// There is no URL box to type into: the API only accepts uploaded media from the CDN.
+		expect(screen.queryByLabelText('OpenGraph image URL')).not.toBeInTheDocument()
 
+		const pick = async (button: string) => {
+			await userEvent.click(screen.getByRole('button', { name: button }))
+			const picker = await screen.findByRole('dialog')
+			await userEvent.click(await within(picker).findByRole('button', { name: /og\.png/i }))
+			await userEvent.click(within(picker).getAllByRole('button').at(-1) as HTMLElement)
+			await waitFor(() => expect(screen.getAllByAltText('OG Preview')).toHaveLength(2))
+		}
+
+		await pick('Choose from media library')
+		await userEvent.click(screen.getByRole('button', { name: 'Remove' }))
+		expect(screen.queryAllByAltText('OG Preview')).toHaveLength(0)
+
+		await pick('Choose from media library')
+		await save()
 		await waitFor(() =>
-			expect(screen.getByLabelText('OpenGraph image URL')).toHaveValue('https://assets.example.com/og.png'),
+			expect(requests).toContainEqual({
+				method: 'PATCH',
+				path: '/api/v1/metadata/meta-home',
+				body: expect.objectContaining({ ogImage: 'https://assets.example.com/og.png' }),
+			}),
 		)
 	})
 })

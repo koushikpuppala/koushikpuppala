@@ -43,7 +43,10 @@ export class CreateMetadataDto extends PublishFlagDto {
 	@IsOptional()
 	description?: string
 
-	@ApiPropertyOptional({ example: 'https://koushikpuppala.com/og-image.png' })
+	@ApiPropertyOptional({
+		example: 'https://cdn.example.com/images/og-banner.webp',
+		description: 'URL of uploaded media; must be served from CDN_URL',
+	})
 	@IsUrl()
 	@IsOptional()
 	ogImage?: string

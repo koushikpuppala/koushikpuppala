@@ -1,6 +1,7 @@
 import { AuditAction, UserRole } from '@repo/prisma'
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { bootApp, createUser, resetState, type TestApp } from './helpers'
+import { TEST_ENV } from './env'
 
 type Collection = {
 	path: string
@@ -183,6 +184,40 @@ describe('CMS collection lifecycle (e2e)', () => {
 
 		await t.http().post('/api/v1/socials').set(auth).send(body).expect(201)
 		await t.http().post('/api/v1/socials').set(auth).send(body).expect(409)
+	})
+
+	it('only accepts an OpenGraph image served from the CDN', async () => {
+		const create = { type: 'PAGE', key: '/og', value: {} }
+
+		await t
+			.http()
+			.post('/api/v1/metadata')
+			.set(auth)
+			.send({ ...create, ogImage: 'https://elsewhere.example/og.png' })
+			.expect(400)
+		// Starts with the CDN host but is a different host, so a bare prefix check would let it through.
+		await t
+			.http()
+			.post('/api/v1/metadata')
+			.set(auth)
+			.send({ ...create, ogImage: `${TEST_ENV.CDN_URL}.evil.example/og.png` })
+			.expect(400)
+
+		const created = await t
+			.http()
+			.post('/api/v1/metadata')
+			.set(auth)
+			.send({ ...create, ogImage: `${TEST_ENV.CDN_URL}/images/og.png` })
+			.expect(201)
+		const { id } = created.body.result
+
+		await t
+			.http()
+			.patch(`/api/v1/metadata/${id}`)
+			.set(auth)
+			.send({ ogImage: 'https://elsewhere.example/og.png' })
+			.expect(400)
+		await t.http().patch(`/api/v1/metadata/${id}`).set(auth).send({ ogImage: null }).expect(200)
 	})
 
 	it('creates, publishes and deletes a resume', async () => {

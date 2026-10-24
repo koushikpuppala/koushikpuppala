@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 import { PageHeader } from 'components/cms/page-header'
 import { ErrorBanner } from 'components/ui/error-banner'
@@ -167,12 +168,14 @@ export const MediaView = () => {
 									{media.mimeType?.startsWith('image/') ? (
 										<>
 											<ImageIcon className='text-muted-foreground/30 absolute size-6' />
-											<img
+											<Image
 												src={media.url}
 												alt={media.altText || media.originalName || media.fileName}
-												className='relative size-full object-cover transition-transform duration-300 group-hover:scale-105'
+												fill
+												sizes='(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw'
+												className='object-cover transition-transform duration-300 group-hover:scale-105'
 												onError={e => {
-													;(e.target as HTMLElement).style.display = 'none'
+													e.currentTarget.style.display = 'none'
 												}}
 											/>
 										</>

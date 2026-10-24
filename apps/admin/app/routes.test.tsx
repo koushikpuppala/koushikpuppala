@@ -24,11 +24,21 @@ vi.mock('components/messages/messages-view', () => ({ MessagesView: stub('Messag
 vi.mock('components/dashboard/dashboard-view', () => ({ DashboardView: stub('Dashboard') }))
 vi.mock('components/settings/settings-view', () => ({ SettingsView: stub('Settings') }))
 vi.mock('components/users/users-view', () => ({ UsersView: stub('Users') }))
-vi.mock('components/shell/admin-shell', () => ({ AdminShell: ({ children }: { children: React.ReactNode }) => children }))
-vi.mock('lib/auth', () => ({ AuthProvider: ({ children }: { children: React.ReactNode }) => children }))
-vi.mock('next/font/google', () => ({ Plus_Jakarta_Sans: () => ({ variable: 'font-jakarta', className: 'jakarta' }) }))
+vi.mock('components/shell/admin-shell', () => ({
+	AdminShell: ({ children }: { children: React.ReactNode }) => children,
+}))
+vi.mock('lib/auth', () => ({
+	AuthProvider: ({ children }: { children: React.ReactNode }) => children,
+}))
+vi.mock('next/headers', () => ({ headers: async () => new Headers({ 'x-nonce': 'test-nonce' }) }))
+vi.mock('next/font/google', () => ({
+	Plus_Jakarta_Sans: () => ({ variable: 'font-jakarta', className: 'jakarta' }),
+}))
 
-const pages = import.meta.glob<{ default: ComponentType; metadata?: { title?: unknown } }>('./**/page.tsx', { eager: true })
+const pages = import.meta.glob<{ default: ComponentType; metadata?: { title?: unknown } }>(
+	'./**/page.tsx',
+	{ eager: true },
+)
 const loadings = import.meta.glob<{ default: ComponentType }>('./**/loading.tsx', { eager: true })
 
 const VIEW_FOR: Record<string, string> = {
@@ -97,11 +107,13 @@ describe('admin routes', () => {
 	it('the root layout wraps the page in the providers inside body', async () => {
 		const { default: RootLayout } = await import('./layout')
 
-		const html = RootLayout({ children: <p>child</p> })
+		const html = await RootLayout({ children: <p>child</p> })
 
 		expect(html.type).toBe('html')
-		const [, body] = html.props.children
+		const [head, body] = html.props.children
 		expect(body.type).toBe('body')
 		expect(body.props.className).toContain('min-h-screen')
+		// The inline theme script only runs under the content security policy with this request's nonce.
+		expect(head.props.children.props.nonce).toBe('test-nonce')
 	})
 })

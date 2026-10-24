@@ -86,7 +86,7 @@ setup('seed database and accounts', async () => {
 			bucket: 'e2e',
 			folder: 'general',
 			storageKey: `general/${CONTENT.thumbnailMediaName}`,
-			url: `https://assets.e2e.test/general/${CONTENT.thumbnailMediaName}`,
+			url: `https://cdn.e2e.test/general/${CONTENT.thumbnailMediaName}`,
 		},
 	})
 	await api.post(
@@ -104,7 +104,7 @@ setup('seed database and accounts', async () => {
 			bucket: 'e2e',
 			folder: 'resume',
 			storageKey: `resume/${CONTENT.resume.mediaName}`,
-			url: `https://assets.e2e.test/resume/${CONTENT.resume.mediaName}`,
+			url: `https://cdn.e2e.test/resume/${CONTENT.resume.mediaName}`,
 		},
 	})
 	await api.post('/api/v1/resume', {

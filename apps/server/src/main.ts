@@ -3,6 +3,7 @@ import 'dotenv/config'
 // Sentry must be initialised before any other module is imported so it can instrument them.
 import './instrument'
 
+import helmet from 'helmet'
 import redoc from 'redoc-express'
 import { AppModule } from './app.module'
 import { NestFactory } from '@nestjs/core'
@@ -62,6 +63,24 @@ const bootstrap = async () => {
 
 	// API docs are only exposed outside production.
 	if (settings.environment !== 'production') {
+		// Swagger UI and Redoc run inline scripts, so only the docs pages relax the API's strict policy.
+		app.use(
+			'/api/docs',
+			helmet.contentSecurityPolicy({
+				directives: {
+					defaultSrc: ["'self'"],
+					scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+					styleSrc: ["'self'", "'unsafe-inline'"],
+					imgSrc: ["'self'", 'data:', 'https:'],
+					fontSrc: ["'self'", 'https:', 'data:'],
+					connectSrc: ["'self'", 'https:'],
+					frameAncestors: ["'none'"],
+					baseUri: ["'self'"],
+					formAction: ["'self'"],
+				},
+			}),
+		)
+
 		SwaggerModule.setup('api/docs', app, document)
 
 		app.getHttpAdapter().get('/api/docs/openapi.json', (_, res) => {
