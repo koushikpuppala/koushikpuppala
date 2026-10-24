@@ -5,6 +5,12 @@ import { unwrap } from 'lib/api-result'
 import { getPublishedAbout } from 'actions/cache/about'
 import { EMPTY_ABOUT } from 'constants/empty-content'
 
+const text = (value: unknown): string => String(value ?? '')
+
+const list = <T>(value: T[] | undefined): T[] => (Array.isArray(value) ? value : [])
+
+const optionalText = (value: unknown): string | undefined => (value ? String(value) : undefined)
+
 export const getAboutData = cache(async (): Promise<PublishedAbout> => {
 	const result = unwrap(await getPublishedAbout(), 'about')
 
@@ -12,21 +18,21 @@ export const getAboutData = cache(async (): Promise<PublishedAbout> => {
 
 	return {
 		...EMPTY_ABOUT,
-		title: String(result.title ?? ''),
-		leadStatement: String(result.leadStatement ?? ''),
-		content: String(result.content ?? ''),
-		biography: String(result.biography ?? ''),
-		location: String(result.location ?? ''),
-		coordinates: String(result.coordinates ?? ''),
-		timezone: String(result.timezone ?? ''),
-		status: String(result.status ?? ''),
-		highlights: Array.isArray(result.highlights) ? result.highlights : [],
-		skills: Array.isArray(result.skills) ? result.skills : [],
+		title: text(result.title),
+		leadStatement: text(result.leadStatement),
+		content: text(result.content),
+		biography: text(result.biography),
+		location: text(result.location),
+		coordinates: text(result.coordinates),
+		timezone: text(result.timezone),
+		status: text(result.status),
+		highlights: list(result.highlights),
+		skills: list(result.skills),
 		profileImageUrl: result.profileImage?.url || null,
-		stats: Array.isArray(result.stats) ? result.stats : [],
-		ctaLabel: String(result.ctaLabel ?? ''),
-		ctaUrl: String(result.ctaUrl ?? ''),
-		createdAt: result.createdAt ? String(result.createdAt) : undefined,
-		updatedAt: result.updatedAt ? String(result.updatedAt) : undefined,
+		stats: list(result.stats),
+		ctaLabel: text(result.ctaLabel),
+		ctaUrl: text(result.ctaUrl),
+		createdAt: optionalText(result.createdAt),
+		updatedAt: optionalText(result.updatedAt),
 	}
 })

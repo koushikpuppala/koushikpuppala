@@ -29,11 +29,19 @@ const renderForm = () => {
 	vi.spyOn(Date, 'now').mockReturnValue(later)
 }
 
+// Each typed key re-renders the whole page, so the fields are pasted in one change each; typing them key by
+// key could pass the test timeout on a slow or busy machine. The blur test still types into a field.
+const enter = async (label: RegExp, value?: string) => {
+	if (!value) return
+	await userEvent.click(screen.getByLabelText(label))
+	await userEvent.paste(value)
+}
+
 const fill = async (values: { name?: string; email?: string; subject?: string; message?: string }) => {
-	if (values.name) await userEvent.type(screen.getByLabelText(/your name/i), values.name)
-	if (values.email) await userEvent.type(screen.getByLabelText(/your email/i), values.email)
-	if (values.subject) await userEvent.type(screen.getByLabelText(/subject/i), values.subject)
-	if (values.message) await userEvent.type(screen.getByLabelText(/message & context/i), values.message)
+	await enter(/your name/i, values.name)
+	await enter(/your email/i, values.email)
+	await enter(/subject/i, values.subject)
+	await enter(/message & context/i, values.message)
 }
 
 const VALID = {

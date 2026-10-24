@@ -55,7 +55,7 @@ if (typeof window !== 'undefined') {
 
 	Object.assign(globalThis, {
 		intersectAll: () => {
-			for (const [callback, target] of [...observed])
+			for (const [callback, target] of observed)
 				callback(
 					[{ isIntersecting: true, target } as unknown as IntersectionObserverEntry],
 					{} as IntersectionObserver,
