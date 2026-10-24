@@ -10,10 +10,15 @@ describe('createdAtRange', () => {
 	it('covers both days in full', () => {
 		const range = createdAtRange('2026-10-04', '2026-10-09')
 
-		expect(range?.gte?.getHours()).toBe(0)
-		expect(range?.gte?.getDate()).toBe(4)
-		expect(range?.lte?.getHours()).toBe(23)
-		expect(range?.lte?.getDate()).toBe(9)
+		expect(range?.gte?.toISOString()).toBe('2026-10-04T00:00:00.000Z')
+		expect(range?.lte?.toISOString()).toBe('2026-10-09T23:59:59.999Z')
+	})
+
+	it('uses exact timestamps as given', () => {
+		const range = createdAtRange('2026-10-03T18:30:00.000Z', '2026-10-04T18:29:59.999Z')
+
+		expect(range?.gte?.toISOString()).toBe('2026-10-03T18:30:00.000Z')
+		expect(range?.lte?.toISOString()).toBe('2026-10-04T18:29:59.999Z')
 	})
 
 	it('filters on one side only when only one date is given', () => {

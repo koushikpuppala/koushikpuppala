@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "globalDependencies": ["**/.env", "**/.env.*local"],
   "tasks": {
     "dev": {
       "cache": false,
@@ -8,7 +8,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "env": ["ENVIRONMENT", "NEXT_PUBLIC_*", "SENTRY_*"],
+      "env": ["ENVIRONMENT", "NEXT_PUBLIC_*", "SENTRY_*", "CDN_URL", "AWS_REGION", "S3_BUCKET"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "lint": {},

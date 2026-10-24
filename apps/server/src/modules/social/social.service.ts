@@ -68,14 +68,17 @@ export class SocialService extends BaseService {
 	async create(dto: CreateSocialDto, actor = 'admin') {
 		await this.assertPlatformFree(dto.platform)
 
-		const social = await this.prisma.social.create({
-			data: {
-				...dto,
-				featured: dto.featured ?? false,
-				isVisible: dto.isVisible ?? true,
-				sortOrder: dto.sortOrder ?? 0,
-			},
-		})
+		const [, social] = await this.prisma.$transaction([
+			this.releaseDeletedPlatform(dto.platform),
+			this.prisma.social.create({
+				data: {
+					...dto,
+					featured: dto.featured ?? false,
+					isVisible: dto.isVisible ?? true,
+					sortOrder: dto.sortOrder ?? 0,
+				},
+			}),
+		])
 
 		return this.audit.created(ENTITY, actor, social)
 	}
@@ -86,7 +89,15 @@ export class SocialService extends BaseService {
 		if (dto.platform && dto.platform !== existing.platform)
 			await this.assertPlatformFree(dto.platform, id)
 
-		const social = await this.prisma.social.update({ where: { id }, data: { ...dto } })
+		const social =
+			dto.platform && dto.platform !== existing.platform
+				? (
+						await this.prisma.$transaction([
+							this.releaseDeletedPlatform(dto.platform),
+							this.prisma.social.update({ where: { id }, data: { ...dto } }),
+						])
+					)[1]
+				: await this.prisma.social.update({ where: { id }, data: { ...dto } })
 
 		return this.audit.updated(ENTITY, actor, existing, social)
 	}
@@ -97,6 +108,12 @@ export class SocialService extends BaseService {
 		return this.audit.softDeleted(ENTITY, actor, existing, () =>
 			this.prisma.social.update({ where: { id }, data: { deletedAt: new Date() } }),
 		)
+	}
+
+	// `platform` is unique across all rows, deleted ones included, and an enum can't be renamed the way project slugs are
+	// on delete. Drop the deleted holder instead; its snapshot is already in the audit log from the soft delete.
+	private releaseDeletedPlatform(platform: SocialPlatform) {
+		return this.prisma.social.deleteMany({ where: { platform, deletedAt: { not: null } } })
 	}
 
 	private async assertPlatformFree(platform: SocialPlatform, exceptId?: string): Promise<void> {

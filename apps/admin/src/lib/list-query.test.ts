@@ -10,9 +10,17 @@ describe('toListQuery', () => {
 	})
 
 	it('renames the table parameters to the API ones', () => {
-		expect(query('page=3&pageSize=25&search=ada&from=2026-10-01&to=2026-10-09')).toBe(
-			'page=3&search=ada&from=2026-10-01&to=2026-10-09&limit=25',
+		const params = toListQuery(
+			new URLSearchParams('page=3&pageSize=25&search=ada&from=2026-10-01&to=2026-10-09'),
 		)
+
+		expect(Object.fromEntries(params)).toEqual({
+			page: '3',
+			search: 'ada',
+			from: new Date(2026, 9, 1).toISOString(),
+			to: new Date(2026, 9, 9, 23, 59, 59, 999).toISOString(),
+			limit: '25',
+		})
 	})
 
 	it('maps a sorted column to its API field and direction', () => {
@@ -46,5 +54,16 @@ describe('toPageQuery', () => {
 		expect(page('page=2&pageSize=50&search=users&method=&other=x')).toBe(
 			'page=2&limit=50&search=users',
 		)
+	})
+
+	it('sends picked days as the start and end of that local day', () => {
+		const params = toPageQuery(
+			new URLSearchParams('from=2026-10-04&to=2026-10-04'),
+			['from', 'to'],
+			25,
+		)
+
+		expect(params.get('from')).toBe(new Date(2026, 9, 4).toISOString())
+		expect(params.get('to')).toBe(new Date(2026, 9, 4, 23, 59, 59, 999).toISOString())
 	})
 })

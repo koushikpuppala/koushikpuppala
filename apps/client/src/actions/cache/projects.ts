@@ -12,13 +12,13 @@ export const getPublishedProjects = async (
 	cacheLife('weeks')
 	cacheTag(
 		'projects',
-		`projects-${params?.category || 'all'}-${params?.featured ? 'featured' : 'all'}`,
+		`projects-${params?.category || 'all'}-${params?.featured === undefined ? 'all' : params.featured ? 'featured' : 'regular'}`,
 	)
 
 	return fetchPublished<PublishedProject[]>(
 		withQuery('/api/v1/projects/published', {
 			category: params?.category,
-			featured: params?.featured ? String(params.featured) : undefined,
+			featured: params?.featured === undefined ? undefined : String(params.featured),
 		}),
 		'projects data',
 	)

@@ -186,6 +186,15 @@ describe('CMS collection lifecycle (e2e)', () => {
 		await t.http().post('/api/v1/socials').set(auth).send(body).expect(409)
 	})
 
+	it('lets a deleted social link be added again for the same platform', async () => {
+		const body = { platform: 'YOUTUBE', url: 'https://youtube.com/@example' }
+
+		const created = await t.http().post('/api/v1/socials').set(auth).send(body).expect(201)
+
+		await t.http().delete(`/api/v1/socials/${created.body.result.id}`).set(auth).expect(200)
+		await t.http().post('/api/v1/socials').set(auth).send(body).expect(201)
+	})
+
 	it('only accepts an OpenGraph image served from the CDN', async () => {
 		const create = { type: 'PAGE', key: '/og', value: {} }
 

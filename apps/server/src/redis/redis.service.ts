@@ -61,6 +61,10 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 		return this.redis.set(key, value)
 	}
 
+	async setIfAbsent(key: string, value: string, ttl: number): Promise<'OK' | null> {
+		return this.redis.set(key, value, 'EX', ttl, 'NX')
+	}
+
 	// SCAN walks the keyspace in batches instead of KEYS, which would block Redis on a large dataset.
 	async delByPattern(pattern: string): Promise<number> {
 		let cursor = '0'

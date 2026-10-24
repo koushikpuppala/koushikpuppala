@@ -17,8 +17,9 @@ export class CacheService {
 
 		const value = await callback()
 
+		// NX so a value written while the callback ran (such as a session revocation) wins over this possibly stale read.
 		try {
-			await this.redis.set(key, JSON.stringify(value), ttl)
+			await this.redis.setIfAbsent(key, JSON.stringify(value), ttl)
 		} catch {}
 
 		return value
