@@ -1,6 +1,0 @@
-export type { AboutSchema } from './about'
-export type { EducationSchema } from './education'
-export type { ExperienceSchema } from './experience'
-export type { HomeSchema } from './home'
-export type { ProjectSchema } from './projects'
-export type { ServicesSchema } from './services'

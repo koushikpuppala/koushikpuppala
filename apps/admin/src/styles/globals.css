@@ -1,0 +1,23 @@
+@import 'ui/style';
+@import 'ui/react-date-range';
+
+@theme inline {
+	--font-display:
+		var(--font-jakarta), 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+	--font-sans:
+		var(--font-jakarta), 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+	--font-mono:
+		var(--font-jakarta), 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+/* Plus Jakarta Sans has no monospace cut, so text that used to be mono keeps its digits aligned with fixed-width numerals. */
+@layer base {
+	.font-mono,
+	pre,
+	kbd,
+	code,
+	samp,
+	table {
+		font-variant-numeric: tabular-nums;
+	}
+}

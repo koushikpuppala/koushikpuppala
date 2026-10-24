@@ -1,0 +1,14 @@
+generator client {
+  runtime         = "nodejs"
+  provider        = "prisma-client"
+  output          = "../src/generated"
+  // Rejects explicit undefined in queries; the server strips it first with omitUndefinedWrites.
+  previewFeatures = ["strictUndefinedChecks"]
+}
+
+datasource db {
+  provider     = "postgresql"
+  // Relations are enforced by Prisma, not database foreign keys, so every relation field needs
+  // its own @@index.
+  relationMode = "prisma"
+}

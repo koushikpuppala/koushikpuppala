@@ -1,0 +1,14 @@
+{
+	"extends": "@repo/config/tsconfig.node",
+	"compilerOptions": {
+		"outDir": "dist",
+		"rootDir": "./src",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"jsx": "react-jsx",
+		"types": ["node", "react"]
+	},
+	"include": ["src"],
+	"exclude": ["node_modules", "dist"]
+}

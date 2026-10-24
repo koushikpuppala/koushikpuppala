@@ -1,0 +1,195 @@
+name: Deploy Client
+run-name: Deploy Client - ${{ github.ref_name }}
+
+# Runs when a push to master changes the client or something it is built from, or by hand from the
+# Actions tab (for example after changing the ENV_FILE secret, which the build and the container read).
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'apps/client/**'
+      - 'packages/**'
+      - 'docker/client.Dockerfile'
+      - 'docker/env-for.sh'
+      - 'docker/deploy/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - '.npmrc'
+      - '.github/workflows/deploy-client.yml'
+  workflow_dispatch:
+
+# A running release is never cancelled: stopping it could leave the container half replaced. While
+# one runs, GitHub keeps only the newest waiting run, which already contains the older commits.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY_PREFIX }}/client
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  # DD-MM-YYYYv<n> in Indian time, where n counts this app's releases pushed to ECR that day.
+  tag:
+    name: Pick image tag
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+
+    steps:
+      # Fail before any work when the repository prefix is missing, instead of at the image push.
+      - name: Check required variables
+        env:
+          ECR_REPOSITORY_PREFIX: ${{ vars.ECR_REPOSITORY_PREFIX }}
+        run: |
+          if [ -z "$ECR_REPOSITORY_PREFIX" ]; then
+            echo "::error::Missing repository variable: ECR_REPOSITORY_PREFIX"
+            exit 1
+          fi
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+
+      - name: Pick the next tag
+        id: tag
+        run: |
+          DAY=$(TZ=Asia/Kolkata date +%d-%m-%Y)
+
+          LAST=0
+          for TAG in $(aws ecr list-images --repository-name "$ECR_REPOSITORY" \
+            --filter tagStatus=TAGGED --query 'imageIds[].imageTag' --output text); do
+            N=${TAG#"${DAY}v"}
+            if [ "$N" != "$TAG" ] && [ -n "$N" ] && [ -z "$(printf '%s' "$N" | tr -d 0-9)" ] && [ "$N" -gt "$LAST" ]; then
+              LAST=$N
+            fi
+          done
+
+          echo "tag=${DAY}v$((LAST + 1))" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build client
+    needs: [test, tag]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.7.1
+        with:
+          platforms: linux/amd64
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+
+      - name: Log into Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2.0.1
+
+      - name: Extract metadata from Dockerfile
+        id: metadata
+        uses: docker/metadata-action@v5.6.1
+        with:
+          images: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
+          tags: |
+            ${{ needs.tag.outputs.tag }}
+            sha-${{ github.sha }}
+
+      # Only this app's keys, passed to the build as a BuildKit secret so they never reach an image
+      # layer or the Actions cache (a public repository's pull requests can read that cache).
+      - name: Write build settings
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: |
+          umask 077
+          printf '%s\n' "$ENV_FILE" | sh docker/env-for.sh client build > "$RUNNER_TEMP/build.env"
+
+      # Built into the runner's Docker first, so a vulnerable image is stopped before it reaches ECR.
+      - name: Build Docker image
+        uses: docker/build-push-action@v6.9.0
+        with:
+          context: .
+          file: docker/client.Dockerfile
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          load: true
+          platforms: linux/amd64
+          secret-files: |
+            env=${{ runner.temp }}/build.env
+          cache-from: type=gha,scope=client
+          cache-to: type=gha,mode=max,scope=client
+
+      # Fails on a high or critical CVE that has a fix. The scanner image is pinned by digest, since a
+      # moved tag would run unreviewed code with the runner's Docker socket.
+      - name: Scan image for vulnerabilities
+        env:
+          IMAGE: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:sha-${{ github.sha }}
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy@sha256:e2b22eac59c02003d8749f5b8d9bd073b62e30fefaef5b7c8371204e0a4b0c08 \
+            image --scanners vuln,secret --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$IMAGE"
+
+      - name: Push Docker image
+        env:
+          IMAGE: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
+        run: docker push --all-tags "$IMAGE"
+
+  deploy:
+    if: false # Disabled until the client is ready to be deployed.
+    name: Deploy client
+    runs-on: ubuntu-latest
+    needs: [tag, build]
+
+    env:
+      IMAGE_TAG: ${{ needs.tag.outputs.tag }}
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4.1.0
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+
+      - name: Log into Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2.0.1
+
+      - name: Set up SSH key for EC2
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+      # Trust the host key on first contact so ssh does not stop at an interactive prompt.
+      - name: Configure SSH Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ vars.EC2_HOST }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      # The same docker/deploy/deploy.sh you run by hand: it logs EC2 into ECR with the instance role,
+      # pulls the tag and waits for the container to report healthy.
+      - name: Deploy to EC2
+        env:
+          EC2_TARGET: ${{ vars.EC2_USER }}@${{ vars.EC2_HOST }}
+          ECR_REGISTRY: ${{ steps.ecr.outputs.registry }}
+        run: |
+          ssh "$EC2_TARGET" "cd ~/services/portfolio/client && \
+            ECR_REGISTRY='$ECR_REGISTRY' ECR_REPOSITORY='$ECR_REPOSITORY' AWS_REGION='$AWS_REGION' \
+            ./deploy.sh '$IMAGE_TAG'"

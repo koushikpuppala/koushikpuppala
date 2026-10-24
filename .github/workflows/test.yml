@@ -1,0 +1,158 @@
+name: Test
+run-name: Test - ${{ github.ref_name }}
+
+on:
+  # Every pull request runs the full test suite; merging needs it green (branch protection on master).
+  pull_request:
+  # Also the first job of each deploy workflow (client, admin, server), so no image is built from
+  # failing code.
+  workflow_call:
+
+# A newer push to a pull request makes its older test run pointless, so that one is cancelled. A
+# deploy's test job is never cancelled, or a second merge would fail the release already running.
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+  DATABASE_URL: postgresql://test:test@127.0.0.1:55432/portfolio_test
+
+jobs:
+  unit:
+    name: Lint and unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4.1.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm --filter @repo/prisma db:generate
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Unit and component tests
+        run: pnpm test
+
+  security:
+    name: Dependency audit and secret scan
+    runs-on: ubuntu-latest
+    steps:
+      # Full history, so the secret scan can read every commit a pull request adds.
+      - name: Checkout Repository
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4.1.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: 24
+
+      # Production dependencies only: build and test tooling never ships in an image.
+      - name: Audit dependencies
+        run: pnpm audit --prod --audit-level high
+
+      # The tree is scanned on every run and a pull request's own commits as well, so a secret added
+      # and then deleted within the pull request is still caught. Older history holds keys from the
+      # 2021 site that are reported separately and would fail every run. The image is pinned by digest.
+      - name: Scan for secrets
+        env:
+          GITLEAKS: zricethezav/gitleaks@sha256:cdbb7c955abce02001a9f6c9f602fb195b7fadc1e812065883f695d1eeaba854
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          docker run --rm -v "$PWD:/repo:ro" "$GITLEAKS" dir /repo --redact --no-banner --exit-code 1
+          if [ -n "$BASE_SHA" ]; then
+            docker run --rm -v "$PWD:/repo:ro" "$GITLEAKS" git /repo --redact --no-banner --exit-code 1 \
+              --log-opts="$BASE_SHA..$HEAD_SHA"
+          fi
+
+  integration:
+    name: API integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4.1.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Start test infrastructure
+        run: docker compose -f docker-compose.test.yml up -d --wait
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared packages
+        run: pnpm --filter @repo/prisma db:generate && pnpm turbo run build --filter=server^...
+
+      - name: API integration tests
+        run: pnpm --filter server test:e2e
+
+  e2e:
+    name: End to end tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4.1.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Start test infrastructure
+        run: docker compose -f docker-compose.test.yml up -d --wait
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build shared packages
+        run: pnpm --filter @repo/prisma db:generate && pnpm turbo run build --filter=server^...
+
+      - name: Install Playwright browser
+        run: pnpm --filter e2e exec playwright install --with-deps chromium
+
+      - name: End to end tests
+        run: pnpm --filter e2e test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: playwright-report
+          path: |
+            apps/e2e/playwright-report
+            apps/e2e/test-results
+          retention-days: 14
