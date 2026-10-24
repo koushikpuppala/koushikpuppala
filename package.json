@@ -21,7 +21,7 @@
 		"Puppala Koushik"
 	],
 	"devDependencies": {
-		"@biomejs/biome": "~2.6.2",
+		"@biomejs/biome": "~2.6.3",
 		"@repo/config": "workspace:*",
 		"prettier": "~3.9.10",
 		"prettier-plugin-tailwindcss": "~0.8.1",
