@@ -13,8 +13,10 @@ const renderModal = (onSave: () => Promise<void>) => {
 
 const fillAndSave = async () => {
 	await userEvent.clear(screen.getByLabelText('Display Label'))
-	await userEvent.type(screen.getByLabelText('Display Label'), 'My GitHub')
-	await userEvent.type(screen.getByLabelText('Profile URL'), 'https://github.com/me')
+	await userEvent.click(screen.getByLabelText('Display Label'))
+	await userEvent.paste('My GitHub')
+	await userEvent.click(screen.getByLabelText('Profile URL'))
+	await userEvent.paste('https://github.com/me')
 	await userEvent.click(screen.getByRole('button', { name: 'Save Social Link' }))
 }
 
@@ -73,7 +75,8 @@ describe('SocialFormDialog', () => {
 			<SocialFormDialog open onOpenChange={onOpenChange} social={null} onSave={onSave} />,
 		)
 
-		await userEvent.type(screen.getByLabelText('Profile URL'), 'https://github.com/me')
+		await userEvent.click(screen.getByLabelText('Profile URL'))
+		await userEvent.paste('https://github.com/me')
 		await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
 
 		expect(onOpenChange).toHaveBeenCalledWith(false)

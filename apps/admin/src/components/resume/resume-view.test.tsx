@@ -92,15 +92,18 @@ describe('ResumeView', () => {
 
 		expect(screen.getByRole('button', { name: 'Save Changes' })).toBeDisabled()
 
-		await userEvent.type(screen.getByLabelText(/executive summary/i), 'Three years.')
+		await userEvent.click(screen.getByLabelText(/executive summary/i))
+		await userEvent.paste('Three years.')
 		await userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
 		expect(await screen.findByText('Document title is required.')).toBeInTheDocument()
 
-		await userEvent.type(title, 'Ada Resume')
+		await userEvent.click(title)
+		await userEvent.paste('Ada Resume')
 		await userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
 		expect(await screen.findByText('Release version tag is required.')).toBeInTheDocument()
 
-		await userEvent.type(screen.getByLabelText(/release version tag/i), '2026.2')
+		await userEvent.click(screen.getByLabelText(/release version tag/i))
+		await userEvent.paste('2026.2')
 		await userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
 		expect(await screen.findByText('Upload a PDF before saving the resume.')).toBeInTheDocument()
 

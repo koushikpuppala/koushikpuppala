@@ -14,8 +14,10 @@ describe('LoginView', () => {
 		login.mockResolvedValue(undefined)
 		render(<LoginView />)
 
-		await userEvent.type(screen.getByLabelText(/email address/i), 'kp@example.com')
-		await userEvent.type(screen.getByLabelText(/password/i), 'secret')
+		await userEvent.click(screen.getByLabelText(/email address/i))
+		await userEvent.paste('kp@example.com')
+		await userEvent.click(screen.getByLabelText(/password/i))
+		await userEvent.paste('secret')
 		await userEvent.click(screen.getByRole('button', { name: /sign in with credentials/i }))
 
 		expect(login).toHaveBeenCalledWith('kp@example.com', 'secret')
@@ -26,8 +28,10 @@ describe('LoginView', () => {
 		login.mockRejectedValue(new Error('Your account does not have access to the Content Studio.'))
 		render(<LoginView />)
 
-		await userEvent.type(screen.getByLabelText(/email address/i), 'user@example.com')
-		await userEvent.type(screen.getByLabelText(/password/i), 'secret')
+		await userEvent.click(screen.getByLabelText(/email address/i))
+		await userEvent.paste('user@example.com')
+		await userEvent.click(screen.getByLabelText(/password/i))
+		await userEvent.paste('secret')
 		await userEvent.click(screen.getByRole('button', { name: /sign in with credentials/i }))
 
 		expect(await screen.findByRole('alert')).toHaveTextContent('does not have access')

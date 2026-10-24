@@ -56,14 +56,19 @@ describe('SettingsView', () => {
 		expect(title).toHaveValue('Ada Lovelace')
 
 		await userEvent.clear(title)
-		await userEvent.type(title, 'Ada | Engineer')
-		await userEvent.type(screen.getByLabelText('New keyword'), 'Engines{Enter}')
-		await userEvent.type(screen.getByLabelText('New keyword'), 'Ada')
+		await userEvent.click(title)
+		await userEvent.paste('Ada | Engineer')
+		await userEvent.click(screen.getByLabelText('New keyword'))
+		await userEvent.paste('Engines')
+		await userEvent.keyboard('{Enter}')
+		await userEvent.click(screen.getByLabelText('New keyword'))
+		await userEvent.paste('Ada')
 		await userEvent.click(screen.getByRole('button', { name: /^add$/i }))
 		// A duplicate is ignored and stays in the box for the editor to change.
 		expect(screen.getByLabelText('New keyword')).toHaveValue('Ada')
 		await userEvent.clear(screen.getByLabelText('New keyword'))
-		await userEvent.type(screen.getByLabelText('New keyword'), 'Math')
+		await userEvent.click(screen.getByLabelText('New keyword'))
+		await userEvent.paste('Math')
 		await userEvent.click(screen.getByRole('button', { name: /^add$/i }))
 		await userEvent.click(screen.getByRole('button', { name: 'Remove keyword Math' }))
 		await userEvent.click(screen.getByRole('switch', { name: 'Publish these SEO tags' }))
@@ -93,8 +98,10 @@ describe('SettingsView', () => {
 		expect(screen.getByLabelText(/global title template/i)).toHaveValue('')
 		expect(screen.getByLabelText(/canonical base url/i)).toHaveValue('https://site.test/contact')
 
-		await userEvent.type(screen.getByLabelText(/global title template/i), 'Contact Ada')
-		await userEvent.type(screen.getByLabelText(/global meta description/i), 'Say hello.')
+		await userEvent.click(screen.getByLabelText(/global title template/i))
+		await userEvent.paste('Contact Ada')
+		await userEvent.click(screen.getByLabelText(/global meta description/i))
+		await userEvent.paste('Say hello.')
 		await save()
 
 		await waitFor(() =>

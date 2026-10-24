@@ -10,9 +10,12 @@ vi.mock('actions/users', () => ({
 }))
 
 const fill = async () => {
-	await userEvent.type(screen.getByLabelText('Full Name'), 'Alex Morgan')
-	await userEvent.type(screen.getByLabelText('Email Address'), 'alex@example.com')
-	await userEvent.type(screen.getByLabelText('Initial Password'), 'secret123')
+	await userEvent.click(screen.getByLabelText('Full Name'))
+	await userEvent.paste('Alex Morgan')
+	await userEvent.click(screen.getByLabelText('Email Address'))
+	await userEvent.paste('alex@example.com')
+	await userEvent.click(screen.getByLabelText('Initial Password'))
+	await userEvent.paste('secret123')
 }
 
 describe('UserCreateDialog', () => {

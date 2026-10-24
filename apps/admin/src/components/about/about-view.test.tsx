@@ -52,14 +52,19 @@ describe('AboutView', () => {
 		expect(heading).toHaveValue('Engineer and mathematician')
 
 		await userEvent.type(screen.getByLabelText(/lead statement/i), ' Fast.')
-		await userEvent.type(screen.getByLabelText('New stat label'), 'Projects')
-		await userEvent.type(screen.getByLabelText('New stat value'), '12')
-		await userEvent.type(screen.getByLabelText('New stat detail'), 'shipped')
+		await userEvent.click(screen.getByLabelText('New stat label'))
+		await userEvent.paste('Projects')
+		await userEvent.click(screen.getByLabelText('New stat value'))
+		await userEvent.paste('12')
+		await userEvent.click(screen.getByLabelText('New stat detail'))
+		await userEvent.paste('shipped')
 		let statRow = screen.getByLabelText('New stat label').parentElement as HTMLElement
 		while (!within(statRow).queryByRole('button', { name: /^add$/i })) statRow = statRow.parentElement as HTMLElement
 		await userEvent.click(within(statRow).getByRole('button', { name: /^add$/i }))
 		await userEvent.click(screen.getByRole('button', { name: 'Remove Years stat' }))
-		await userEvent.type(screen.getByPlaceholderText(/add a way you work/i), 'Ship small{Enter}')
+		await userEvent.click(screen.getByPlaceholderText(/add a way you work/i))
+		await userEvent.paste('Ship small')
+		await userEvent.keyboard('{Enter}')
 
 		await userEvent.click(screen.getByRole('button', { name: 'Save Changes' }))
 
