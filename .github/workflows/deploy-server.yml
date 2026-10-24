@@ -108,7 +108,7 @@ jobs:
 
       - name: Extract metadata from Dockerfile
         id: metadata
-        uses: docker/metadata-action@v5.6.1
+        uses: docker/metadata-action@v6.2.0
         with:
           images: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
           tags: |
