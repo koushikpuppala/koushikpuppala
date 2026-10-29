@@ -6,8 +6,9 @@
 # (docker/env-for.sh admin run picks this app's keys from the full .env; docker/deploy/admin/ holds the
 # compose file and deploy.sh used on EC2).
 
-# Use the Node.js LTS Alpine image as the base image for the build
-FROM node:lts-alpine AS base
+# Node 24 on Alpine, the same major as CI. Not the moving lts tag: Node 25 and later images no longer ship
+# Corepack, so `corepack enable` below fails the build once that tag moves past 24.
+FROM node:24-alpine AS base
 
 # Enable Corepack, which installs the pnpm version pinned in package.json "packageManager"
 RUN corepack enable
