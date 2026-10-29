@@ -1,4 +1,9 @@
-import { init, replayIntegration, captureRouterTransitionStart } from '@sentry/nextjs'
+import {
+	addIntegration,
+	captureRouterTransitionStart,
+	init,
+	replayIntegration,
+} from '@sentry/nextjs'
 
 if (process.env.NODE_ENV !== 'development')
 	init({
@@ -13,10 +18,16 @@ if (process.env.NODE_ENV !== 'development')
 
 		replaysOnErrorSampleRate: 1.0,
 		replaysSessionSampleRate: 0.05,
-
-		integrations: [
-			replayIntegration({ maskAllText: true, blockAllMedia: true, stickySession: true }),
-		],
 	})
+
+// Replay snapshots the whole page when it starts, so it waits for idle instead of competing with hydration.
+// Safari has no requestIdleCallback, so it falls back to a delay.
+const startReplay = () =>
+	addIntegration(replayIntegration({ maskAllText: true, blockAllMedia: true, stickySession: true }))
+
+if (process.env.NODE_ENV !== 'development') {
+	if ('requestIdleCallback' in window) requestIdleCallback(startReplay)
+	else setTimeout(startReplay, 3000)
+}
 
 export const onRouterTransitionStart = captureRouterTransitionStart
