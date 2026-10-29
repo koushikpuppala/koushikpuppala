@@ -1,4 +1,3 @@
-import { GoogleAnalytics } from '@next/third-parties/google'
 import { WebVitals } from 'components/web-vitals'
 
 const GA_ID_PATTERN = /^G-[A-Z0-9]+$/
@@ -13,10 +12,5 @@ export const Analytics = () => {
 
 	if (!ga && !clarity) return null
 
-	return (
-		<>
-			{ga ? <GoogleAnalytics gaId={ga} /> : null}
-			<WebVitals clarityId={clarity} googleAnalytics={Boolean(ga)} />
-		</>
-	)
+	return <WebVitals clarityId={clarity} googleAnalyticsId={ga} />
 }

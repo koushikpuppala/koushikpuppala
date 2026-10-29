@@ -1,22 +1,18 @@
 import { render } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('@next/third-parties/google', () => ({
-	GoogleAnalytics: ({ gaId }: { gaId: string }) => <span data-testid='ga' data-id={gaId} />,
-}))
-
 vi.mock('components/web-vitals', () => ({
 	WebVitals: ({
 		clarityId,
-		googleAnalytics,
+		googleAnalyticsId,
 	}: {
 		clarityId: string | null
-		googleAnalytics: boolean
+		googleAnalyticsId: string | null
 	}) => (
 		<span
 			data-testid='web-vitals'
 			data-clarity={clarityId ?? ''}
-			data-ga={String(googleAnalytics)}
+			data-ga={googleAnalyticsId ?? ''}
 		/>
 	),
 }))
@@ -40,16 +36,14 @@ describe('Analytics', () => {
 	it('loads Google Analytics and Clarity with their IDs', async () => {
 		const { getByTestId } = await renderAnalytics({ ga: 'G-ABC123XYZ', clarity: 'abc123xyz' })
 
-		expect(getByTestId('ga')).toHaveAttribute('data-id', 'G-ABC123XYZ')
 		expect(getByTestId('web-vitals')).toHaveAttribute('data-clarity', 'abc123xyz')
-		expect(getByTestId('web-vitals')).toHaveAttribute('data-ga', 'true')
+		expect(getByTestId('web-vitals')).toHaveAttribute('data-ga', 'G-ABC123XYZ')
 	})
 
 	it('starts Clarity without reporting to Google Analytics when only Clarity is set', async () => {
-		const { getByTestId, queryByTestId } = await renderAnalytics({ clarity: 'abc123xyz' })
+		const { getByTestId } = await renderAnalytics({ clarity: 'abc123xyz' })
 
-		expect(queryByTestId('ga')).toBeNull()
-		expect(getByTestId('web-vitals')).toHaveAttribute('data-ga', 'false')
+		expect(getByTestId('web-vitals')).toHaveAttribute('data-ga', '')
 	})
 
 	it('ignores IDs that are not in the documented format', async () => {

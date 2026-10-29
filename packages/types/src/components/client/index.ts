@@ -64,7 +64,7 @@ export type SeededArtProps = Pick<ArtProps, 'rand'>
 
 export type WebVitalsProps = {
 	clarityId: string | null
-	googleAnalytics: boolean
+	googleAnalyticsId: string | null
 }
 
 export type NavLink = { href: string; label: string }
