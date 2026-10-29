@@ -8,20 +8,32 @@ import Script from 'next/script'
 import { classNames } from 'utils/classNames'
 import { KeyboardFocus } from 'ui/keyboard-focus'
 import { Analytics } from 'components/analytics'
+import { MotionProvider } from 'components/motion-provider'
 import { Geist, Geist_Mono, Bricolage_Grotesque } from 'next/font/google'
 
-const geistSans = Geist({ variable: '--font-geist-sans', display: 'swap' })
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', display: 'swap' })
-const bricolageGrotesque = Bricolage_Grotesque({ variable: '--font-bricolage', display: 'swap' })
+const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'], display: 'swap' })
+// Mono text is secondary, so it must not compete with the LCP text for early bandwidth.
+const geistMono = Geist_Mono({
+	variable: '--font-geist-mono',
+	subsets: ['latin'],
+	display: 'swap',
+	preload: false,
+})
+const bricolageGrotesque = Bricolage_Grotesque({
+	variable: '--font-bricolage',
+	subsets: ['latin'],
+	display: 'swap',
+})
 
 export const viewport: Viewport = {
 	initialScale: 1,
 	width: 'device-width',
 	colorScheme: 'light dark',
-	themeColor: [
-		{ media: '(prefers-color-scheme: dark)', color: '#090a0c' },
-		{ media: '(prefers-color-scheme: light)', color: '#f7f8f9' },
-	],
+	themeColor: '#090a0c',
+	// themeColor: [
+	// 	{ media: '(prefers-color-scheme: dark)', color: '#090a0c' },
+	// 	{ media: '(prefers-color-scheme: light)', color: '#f7f8f9' },
+	// ],
 }
 
 export const metadata: Metadata = {
@@ -97,9 +109,7 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
 						try {
 							const s = localStorage.getItem('theme')
 
-							const d = s
-								? s === 'dark'
-								: !window.matchMedia('(prefers-color-scheme: light)').matches
+							const d = !s || s === 'dark'
 
 							e.classList.toggle('dark', d)
 
@@ -117,7 +127,7 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
 					'bg-background text-foreground selection:bg-signal min-h-screen font-sans antialiased selection:text-white',
 				)}>
 				<KeyboardFocus />
-				{children}
+				<MotionProvider>{children}</MotionProvider>
 				<Analytics />
 			</body>
 		</html>

@@ -12,10 +12,11 @@ import { KeyboardFocus } from 'ui/keyboard-focus'
 const plusJakartaSans = Plus_Jakarta_Sans({ variable: '--font-jakarta', display: 'swap' })
 
 export const viewport: Viewport = {
-	themeColor: [
-		{ media: '(prefers-color-scheme: dark)', color: '#090a0c' },
-		{ media: '(prefers-color-scheme: light)', color: '#f7f8f9' },
-	],
+	// themeColor: [
+	// 	{ media: '(prefers-color-scheme: dark)', color: '#090a0c' },
+	// 	{ media: '(prefers-color-scheme: light)', color: '#f7f8f9' },
+	// ],
+	themeColor: '#090a0c',
 	colorScheme: 'dark light',
 	width: 'device-width',
 	initialScale: 1,
@@ -50,7 +51,7 @@ const RootLayout = async ({ children }: Readonly<ChildrenProps>) => {
 				<script
 					nonce={nonce}
 					dangerouslySetInnerHTML={{
-						__html: `(()=>{try{var t=localStorage.getItem("kp.admin.theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d);}catch(e){}})();`,
+						__html: `(()=>{try{var t=localStorage.getItem("kp.admin.theme");var d=t?t==="dark":true;document.documentElement.classList.toggle("dark",d);}catch(e){}})();`,
 					}}
 				/>
 			</head>

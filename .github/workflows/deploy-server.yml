@@ -1,26 +1,13 @@
 name: Deploy Server
 run-name: Deploy Server - ${{ github.ref_name }}
 
-# Runs when a push to master changes the server or something it is built from, or by hand from the
-# Actions tab (for example after changing the ENV_FILE secret, which the build and the container read).
+# Runs when release-please tags a release of the server (server-v<version>, created by merging its release
+# pull request), or by hand from the Actions tab (for example after changing the ENV_FILE secret, which
+# the build and the container read). A normal merge to master builds and deploys nothing.
 on:
   push:
-    branches:
-      - master
-    paths:
-      - 'apps/server/**'
-      - 'packages/types/**'
-      - 'packages/config/**'
-      - 'packages/prisma/**'
-      - 'docker/server.Dockerfile'
-      - 'docker/env-for.sh'
-      - 'docker/entrypoint.server.sh'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'turbo.json'
-      - '.npmrc'
-      - '.github/workflows/deploy-server.yml'
+    tags:
+      - 'server-v*'
   workflow_dispatch:
 
 # A running release is never cancelled: stopping it could leave the container half replaced. While
@@ -37,7 +24,8 @@ permissions:
   contents: read
   id-token: write
 
-# No test job: master only changes through pull requests, and test.yml must pass on each one first.
+# No test job: master only changes through pull requests, and test.yml must pass on each one first,
+# including the release pull request that produces the tag.
 jobs:
   # DD-MM-YYYYv<n> in Indian time, where n counts this app's releases pushed to ECR that day.
   tag:
@@ -45,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
+      version: ${{ steps.tag.outputs.version }}
 
     steps:
       # Fail before any work when the repository prefix is missing, instead of at the image push.
@@ -79,6 +68,11 @@ jobs:
 
           echo "tag=${DAY}v$((LAST + 1))" >> "$GITHUB_OUTPUT"
 
+          # Release tags look like server-v5.8.0; a manual run from a branch has no version.
+          case "$GITHUB_REF_NAME" in
+            server-v*) echo "version=${GITHUB_REF_NAME#server-v}" >> "$GITHUB_OUTPUT" ;;
+          esac
+
   build:
     name: Build server
     needs: [tag]
@@ -110,6 +104,7 @@ jobs:
           images: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
           tags: |
             ${{ needs.tag.outputs.tag }}
+            ${{ needs.tag.outputs.version }}
             sha-${{ github.sha }}
 
       # Only this app's keys, passed to the build as a BuildKit secret so they never reach an image

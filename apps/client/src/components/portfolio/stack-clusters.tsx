@@ -2,7 +2,8 @@
 
 import type { StackClustersProps } from 'types/components/client'
 import { useId, useRef, useState, type KeyboardEvent } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
+import { li as MotionLi } from 'motion/react-m'
 import { classNames } from 'utils/classNames'
 
 export const StackClusters = ({ services, className }: StackClustersProps) => {
@@ -106,31 +107,36 @@ export const StackClusters = ({ services, className }: StackClustersProps) => {
 								aria-labelledby={`${baseId}-tab-${i}`}
 								hidden={!selected}
 								className='relative p-6 sm:p-8 lg:p-10'>
-								<p className='text-eyebrow'>{service.title}</p>
-								<ul className='mt-6 grid gap-x-8 sm:grid-cols-2'>
-									<AnimatePresence initial={false}>
-										{items.map((item, index) => (
-											<motion.li
-												key={item}
-												initial={{ opacity: 0, y: 12 }}
-												animate={{ opacity: 1, y: 0 }}
-												transition={{
-													duration: 0.45,
-													delay: index * 0.035,
-													ease: [0.16, 1, 0.3, 1],
-												}}
-												className='group border-border/70 flex items-baseline gap-4 border-b py-3 last:border-none sm:py-3.5'>
-												<span
-													aria-hidden
-													className='bg-border-strong group-hover:bg-signal size-1.5 shrink-0 translate-y-[-0.15rem] rounded-full transition-colors duration-300'
-												/>
-												<span className='font-display text-foreground/85 group-hover:text-foreground text-lg font-medium tracking-tight text-balance transition-colors duration-300 sm:text-xl'>
-													{item}
-												</span>
-											</motion.li>
-										))}
-									</AnimatePresence>
-								</ul>
+								{/* Only the open panel renders its list; hidden ones would add DOM and run entrance animations unseen. */}
+								{selected ? (
+									<>
+										<p className='text-eyebrow'>{service.title}</p>
+										<ul className='mt-6 grid gap-x-8 sm:grid-cols-2'>
+											<AnimatePresence initial={false}>
+												{items.map((item, index) => (
+													<MotionLi
+														key={item}
+														initial={{ opacity: 0, y: 12 }}
+														animate={{ opacity: 1, y: 0 }}
+														transition={{
+															duration: 0.45,
+															delay: index * 0.035,
+															ease: [0.16, 1, 0.3, 1],
+														}}
+														className='group border-border/70 flex items-baseline gap-4 border-b py-3 last:border-none sm:py-3.5'>
+														<span
+															aria-hidden
+															className='bg-border-strong group-hover:bg-signal size-1.5 shrink-0 translate-y-[-0.15rem] rounded-full transition-colors duration-300'
+														/>
+														<span className='font-display text-foreground/85 group-hover:text-foreground text-lg font-medium tracking-tight text-balance transition-colors duration-300 sm:text-xl'>
+															{item}
+														</span>
+													</MotionLi>
+												))}
+											</AnimatePresence>
+										</ul>
+									</>
+								) : null}
 							</div>
 						)
 					})}

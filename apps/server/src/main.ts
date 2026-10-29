@@ -8,6 +8,7 @@ import redoc from 'redoc-express'
 import { AppModule } from './app.module'
 import { NestFactory } from '@nestjs/core'
 import { configureApp } from './bootstrap'
+import { APP_VERSION } from 'config/version'
 import { Configuration } from 'config/configuration'
 import { LoggerService } from 'common/logger/logger.service'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
@@ -39,7 +40,7 @@ const bootstrap = async () => {
 
 	const config = new DocumentBuilder()
 		.setTitle('Koushik Puppala (Individual Contributor)')
-		.setVersion('1.0.0')
+		.setVersion(APP_VERSION)
 		.setDescription('API Documentation')
 		.addServer('/', 'Default API endpoints')
 		.addBearerAuth(
@@ -101,7 +102,7 @@ const bootstrap = async () => {
 
 	logger.info('Server started', 'Bootstrap', {
 		pid: process.pid,
-		version: '1.0.0',
+		version: APP_VERSION,
 		port: settings.port,
 		environment: settings.environment,
 	})

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ArrowUpRight, CommandIcon } from 'components/icons'
 import { Button } from 'ui/button'
 import { classNames } from 'utils/classNames'
-import { motion } from 'motion/react'
+import { span as MotionSpan } from 'motion/react-m'
 import { usePathname } from 'next/navigation'
 import { ScrollProgress } from 'components/primitives/motion'
 import { ThemeToggle } from 'components/theme-toggle'
@@ -57,7 +57,7 @@ export const SiteHeader = ({ onOpenMenu, onOpenPalette }: SiteHeaderProps) => {
 											},
 										)}>
 										{active ? (
-											<motion.span
+											<MotionSpan
 												layoutId='nav-active'
 												className='bg-accent absolute inset-0 -z-10 rounded-full'
 												transition={{ type: 'spring', stiffness: 400, damping: 34 }}
@@ -98,7 +98,7 @@ export const SiteHeader = ({ onOpenMenu, onOpenPalette }: SiteHeaderProps) => {
 							<span className='flex w-4.5 flex-col gap-1.25'>
 								<span className='h-px w-full bg-current transition-transform duration-300 group-hover:translate-x-0.5' />
 								<span className='h-px w-full bg-current' />
-								<span className='h-px w-2/3 bg-current transition-all duration-300 group-hover:w-full' />
+								<span className='h-px w-2/3 bg-current transition-[width] duration-300 group-hover:w-full' />
 							</span>
 						</button>
 					</div>

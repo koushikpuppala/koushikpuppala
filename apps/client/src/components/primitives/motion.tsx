@@ -10,7 +10,8 @@ import type {
 	SpotlightProps,
 } from 'types/components/client'
 import { useCallback, useEffect, useRef, type PointerEvent, type CSSProperties } from 'react'
-import { motion, useMotionValue, useScroll, useSpring } from 'motion/react'
+import { useMotionValue, useScroll, useSpring } from 'motion/react'
+import { div as MotionDiv } from 'motion/react-m'
 import { useInteractiveMotion, useRevealRef } from 'lib/use-reveal'
 import { classNames } from 'utils/classNames'
 
@@ -114,14 +115,14 @@ export const Magnetic = ({ children, className, strength = 0.32 }: MagneticProps
 	}, [x, y])
 
 	return (
-		<motion.div
+		<MotionDiv
 			ref={ref}
 			onPointerMove={handleMove}
 			onPointerLeave={reset}
 			{...(enabled ? { style: { x: sx, y: sy } } : {})}
 			className={classNames('inline-flex', className)}>
 			{children}
-		</motion.div>
+		</MotionDiv>
 	)
 }
 
@@ -203,7 +204,7 @@ export const ScrollProgress = ({ className }: ScrollProgressProps) => {
 	const scaleX = useSpring(scrollYProgress, { stiffness: 140, damping: 26, restDelta: 0.001 })
 
 	return (
-		<motion.div
+		<MotionDiv
 			aria-hidden
 			style={{ scaleX }}
 			className={classNames('bg-signal h-px origin-left', className)}

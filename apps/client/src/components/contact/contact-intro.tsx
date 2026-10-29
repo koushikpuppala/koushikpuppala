@@ -46,7 +46,7 @@ export const ContactIntro = ({ socials, location }: ContactIntroProps) => (
 								rel='noreferrer noopener'
 								className='group flex items-center gap-3.5 py-3.5 transition-colors'>
 								<span className='border-border bg-background text-muted-foreground group-hover:border-signal group-hover:text-signal-ink grid size-8 shrink-0 place-items-center rounded-lg border transition-all duration-300'>
-									<Icon className='size-3.5' />
+									<Icon className='size-3.5' aria-hidden focusable='false' />
 								</span>
 								<span className='min-w-0 flex-1'>
 									<span className='text-eyebrow block text-[0.625rem]'>{social.label}</span>

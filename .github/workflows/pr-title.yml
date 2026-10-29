@@ -1,0 +1,34 @@
+name: PR Title
+run-name: PR Title - ${{ github.ref_name }}
+
+# release-please reads the squash-merge commit, which takes the pull request title, so the title decides
+# whether the merge releases (feat, fix, or a "!" breaking change) or not (docs, ci, chore, test, refactor).
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  conventional-title:
+    name: Conventional commit title
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check the pull request title
+        uses: amannn/action-semantic-pull-request@v6.1.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            perf
+            revert
+            docs
+            chore
+            ci
+            test
+            refactor
+          requireScope: false
