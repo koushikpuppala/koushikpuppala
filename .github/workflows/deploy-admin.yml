@@ -1,23 +1,13 @@
 name: Deploy Admin
 run-name: Deploy Admin - ${{ github.ref_name }}
 
-# Runs when a push to master changes the admin or something it is built from, or by hand from the
-# Actions tab (for example after changing the ENV_FILE secret, which the build and the container read).
+# Runs when release-please tags a release of the admin (admin-v<version>, created by merging its release
+# pull request), or by hand from the Actions tab (for example after changing the ENV_FILE secret, which
+# the build and the container read). A normal merge to master builds and deploys nothing.
 on:
   push:
-    branches:
-      - master
-    paths:
-      - 'apps/admin/**'
-      - 'packages/**'
-      - 'docker/admin.Dockerfile'
-      - 'docker/env-for.sh'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - 'turbo.json'
-      - '.npmrc'
-      - '.github/workflows/deploy-admin.yml'
+    tags:
+      - 'admin-v*'
   workflow_dispatch:
 
 # A running release is never cancelled: stopping it could leave the container half replaced. While
@@ -34,7 +24,8 @@ permissions:
   contents: read
   id-token: write
 
-# No test job: master only changes through pull requests, and test.yml must pass on each one first.
+# No test job: master only changes through pull requests, and test.yml must pass on each one first,
+# including the release pull request that produces the tag.
 jobs:
   # DD-MM-YYYYv<n> in Indian time, where n counts this app's releases pushed to ECR that day.
   tag:
@@ -42,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
+      version: ${{ steps.tag.outputs.version }}
 
     steps:
       # Fail before any work when the repository prefix is missing, instead of at the image push.
@@ -76,6 +68,11 @@ jobs:
 
           echo "tag=${DAY}v$((LAST + 1))" >> "$GITHUB_OUTPUT"
 
+          # Release tags look like admin-v5.8.0; a manual run from a branch has no version.
+          case "$GITHUB_REF_NAME" in
+            admin-v*) echo "version=${GITHUB_REF_NAME#admin-v}" >> "$GITHUB_OUTPUT" ;;
+          esac
+
   build:
     name: Build admin
     needs: [tag]
@@ -107,6 +104,7 @@ jobs:
           images: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}
           tags: |
             ${{ needs.tag.outputs.tag }}
+            ${{ needs.tag.outputs.version }}
             sha-${{ github.sha }}
 
       # Only this app's keys, passed to the build as a BuildKit secret so they never reach an image

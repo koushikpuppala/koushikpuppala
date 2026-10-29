@@ -45,7 +45,7 @@ export const SectionRail = ({ sections }: SectionRailProps) => {
 								className='group flex items-center justify-end gap-3'>
 								<span
 									className={classNames(
-										'font-mono text-[0.625rem] tracking-[0.14em] uppercase transition-all duration-500',
+										'font-mono text-[0.625rem] tracking-[0.14em] uppercase transition-[color,opacity] duration-500',
 										isActive
 											? 'text-foreground opacity-100'
 											: 'text-muted-foreground opacity-0 group-hover:opacity-100',
@@ -54,7 +54,7 @@ export const SectionRail = ({ sections }: SectionRailProps) => {
 								</span>
 								<span
 									className={classNames(
-										'block h-px transition-all duration-500 ease-(--ease-out-expo)',
+										'block h-px transition-[width,background-color] duration-500 ease-(--ease-out-expo)',
 										isActive ? 'bg-signal w-7' : 'bg-border-strong w-3.5 group-hover:w-5',
 									)}
 								/>

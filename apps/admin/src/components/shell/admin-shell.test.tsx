@@ -131,7 +131,6 @@ describe('AdminShell', () => {
 	})
 
 	it('switches theme from the top bar and remembers it', async () => {
-		setMediaQuery('(prefers-color-scheme: dark)', true)
 		renderShell()
 
 		await waitFor(() => expect(document.documentElement).toHaveClass('dark'))
@@ -139,6 +138,15 @@ describe('AdminShell', () => {
 
 		expect(document.documentElement).not.toHaveClass('dark')
 		expect(localStorage.getItem('kp.admin.theme')).toBe('light')
+	})
+
+	it('defaults to dark even when the OS prefers light', async () => {
+		setMediaQuery('(prefers-color-scheme: light)', true)
+		setMediaQuery('(prefers-color-scheme: dark)', false)
+		renderShell()
+
+		expect(await screen.findByRole('button', { name: 'Switch to light mode' })).toBeInTheDocument()
+		expect(document.documentElement).toHaveClass('dark')
 	})
 
 	it('starts with the saved theme', async () => {

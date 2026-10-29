@@ -9,7 +9,8 @@ import type {
 } from 'types/components/client'
 import { useRef, useState, useSyncExternalStore } from 'react'
 import { ChevronDown } from 'components/icons'
-import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'motion/react'
+import { AnimatePresence, useReducedMotion, useScroll, useSpring } from 'motion/react'
+import { article as MotionArticle, div as MotionDiv, span as MotionSpan } from 'motion/react-m'
 import { Chip, PulseDot } from 'components/primitives/layout'
 import { durationLabel, formatMonthYear } from 'lib/format'
 import { classNames } from 'utils/classNames'
@@ -34,7 +35,7 @@ const viewport = { once: true, margin: '0px 0px -18% 0px' } as const
 const ease = [0.16, 1, 0.3, 1] as const
 
 const TimelineMarker = ({ current }: TimelineMarkerProps) => (
-	<motion.span
+	<MotionSpan
 		initial={{ scale: 0.2, opacity: 0 }}
 		whileInView={{ scale: 1, opacity: 1 }}
 		viewport={viewport}
@@ -50,7 +51,7 @@ const TimelineMarker = ({ current }: TimelineMarkerProps) => (
 				current ? 'bg-signal' : 'bg-border-strong',
 			)}
 		/>
-	</motion.span>
+	</MotionSpan>
 )
 
 const TimelineDates = ({ item, current }: TimelinePartProps) => {
@@ -116,7 +117,7 @@ const TimelineAchievements = ({
 
 			<AnimatePresence initial={false}>
 				{open ? (
-					<motion.div
+					<MotionDiv
 						id={panelId}
 						key='panel'
 						initial={{ height: 0, opacity: 0 }}
@@ -133,7 +134,7 @@ const TimelineAchievements = ({
 								</li>
 							))}
 						</ul>
-					</motion.div>
+					</MotionDiv>
 				) : null}
 			</AnimatePresence>
 		</>
@@ -180,7 +181,7 @@ const TimelineEntry = ({ item, index, defaultOpen }: TimelineEntryProps) => {
 	const current = item.isCurrent || !item.endDate
 
 	return (
-		<motion.article
+		<MotionArticle
 			initial={{ opacity: 0, y: 26 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={viewport}
@@ -215,7 +216,7 @@ const TimelineEntry = ({ item, index, defaultOpen }: TimelineEntryProps) => {
 					) : null}
 				</div>
 			</div>
-		</motion.article>
+		</MotionArticle>
 	)
 }
 
@@ -234,7 +235,7 @@ export const ExperienceTimeline = ({ items }: ExperienceTimelineProps) => {
 				className='bg-border absolute top-6 bottom-6 left-[0.72rem] w-px sm:left-[1.47rem]'
 				aria-hidden
 			/>
-			<motion.span
+			<MotionSpan
 				style={reduced ? undefined : { scaleY }}
 				className='from-signal to-signal/20 absolute top-6 bottom-6 left-[0.72rem] w-px origin-top bg-linear-to-b sm:left-[1.47rem]'
 				aria-hidden

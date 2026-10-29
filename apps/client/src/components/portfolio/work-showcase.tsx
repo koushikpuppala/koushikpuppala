@@ -10,13 +10,13 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'components/icons'
 import {
 	AnimatePresence,
-	motion,
 	useMotionValue,
 	useReducedMotion,
 	useScroll,
 	useSpring,
 	useTransform,
 } from 'motion/react'
+import { div as MotionDiv } from 'motion/react-m'
 import { Chip } from 'components/primitives/layout'
 import { Reveal } from 'components/primitives/motion'
 import { ProjectVisual } from 'components/projects/project-visual'
@@ -40,9 +40,7 @@ export const FeaturedProjectRow = ({
 	return (
 		<article ref={ref} className='group relative'>
 			{/* No aria-label: a shorter name than the card's visible text fails axe label-content-name-mismatch. */}
-			<Link
-				href={`/projects/${project.slug}`}
-				className='block outline-none'>
+			<Link href={`/projects/${project.slug}`} className='block outline-none'>
 				<Reveal>
 					<div className='text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[0.6875rem] tracking-[0.18em] uppercase'>
 						<span className='text-signal-ink'>{number}</span>
@@ -74,7 +72,7 @@ export const FeaturedProjectRow = ({
 					)}>
 					<Reveal from={flip ? 'right' : 'left'} className='lg:col-span-7 xl:col-span-8'>
 						<div className='border-border relative overflow-hidden rounded-2xl border'>
-							<motion.div {...(reduced ? {} : { style: { y } })} className='will-change-transform'>
+							<MotionDiv {...(reduced ? {} : { style: { y } })} className='will-change-transform'>
 								<ProjectVisual
 									slug={project.slug}
 									title={project.title}
@@ -83,7 +81,7 @@ export const FeaturedProjectRow = ({
 									index={`Fig. ${number}`}
 									className='aspect-16/10 w-full'
 								/>
-							</motion.div>
+							</MotionDiv>
 
 							<span
 								className='ring-foreground/5 group-hover:ring-signal/40 pointer-events-none absolute inset-0 rounded-2xl ring-1 transition-shadow duration-700 ring-inset'
@@ -98,7 +96,7 @@ export const FeaturedProjectRow = ({
 								aria-hidden
 							/>
 							<span
-								className='bg-signal-solid text-signal-foreground pointer-events-none absolute right-5 bottom-5 grid size-11 translate-y-2 place-items-center rounded-full opacity-0 transition-all duration-500 ease-(--ease-out-expo) group-hover:translate-y-0 group-hover:opacity-100'
+								className='bg-signal-solid text-signal-foreground pointer-events-none absolute right-5 bottom-5 grid size-11 translate-y-2 place-items-center rounded-full opacity-0 transition-[opacity,transform] duration-500 ease-(--ease-out-expo) group-hover:translate-y-0 group-hover:opacity-100'
 								aria-hidden>
 								<ArrowUpRight className='size-5' />
 							</span>
@@ -141,7 +139,7 @@ const ProjectListRow = ({ project, index, onEnter, onLeave }: ProjectListRowProp
 				onBlur={() => onLeave?.()}
 				className='group border-border relative grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 border-b py-6 transition-colors duration-500 sm:gap-6 sm:py-7'>
 				<span
-					className='bg-surface absolute inset-x-0 -inset-y-px -z-10 scale-y-90 rounded-lg opacity-0 transition-all duration-500 ease-(--ease-out-expo) group-hover:scale-y-100 group-hover:opacity-100'
+					className='bg-surface absolute inset-x-0 -inset-y-px -z-10 scale-y-90 rounded-lg opacity-0 transition-[opacity,transform] duration-500 ease-(--ease-out-expo) group-hover:scale-y-100 group-hover:opacity-100'
 					aria-hidden
 				/>
 				<span className='text-signal-ink pl-0 font-mono text-[0.6875rem] sm:pl-4'>{number}</span>
@@ -158,7 +156,7 @@ const ProjectListRow = ({ project, index, onEnter, onLeave }: ProjectListRowProp
 						{project.shortDescription}
 					</span>
 				</span>
-				<span className='border-border text-muted-foreground group-hover:border-signal-solid group-hover:bg-signal-solid group-hover:text-signal-foreground grid size-9 shrink-0 place-items-center rounded-full border transition-all duration-500 sm:mr-4'>
+				<span className='border-border text-muted-foreground group-hover:border-signal-solid group-hover:bg-signal-solid group-hover:text-signal-foreground grid size-9 shrink-0 place-items-center rounded-full border transition-[color,background-color,border-color] duration-500 sm:mr-4'>
 					<ArrowUpRight className='size-4' />
 				</span>
 			</Link>
@@ -203,7 +201,7 @@ export const SupportingProjects = ({
 
 			<AnimatePresence>
 				{enabled && hovered ? (
-					<motion.div
+					<MotionDiv
 						key={hovered.id}
 						aria-hidden
 						initial={{ opacity: 0, scale: 0.94 }}
@@ -218,7 +216,7 @@ export const SupportingProjects = ({
 							coverImageUrl={hovered.heroImageUrl || hovered.imageUrl}
 							className='aspect-16/10 w-full'
 						/>
-					</motion.div>
+					</MotionDiv>
 				) : null}
 			</AnimatePresence>
 		</div>

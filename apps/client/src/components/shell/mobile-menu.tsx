@@ -4,7 +4,8 @@ import type { MobileMenuProps } from 'types/components/client'
 import Link from 'next/link'
 import { X, socialIcon } from 'components/icons'
 import { Button } from 'ui/button'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
+import { div as MotionDiv, li as MotionLi } from 'motion/react-m'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 import { allDestinations } from 'components/shell/navigation'
@@ -35,7 +36,7 @@ export const MobileMenu = ({ open, onClose, socials }: MobileMenuProps) => {
 	return (
 		<AnimatePresence>
 			{open ? (
-				<motion.div
+				<MotionDiv
 					key='mobile-menu'
 					role='dialog'
 					aria-modal='true'
@@ -69,7 +70,7 @@ export const MobileMenu = ({ open, onClose, socials }: MobileMenuProps) => {
 								const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
 
 								return (
-									<motion.li
+									<MotionLi
 										key={item.href}
 										initial={{ opacity: 0, y: 18 }}
 										animate={{ opacity: 1, y: 0 }}
@@ -87,13 +88,13 @@ export const MobileMenu = ({ open, onClose, socials }: MobileMenuProps) => {
 												{String(i + 1).padStart(2, '0')}
 											</span>
 										</Link>
-									</motion.li>
+									</MotionLi>
 								)
 							})}
 						</ul>
 					</nav>
 
-					<motion.div
+					<MotionDiv
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ delay: 0.35, duration: 0.4 }}
@@ -110,7 +111,7 @@ export const MobileMenu = ({ open, onClose, socials }: MobileMenuProps) => {
 											rel='noreferrer noopener'
 											aria-label={social.label ?? social.platform}
 											className='border-border text-muted-foreground hover:border-border-strong hover:text-foreground grid size-10 place-items-center rounded-lg border transition-colors'>
-											<Icon className='size-4' />
+											<Icon className='size-4' aria-hidden focusable='false' />
 										</Link>
 									)
 								})}
@@ -123,8 +124,8 @@ export const MobileMenu = ({ open, onClose, socials }: MobileMenuProps) => {
 								</Button>
 							</div>
 						</div>
-					</motion.div>
-				</motion.div>
+					</MotionDiv>
+				</MotionDiv>
 			) : null}
 		</AnimatePresence>
 	)

@@ -54,11 +54,11 @@ describe('SiteShell', () => {
 		expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main')
 	})
 
-	it('toggles the quick palette with Ctrl+K and locks page scrolling while open', () => {
+	it('toggles the quick palette with Ctrl+K and locks page scrolling while open', async () => {
 		renderShell()
 
 		fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
-		expect(palette()).toBeInTheDocument()
+		expect(await screen.findByRole('dialog', { name: 'Quick navigation' })).toBeInTheDocument()
 		expect(document.body.style.overflow).toBe('hidden')
 
 		fireEvent.keyDown(window, { key: 'K', metaKey: true })
@@ -163,7 +163,7 @@ describe('SiteShell', () => {
 		const menu = () => screen.queryByRole('dialog', { name: 'Site navigation' })
 
 		await userEvent.click(screen.getByRole('button', { name: 'Open navigation menu' }))
-		expect(menu()).toBeInTheDocument()
+		expect(await screen.findByRole('dialog', { name: 'Site navigation' })).toBeInTheDocument()
 		expect(within(menu() as HTMLElement).getByRole('link', { name: 'GitHub' })).toHaveAttribute(
 			'href',
 			'https://github.com/ada',

@@ -37,6 +37,8 @@ const contentSecurityPolicy = [
 	"base-uri 'self'",
 	"form-action 'self'",
 	"frame-ancestors 'none'",
+	// Sentry Session Replay compresses events in a blob: worker, which would otherwise fall back to script-src.
+	"worker-src 'self' blob:",
 ]
 	.map(directive => directive.trim())
 	.join('; ')
@@ -54,6 +56,8 @@ const nextConfig = nextPWA({
 })({
 	cacheComponents: true,
 	partialPrefetching: true,
+	// The ~86 KB stylesheet otherwise blocks first paint, which Lighthouse reports as render-blocking.
+	experimental: { inlineCss: true },
 	outputFileTracingIncludes: { '/sitemap.xml': ['./app/**/page.{js,jsx,ts,tsx,md,mdx}'] },
 	reactStrictMode: process.env.NODE_ENV !== 'development',
 	output: process.env.ENVIRONMENT === 'docker' ? 'standalone' : undefined,
@@ -68,30 +72,13 @@ const nextConfig = nextPWA({
 		{
 			source: '/:path*',
 			headers: [
-				{
-					key: 'X-DNS-Prefetch-Control',
-					value: 'on',
-				},
-				{
-					key: 'Strict-Transport-Security',
-					value: 'max-age=63072000; includeSubDomains; preload',
-				},
-				{
-					key: 'X-Frame-Options',
-					value: 'DENY',
-				},
-				{
-					key: 'X-Content-Type-Options',
-					value: 'nosniff',
-				},
-				{
-					key: 'Referrer-Policy',
-					value: 'strict-origin-when-cross-origin',
-				},
-				{
-					key: 'Content-Security-Policy',
-					value: contentSecurityPolicy,
-				},
+				{ key: 'X-DNS-Prefetch-Control', value: 'on' },
+				{ key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+				{ key: 'X-Frame-Options', value: 'DENY' },
+				{ key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
+				{ key: 'X-Content-Type-Options', value: 'nosniff' },
+				{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+				{ key: 'Content-Security-Policy', value: contentSecurityPolicy },
 				{
 					key: 'Permissions-Policy',
 					value: 'camera=(), microphone=(), geolocation=(), browsing-topics=()',
@@ -155,6 +142,9 @@ const sentryBuildOptions: SentryBuildOptions = {
 
 	release:
 		process.env.NODE_ENV === 'production' ? { name: process.env.npm_package_version } : undefined,
+
+	// The site records no iframes or shadow DOM, so the replay code for them is dead weight in the bundle.
+	bundleSizeOptimizations: { excludeReplayIframe: true, excludeReplayShadowDom: true },
 
 	widenClientFileUpload: process.env.NODE_ENV === 'production',
 

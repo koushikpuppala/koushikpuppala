@@ -107,8 +107,8 @@ const HeroSocials = ({ socials }: HeroSocialsProps) => (
 					target='_blank'
 					rel='noreferrer noopener'
 					aria-label={social.label ?? social.platform}
-					className='group border-border text-muted-foreground hover:border-signal/60 hover:text-signal-ink grid size-10 place-items-center rounded-lg border transition-all duration-300 hover:-translate-y-0.5'>
-					<Icon className='size-4' />
+					className='group border-border text-muted-foreground hover:border-signal/60 hover:text-signal-ink grid size-10 place-items-center rounded-lg border transition-[color,border-color,transform] duration-300 hover:-translate-y-0.5'>
+					<Icon className='size-4' aria-hidden focusable='false' />
 				</Link>
 			)
 		})}
@@ -177,7 +177,7 @@ export const Hero = ({ home, socials, current, location }: HeroProps) => {
 							</p>
 						</div>
 
-						<p className='enter-item enter-delay-5 text-lead mt-7 max-w-xl'>{home.content}</p>
+						<p className='text-lead mt-7 max-w-xl'>{home.content}</p>
 
 						<HeroActions primary={primary} secondary={secondary} />
 
