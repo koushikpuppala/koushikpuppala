@@ -2,7 +2,7 @@
 	"name": "@repo/root",
 	"version": "0.0.0",
 	"private": true,
-	"packageManager": "pnpm@12.15.0",
+	"packageManager": "pnpm@12.16.1",
 	"scripts": {
 		"dev": "turbo run dev",
 		"build": "turbo run build",
@@ -21,7 +21,7 @@
 		"Puppala Koushik"
 	],
 	"devDependencies": {
-		"@biomejs/biome": "~2.6.3",
+		"@biomejs/biome": "~2.6.4",
 		"@repo/config": "workspace:*",
 		"prettier": "~3.9.10",
 		"prettier-plugin-tailwindcss": "~0.8.1",

@@ -1,8 +1,8 @@
 name: PR Title
 run-name: PR Title - ${{ github.ref_name }}
 
-# release-please reads the squash-merge commit, which takes the pull request title, so the title decides
-# whether the merge releases (feat, fix, or a "!" breaking change) or not (docs, ci, chore, test, refactor).
+# The deploy workflows read the squash-merge commit, which takes the pull request title, to pick the
+# version bump: feat is minor, a "!" breaking change is major, anything else is a patch.
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]

@@ -21,11 +21,11 @@
 		"lint": "biome lint"
 	},
 	"devDependencies": {
-		"@nestjs/common": "~12.2.0",
+		"@nestjs/common": "~12.3.2",
 		"@repo/config": "workspace:*",
 		"@repo/prisma": "workspace:*",
 		"@tanstack/react-table": "~9.3.1",
-		"@types/node": "~26.6.5",
+		"@types/node": "~26.6.6",
 		"@types/react": "~19.3.0",
 		"firebase-admin": "~14.5.0",
 		"next": "~16.4.3",

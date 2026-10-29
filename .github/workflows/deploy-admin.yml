@@ -1,13 +1,24 @@
 name: Deploy Admin
 run-name: Deploy Admin - ${{ github.ref_name }}
 
-# Runs when release-please tags a release of the admin (admin-v<version>, created by merging its release
-# pull request), or by hand from the Actions tab (for example after changing the ENV_FILE secret, which
-# the build and the container read). A normal merge to master builds and deploys nothing.
+# Runs when a push to master changes the admin or something it is built from, or by hand from the
+# Actions tab (for example after changing the ENV_FILE secret, which the build and the container read).
+# The version comes from the commit titles, and the commit is tagged admin-v<version> after a good deploy.
 on:
   push:
-    tags:
-      - 'admin-v*'
+    branches:
+      - master
+    paths:
+      - 'apps/admin/**'
+      - 'packages/**'
+      - 'docker/admin.Dockerfile'
+      - 'docker/env-for.sh'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'turbo.json'
+      - '.npmrc'
+      - '.github/workflows/deploy-admin.yml'
   workflow_dispatch:
 
 # A running release is never cancelled: stopping it could leave the container half replaced. While
@@ -24,8 +35,7 @@ permissions:
   contents: read
   id-token: write
 
-# No test job: master only changes through pull requests, and test.yml must pass on each one first,
-# including the release pull request that produces the tag.
+# No test job: master only changes through pull requests, and test.yml must pass on each one first.
 jobs:
   # DD-MM-YYYYv<n> in Indian time, where n counts this app's releases pushed to ECR that day.
   tag:
@@ -33,7 +43,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
-      version: ${{ steps.tag.outputs.version }}
+      version: ${{ steps.version.outputs.version }}
+      previous: ${{ steps.version.outputs.previous }}
+      exists: ${{ steps.version.outputs.exists }}
 
     steps:
       # Fail before any work when the repository prefix is missing, instead of at the image push.
@@ -45,6 +57,63 @@ jobs:
             echo "::error::Missing repository variable: ECR_REPOSITORY_PREFIX"
             exit 1
           fi
+
+      - name: Checkout Repository
+        uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+
+      # The next version comes from the conventional commit titles since the last admin-v* tag, looking
+      # only at commits that touch this app: a "!" or BREAKING CHANGE is major, feat is minor, anything
+      # else (fix, chore, docs) is a patch, so every build gets its own version. With no tag yet, the first
+      # release is the version in package.json as it is (the starting version).
+      - name: Pick the version
+        id: version
+        run: |
+          APP=admin
+          PATHS="apps/admin packages"
+
+          SAME=$(git tag --points-at HEAD --list "$APP-v*" | head -n 1)
+          PREV=$(git tag --list "$APP-v*" --sort=-v:refname | head -n 1)
+
+          if [ -n "$SAME" ]; then
+            echo "version=${SAME#"$APP"-v}" >> "$GITHUB_OUTPUT"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ -z "$PREV" ]; then
+            FIRST=$(node -p "require('./apps/$APP/package.json').version.split('-')[0]")
+            echo "version=$FIRST" >> "$GITHUB_OUTPUT"
+            echo "previous=" >> "$GITHUB_OUTPUT"
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          BASE=${PREV#"$APP"-v}
+          RANGE="$PREV..HEAD"
+
+          LOG=$(git log $RANGE --format='%s%n%b' -- $PATHS)
+
+          BUMP=patch
+          if printf '%s\n' "$LOG" | grep -Eq '^[a-z]+(\([^)]*\))?!:|^BREAKING[ -]CHANGE'; then
+            BUMP=major
+          elif printf '%s\n' "$LOG" | grep -Eq '^feat(\([^)]*\))?:'; then
+            BUMP=minor
+          fi
+
+          IFS=. read -r MAJOR MINOR PATCH <<EOF
+          $BASE
+          EOF
+          case "$BUMP" in
+            major) VERSION="$((MAJOR + 1)).0.0" ;;
+            minor) VERSION="$MAJOR.$((MINOR + 1)).0" ;;
+            *) VERSION="$MAJOR.$MINOR.$((PATCH + 1))" ;;
+          esac
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "previous=$PREV" >> "$GITHUB_OUTPUT"
+          echo "exists=false" >> "$GITHUB_OUTPUT"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6.3.0
@@ -68,11 +137,6 @@ jobs:
 
           echo "tag=${DAY}v$((LAST + 1))" >> "$GITHUB_OUTPUT"
 
-          # Release tags look like admin-v5.8.0; a manual run from a branch has no version.
-          case "$GITHUB_REF_NAME" in
-            admin-v*) echo "version=${GITHUB_REF_NAME#admin-v}" >> "$GITHUB_OUTPUT" ;;
-          esac
-
   build:
     name: Build admin
     needs: [tag]
@@ -81,6 +145,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7.0.1
+
+      # Not committed: it only makes the image, Sentry's release name and the API docs report this version.
+      - name: Stamp the version
+        env:
+          VERSION: ${{ needs.tag.outputs.version }}
+        run: npm pkg set version="$VERSION" --prefix apps/admin
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4.4.1
@@ -187,3 +257,25 @@ jobs:
           ssh "$EC2_TARGET" "cd ~/services/portfolio/admin && \
             ECR_REGISTRY='$ECR_REGISTRY' ECR_REPOSITORY='$ECR_REPOSITORY' AWS_REGION='$AWS_REGION' \
             ./deploy.sh '$IMAGE_TAG'"
+
+  # Tags the commit that just went live, so the next run counts from here.
+  release:
+    name: Tag release
+    runs-on: ubuntu-latest
+    needs: [tag, build, deploy]
+    if: github.ref == 'refs/heads/master' && needs.tag.outputs.exists != 'true'
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create tag and GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.tag.outputs.version }}
+          PREVIOUS: ${{ needs.tag.outputs.previous }}
+        run: |
+          NOTES=""
+          if [ -n "$PREVIOUS" ]; then NOTES="--notes-start-tag $PREVIOUS"; fi
+          gh release create "admin-v$VERSION" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "admin $VERSION" --generate-notes $NOTES
