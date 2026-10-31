@@ -2,7 +2,7 @@ import { EmploymentType, ProjectStatus, SocialPlatform, Prisma } from '../genera
 
 export const SITE_DOMAIN = 'https://koushikpuppala.com'
 
-export const DEFAULT_OG_IMAGE = `${SITE_DOMAIN}/images/projects/Koushikpuppala.webp`
+export const DEFAULT_OG_IMAGE = `${SITE_DOMAIN}/images/brand/og-image.png`
 
 export const published = () => ({ isPublished: true, publishedAt: new Date() })
 
