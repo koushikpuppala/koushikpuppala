@@ -10,7 +10,7 @@
 
 # Node 24 on Alpine, the same major as CI. Not the moving lts tag: Node 25 and later images no longer ship
 # Corepack, so `corepack enable` below fails the build once that tag moves past 24.
-FROM node:24-alpine AS base
+FROM node:26-alpine AS base
 
 # Enable Corepack, which installs the pnpm version pinned in package.json "packageManager"
 RUN corepack enable
