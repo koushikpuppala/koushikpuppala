@@ -19,10 +19,7 @@ import {
 
 type Tx = Prisma.TransactionClient
 
-// The seed is idempotent: each record is matched on a natural key and updated or created, and
-// published records that are no longer in content.ts are soft-deleted, so it can run repeatedly.
 export const createSeed = (bucket: string, clientUrl: string) => {
-	// Registers a file served from apps/client/public as a Media row, so seeded content can reference it.
 	const upsertPublicFile = async (tx: Tx, path: string, type: MediaType, mimeType: string) => {
 		const storageKey = `public/${path}`
 		const fileName = path.split('/').pop() ?? path
@@ -42,7 +39,6 @@ export const createSeed = (bucket: string, clientUrl: string) => {
 		return tx.media.upsert({ where: { storageKey }, create: { storageKey, ...data }, update: data })
 	}
 
-	// For content with a single live record (home, about): update the oldest one or create it.
 	const upsertSingleton = async <T extends { id: string }>(
 		find: () => Promise<T | null>,
 		update: (id: string) => Promise<unknown>,

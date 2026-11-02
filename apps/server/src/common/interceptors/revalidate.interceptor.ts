@@ -29,14 +29,12 @@ export class RevalidateInterceptor implements NestInterceptor {
 
 		if (!tags?.length || !WRITE_METHODS.has(request.method)) return next.handle()
 
-		// Runs only after the write succeeded, and does not wait: the public site refreshes in the background.
 		return next.handle().pipe(tap(() => void this.revalidate(tags, request.requestId)))
 	}
 
 	private async revalidate(tags: string[], requestId: string): Promise<void> {
 		const { url, secret } = this.config.revalidate
 
-		// Revalidation is optional; without a shared secret the public site relies on its own cache lifetime.
 		if (!secret) return
 
 		try {
@@ -51,7 +49,6 @@ export class RevalidateInterceptor implements NestInterceptor {
 
 			this.logger.debug('Public site revalidated', RevalidateInterceptor.name, { tags, requestId })
 		} catch (error) {
-			// A failed revalidation leaves the site stale for a while but must not fail the admin's write.
 			this.logger.warn('Public site revalidation failed', RevalidateInterceptor.name, {
 				tags,
 				requestId,

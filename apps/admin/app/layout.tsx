@@ -12,10 +12,6 @@ import { KeyboardFocus } from 'ui/keyboard-focus'
 const plusJakartaSans = Plus_Jakarta_Sans({ variable: '--font-jakarta', display: 'swap' })
 
 export const viewport: Viewport = {
-	// themeColor: [
-	// 	{ media: '(prefers-color-scheme: dark)', color: '#090a0c' },
-	// 	{ media: '(prefers-color-scheme: light)', color: '#f7f8f9' },
-	// ],
 	themeColor: '#090a0c',
 	colorScheme: 'dark light',
 	width: 'device-width',
@@ -36,18 +32,16 @@ export const metadata: Metadata = {
 	},
 }
 
-// The content security policy needs a fresh nonce in every page, so the studio renders per request instead
-// of from a prerendered shell. Its pages only fill in after Firebase sign-in in the browser anyway.
+// The content security policy needs a fresh nonce on every page, so the studio renders per request
+// instead of from a prerendered shell.
 export const instant = false
 
 const RootLayout = async ({ children }: Readonly<ChildrenProps>) => {
-	// proxy.ts sets a fresh nonce per request; the inline theme script must carry it to run under the policy.
 	const nonce = (await headers()).get('x-nonce') ?? undefined
 
 	return (
 		<html lang='en' className='dark' suppressHydrationWarning>
 			<head>
-				{/* Applies the saved theme before the first paint so the page never flashes the wrong theme. */}
 				<script
 					nonce={nonce}
 					dangerouslySetInnerHTML={{

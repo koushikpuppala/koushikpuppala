@@ -103,7 +103,6 @@ export const DataTable = <TData extends RowData>(props: DataTableProps<TData>) =
 	const [pagination, setPagination] = useState(initial.pagination)
 
 	const tableColumns = useMemo<DataTableColumnDef<TData>[]>(
-		// TanStack Table needs at least one column to render the empty state row.
 		() => (columns.length ? columns : [{ id: '__empty', header: '' }]),
 		[columns],
 	)
@@ -115,7 +114,6 @@ export const DataTable = <TData extends RowData>(props: DataTableProps<TData>) =
 		features: dataTableFeatures,
 		defaultColumn: { enableSorting: false },
 		onSortingChange: setSorting,
-		// Sorting, filtering and paging happen on the server by default; the table only reflects state.
 		manualSorting: props.manualSorting ?? true,
 		manualFiltering: props.manualFiltering ?? true,
 		manualPagination: props.manualPagination ?? true,
@@ -162,7 +160,6 @@ export const DataTable = <TData extends RowData>(props: DataTableProps<TData>) =
 		table.resetColumnVisibility()
 	}
 
-	// Clamp the page so a larger page size never leaves the user past the last page.
 	const changePageSize = (size: number) => {
 		const maxPageIndex = Math.max(0, Math.ceil(totalCount / size) - 1)
 

@@ -33,8 +33,8 @@ export class HealthService {
 			services: { database, redis },
 			timestamp: new Date().toISOString(),
 			responseTime: `${Date.now() - started}ms`,
-			// Answers normally even when a dependency is down, so the Docker healthcheck only fails
-			// when the API itself is unreachable; dependency problems show up as 'degraded'.
+			// A down dependency shows as 'degraded' with HTTP 200, so the Docker healthcheck fails only
+			// when the API itself is unreachable.
 			status: database === 'up' && redis === 'up' ? 'ok' : 'degraded',
 		}
 

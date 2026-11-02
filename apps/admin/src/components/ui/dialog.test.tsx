@@ -10,7 +10,6 @@ import {
 	DialogTitle,
 } from 'components/ui/dialog'
 
-// jsdom has no layout, so offsetParent is always null; the dialog uses it to skip hidden controls.
 const original = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetParent')
 let laidOut = true
 

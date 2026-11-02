@@ -49,7 +49,6 @@ export class UserAdminService {
 				{ displayName: { contains: keyword, mode: 'insensitive' } },
 			]
 
-		// The role and status counts ignore the filters: they summarise all users for the page header.
 		const [users, total, adminCount, editorCount, activeCount] = await this.prisma.$transaction([
 			this.prisma.user.findMany({
 				where,
@@ -109,8 +108,6 @@ export class UserAdminService {
 			}),
 		)
 
-		// Firebase and PostgreSQL cannot share a transaction: if the database insert fails,
-		// delete the Firebase account so the two stores do not drift apart.
 		try {
 			const user = await withPrismaRetry(() =>
 				this.prisma.user.create({
@@ -198,7 +195,6 @@ export class UserAdminService {
 			await this.firebase.deleteUser(user.firebaseUid)
 		} catch (error) {
 			const err = error as CodedError
-			// The account may already be gone from Firebase; still remove the database row.
 			if (err?.code !== 'auth/user-not-found')
 				throw new BadRequestException(err?.message || 'Failed to delete user in Firebase')
 		}
@@ -230,7 +226,6 @@ export class UserAdminService {
 		if (actorId === user.id && losesActive)
 			throw new BadRequestException('Administrators cannot deactivate their own account')
 
-		// Losing the admin role or active status both count as removing an administrator.
 		if (user.role === UserRole.ADMIN && (losesAdmin || losesActive))
 			await this.assertAnotherActiveAdmin(
 				user.id,
@@ -266,7 +261,6 @@ export class UserAdminService {
 		return user
 	}
 
-	// Guards against locking everyone out of the CMS by removing the last active admin.
 	private async assertAnotherActiveAdmin(id: string, message: string): Promise<void> {
 		const others = await this.prisma.user.count({
 			where: { role: UserRole.ADMIN, status: UserStatus.ACTIVE, id: { not: id } },

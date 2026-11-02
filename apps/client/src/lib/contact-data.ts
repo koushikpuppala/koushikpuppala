@@ -5,8 +5,6 @@ import type {
 	ValidationRule,
 } from 'types/api'
 
-// Each part excludes the character that ends it, so there is only one way to match and the check
-// stays linear (an overlapping pattern backtracks badly on input like '!@!.!.!.').
 const EMAIL = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/
 
 const firstFailure = (rules: ValidationRule[]): string | undefined =>

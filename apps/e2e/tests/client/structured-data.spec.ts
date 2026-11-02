@@ -17,7 +17,6 @@ const readGraph = async (page: Page): Promise<JsonLdNode[]> => {
 
 const nodeOfType = (graph: JsonLdNode[], type: string) => graph.find(node => node['@type'] === type)
 
-// Every { "@id": ... } a page points at must be described in that same page, or Google drops the link.
 const danglingReferences = (graph: JsonLdNode[]): string[] => {
 	const defined = new Set(graph.map(node => node['@id']))
 	const referenced: string[] = []

@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react'
 
-// Marks <html data-keyboard> while the user navigates with Tab, and clears it on any pointer
-// input. The focus-ring: variant in style.css keys off it so mouse clicks never show a ring.
 export const KeyboardFocus = () => {
+	// Marks <html data-keyboard> while Tab is in use and clears it on pointer input, so the
+	// focus-ring: variant never draws a ring for clicks.
 	useEffect(() => {
 		const root = document.documentElement
 		const onKeyDown = (event: KeyboardEvent) => {

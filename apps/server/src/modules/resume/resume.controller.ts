@@ -45,7 +45,8 @@ export class ResumeController {
 	@Public()
 	@Post('download')
 	@HttpCode(HttpStatus.OK)
-	// An empty list overrides the class tags: counting a download must not refresh the public site.
+	// The empty list overrides the class-level tags, so counting a download does not refresh the
+	// public site.
 	@RevalidateTags()
 	@ApiEndpoint({
 		summary: 'Count a download and return a short-lived link to the resume PDF (Public)',

@@ -13,7 +13,6 @@ export const createCollectionActions = <T extends object>(
 		adminFetch<ListResult<T>>(`${base}?${query.toString()}`, { signal }),
 
 	save: (id: string | undefined, data: Partial<T>) => {
-		// Send only the fields the server DTO accepts; it rejects unknown ones (forbidNonWhitelisted).
 		const body = JSON.stringify(pickFields(data, fields))
 
 		return id

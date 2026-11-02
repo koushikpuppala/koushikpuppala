@@ -29,8 +29,6 @@ export class MediaService extends BaseService {
 		super()
 	}
 
-	// The extension must match the declared MIME type so a file cannot be uploaded under a
-	// harmless type and then served with a dangerous extension.
 	private assertAllowedUpload(originalName: string, mimeType: string, size: number) {
 		const allowed = ALLOWED_UPLOADS[mimeType.toLowerCase()]
 
@@ -38,6 +36,8 @@ export class MediaService extends BaseService {
 
 		const extension = extname(originalName).toLowerCase()
 
+		// The extension must match the declared MIME type so a file cannot be uploaded under a harmless
+		// type and served with a dangerous extension.
 		if (!allowed.extensions.includes(extension))
 			throw new BadRequestException(
 				`File extension '${extension || '(none)'}' does not match type '${mimeType}'.`,
@@ -52,8 +52,7 @@ export class MediaService extends BaseService {
 	async requestPresignedUpload(dto: RequestPresignedUploadDto) {
 		const { extension } = this.assertAllowedUpload(dto.originalName, dto.mimeType, dto.size)
 
-		// Keep only safe characters (no dots, so no '..'), then drop empty segments, which trims and
-		// collapses slashes. Splitting avoids a slash-trimming regex that is slow on long runs of '/'.
+		// Dots are dropped so no '..' segment survives; empty segments are then filtered out.
 		const folder =
 			(dto.folder ?? 'general')
 				.replace(/[^a-zA-Z0-9_\-/]/g, '')
@@ -86,16 +85,15 @@ export class MediaService extends BaseService {
 	}
 
 	async completeUpload(dto: CompleteMediaUploadDto, userId?: string, actor = 'admin') {
-		// Only keys in the format requestPresignedUpload issues are accepted, so a client cannot
-		// register an arbitrary object from the bucket as its own media.
+		// Only keys issued by requestPresignedUpload are accepted, so a client cannot register an
+		// arbitrary bucket object.
 		if (!STORAGE_KEY_PATTERN.test(dto.storageKey))
 			throw new BadRequestException('Storage key was not issued by this service.')
 
 		this.assertAllowedUpload(dto.storageKey, dto.mimeType, dto.size)
 
-		// Confirm the browser actually finished the direct-to-S3 upload before creating the record.
-		// The type and size are compared with the stored object because the request body is the
-		// browser's claim, and the resume check relies on the stored values.
+		// The request body is the browser's claim, so type and size are compared with the stored
+		// object; the resume check relies on those values.
 		if (this.config.aws.verifyUploads) {
 			const stored = await this.storage.stat(dto.storageKey)
 
@@ -189,7 +187,6 @@ export class MediaService extends BaseService {
 		return this.audit.updated(ENTITY, actor, existing, media)
 	}
 
-	// Lists live content that still references this media, so deleting it cannot leave broken images.
 	private async findUsages(id: string): Promise<string[]> {
 		const live = { where: { deletedAt: null } }
 
@@ -236,7 +233,6 @@ export class MediaService extends BaseService {
 
 		return this.audit.softDeleted(ENTITY, actor, existing, async () => {
 			await this.prisma.media.update({ where: { id }, data: { deletedAt: new Date() } })
-			// The record is already soft-deleted; a leftover S3 object is harmless, so ignore failures.
 			await this.storage.delete(existing.storageKey).catch(() => undefined)
 		})
 	}

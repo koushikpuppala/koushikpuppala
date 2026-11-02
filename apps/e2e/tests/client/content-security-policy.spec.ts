@@ -13,7 +13,6 @@ const PAGES = [
 	'/contact',
 ]
 
-// Records every policy violation from the first script on, so a blocked script or request fails the test.
 const recordViolations = async (page: Page) => {
 	await page.addInitScript(() => {
 		const seen: string[] = []

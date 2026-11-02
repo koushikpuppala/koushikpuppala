@@ -17,7 +17,6 @@ const createFirebaseApp = (): FirebaseApp => {
 	return initializeApp({ apiKey, authDomain, projectId, appId })
 }
 
-// Created lazily on first use in the browser; Firebase Auth cannot run during server rendering.
 let auth: Auth | null = null
 
 export const getFirebaseAuth = (): Auth => {
@@ -27,7 +26,6 @@ export const getFirebaseAuth = (): Auth => {
 	if (!auth) {
 		auth = getAuth(createFirebaseApp())
 
-		// Set in the test stack so sign-in runs against the local Firebase Auth emulator.
 		const emulatorHost = process.env.NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST
 		if (emulatorHost) connectAuthEmulator(auth, `http://${emulatorHost}`, { disableWarnings: true })
 	}
@@ -40,6 +38,5 @@ export const getIdToken = async (): Promise<string | null> => {
 
 	const user = getFirebaseAuth().currentUser
 
-	// getIdToken returns the cached token and refreshes it automatically when it is about to expire.
 	return user ? user.getIdToken() : null
 }

@@ -19,7 +19,6 @@ export class FirebaseService implements OnModuleInit {
 	) {}
 
 	onModuleInit() {
-		// Reuse the named app if it already exists, e.g. when tests create several Nest apps in one process.
 		const existing = getApps().find(app => app.name === this.config.appName)
 
 		this.app =

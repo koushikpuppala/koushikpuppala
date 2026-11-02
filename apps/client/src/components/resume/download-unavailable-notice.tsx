@@ -12,8 +12,6 @@ const subscribe = (onChange: () => void) => {
 
 const isUnavailable = () => window.location.hash === `#${DOWNLOAD_UNAVAILABLE_HASH}`
 
-// /resume/download sends visitors back here with this hash when the file can't be served. The page
-// itself stays cached and static, so the notice reads the hash in the browser instead.
 export const DownloadUnavailableNotice = () => {
 	const unavailable = useSyncExternalStore(subscribe, isUnavailable, () => false)
 

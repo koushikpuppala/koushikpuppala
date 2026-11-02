@@ -35,7 +35,6 @@ vi.mock('next-recaptcha-v3', () => ({
 
 const slug = (value: string) => ({ params: Promise.resolve({ slug: value }) })
 
-// Display headings split words into animated spans, so compare text with the spaces taken out.
 const mainText = () => (screen.getByRole('main').textContent ?? '').replace(/\s+/g, '')
 const squash = (text: string) => text.replace(/\s+/g, '')
 

@@ -37,8 +37,7 @@ export class FirebaseAuthGuard implements CanActivate {
 		try {
 			const decoded = await this.firebase.verifyIdToken(token, true, meta)
 
-			// Unverified emails are only allowed for accounts that already exist in the database,
-			// which were created by an admin rather than through self sign-up.
+			// Accounts already in the database are trusted even when Firebase has not verified the email.
 			if (!decoded.email_verified) {
 				const userInDb = await this.accounts.findByFirebaseUid(decoded.uid, meta)
 
@@ -49,7 +48,6 @@ export class FirebaseAuthGuard implements CanActivate {
 		} catch (error) {
 			if (error instanceof HttpException) throw error
 
-			// Hide Firebase's error details so callers cannot tell why a token was rejected.
 			throw new UnauthorizedException('Invalid or expired authentication token')
 		}
 	}
@@ -72,8 +70,8 @@ export class FirebaseAuthGuard implements CanActivate {
 
 		const decoded = await this.verifyFirebaseToken(token, meta)
 
-		// Firebase's revocation check covers revoked refresh tokens; this covers sessions
-		// signed out or revoked through the API, which Firebase does not know about.
+		// verifyIdToken only sees Firebase-side revocation; this also catches sessions revoked through
+		// the API.
 		const isRevoked = await this.sessionService.isSessionRevoked(token)
 
 		if (isRevoked) throw new UnauthorizedException('Session has been revoked or expired.')
@@ -81,7 +79,6 @@ export class FirebaseAuthGuard implements CanActivate {
 		request.token = token
 		request.decodedToken = decoded
 
-		// Routes such as first sign-in run before the user row exists, so they get the token's identity.
 		if (this.metadata(context, ALLOW_UNREGISTERED_USER_KEY)) {
 			request.user = fromFirebaseToken(decoded)
 

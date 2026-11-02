@@ -55,6 +55,22 @@ describe('projects data', () => {
 		expect(remote?.imageUrl).toBe('https://assets.example.com/p1.webp')
 	})
 
+	it('loads images stored with a localhost address as local paths', async () => {
+		server.use(
+			http.get(`${API}/api/v1/projects/published`, () =>
+				HttpResponse.json({
+					result: [
+						{ ...apiProject, thumbnail: { url: 'http://localhost:3000/images/projects/p1.webp' } },
+					],
+				}),
+			),
+		)
+
+		const [project] = await getProjectsData()
+
+		expect(project?.imageUrl).toBe('/images/projects/p1.webp')
+	})
+
 	it('maps the fields the project page reads', async () => {
 		server.use(
 			http.get(`${API}/api/v1/projects/published/payments`, () =>

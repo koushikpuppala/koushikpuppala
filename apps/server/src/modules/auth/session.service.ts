@@ -21,15 +21,13 @@ export class SessionService {
 		private readonly firebase: FirebaseService,
 	) {}
 
-	// Only a hash of the ID token is stored, so a database or cache leak exposes no usable tokens.
 	private hashToken(token: string): string {
 		return createHash('sha256').update(token).digest('hex')
 	}
 
 	private async cacheRevocation(tokenHash: string, revoked: boolean): Promise<void> {
 		await this.redisService
-			// Firebase ID tokens live for an hour, so an active entry can expire with the token;
-			// a revoked entry is kept for a day to be safe.
+			// A live entry only has to outlive the one-hour ID token; a revoked one is kept for a day.
 			.set(`session:revoked:${tokenHash}`, JSON.stringify(revoked), revoked ? 86400 : 3600)
 			.catch(() => undefined)
 	}
@@ -72,8 +70,8 @@ export class SessionService {
 		return session
 	}
 
-	// The session row only blocks one ID token, and the refresh token can mint new ones at any
-	// time. Revoking the refresh tokens makes Firebase reject every token issued before now.
+	// Revoking the stored session blocks one ID token; revoking refresh tokens stops Firebase issuing
+	// new ones.
 	private async revokeFirebaseTokens(userId: string): Promise<void> {
 		const user = await this.prisma.user.findUnique({
 			where: { id: userId },
@@ -119,13 +117,13 @@ export class SessionService {
 				select: { revoked: true, expiresAt: true },
 			})
 
-			// A token without a session row is not treated as revoked: the session is created after sign-in.
+			// Firebase has already verified the token, so a token with no session row is not treated as
+			// revoked.
 			return Boolean(session && (session.revoked || session.expiresAt < new Date()))
 		})
 	}
 
 	async getSessionsForUser(user: AuthenticatedUser): Promise<ApiResponse<unknown[]>> {
-		// Admins see every user's sessions; everyone else sees only their own.
 		const isElevated = user.role === UserRole.ADMIN
 
 		const sessions = await this.prisma.session.findMany({
@@ -180,7 +178,6 @@ export class SessionService {
 
 			await this.cacheRevocation(session.tokenHash, true)
 
-			// Keep token hashes out of the audit log.
 			const { tokenHash: _oldHash, ...oldData } = session
 			const { tokenHash: _newHash, ...newData } = updated
 

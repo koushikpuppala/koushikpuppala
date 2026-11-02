@@ -1,10 +1,8 @@
 import { Prisma } from '@repo/prisma'
 
-// Can't reach server, server timed out, operation timed out, server closed the connection.
+// P1001 unreachable, P1002 timeout, P1008 operation timeout, P1017 connection closed.
 const TRANSIENT_PRISMA_ERRORS = ['P1001', 'P1002', 'P1008', 'P1017']
 
-// Retries only connection-level failures with exponential backoff (500ms, 1s, ...).
-// Query errors such as constraint violations are rethrown immediately.
 export const withPrismaRetry = async <T>(
 	fn: () => Promise<T>,
 	retries = 3,
@@ -20,6 +18,7 @@ export const withPrismaRetry = async <T>(
 				error instanceof Prisma.PrismaClientKnownRequestError &&
 				TRANSIENT_PRISMA_ERRORS.includes(error.code)
 
+			// Some driver failures carry no Prisma code, so the message text is matched too.
 			const isConnectionError =
 				error instanceof Error &&
 				(error.message.includes("Can't reach database server") ||

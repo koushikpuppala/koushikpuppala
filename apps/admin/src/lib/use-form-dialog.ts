@@ -19,8 +19,6 @@ export const useFormDialog = <T, P = Partial<T>>({
 
 	const initial = () => (record ? normalize(record) : empty)
 
-	// Start from the record (or a blank form) every time the dialog opens, so values left over
-	// from a cancelled edit or an earlier create never carry into the next one.
 	useEffect(() => {
 		if (!open) return
 

@@ -7,10 +7,9 @@ import { existsSync, mkdirSync } from 'node:fs'
 import { Configuration } from 'config/configuration'
 import { createLogger, format, transports } from 'winston'
 
+// Credential-like keys are masked before anything reaches the log files or Sentry.
 const SENSITIVE_KEY = /authorization|password|passwd|secret|token|cookie|private.?key|credential/i
 
-// Masks values under sensitive keys before anything reaches the log files or Sentry.
-// Depth and cycle limits keep large or circular objects from blowing up a log call.
 export const redact = (value: unknown, depth = 0, seen = new WeakSet<object>()): unknown => {
 	if (value === null || typeof value !== 'object') return value
 
@@ -75,7 +74,6 @@ export class LoggerService {
 					dirname: this.config.logger.dir,
 				}),
 
-				// Kept three times longer than the application log for audit purposes.
 				new transports.DailyRotateFile({
 					level: 'info',
 					maxSize: '20m',
@@ -130,8 +128,6 @@ export class LoggerService {
 		this.captureSentry('error', message, context, meta, error)
 	}
 
-	// Logs start, completion and duration of an async operation. Errors that options.expected
-	// recognises are rethrown without an error log, e.g. a token that is simply invalid.
 	async timed<T>(
 		operation: string,
 		context: string,

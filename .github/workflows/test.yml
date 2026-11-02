@@ -2,11 +2,8 @@ name: Test
 run-name: Test - ${{ github.ref_name }}
 
 on:
-  # Every pull request runs this; merging needs it green (branch protection on master). The deploy
-  # workflows rely on that and do not test again.
   pull_request:
 
-# A newer push to a pull request makes its older test run pointless.
 concurrency:
   group: test-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -19,9 +16,6 @@ env:
   DATABASE_URL: postgresql://test:test@127.0.0.1:55432/portfolio_test
 
 jobs:
-  # Docs, deploy scripts copied to EC2 by hand, deploy workflows and GitHub templates are not exercised by
-  # any test, so a pull request touching only those skips the suites. A skipped job still satisfies a
-  # required check.
   changes:
     name: Detect code changes
     runs-on: ubuntu-latest
@@ -31,6 +25,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7.0.1
         with:
+          # Full history, so the base branch can be compared.
           fetch-depth: 0
 
       - name: Compare with the base branch
@@ -58,7 +53,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: lts/*
           cache: pnpm
 
       - name: Install dependencies
@@ -77,10 +72,10 @@ jobs:
     name: Dependency audit and secret scan
     runs-on: ubuntu-latest
     steps:
-      # Full history, so the secret scan can read every commit a pull request adds.
       - name: Checkout Repository
         uses: actions/checkout@v7.0.1
         with:
+          # Full history, so the secret scan can read every commit a pull request adds.
           fetch-depth: 0
 
       - name: Set up pnpm
@@ -89,15 +84,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: lts/*
 
-      # Production dependencies only: build and test tooling never ships in an image.
       - name: Audit dependencies
+        # Production dependencies only: build and test tooling never ships in an image.
         run: pnpm audit --prod --audit-level high
 
-      # The tree is scanned on every run and a pull request's own commits as well, so a secret added
-      # and then deleted within the pull request is still caught. Older history holds keys from the
-      # 2021 site that are reported separately and would fail every run. The image is pinned by digest.
       - name: Scan for secrets
         env:
           GITLEAKS: zricethezav/gitleaks@sha256:cdbb7c955abce02001a9f6c9f602fb195b7fadc1e812065883f695d1eeaba854
@@ -125,7 +117,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: lts/*
           cache: pnpm
 
       - name: Start test infrastructure
@@ -156,7 +148,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: lts/*
           cache: pnpm
 
       - name: Start test infrastructure
@@ -168,7 +160,6 @@ jobs:
       - name: Build shared packages
         run: pnpm --filter @repo/prisma db:generate && pnpm turbo run build --filter=server^...
 
-      # Chromium is cached per Playwright version; its system libraries are not, so they install either way.
       - name: Read Playwright version
         id: playwright
         run: echo "version=$(pnpm --filter e2e exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"

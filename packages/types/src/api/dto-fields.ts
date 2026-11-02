@@ -1,5 +1,3 @@
-// Fields the admin forms send for each content type. apps/server/src/common/dto-contract.spec.ts
-// fails if these drift from the server DTOs, so update both together.
 export const DTO_FIELDS = {
 	experience: [
 		'title',

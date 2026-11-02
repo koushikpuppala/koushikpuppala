@@ -20,8 +20,6 @@ if (process.env.NODE_ENV !== 'development')
 		replaysSessionSampleRate: 0.05,
 	})
 
-// Replay snapshots the whole page when it starts, so it waits for idle instead of competing with hydration.
-// Safari has no requestIdleCallback, so it falls back to a delay.
 const startReplay = () =>
 	addIntegration(replayIntegration({ maskAllText: true, blockAllMedia: true, stickySession: true }))
 

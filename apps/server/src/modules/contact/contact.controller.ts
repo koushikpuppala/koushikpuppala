@@ -32,7 +32,6 @@ export class ContactController {
 	) {}
 
 	@Public()
-	// Five submissions a minute per client, on top of the honeypot and reCAPTCHA checks.
 	@Throttle({ default: { limit: 5, ttl: 60_000 } })
 	@Post()
 	@ApiEndpoint({

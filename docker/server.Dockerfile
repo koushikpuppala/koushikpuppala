@@ -1,110 +1,89 @@
-# Authoritative NestJS API. Build from the repository root:
-#   docker build -f docker/server.Dockerfile --secret id=env,src=.env -t koushikpuppala/server .
-# The build reads its settings from the `env` BuildKit secret, which never lands in an image layer or
-# the build cache, and the image holds no settings. Mount them at runtime for the server (dotenv) and
-# Prisma (prisma.config.ts):
-#   docker run -v /path/to/server.env:/app/apps/server/.env:ro \
-#     -v /path/to/server.env:/app/packages/prisma/.env:ro koushikpuppala/server
-# docker/deploy/server/ holds the compose file and deploy.sh used on EC2.
-# The entrypoint applies pending migrations before the server starts.
+# Pin the Node major on the ECR public mirror, so a floating tag cannot break the build or hit Docker Hub limits
+FROM public.ecr.aws/docker/library/node:26-alpine AS base
 
-# Node 24 on Alpine, the same major as CI. Not the moving lts tag: Node 25 and later images no longer ship
-# Corepack, so `corepack enable` below fails the build once that tag moves past 24.
-FROM node:24-alpine AS base
-
-# Enable Corepack, which installs the pnpm version pinned in package.json "packageManager"
-RUN corepack enable
-
-# Let Corepack fetch the pinned pnpm without an interactive prompt during the build
-ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-
-# Install dependencies for building native modules
+# Install native module libraries, curl for the health check and bash for the entrypoint
 RUN apk add --no-cache libc6-compat curl bash
 
-# Set the working directory to /app
+# Set the working directory for every stage built on base
 WORKDIR /app
 
-# Create a new stage called "dependencies" based on the "base" image
-FROM base AS dependencies
+# Start the build-only stage, so pnpm never reaches the runner
+FROM base AS tooling
 
-# Copy all the files to the working directory
+# Install pnpm from npm at the packageManager version, because Node 25+ no longer bundles Corepack
+RUN npm install --global pnpm@12.16.1
+
+# Start the stage that reduces the monorepo to what the server needs
+FROM tooling AS dependencies
+
+# Copy the repository into the stage, minus the .dockerignore entries
 COPY . .
 
-# Prune the server project to remove unnecessary files (node_modules is not in the build context,
-# so Turbo runs through pnpm dlx, pinned to the version in the root package.json)
-RUN pnpm dlx turbo@2.11.7 prune server --docker
+# Prune the monorepo to the server, running Turbo through pnpm dlx because node_modules is not in the context
+# Keep in step with the turbo version in the root package.json.
+RUN pnpm dlx turbo@2.11.10 prune server --docker
 
-# Create a new stage called "builder" based on the "base" image
-FROM base AS builder
+# Start the stage that installs dependencies and builds the app
+FROM tooling AS builder
 
-# Copy .gitignore file to the working directory
-COPY .gitignore .gitignore
+# Copy the git ignore rules, pnpm settings and Turbo config the install and build read
+COPY .gitignore .npmrc turbo.json ./
 
-# Copy package management files to the working directory
+# Copy only the package.json files, so the install layer is cached until a dependency changes
 COPY --from=dependencies /app/out/json/ .
 
-# Copy pnpm-lock.yaml and pnpm-workspace.yaml files to the working directory
-COPY --from=dependencies /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-COPY --from=dependencies /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
+# Copy the pruned lockfile and workspace definition that the frozen install checks against
+COPY --from=dependencies /app/out/pnpm-lock.yaml /app/out/pnpm-workspace.yaml ./
 
-# Copy the pnpm settings (node linker, peer dependencies) to the working directory
-COPY .npmrc .npmrc
-
-# Install project dependencies using pnpm. pnpm-workspace.yaml approves a package's agent skills, and pnpm
-# fails without a folder to link them into; turbo prune leaves the repo's skill folders out of the image.
+# Install from the lockfile, after creating the skill folders pnpm needs and turbo prune leaves out
 RUN mkdir -p .claude/skills .agents/skills && pnpm install --frozen-lockfile
 
-# Copy the rest of the application files to the working directory
+# Copy the pruned source code after the install, so code changes keep the install layer cached
 COPY --from=dependencies /app/out/full/ .
 
-# Copy the turbo.json file to the working directory
-COPY turbo.json turbo.json
-
-# Generate Prisma client code and build the application, with the settings mounted as a secret
-# (prisma.config.ts refuses to load without DATABASE_URL)
+# Generate the Prisma client and build the server, with the settings mounted as a secret because prisma.config.ts needs DATABASE_URL
 RUN --mount=type=secret,id=env,target=/app/apps/server/.env,required=true \
   --mount=type=secret,id=env,target=/app/packages/prisma/.env,required=true \
   pnpm --filter @repo/prisma db:generate && \
   pnpm exec turbo build --filter=server... && \
   rm -rf .turbo
 
-# Drop build and test tooling so the runtime image carries only production dependencies (the prisma
-# CLI stays, as a dependency of @repo/prisma, for the entrypoint's migrations)
+# Drop build and test tooling, keeping the prisma CLI (a @repo/prisma dependency) for the entrypoint's migrations
 RUN pnpm prune --prod --ignore-scripts
 
-# Create a new stage called "runner" based on the "base" image
+# Start the final stage from base, so it holds neither pnpm nor the build tools
 FROM base AS runner
 
-# Set the environment variables for production mode on port 8080
+# Run in production mode on port 8080
 ENV NODE_ENV=production \
   PORT=8080
 
-# Create a new system group with GID 1001
+# Create the non-root user the app runs as
 RUN addgroup --system --gid 1001 koushikpuppala && \
-  # Create a new system user with UID 1001 and add it to the "koushikpuppala" group
   adduser --system --uid 1001 portfolio --ingroup koushikpuppala
 
-# Copy the built application files from the "builder" stage to the "runner" stage
+# Copy the built workspace with its production dependencies from the builder
 COPY --from=builder --chown=portfolio:koushikpuppala /app .
 
-# Remove the base image's npm, which nothing runs and which carries its own vulnerable dependencies
+# Drop the base image's npm, which nothing runs and which has vulnerabilities
 RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
-# Copy the entrypoint script to the root directory of the container and set its permissions to be executable
+# Copy the entrypoint that applies pending migrations before the server starts
 COPY --chmod=755 docker/entrypoint.server.sh /entrypoint.sh
 
-# Switch to the "portfolio" user
+# Run as the non-root user from here on
 USER portfolio
 
-# Expose port 8080 for the application
+# Document the port the server listens on
 EXPOSE 8080
 
 # Mark the container unhealthy when the API stops answering
+# start-period covers prisma migrate deploy, which runs before the API listens.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
   CMD curl -fsS http://127.0.0.1:${PORT}/api/health || exit 1
 
-# Set the working directory to the server project directory
+# Run from the server folder
 WORKDIR /app/apps/server
 
-# Set the entrypoint for the container to the entrypoint script
+# Start through the entrypoint, which migrates and then launches the server
 ENTRYPOINT ["/entrypoint.sh"]

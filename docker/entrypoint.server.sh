@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 
-# The Prisma CLI is called directly rather than through pnpm, which would need Corepack to fetch pnpm's
-# native binary at startup: a network call the non-root user cannot cache.
 echo "Running Prisma migrations..."
+# The Prisma CLI is called directly because pnpm would need Corepack, which Node 25+ images do not
+# ship.
 cd /app/packages/prisma
 ./node_modules/.bin/prisma migrate deploy
 

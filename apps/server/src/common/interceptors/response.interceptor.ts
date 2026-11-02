@@ -20,18 +20,16 @@ const MESSAGES: Record<string, string> = {
 const isRecord = (value: unknown): value is Record<string, unknown> =>
 	typeof value === 'object' && value !== null
 
-// Files, streams and responses already sent by the handler are passed through unwrapped.
 const isRaw = (data: unknown, response: Response): boolean =>
 	response.headersSent ||
 	Buffer.isBuffer(data) ||
 	(isRecord(data) && 'stream' in data) ||
 	(response.getHeader('content-type')?.toString() ?? '').includes('application/pdf')
 
+// Only objects made purely of these keys are unwrapped, so a record with its own message field is
+// returned whole.
 const ENVELOPE_KEYS = new Set(['result', 'message', 'error', 'count'])
 
-// Services may return a plain value or an ApiResponse-shaped object with their own message and count.
-// Only an object made of envelope keys counts as one: a record such as a contact has its own `message`
-// field and must be returned whole.
 const isEnvelope = (data: unknown): data is Record<string, unknown> =>
 	isRecord(data) &&
 	('result' in data || 'message' in data) &&

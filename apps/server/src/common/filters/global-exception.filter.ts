@@ -34,7 +34,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 			userId: request.user?.id,
 		}
 
-		// Server errors go to Sentry through logger.error; client errors are only warnings.
 		if (status >= 500)
 			this.logger.error(
 				message,

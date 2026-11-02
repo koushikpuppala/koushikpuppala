@@ -2,7 +2,6 @@ import type { ContactFormFields } from 'types/api'
 import type { TopicOption } from 'types/components/client'
 import { z } from 'zod'
 
-// Zod otherwise probes for eval on first parse, which the content security policy blocks and reports.
 z.config({ jitless: true })
 
 export const MIN_MESSAGE = 20

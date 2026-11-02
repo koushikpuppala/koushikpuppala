@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-// Each view has its own tests; here they are stand ins so a route test checks only its wiring.
 const { stub } = vi.hoisted(() => ({
 	stub: (name: string) => () => <p>{name} view</p>,
 }))
@@ -113,7 +112,6 @@ describe('admin routes', () => {
 		const [head, body] = html.props.children
 		expect(body.type).toBe('body')
 		expect(body.props.className).toContain('min-h-screen')
-		// The inline theme script only runs under the content security policy with this request's nonce.
 		expect(head.props.children.props.nonce).toBe('test-nonce')
 	})
 })

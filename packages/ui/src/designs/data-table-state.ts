@@ -3,8 +3,6 @@ import type { DataTableInitialState, DataTableInitialStateOptions } from 'types/
 export const columnLabel = (header: unknown, id: string): string =>
 	typeof header === 'string' ? header : id
 
-// Table state lives in the URL so filters survive reloads and can be shared. Every parameter is
-// prefixed so several tables on one page keep their state apart.
 export const readInitialTableState = ({
 	searchParams,
 	prefix,

@@ -12,8 +12,7 @@ import { GlobalExceptionFilter } from './filters/global-exception.filter'
 @Module({
 	imports: [ApiMetricModule, UserModule, AuthModule],
 	providers: [
-		// Every route is authenticated by default; @Public() opts out. Guards run in this order,
-		// so RolesGuard always sees the database user that FirebaseAuthGuard attached.
+		// Guards run in this order: RolesGuard reads the user that FirebaseAuthGuard attaches.
 		{ provide: APP_GUARD, useClass: FirebaseAuthGuard },
 		{ provide: APP_GUARD, useClass: RolesGuard },
 		{ provide: APP_FILTER, useClass: GlobalExceptionFilter },

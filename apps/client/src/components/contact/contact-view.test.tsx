@@ -24,13 +24,10 @@ const SOCIALS = socials.map(s => ({ ...s, label: s.platform, handle: s.url })) a
 
 const renderForm = () => {
 	render(<ContactView socials={SOCIALS} location='London, UK' />)
-	// The form refuses submissions sent faster than a person could type.
 	const later = Date.now() + 10_000
 	vi.spyOn(Date, 'now').mockReturnValue(later)
 }
 
-// Each typed key re-renders the whole page, so the fields are pasted in one change each; typing them key by
-// key could pass the test timeout on a slow or busy machine. The blur test still types into a field.
 const enter = async (label: RegExp, value?: string) => {
 	if (!value) return
 	await userEvent.click(screen.getByLabelText(label))

@@ -23,8 +23,8 @@ export class ContactService extends BaseService {
 	}
 
 	async submit(dto: CreateContactDto, ipAddress?: string, userAgent?: string) {
-		// The url field is a hidden honeypot that people never fill in. Bots that do get the
-		// normal success reply so they cannot tell the message was dropped.
+		// Honeypot: bots that fill the hidden field get a normal success reply, so they cannot tell
+		// they were dropped.
 		if (dto.url?.trim()) {
 			this.logger.warn('Discarded honeypot spam contact submission', ContactService.name, {
 				ipAddress,
@@ -113,7 +113,6 @@ export class ContactService extends BaseService {
 
 		const found = this.ensureExists(contact, 'Contact message not found')
 
-		// Opening a message in the admin marks it as read.
 		if (found.status === ContactStatus.UNREAD) {
 			await this.prisma.contact.update({
 				where: { id },

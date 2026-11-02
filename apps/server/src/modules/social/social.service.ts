@@ -110,8 +110,8 @@ export class SocialService extends BaseService {
 		)
 	}
 
-	// `platform` is unique across all rows, deleted ones included, and an enum can't be renamed the way project slugs are
-	// on delete. Drop the deleted holder instead; its snapshot is already in the audit log from the soft delete.
+	// platform is unique across soft-deleted rows too, so the deleted holder is removed before the
+	// platform is reused.
 	private releaseDeletedPlatform(platform: SocialPlatform) {
 		return this.prisma.social.deleteMany({ where: { platform, deletedAt: { not: null } } })
 	}

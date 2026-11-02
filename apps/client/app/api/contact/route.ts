@@ -12,7 +12,6 @@ const RECEIVED = {
 const failure = (message: string, status: number) =>
 	NextResponse.json({ success: false, message }, { status })
 
-// Throws on a body that isn't a JSON object or has non-string fields; POST answers that as malformed.
 const readPayload = async (req: Request): Promise<ContactFormPayload> => {
 	const raw = await req.json()
 
@@ -26,8 +25,8 @@ const readPayload = async (req: Request): Promise<ContactFormPayload> => {
 }
 
 const forwardToApi = (req: Request, body: ContactFormPayload) => {
-	// The last address is the one added by our own proxy; earlier entries can be forged by the client.
-	// It is forwarded so the API rate-limits and verifies reCAPTCHA against the visitor, not this server.
+	// The last address is the one added by our own proxy; earlier entries can be forged by the
+	// client.
 	const clientIp = req.headers.get('x-forwarded-for')?.split(',').pop()?.trim()
 
 	return fetch(`${API_INTERNAL_URL}/api/v1/contacts`, {
@@ -80,7 +79,8 @@ export const POST = async (req: Request) => {
 			{ status: 400 },
 		)
 
-	// Honeypot field: bots that fill it get a normal success reply, and nothing is sent to the API.
+	// Honeypot: bots that fill the hidden field get a normal success reply and nothing is sent to the
+	// API.
 	if (typeof body.url === 'string' && body.url.trim()) return NextResponse.json(RECEIVED)
 
 	try {

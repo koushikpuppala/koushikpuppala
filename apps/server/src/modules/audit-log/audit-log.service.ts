@@ -37,8 +37,6 @@ export class AuditLogService {
 		try {
 			const contextStore = requestContextStorage.getStore()
 			const effectiveActorId = params.actorId || contextStore?.userId
-			// actorId is a foreign key to users, so anything that is not a user UUID (such as
-			// the default 'admin' actor name) is recorded as the actor's name instead.
 			const validActorId = isValidUuid(effectiveActorId) ? effectiveActorId : undefined
 
 			const user = await this.findActor(validActorId, params.actorName)
@@ -57,7 +55,6 @@ export class AuditLogService {
 					action: params.action,
 					entity: params.entity,
 					entityId: String(params.entityId),
-					// Round-trip through JSON so Dates, Decimals and class instances become plain JSON values.
 					oldData: params.oldData ? JSON.parse(JSON.stringify(params.oldData)) : undefined,
 					newData: params.newData ? JSON.parse(JSON.stringify(params.newData)) : undefined,
 					actorId: user?.id ?? validActorId,
@@ -68,7 +65,6 @@ export class AuditLogService {
 				},
 			})
 		} catch (error) {
-			// Auditing must never fail the action being audited.
 			console.error('Failed to create audit log in DB:', error)
 		}
 	}
@@ -90,7 +86,6 @@ export class AuditLogService {
 
 		const keyword = search?.trim()
 
-		// Also match logs by the current name or email of their actor, not only the stored actor text.
 		if (keyword) {
 			const matchingUsers = await this.prisma.user.findMany({
 				where: {
@@ -126,8 +121,6 @@ export class AuditLogService {
 			this.prisma.auditLog.count({ where }),
 		])
 
-		// Resolve actors in one query so each entry shows the user's current name, not the name
-		// stored when the log was written.
 		const actorIds = [...new Set(logs.flatMap(l => (l.actorId ? [l.actorId] : [])))]
 		const actorEmails = [...new Set(logs.flatMap(l => (looksLikeEmail(l.actor) ? [l.actor] : [])))]
 

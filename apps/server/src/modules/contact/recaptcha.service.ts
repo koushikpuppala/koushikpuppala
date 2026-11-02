@@ -18,7 +18,6 @@ export class RecaptchaService {
 	async verify(token: string | undefined, ipAddress?: string): Promise<void> {
 		const { recaptcha } = this.config
 
-		// reCAPTCHA is only configured in production; Configuration requires it there.
 		if (!recaptcha) return
 
 		if (!token) throw new BadRequestException('reCAPTCHA token is missing')
@@ -47,13 +46,14 @@ export class RecaptchaService {
 				error instanceof Error ? error : new Error(String(error)),
 			)
 
-			// Fail closed: if Google cannot be reached, reject the submission rather than skip the check.
+			// Fail closed: if Google cannot be reached, reject the submission instead of skipping the
+			// check.
 			throw new ServiceUnavailableException('Spam check is unavailable, please try again later')
 		}
 
+		// The action must match so a token minted for another form cannot be replayed here.
 		const passed =
 			result.success &&
-			// Checking the action stops a token issued for another form on the site from being reused here.
 			result.action === RECAPTCHA_ACTION &&
 			(result.score ?? 0) >= recaptcha.minScore
 

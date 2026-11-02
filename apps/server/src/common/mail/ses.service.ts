@@ -20,7 +20,6 @@ export class SesService implements MailService {
 				ReplyToAddresses: options.replyTo ? [options.replyTo] : undefined,
 				Content: {
 					Simple: {
-						// Collapse newlines, which are not allowed in a subject header and could come from user input.
 						Subject: { Data: options.subject.replace(/\s+/g, ' ').trim(), Charset: 'UTF-8' },
 						Body: {
 							Text: { Data: options.text, Charset: 'UTF-8' },

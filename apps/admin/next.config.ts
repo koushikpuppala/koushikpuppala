@@ -3,16 +3,14 @@ import type { NextConfig } from 'next'
 import { type SentryBuildOptions, withSentryConfig } from '@sentry/nextjs/config'
 import { requireEnv } from 'utils/requireEnv'
 
-// Media is only ever served from the CDN, and the image optimizer fetches remote images on the server,
-// so it accepts that one host rather than acting as an open proxy for any image on the internet.
 const cdn = new URL(requireEnv(process.env.CDN_URL, 'CDN_URL'))
 
 const nextConfig: NextConfig = {
+	deploymentId: process.env.NEXT_DEPLOYMENT_ID || undefined,
+	reactCompiler: true,
 	reactStrictMode: true,
 	cacheComponents: true,
 	partialPrefetching: true,
-	// Pages only render after Firebase sign-in in the browser, so the server never renders them and
-	// implicit instant-navigation validation would report every route as a dropped segment.
 	experimental: { instantInsights: { validationLevel: 'manual-warning' } },
 	output: process.env.ENVIRONMENT === 'docker' ? 'standalone' : undefined,
 	images: {

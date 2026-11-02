@@ -12,8 +12,6 @@ const NOTICE_MS = 4000
 const failure = (error: unknown, fallback: string): string =>
 	error instanceof Error ? error.message : fallback
 
-// State for pages that edit a single record, such as Home and About: load, track unsaved
-// changes, save, and publish or unpublish.
 export const useSingletonEditor = <T extends SingletonRecord, R extends SingletonRecord>({
 	actions,
 	empty,

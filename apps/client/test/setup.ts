@@ -13,8 +13,6 @@ afterEach(() => {
 })
 afterAll(() => server.close())
 
-// jsdom has no layout or observers. These stand ins let components mount; tests that care about a
-// media query or an element scrolling into view drive them through the helpers below.
 if (typeof window !== 'undefined') {
 	const queries = new Map<string, boolean>()
 

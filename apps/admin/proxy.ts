@@ -5,7 +5,6 @@ import { requireEnv } from 'utils/requireEnv'
 
 const origin = (url: string) => new URL(url).origin
 
-// Built once: everything except the nonce comes from settings that are fixed for the life of the server.
 const sources = (() => {
 	const authDomain = requireEnv(
 		process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -22,7 +21,6 @@ const sources = (() => {
 		'https://identitytoolkit.googleapis.com',
 		'https://securetoken.googleapis.com',
 		'https://www.googleapis.com',
-		// Media uploads go straight to S3 through the presigned URL the API signs.
 		`https://${bucket}.s3.${region}.amazonaws.com`,
 	]
 	const frame = [`https://${authDomain}`]
@@ -32,14 +30,13 @@ const sources = (() => {
 		frame.push(`http://${emulator}`)
 	}
 
-	// Production sends Sentry events through the same-origin /monitoring tunnel; elsewhere they go to the DSN.
 	if (sentryDsn) connect.push(origin(sentryDsn))
 
 	return { connect: connect.join(' '), frame: frame.join(' ') }
 })()
 
-// The studio holds signed-in editor sessions, so only scripts carrying this request's nonce may run.
-// Next.js reads the nonce from the request's policy and adds it to its own scripts while rendering.
+// The studio holds signed-in editor sessions, so only scripts carrying this request's nonce may
+// run.
 export const proxy = (request: NextRequest) => {
 	const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
 
@@ -50,7 +47,6 @@ export const proxy = (request: NextRequest) => {
 		"default-src 'self'",
 		`script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://apis.google.com${devEval}`,
 		"style-src 'self' 'unsafe-inline'",
-		// Media renders through the image optimizer on this origin, which only fetches from the CDN.
 		"img-src 'self' blob: data:",
 		"font-src 'self' data:",
 		`connect-src ${sources.connect}`,

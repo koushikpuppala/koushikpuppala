@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-// Sentry must be initialised before any other module is imported so it can instrument them.
+// Must load before the app modules so Sentry can instrument them.
 import './instrument'
 
 import helmet from 'helmet'
@@ -14,7 +14,6 @@ import { LoggerService } from 'common/logger/logger.service'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 const bootstrap = async () => {
-	// rawBody keeps the unparsed request body available for handlers that need the exact bytes.
 	const app = await NestFactory.create(AppModule, { rawBody: true })
 
 	const logger = app.get(LoggerService)
@@ -24,7 +23,6 @@ const bootstrap = async () => {
 
 	app.enableShutdownHooks()
 
-	// Route Nest's internal logs through Winston so they share the same format, files and redaction.
 	app.useLogger({
 		log: message => logger.info(message, 'Application/Nest'),
 
@@ -62,9 +60,7 @@ const bootstrap = async () => {
 
 	const document = SwaggerModule.createDocument(app, config)
 
-	// API docs are only exposed outside production.
 	if (settings.environment !== 'production') {
-		// Swagger UI and Redoc run inline scripts, so only the docs pages relax the API's strict policy.
 		app.use(
 			'/api/docs',
 			helmet.contentSecurityPolicy({

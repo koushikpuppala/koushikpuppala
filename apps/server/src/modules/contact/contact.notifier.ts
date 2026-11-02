@@ -34,7 +34,6 @@ export class ContactNotifier {
 			{ ...contactAcknowledgementEmail(contact), from: mail.from, to: contact.email },
 		]
 
-		// The message is already saved, so a failed email is only logged and never fails the submission.
 		const results = await Promise.allSettled(emails.map(email => this.mail.send(email)))
 
 		for (const [index, result] of results.entries())

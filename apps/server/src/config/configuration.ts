@@ -47,7 +47,6 @@ export class Configuration {
 			.map(o => o.trim())
 			.filter(Boolean)
 
-		// Express accepts a hop count, a boolean or a list of trusted addresses for 'trust proxy'.
 		const trustProxy = this.required('TRUST_PROXY').trim()
 		if (/^\d+$/.test(trustProxy)) this.trustProxy = Number.parseInt(trustProxy, 10)
 		else if (trustProxy === 'true' || trustProxy === 'false')
@@ -86,7 +85,6 @@ export class Configuration {
 			dsn: this.optional('SENTRY_DSN'),
 		}
 
-		// reCAPTCHA and email are required in production but optional locally, where they are skipped.
 		const recaptchaSecret = this.production
 			? this.required('RECAPTCHA_SECRET_KEY')
 			: this.optional('RECAPTCHA_SECRET_KEY')
@@ -122,8 +120,8 @@ export class Configuration {
 			region: this.required('AWS_REGION'),
 			s3Bucket: this.required('S3_BUCKET'),
 			cdnUrl: (/^https?:\/\//i.test(cdn) ? cdn : `https://${cdn}`).replace(/\/+$/, ''),
-			// Confirming an upload landed calls S3, so it runs only in production, where the instance role
-			// grants access; local and test runs skip it.
+			// Confirming an upload calls S3, which needs the production instance role, so local and test
+			// runs skip it.
 			verifyUploads: this.production,
 		}
 	}
@@ -157,7 +155,6 @@ export class Configuration {
 		return value === 'true'
 	}
 
-	// Opt-in flags: unset means off, unlike boolean() which requires the variable.
 	private flag(key: string): boolean {
 		return process.env[key] === 'true'
 	}

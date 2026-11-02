@@ -13,7 +13,6 @@ const ThemeContext = createContext<ThemeContextValue>({
 export const ThemeProvider = ({ children }: ChildrenProps) => {
 	const [theme, setThemeState] = useState<Theme>('dark')
 
-	// Read the saved theme after mount; localStorage does not exist during server rendering. Without a saved choice the theme stays dark.
 	useEffect(() => {
 		const stored = localStorage.getItem('kp.admin.theme') as Theme | null
 		if (stored === 'light' || stored === 'dark') {

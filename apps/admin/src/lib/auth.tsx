@@ -24,7 +24,6 @@ const AuthContext = createContext<AuthContextValue>({
 	logout: async () => {},
 })
 
-// The server enforces roles on every request; this check only keeps other users out of the UI.
 const STUDIO_ROLES: ReadonlyArray<SessionUser['role']> = ['ADMIN', 'EDITOR']
 
 const toAdminUser = (user: AuthUserResponse): SessionUser => {
@@ -62,7 +61,6 @@ export const AuthProvider = ({ children }: ChildrenProps) => {
 		const auth = getFirebaseAuth()
 
 		return onAuthStateChanged(auth, async firebaseUser => {
-			// During an explicit sign-in, completeSignIn calls /auth/login itself, so skip the /auth/me check.
 			if (signingIn.current) return
 
 			if (!firebaseUser) {
@@ -84,7 +82,6 @@ export const AuthProvider = ({ children }: ChildrenProps) => {
 					error instanceof Error ? error.message : 'Your session could not be verified.',
 				)
 				setStage('signed-out')
-				// Signed in with Firebase but rejected by the API: sign out so the user is not stuck half signed in.
 				await signOut(auth)
 			} finally {
 				setLoading(false)

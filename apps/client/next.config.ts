@@ -3,14 +3,12 @@ import { type SentryBuildOptions, withSentryConfig } from '@sentry/nextjs/config
 import nextPWA from '@ducanh2912/next-pwa'
 import { requireEnv } from 'utils/requireEnv'
 
-// The image optimizer fetches remote images on the server, so it only accepts the media CDN rather than
-// acting as an open proxy for any image on the internet.
 const cdn = new URL(requireEnv(process.env.CDN_URL, 'CDN_URL'))
 
 const sentryDsn = process.env.NEXT_PUBLIC_CLIENT_SENTRY_DSN
 
-// Pages stay prerendered, and Next.js inlines its own bootstrap scripts, so scripts keep 'unsafe-inline'.
-// The policy still limits which origins can run scripts, receive data or be framed.
+// Pages stay prerendered and Next.js inlines its own bootstrap scripts, so script-src keeps
+// 'unsafe-inline'.
 const contentSecurityPolicy = [
 	"default-src 'self'",
 	[
@@ -25,11 +23,9 @@ const contentSecurityPolicy = [
 	"font-src 'self' data:",
 	[
 		"connect-src 'self'",
-		// Google Analytics 4 collection endpoints, as listed in Google's content security policy guide.
 		'https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com',
 		'https://*.googletagmanager.com https://*.g.doubleclick.net https://www.google.com',
 		'https://*.clarity.ms',
-		// Production sends Sentry events through the same-origin /monitoring tunnel; elsewhere they go to the DSN.
 		sentryDsn ? new URL(sentryDsn).origin : '',
 	].join(' '),
 	'frame-src https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/',
@@ -37,7 +33,8 @@ const contentSecurityPolicy = [
 	"base-uri 'self'",
 	"form-action 'self'",
 	"frame-ancestors 'none'",
-	// Sentry Session Replay compresses events in a blob: worker, which would otherwise fall back to script-src.
+	// Sentry Session Replay compresses events in a blob: worker, which would otherwise fall back to
+	// script-src.
 	"worker-src 'self' blob:",
 ]
 	.map(directive => directive.trim())
@@ -54,11 +51,13 @@ const nextConfig = nextPWA({
 		cleanupOutdatedCaches: process.env.NODE_ENV !== 'development',
 	},
 })({
+	reactCompiler: true,
 	cacheComponents: true,
 	partialPrefetching: true,
-	// The ~86 KB stylesheet otherwise blocks first paint, which Lighthouse reports as render-blocking.
+	// Inlining the stylesheet avoids a render-blocking request on first paint.
 	experimental: { inlineCss: true },
 	outputFileTracingIncludes: { '/sitemap.xml': ['./app/**/page.{js,jsx,ts,tsx,md,mdx}'] },
+	deploymentId: process.env.NEXT_DEPLOYMENT_ID || undefined,
 	reactStrictMode: process.env.NODE_ENV !== 'development',
 	output: process.env.ENVIRONMENT === 'docker' ? 'standalone' : undefined,
 	images: {
@@ -143,7 +142,6 @@ const sentryBuildOptions: SentryBuildOptions = {
 	release:
 		process.env.NODE_ENV === 'production' ? { name: process.env.npm_package_version } : undefined,
 
-	// The site records no iframes or shadow DOM, so the replay code for them is dead weight in the bundle.
 	bundleSizeOptimizations: { excludeReplayIframe: true, excludeReplayShadowDom: true },
 
 	widenClientFileUpload: process.env.NODE_ENV === 'production',

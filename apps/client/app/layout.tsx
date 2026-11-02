@@ -12,7 +12,6 @@ import { MotionProvider } from 'components/motion-provider'
 import { Geist, Geist_Mono, Bricolage_Grotesque } from 'next/font/google'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'], display: 'swap' })
-// Mono text is secondary, so it must not compete with the LCP text for early bandwidth.
 const geistMono = Geist_Mono({
 	variable: '--font-geist-mono',
 	subsets: ['latin'],
@@ -30,10 +29,6 @@ export const viewport: Viewport = {
 	width: 'device-width',
 	colorScheme: 'light dark',
 	themeColor: '#090a0c',
-	// themeColor: [
-	// 	{ media: '(prefers-color-scheme: dark)', color: '#090a0c' },
-	// 	{ media: '(prefers-color-scheme: light)', color: '#f7f8f9' },
-	// ],
 }
 
 export const metadata: Metadata = {
@@ -99,7 +94,6 @@ const RootLayout = ({ children }: LayoutProps<'/'>) => {
 	return (
 		<html lang='en' className='dark' data-palette='new' suppressHydrationWarning>
 			<head>
-				{/* Applies the saved theme before the first paint so the page never flashes the wrong theme. */}
 				<Script id='theme-init' strategy='beforeInteractive'>
 					{`(() => {
 						const e = document.documentElement

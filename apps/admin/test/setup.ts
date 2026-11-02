@@ -16,7 +16,6 @@ globalThis.ResizeObserver ??= class {
 	disconnect() {}
 }
 
-// jsdom has no matchMedia. Tests set `prefers-color-scheme` through setMediaQuery when they need it.
 const mediaQueries = new Map<string, boolean>()
 
 window.matchMedia = (query: string) =>

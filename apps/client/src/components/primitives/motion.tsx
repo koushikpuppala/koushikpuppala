@@ -141,7 +141,6 @@ export const Spotlight = ({ children, className, size = 460, intensity = 0.1 }: 
 
 			const { clientX, clientY } = event
 
-			// Batch pointer moves into one style write per frame.
 			cancelAnimationFrame(frame.current)
 
 			frame.current = requestAnimationFrame(() => {

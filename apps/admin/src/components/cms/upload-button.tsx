@@ -11,7 +11,6 @@ export const UploadButton = ({ accept, uploading, onChange, label, size }: Uploa
 
 	return (
 		<>
-			{/* Hidden from the tab order on purpose: the real button below opens it, so keyboard users get a focusable control. */}
 			<input
 				ref={input}
 				type='file'

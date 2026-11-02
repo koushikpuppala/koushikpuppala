@@ -32,7 +32,6 @@ export class S3Service implements StorageService {
 
 		const folder = options.folder?.replace(/^\/|\/$/g, '')
 
-		// A time-ordered UUID avoids name clashes and keeps the original file name out of the URL.
 		const fileName = `${randomUUIDv7()}${extension}`
 
 		const key = folder ? `${folder}/${fileName}` : fileName
@@ -90,9 +89,8 @@ export class S3Service implements StorageService {
 			new GetObjectCommand({
 				Bucket: this.config.aws.s3Bucket,
 				Key: key,
-				// S3 returns these as response headers when the signed link asks for them, so the
-				// browser saves the file under this name instead of opening it.
 				...(download && {
+					// Makes the browser save the file under this name instead of displaying it.
 					ResponseContentDisposition: `attachment; filename="${download.fileName}"`,
 					ResponseContentType: download.contentType,
 				}),
@@ -114,7 +112,8 @@ export class S3Service implements StorageService {
 			new PutObjectCommand({ Key, ContentType, ContentLength, Bucket }),
 			{
 				expiresIn,
-				// Signing these headers makes S3 reject an upload whose type or size differs from what was approved.
+				// Signing content type and length makes S3 reject an upload that differs from what was
+				// approved.
 				signableHeaders: new Set(['content-type', 'content-length']),
 			},
 		)

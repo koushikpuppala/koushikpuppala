@@ -4,7 +4,7 @@ import { revalidateTag } from 'next/cache'
 import { NextResponse } from 'next/server'
 import { createHash, timingSafeEqual } from 'node:crypto'
 
-// Only these cache tags can be cleared, so the endpoint cannot be used to purge arbitrary caches.
+// Only these tags can be cleared, so the endpoint cannot be used to purge arbitrary caches.
 const CONTENT_TAGS = new Set([
 	'home',
 	'about',
@@ -25,8 +25,8 @@ const isAuthorized = (provided: string | null): boolean => {
 
 	if (!secret || !provided) return false
 
-	// Hashing first gives both sides the same length, which timingSafeEqual requires, and the
-	// constant-time compare does not leak how much of the secret matched.
+	// Hashing first gives both sides the length timingSafeEqual requires, and the compare takes
+	// constant time.
 	return timingSafeEqual(digest(provided), digest(secret))
 }
 

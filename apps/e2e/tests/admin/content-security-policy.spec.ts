@@ -2,7 +2,6 @@ import { expect, test, type Page } from '@playwright/test'
 import { USERS } from '../../env'
 import { signIn } from '../../fixtures/admin'
 
-// Records every policy violation from the first script on, so a blocked script or request fails the test.
 const recordViolations = async (page: Page) => {
 	await page.addInitScript(() => {
 		const seen: string[] = []
@@ -40,7 +39,6 @@ test.describe('studio content security policy', () => {
 		await signIn(page)
 		expect(await violations(page)).toEqual([])
 
-		// Each page load starts a new record, so every page is checked once it has rendered.
 		for (const path of ['/content/projects', '/media', '/settings']) {
 			await page.goto(path)
 			await expect(page.getByRole('main')).toBeVisible()
@@ -55,7 +53,6 @@ test.describe('studio content security policy', () => {
 		await page.goto('/users')
 		await page.getByRole('button', { name: /add personnel/i }).click()
 
-		// Zod parses on blur; with its eval probe left on, the policy would report it here.
 		await page.getByLabel('Full Name').fill('A')
 		await page.keyboard.press('Tab')
 

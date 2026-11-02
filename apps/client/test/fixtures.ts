@@ -214,7 +214,6 @@ export const metadata = {
 
 const ok = (result: unknown) => HttpResponse.json({ result, statusCode: 200 })
 
-// Every public endpoint the site reads, answering with the fixtures above unless a test overrides one.
 export const publishedApi = (overrides: Record<string, unknown> = {}) => {
 	const data: Record<string, unknown> = {
 		home,
@@ -248,7 +247,6 @@ export const publishedApi = (overrides: Record<string, unknown> = {}) => {
 	]
 }
 
-// The same endpoints, all failing, to check every page still renders its empty states.
 export const failingApi = () =>
 	[
 		'home/published',

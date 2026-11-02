@@ -1,4 +1,3 @@
-// A bare `YYYY-MM-DD` is a calendar day, but `new Date()` parses it as UTC midnight, which shows as the previous day west of UTC.
 const toDate = (date: Date | string): Date => {
 	if (typeof date !== 'string') return date
 

@@ -7,7 +7,6 @@ import { SiteHeader } from 'components/shell/site-header'
 import dynamic from 'next/dynamic'
 import { SiteFooter } from 'components/shell/site-footer'
 
-// Both overlays start closed, so their code loads on first use instead of with the page.
 const MobileMenu = dynamic(
 	() => import('components/shell/mobile-menu').then(mod => mod.MobileMenu),
 	{
@@ -22,7 +21,6 @@ const QuickPalette = dynamic(
 export const SiteShell = ({ children, socials = [] }: SiteShellProps) => {
 	const [menuOpen, setMenuOpen] = useState(false)
 	const [paletteOpen, setPaletteOpen] = useState(false)
-	// Stay mounted after the first open so the close animation can still play.
 	const [menuUsed, setMenuUsed] = useState(false)
 	const [paletteUsed, setPaletteUsed] = useState(false)
 

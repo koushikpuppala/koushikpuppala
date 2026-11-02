@@ -1,8 +1,8 @@
 import { join } from 'node:path'
 import { readFileSync } from 'node:fs'
 
-// release-please bumps this package.json, and the image runs `node dist/main.js` directly, so
-// npm_package_version is not set there; the file sits two levels above dist/config and src/config.
+// Deploys write the release version into package.json inside the image only, so it is read from
+// there at runtime.
 const readVersion = (): string => {
 	const { version } = JSON.parse(readFileSync(join(__dirname, '..', '..', 'package.json'), 'utf8'))
 

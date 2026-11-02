@@ -11,8 +11,6 @@ import { SocialFormDialog } from 'components/socials/social-form-dialog'
 
 vi.mock('lib/firebase', () => ({ getIdToken: async () => 'id-token-1' }))
 
-// Each key typed into these dialogs re-renders the whole form, so text is pasted in one change. Typing key by
-// key let a slow run pass the test timeout, and the timed out typing then spilled into the next test.
 const type = async (label: string | RegExp, text: string) => {
 	await userEvent.click(screen.getByLabelText(label))
 	await userEvent.paste(text)
@@ -142,8 +140,35 @@ describe('ProjectFormDialog', () => {
 
 		expect(screen.getByText('Edit Project')).toBeInTheDocument()
 		expect(screen.getByLabelText('Category')).toHaveValue('Full Stack')
-		// next/image serves the thumbnail through the optimizer, which fetches it from the CDN.
 		expect(screen.getAllByRole('img').some(img => img.getAttribute('src')?.includes(encodeURIComponent('https://cdn.test/c.png')))).toBe(true)
+	})
+
+	it('keeps the hero image when an existing project is saved', async () => {
+		const { onSave } = setup()
+		render(
+			<ProjectFormDialog
+				open
+				onOpenChange={vi.fn()}
+				onSave={onSave}
+				project={{
+					id: 'p1',
+					title: 'Old',
+					slug: 'old',
+					status: 'DRAFT',
+					shortDescription: 'Short',
+					thumbnailId: 'm1',
+					thumbnail: { id: 'm1', url: 'https://cdn.test/c.png', fileName: 'c.png' },
+					heroImageId: 'h1',
+					heroImage: { id: 'h1', url: 'https://cdn.test/h.png', fileName: 'h.png' },
+				} as never}
+			/>,
+		)
+
+		expect(screen.getByRole('button', { name: 'Select Hero from S3' })).toBeInTheDocument()
+		await save('Save Project')
+
+		await waitFor(() => expect(onSave).toHaveBeenCalled())
+		expect(onSave.mock.calls[0]?.[0]).toMatchObject({ thumbnailId: 'm1', heroImageId: 'h1' })
 	})
 })
 

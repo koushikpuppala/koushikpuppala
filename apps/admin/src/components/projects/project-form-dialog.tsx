@@ -81,6 +81,7 @@ const toPayload = (form: Partial<Project>): Partial<ProjectRecord> => {
 		github: form.github || null,
 		liveUrl: form.liveUrl || null,
 		thumbnailId: form.thumbnailId,
+		heroImageId: form.heroImageId,
 		status: form.lifecycle ?? 'COMPLETED',
 		featured: Boolean(form.featured),
 		isPublished: form.status === 'PUBLISHED',
@@ -94,6 +95,7 @@ export const ProjectFormDialog = ({
 	onSave,
 }: ProjectFormDialogProps) => {
 	const [pickingCover, setPickingCover] = useState(false)
+	const [pickingHero, setPickingHero] = useState(false)
 	const { form, setForm, setField, saving, saveError, submit } = useFormDialog({
 		open,
 		record: project,
@@ -123,18 +125,32 @@ export const ProjectFormDialog = ({
 			onSubmit={submit}
 			className='max-h-[88vh] max-w-2xl'
 			aside={
-				<MediaPickerModal
-					open={pickingCover}
-					onOpenChange={setPickingCover}
-					title='Select Project Cover'
-					onSelect={media =>
-						setForm(prev => ({
-							...prev,
-							thumbnailId: media.id,
-							thumbnail: { id: media.id, fileName: media.fileName, url: media.url },
-						}))
-					}
-				/>
+				<>
+					<MediaPickerModal
+						open={pickingCover}
+						onOpenChange={setPickingCover}
+						title='Select Project Cover'
+						onSelect={media =>
+							setForm(prev => ({
+								...prev,
+								thumbnailId: media.id,
+								thumbnail: { id: media.id, fileName: media.fileName, url: media.url },
+							}))
+						}
+					/>
+					<MediaPickerModal
+						open={pickingHero}
+						onOpenChange={setPickingHero}
+						title='Select Project Hero'
+						onSelect={media =>
+							setForm(prev => ({
+								...prev,
+								heroImageId: media.id,
+								heroImage: { id: media.id, fileName: media.fileName, url: media.url },
+							}))
+						}
+					/>
+				</>
 			}>
 			<div className='grid gap-4 sm:grid-cols-2'>
 				<Field id='projects-title' label='Title' required>
@@ -247,11 +263,19 @@ export const ProjectFormDialog = ({
 			</div>
 
 			<MediaField
-				label='Cover Visual'
+				label='Cover Visual (listings)'
 				url={form.thumbnail?.url}
 				alt='Cover'
 				buttonLabel='Select Cover from S3'
 				onPick={() => setPickingCover(true)}
+			/>
+
+			<MediaField
+				label='Hero Visual (detail page)'
+				url={form.heroImage?.url}
+				alt='Hero'
+				buttonLabel='Select Hero from S3'
+				onPick={() => setPickingHero(true)}
 			/>
 
 			<div className='border-border flex items-center justify-between border-t pt-2'>

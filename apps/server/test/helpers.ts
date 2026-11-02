@@ -16,8 +16,6 @@ import { AuthProvider, Prisma, UserRole, UserStatus } from '@repo/prisma'
 const EMULATOR = `http://${process.env.FIREBASE_AUTH_EMULATOR_HOST}`
 const PROJECT = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
 
-// Compares the parsed host rather than the URL text, so a host such as revalidate.test.example
-// can never pass for the revalidation endpoint.
 export const isRevalidateRequest = (input: unknown): boolean => {
 	const url = input instanceof Request ? input.url : String(input)
 
@@ -134,7 +132,6 @@ export const createUser = async (
 	return { user, token: idToken, refreshToken, auth: { Authorization: `Bearer ${idToken}` } }
 }
 
-// Asks the emulator for a fresh ID token the way a signed in browser does, or null when it refuses.
 export const refreshIdToken = async (refreshToken: string): Promise<string | null> => {
 	const response = await fetch(`${EMULATOR}/securetoken.googleapis.com/v1/token?key=test`, {
 		method: 'POST',

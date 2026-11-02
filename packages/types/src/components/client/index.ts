@@ -419,8 +419,8 @@ export type ProjectDetailsProps = { stack: string[]; tags: string[]; updated: st
 
 export type NextProjectProps = { project: PublishedProject }
 
-// schema.org shapes, so the client builds JSON-LD against the schema without depending on schema-dts.
 export type StructuredData = Graph
+
 export type StructuredDataNode = Thing
 
 export type JsonLdProps = { data: StructuredData }

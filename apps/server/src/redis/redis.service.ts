@@ -36,7 +36,6 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
 			this.logger.info('Redis connection established', RedisService.name)
 		} catch (err: unknown) {
-			// Startup must not fail without Redis: CacheService falls back to the database.
 			this.logger.warn(
 				'Redis unavailable during startup; requests will degrade gracefully to direct database access',
 				RedisService.name,
@@ -65,7 +64,6 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 		return this.redis.set(key, value, 'EX', ttl, 'NX')
 	}
 
-	// SCAN walks the keyspace in batches instead of KEYS, which would block Redis on a large dataset.
 	async delByPattern(pattern: string): Promise<number> {
 		let cursor = '0'
 

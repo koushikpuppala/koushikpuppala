@@ -3,10 +3,8 @@ import { globby } from 'globby'
 export const toStaticRoute = (pageFile: string): string | null => {
 	const segments = pageFile.split('/').slice(0, -1)
 
-	// Skip dynamic segments, private folders and parallel route slots; they are not fixed URLs.
 	if (segments.some(s => s.startsWith('[') || s.startsWith('_') || s.startsWith('@'))) return null
 
-	// Route groups such as (marketing) do not appear in the URL.
 	const path = segments.filter(s => !(s.startsWith('(') && s.endsWith(')'))).join('/')
 	return `/${path}`
 }

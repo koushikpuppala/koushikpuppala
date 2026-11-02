@@ -53,8 +53,6 @@ const resultSchema = (type: Type<unknown>, isArray: boolean, isPaginated: boolea
 	return isArray ? { type: 'array', items: item } : item
 }
 
-// Documents an endpoint with the ResponseInterceptor envelope around its result, plus the
-// error responses it can return, so each controller method needs a single decorator.
 export const ApiEndpoint = ({
 	type,
 	method,

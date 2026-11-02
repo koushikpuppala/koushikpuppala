@@ -24,7 +24,7 @@ export const fetchPublished = async <T>(path: string, subject: string): Promise<
 
 		return data
 	} catch (error) {
-		// Inside a 'use cache' caller: cache a failure only briefly so the page recovers soon after the API does.
+		// Cache a failure only briefly so the page recovers soon after the API does.
 		cacheLife('minutes')
 
 		return {

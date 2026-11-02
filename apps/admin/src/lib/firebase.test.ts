@@ -26,7 +26,6 @@ const ENV = {
 	NEXT_PUBLIC_FIREBASE_APP_ID: 'app',
 }
 
-// The module caches the Auth instance, so each test loads a fresh copy.
 const load = async () => {
 	vi.resetModules()
 	return import('lib/firebase')

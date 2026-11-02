@@ -175,7 +175,6 @@ describe('admin lists, filters and single records (e2e)', () => {
 		it('marks a message read when opened, records when it is resolved, and deletes it', async () => {
 			const c = await contact('Compilers')
 
-			// The contact's own `message` field must come back in the record, not replace the response message.
 			const opened = (await get(`/api/v1/contacts/${c.id}`).expect(200)).body
 			expect(opened.result).toMatchObject({ id: c.id, status: 'READ', message: 'Compilers message' })
 			const resolved = await t.http().patch(`/api/v1/contacts/${c.id}`).set(auth).send({ status: 'RESOLVED' }).expect(200)

@@ -37,7 +37,7 @@ Monorepo for Koushik Puppala's digital presence, comprising a public portfolio w
 
 ## Stack & Tooling
 
-- **Language & Runtime**: TypeScript 7.0 (apps/server stays on 6.0 until Nest CLI supports 7, see apps/server/AGENTS.md) / Node.js 24.x (CI and the `node:24-alpine` Docker images both pin 24; the moving `node:lts` tag now points at Node 26, whose images have no Corepack)
+- **Language & Runtime**: TypeScript 7.0 (apps/server stays on 6.0 until Nest CLI supports 7, see apps/server/AGENTS.md) / Node.js (CI uses `lts/*`; the Docker images use `public.ecr.aws/docker/library/node:26-alpine`, pinned to a major; Node 25+ images have no Corepack, so the Dockerfiles install pnpm from npm in a build-only `tooling` stage, at the version in `packageManager`, which must stay equal)
 - **Package Manager**: pnpm 12.15 (workspace protocol, `--filter` scoping)
 - **Build System**: Turborepo 2.x
 - **Frontend Framework**: Next.js 16.4 (App Router), React 19.3

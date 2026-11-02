@@ -70,7 +70,6 @@ export const ResumeView = () => {
 
 		if (!file) return
 
-		// The API rejects anything else on save; checking first avoids uploading a file that can't be used.
 		if (file.type !== 'application/pdf') {
 			editor.setError('The resume must be a PDF document.')
 			return

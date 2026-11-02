@@ -23,7 +23,6 @@ export const useMediaLibrary = <T extends Identified>({
 	const [loadingMore, setLoadingMore] = useState(false)
 	const [error, setError] = useState<string | null>(null)
 
-	// Debounce typing so the API is queried once the user pauses.
 	useEffect(() => {
 		const timer = setTimeout(() => setTerm(search.trim()), SEARCH_DELAY)
 
@@ -51,7 +50,6 @@ export const useMediaLibrary = <T extends Identified>({
 			if (res.data) {
 				const next = toItems(res.data)
 
-				// When appending, skip items already shown, e.g. ones that shifted pages after a new upload.
 				setItems(prev =>
 					appending
 						? [...prev, ...next.filter(item => !prev.some(shown => shown.id === item.id))]

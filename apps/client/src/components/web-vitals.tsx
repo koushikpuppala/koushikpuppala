@@ -7,7 +7,6 @@ import Clarity from '@microsoft/clarity'
 import { useReportWebVitals } from 'next/web-vitals'
 import { GoogleAnalytics, sendGAEvent } from '@next/third-parties/google'
 
-// Safari has no requestIdleCallback, so it falls back to a delay.
 const whenIdle = (start: () => void) => {
 	if ('requestIdleCallback' in window) {
 		const handle = requestIdleCallback(start)
@@ -31,7 +30,6 @@ export const WebVitals = ({ clarityId, googleAnalyticsId }: WebVitalsProps) => {
 	const [analyticsReady, setAnalyticsReady] = useState(false)
 	const pending = useRef<NextWebVitalsMetric[]>([])
 
-	// Both tags start when the browser is idle so they do not compete with the first render.
 	useEffect(() => {
 		if (!clarityId) return
 
@@ -50,7 +48,6 @@ export const WebVitals = ({ clarityId, googleAnalyticsId }: WebVitalsProps) => {
 	useEffect(() => {
 		if (!analyticsReady) return
 
-		// The tag's own init script runs later, so create the queue it will pick up before sending.
 		Reflect.set(window, 'dataLayer', Reflect.get(window, 'dataLayer') ?? [])
 		pending.current.splice(0).forEach(sendMetric)
 	}, [analyticsReady])

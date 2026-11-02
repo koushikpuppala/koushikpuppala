@@ -5,11 +5,20 @@ import { unwrap } from 'lib/api-result'
 import { getPublishedProjects, getPublishedProjectBySlug } from 'actions/cache/projects'
 import { SITE_DOMAIN } from 'constants/site'
 
-// Images hosted on this site are turned into relative paths so next/image serves them locally.
+const LOOPBACK_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]'])
+
 const toImageSrc = (url: string | null | undefined): string | null => {
 	if (!url) return null
 
-	return url.startsWith(`${SITE_DOMAIN}/`) ? url.slice(SITE_DOMAIN.length) : url
+	if (url.startsWith(`${SITE_DOMAIN}/`)) return url.slice(SITE_DOMAIN.length)
+
+	try {
+		const { hostname, pathname, search } = new URL(url)
+
+		return LOOPBACK_HOSTS.has(hostname) ? `${pathname}${search}` : url
+	} catch {
+		return url
+	}
 }
 
 const text = (value: unknown): string => String(value || '')

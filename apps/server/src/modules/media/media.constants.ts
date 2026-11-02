@@ -17,6 +17,5 @@ export const ALLOWED_UPLOADS: Record<string, AllowedUpload> = {
 	'audio/ogg': { extensions: ['.ogg', '.oga'], type: MediaType.AUDIO },
 }
 
-// Matches keys built by MediaService.requestPresignedUpload: '<folder>/<uuid>.<extension>'.
 export const STORAGE_KEY_PATTERN =
 	/^[a-zA-Z0-9_\-/]+\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[a-z0-9]+$/

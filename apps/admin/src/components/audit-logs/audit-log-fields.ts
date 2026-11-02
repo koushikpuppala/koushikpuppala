@@ -19,7 +19,6 @@ const isBlank = (value: unknown) =>
 	value === '' ||
 	(Array.isArray(value) && value.length === 0)
 
-// null, undefined, '' and [] all count as empty, so switching between them is not shown as a change.
 const same = (a: unknown, b: unknown) =>
 	(isBlank(a) && isBlank(b)) || JSON.stringify(a) === JSON.stringify(b)
 
@@ -38,7 +37,6 @@ export const recordFields = (record: unknown, side: 'before' | 'after'): FieldRo
 		? Object.entries(record).map(([key, value]) => ({ key, label: fieldLabel(key), [side]: value }))
 		: []
 
-// Audit data is stored as JSON, so dates come back as ISO strings.
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/
 
 export const displayValue = (value: unknown): DisplayValue => {

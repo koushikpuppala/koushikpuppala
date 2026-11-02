@@ -44,7 +44,6 @@ export const DataTableBody = ({
 			</TableBody>
 		)
 
-	// The caller's empty state describes an empty collection, so it only shows while no filter is on.
 	const custom = emptyState && !hasActiveFilters ? emptyState : undefined
 	const fallback = hasActiveFilters ? NO_MATCH : 'There is nothing here yet.'
 

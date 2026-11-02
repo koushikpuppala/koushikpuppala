@@ -102,10 +102,8 @@ export const useContactForm = (): ContactFormState => {
 		event.preventDefault()
 		setSubmitError(null)
 
-		// Hidden honeypot field; only bots fill it in.
 		if (String(new FormData(event.currentTarget).get('company') ?? '')) return
 
-		// A form submitted faster than a person could type is almost certainly a bot.
 		if (Date.now() - mountedAt.current < MIN_FILL_MS) {
 			setSubmitError('Please take a moment before submitting to ensure clean delivery.')
 			return
@@ -129,7 +127,6 @@ export const useContactForm = (): ContactFormState => {
 		setLoading(true)
 
 		try {
-			// Without a site key (local development) no script loads and no token is sent.
 			const token = reCaptchaKey
 				? await executeRecaptcha(RECAPTCHA_ACTION).catch(() => {
 						throw new Error(

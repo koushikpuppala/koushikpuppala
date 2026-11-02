@@ -8,8 +8,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toItems } from 'actions/collection'
 import { toListQuery } from 'lib/list-query'
 
-// Returns a fresh AbortSignal each call and aborts the previous request, so a slow response
-// for old filters can never overwrite the results for the current ones.
 export const useLatestRequest = (): (() => AbortSignal) => {
 	const controller = useRef<AbortController | null>(null)
 
@@ -23,7 +21,6 @@ export const useLatestRequest = (): (() => AbortSignal) => {
 	}, [])
 }
 
-// Fetches a list page from the API whenever the table's URL parameters change.
 export const useServerList = <R extends ListResult<unknown>>(
 	fetchPage: ListFetcher<R>,
 	options?: ListQueryOptions,

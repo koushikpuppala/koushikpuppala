@@ -76,7 +76,6 @@ export class UserAccountService {
 				{ result: created => ({ userId: created.id }), expected: isUniqueViolation },
 			)
 		} catch (error) {
-			// Two first requests from the same new user can race to create the row; the loser updates it instead.
 			if (!isUniqueViolation(error)) throw error
 
 			this.logger.warn(

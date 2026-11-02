@@ -9,7 +9,6 @@ import type {
 import { emailAddress } from 'lib/email'
 import { SITE_DOMAIN, SITE_NAME } from 'constants/site'
 
-// Stable node ids let every page point at the same Person and WebSite instead of describing them again.
 const PERSON_ID = `${SITE_DOMAIN}/#person`
 const WEBSITE_ID = `${SITE_DOMAIN}/#website`
 
@@ -54,7 +53,6 @@ export const buildPerson = ({
 		image: image ? { '@type': 'ImageObject', url: image, caption: SITE_NAME } : undefined,
 		description: about?.leadStatement || undefined,
 		jobTitle: current?.title,
-		// The Role pattern keeps each job's title and dates, so ended jobs read as history, not current work.
 		worksFor: nonEmpty(
 			experience.map(item => ({
 				'@type': 'OrganizationRole' as const,

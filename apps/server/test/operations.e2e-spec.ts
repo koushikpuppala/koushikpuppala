@@ -83,7 +83,6 @@ describe('health, API metrics and metadata (e2e)', () => {
 
 			const page = await t.http().get('/api/v1/api-metrics?limit=2&page=1&search=req-').set(auth).expect(200)
 			expect(page.body.result).toHaveLength(2)
-			// The API also records this test's own requests, whose URLs contain the search text.
 			expect(page.body.count).toBeGreaterThanOrEqual(5)
 		})
 	})

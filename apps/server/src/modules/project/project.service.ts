@@ -19,7 +19,6 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 const ENTITY = 'Project'
 const GALLERY = 'ProjectGallery'
 
-// Public responses carry only what the site renders, never the bucket, storage key or uploader.
 const PUBLIC_MEDIA = {
 	select: { id: true, url: true, fileName: true, altText: true, width: true, height: true },
 } satisfies Prisma.MediaDefaultArgs
@@ -197,7 +196,6 @@ export class ProjectService extends BaseService {
 		return this.audit.softDeleted(ENTITY, actor, existing, () =>
 			this.prisma.project.update({
 				where: { id },
-				// Free up the unique slug so a new project can reuse it.
 				data: { deletedAt: new Date(), slug: `${existing.slug}--deleted-${Date.now()}` },
 			}),
 		)
@@ -216,7 +214,6 @@ export class ProjectService extends BaseService {
 			sortOrder: dto.sortOrder ?? 0,
 		}
 
-		// Adding media that is already in the gallery updates its fields instead of failing.
 		const galleryItem = await this.prisma.projectGallery.upsert({
 			where: { projectId_mediaId: { projectId, mediaId: dto.mediaId } },
 			update: fields,

@@ -61,7 +61,6 @@ describe('authentication and roles (e2e)', () => {
 		const { auth, refreshToken } = await createUser(t.prisma, UserRole.EDITOR)
 
 		await t.http().post('/api/v1/auth/login').set(auth).expect(201)
-		// Firebase compares revocation times in whole seconds, so wait for the token's second to pass.
 		await new Promise(resolve => setTimeout(resolve, 1100))
 		await t.http().post('/api/v1/auth/logout').set(auth).expect(204)
 

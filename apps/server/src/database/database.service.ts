@@ -12,13 +12,13 @@ export class DatabaseService extends PrismaClient implements OnModuleInit, OnMod
 	private readonly pool: Pool
 
 	constructor(config: Configuration) {
-		// Own the pg pool so it can be closed on shutdown; Prisma's adapter does not end it.
 		const pool = new Pool(config.database)
 
 		const adapter = new PrismaPg(pool)
 
 		super({ adapter, errorFormat: config.production ? 'minimal' : 'pretty' })
 
+		// The adapter does not close the pg pool, so it is kept to be ended on shutdown.
 		this.pool = pool
 
 		// biome-ignore lint/correctness/noConstructorReturn: Prisma extensions return a new client

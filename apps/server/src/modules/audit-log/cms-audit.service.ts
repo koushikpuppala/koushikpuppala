@@ -5,7 +5,6 @@ import { AuditAction } from '@repo/prisma'
 import { publishFields } from 'common/utils/publish.util'
 import { AuditLogService } from './audit-log.service'
 
-// Shared write-then-audit steps for the CMS services, so each one records changes the same way.
 @Injectable()
 export class CmsAuditService {
 	constructor(private readonly auditLog: AuditLogService) {}

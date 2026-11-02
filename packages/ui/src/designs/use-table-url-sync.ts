@@ -6,7 +6,6 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const sortedQuery = (params: URLSearchParams) => new URLSearchParams([...params.entries()].sort())
 
-// The table's own parameters. Default values are left out so a fresh table has a clean URL.
 const tableEntries = ({
 	defaultPageSize,
 	pagination,
@@ -39,7 +38,6 @@ export const buildTableQuery = (
 	const hidden = `hide_${prefix}`
 	const query = new URLSearchParams()
 
-	// Keep parameters owned by other tables on the page (different prefix) untouched.
 	for (const [key, value] of current.entries())
 		if (!key.startsWith(prefix) && !key.startsWith(hidden)) query.set(key, value)
 
@@ -86,7 +84,6 @@ export const useTableUrlSync = ({
 			disablePageSizeOptions,
 		})
 
-		// Compare queries independent of parameter order, so an unchanged state never triggers a navigation.
 		const next = `${pathname}?${sortedQuery(query).toString()}`
 		const current = `${pathname}?${sortedQuery(searchParams).toString()}`
 

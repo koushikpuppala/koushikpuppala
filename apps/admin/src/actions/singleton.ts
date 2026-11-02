@@ -4,7 +4,6 @@ import { pickFields } from 'lib/utils'
 import { toItems } from 'actions/collection'
 
 export const createSingletonActions = <T>(base: string, fields?: readonly string[]) => ({
-	// Edit the published record when there is one; otherwise fall back to the newest draft.
 	get: async <R = T>(): Promise<FetchResult<R>> => {
 		const live = await adminFetch<ListResult<R>>(`${base}?limit=1&isPublished=true`)
 		if (live.error || !live.data) return { ...live, data: null }

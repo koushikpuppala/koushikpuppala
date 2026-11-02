@@ -1,6 +1,7 @@
 import type { JsonLdProps } from 'types/components/client'
 
-// The data comes from the API, so "<" is escaped to keep a value like "</script>" from closing the tag early.
+// The data comes from the API, so '<' is escaped to keep a value like </script> from closing the
+// tag early.
 const serialize = (data: JsonLdProps['data']): string => JSON.stringify(data).replace(/</g, '\\u003c')
 
 export const JsonLd = ({ data }: JsonLdProps) => (

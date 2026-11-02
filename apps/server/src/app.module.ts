@@ -64,7 +64,6 @@ import { ExperienceModule } from 'modules/experience/experience.module'
 		SentryModule.forRoot(),
 		ScheduleModule.forRoot(),
 		EventEmitterModule.forRoot(),
-		// A generous global ceiling per client; sensitive public routes such as the contact form set their own.
 		ThrottlerModule.forRoot([{ ttl: 60_000, limit: 1000 }]),
 	],
 	controllers: [],

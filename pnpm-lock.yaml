@@ -259,6 +259,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ~5.0.5
         version: 5.0.5(vitest@5.0.5)
+      babel-plugin-react-compiler:
+        specifier: ~1.0.0
+        version: 1.0.0
       jsdom:
         specifier: ~30.1.3
         version: 30.1.3(@noble/hashes@1.8.0)
@@ -3793,9 +3796,6 @@ packages:
 
   '@types/multer@2.3.0':
     resolution: {integrity: sha512-i7STIm9V4K2MPH4ZYMtrZAwNxs3kglk2LgleaTuB9pUXgADBcQYQuYMd7+6xgTIxfoggIkFA/DkkvycdZpIARA==}
-
-  '@types/node@26.6.5':
-    resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
 
   '@types/node@26.6.6':
     resolution: {integrity: sha512-MzQj+8Kx3XI40OmUAE6Qoh58ZMNstNNMwn2nfd3qWsfe7nDNSqJNzes4njhz6AHwrSHOffSLwXU6yb474Q4aog==}
@@ -10537,10 +10537,6 @@ snapshots:
     dependencies:
       '@types/express': 5.0.6
 
-  '@types/node@26.6.5':
-    dependencies:
-      undici-types: 8.9.0
-
   '@types/node@26.6.6':
     dependencies:
       undici-types: 8.9.0
@@ -12388,7 +12384,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 26.6.5
+      '@types/node': 26.6.6
       merge-stream: 2.0.0
       supports-color: 8.1.1
 

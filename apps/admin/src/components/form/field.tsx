@@ -21,7 +21,6 @@ export const Field = ({
 			<Label htmlFor={id} className={LABEL[variant]}>
 				{label}
 			</Label>
-			{/* Kept outside the label so its accessible name stays the plain label text. */}
 			{required && (
 				<span aria-hidden='true' className='text-destructive text-xs'>
 					*

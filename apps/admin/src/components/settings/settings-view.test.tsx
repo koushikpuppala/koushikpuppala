@@ -80,7 +80,6 @@ describe('SettingsView', () => {
 		await userEvent.click(screen.getByLabelText('New keyword'))
 		await userEvent.paste('Ada')
 		await userEvent.click(screen.getByRole('button', { name: /^add$/i }))
-		// A duplicate is ignored and stays in the box for the editor to change.
 		expect(screen.getByLabelText('New keyword')).toHaveValue('Ada')
 		await userEvent.clear(screen.getByLabelText('New keyword'))
 		await userEvent.click(screen.getByLabelText('New keyword'))
@@ -196,7 +195,6 @@ describe('SettingsView', () => {
 		render(<SettingsView />)
 		await screen.findByDisplayValue('Ada Lovelace')
 
-		// There is no URL box to type into: the API only accepts uploaded media from the CDN.
 		expect(screen.queryByLabelText('OpenGraph image URL')).not.toBeInTheDocument()
 
 		const pick = async (button: string) => {

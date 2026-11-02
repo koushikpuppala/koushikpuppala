@@ -21,7 +21,6 @@ export class MetadataService extends BaseService {
 		super()
 	}
 
-	// Gives every path one form ('/about', never 'about' or '/about/') so it matches the stored keys.
 	normalizePath(pathname?: string): string {
 		if (!pathname) return '/'
 
@@ -34,14 +33,10 @@ export class MetadataService extends BaseService {
 		return p
 	}
 
-	// Resolves from the one cached list of published records instead of caching per requested path,
-	// so a public caller cannot fill Redis by asking for endless made up paths.
 	async getPublishedByPath(pathname: string) {
 		const normalized = this.normalizePath(pathname)
 		const published = await this.getAllPublished()
 
-		// Lookup order: exact path, the same key without a leading slash, the project detail
-		// template for /projects/<slug>, and finally the site-wide default.
 		const candidates = [
 			[normalized],
 			[normalized === '/' ? 'home' : normalized.slice(1)],
@@ -161,9 +156,9 @@ export class MetadataService extends BaseService {
 		)
 	}
 
-	// Every image the sites show comes from uploaded media on our CDN, never an outside host. The trailing
-	// slash stops look-alike hosts such as https://cdn.example.com.evil.net from passing the prefix check.
 	private assertCdnImage(url?: string | null): void {
+		// The trailing slash stops look-alike hosts such as cdn.example.com.evil.net from passing the
+		// prefix check.
 		if (url && !url.startsWith(`${this.config.aws.cdnUrl}/`))
 			throw new BadRequestException('ogImage must be an uploaded media URL served from the CDN')
 	}
@@ -176,7 +171,6 @@ export class MetadataService extends BaseService {
 	}
 
 	private async invalidate<T>(result: T): Promise<T> {
-		// Any change can affect fallback results for other paths, so clear all cached metadata.
 		await this.cache.forgetByPattern('metadata:*')
 
 		return result

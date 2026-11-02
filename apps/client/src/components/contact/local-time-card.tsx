@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { Clock } from 'components/icons'
 import { classNames } from 'utils/classNames'
 
-// Always shows the time in India, where Koushik works, whatever the visitor's time zone.
 const IST_TIME = new Intl.DateTimeFormat('en-US', {
 	timeZone: 'Asia/Kolkata',
 	hour: 'numeric',

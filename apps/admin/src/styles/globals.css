@@ -10,7 +10,6 @@
 		var(--font-jakarta), 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
-/* Plus Jakarta Sans has no monospace cut, so text that used to be mono keeps its digits aligned with fixed-width numerals. */
 @layer base {
 	.font-mono,
 	pre,

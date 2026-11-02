@@ -32,8 +32,6 @@ const PAGE_DEFAULTS: Record<MetadataPageKey, PageDefaults> = {
 
 const FALLBACK_DEFAULTS: PageDefaults = { title: 'Koushik Puppala', canonicalUrl: SITE_DOMAIN }
 
-// The API falls back to the site-wide record when a page has none. Only accept an exact match, so
-// each page keeps its own title and canonical URL from PAGE_DEFAULTS.
 const fetchPageMetadata = async (path: string, key: string): Promise<PublishedMetadata | null> => {
 	try {
 		const res = await getPublishedMetadataByPath(path)
@@ -75,7 +73,6 @@ const toMetadata = (page: ResolvedPageMetadata): Metadata => {
 	const socialTitle = isHome ? title : `${title} — Koushik Puppala`
 
 	return {
-		// The home page title skips the layout's title template.
 		title: isHome ? { absolute: title } : title,
 		description,
 		keywords,

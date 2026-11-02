@@ -204,7 +204,6 @@ describe('CMS collection lifecycle (e2e)', () => {
 			.set(auth)
 			.send({ ...create, ogImage: 'https://elsewhere.example/og.png' })
 			.expect(400)
-		// Starts with the CDN host but is a different host, so a bare prefix check would let it through.
 		await t
 			.http()
 			.post('/api/v1/metadata')

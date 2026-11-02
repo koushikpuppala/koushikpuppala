@@ -107,7 +107,6 @@ export const StackClusters = ({ services, className }: StackClustersProps) => {
 								aria-labelledby={`${baseId}-tab-${i}`}
 								hidden={!selected}
 								className='relative p-6 sm:p-8 lg:p-10'>
-								{/* Only the open panel renders its list; hidden ones would add DOM and run entrance animations unseen. */}
 								{selected ? (
 									<>
 										<p className='text-eyebrow'>{service.title}</p>

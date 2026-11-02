@@ -1,6 +1,5 @@
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-// Dates are read in UTC so a month boundary never shifts with the visitor's time zone.
 export const formatMonthYear = (iso: string | null | undefined, fallback = 'Present') => {
 	if (!iso) return fallback
 
@@ -40,11 +39,8 @@ export const durationLabel = (start: string, end: string | null | undefined, now
 
 		if (Number.isNaN(to.getTime())) return ''
 
-		// Count both the start and end months, so Jan to Dec is 12 months.
 		months = span(to) + 1
 	} else {
-		// Ongoing roles need the current date, which is only passed in on the client to avoid a
-		// server and client mismatch.
 		if (!now) return ''
 
 		months = span(now) - (now.getUTCDate() < from.getUTCDate() ? 1 : 0)

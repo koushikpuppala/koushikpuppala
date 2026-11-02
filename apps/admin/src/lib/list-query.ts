@@ -4,8 +4,6 @@ export const publishFilter = (value: string): [string, string] => [
 	String(value === 'PUBLISHED'),
 ]
 
-// The date pickers hold a calendar day; the API gets that day's start or end in the viewer's own timezone,
-// so filtering in India covers the IST day rather than the UTC one.
 const toDayBound = (key: string, value: string): string => {
 	if ((key !== 'from' && key !== 'to') || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return value
 
@@ -18,8 +16,6 @@ const toDayBound = (key: string, value: string): string => {
 	).toISOString()
 }
 
-// Translates the DataTable's URL parameters into the API's query format: pageSize becomes limit,
-// column ids map to API sort fields, and filters map to their API parameters.
 export const toListQuery = (
 	params: ReadableParams,
 	{ sort = {}, filters = {} }: ListQueryOptions = {},
@@ -53,8 +49,6 @@ export const toListQuery = (
 	return query
 }
 
-// For tables that always ask for their own page size: page and limit with defaults, plus each
-// listed filter that has a value.
 export const toPageQuery = (
 	params: ReadableParams,
 	filters: readonly string[],

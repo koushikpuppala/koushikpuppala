@@ -11,6 +11,7 @@
 			"env": [
 				"ENVIRONMENT",
 				"NEXT_PUBLIC_*",
+				"NEXT_DEPLOYMENT_ID",
 				"SENTRY_*",
 				"CDN_URL",
 				"AWS_REGION",

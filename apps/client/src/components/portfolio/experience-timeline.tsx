@@ -23,8 +23,6 @@ const yearOf = (value: string | null | undefined) => {
 	return Number.isNaN(parsed.getTime()) ? null : parsed.getFullYear()
 }
 
-// The server snapshot is null, so durations of ongoing roles render only after hydration and
-// the server HTML never disagrees with the client's clock. The date is read once and shared.
 let clientNow: Date | null = null
 const subscribeNow = () => () => {}
 const getNow = () => (clientNow ??= new Date())

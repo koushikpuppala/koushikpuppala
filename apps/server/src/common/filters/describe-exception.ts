@@ -27,7 +27,6 @@ const PRISMA_ERRORS: Record<string, DescribedError> = {
 	},
 }
 
-// Each error gets a raw message for the logs and a safe client message for the response.
 const describeHttp = (exception: HttpException): DescribedError => {
 	const body = exception.getResponse()
 	const rawMessage =
@@ -76,7 +75,6 @@ export const describeException = (exception: unknown, production: boolean): Desc
 	return {
 		status: HttpStatus.INTERNAL_SERVER_ERROR,
 		rawMessage,
-		// Unknown errors can carry internals, so production responses use a generic message.
 		clientMessage: production ? UNEXPECTED : toMessage(rawMessage),
 	}
 }

@@ -60,7 +60,6 @@ export const useFormReducer = <T extends Record<string, string>>({
 			const formattedErrors: Partial<Record<keyof T, string>> = {}
 			for (const issue of result.error.issues) {
 				const field = issue.path[0] as keyof T
-				// Keep only the first issue per field.
 				if (field && !formattedErrors[field]) formattedErrors[field] = issue.message
 			}
 			dispatch({ type: 'SET_ERRORS', errors: formattedErrors })
@@ -72,7 +71,8 @@ export const useFormReducer = <T extends Record<string, string>>({
 	const handleChange = useCallback(
 		(field: keyof T, value: unknown) => {
 			dispatch({ type: 'SET_FIELD', field, value })
-			// Validate while typing only after the field was blurred once, so errors do not appear mid-entry.
+			// Validate while typing only after the field was blurred once, so errors do not appear
+			// mid-entry.
 			if (schema && state.touched[field]) {
 				const updatedValues = { ...state.values, [field]: value }
 				const result = schema.safeParse(updatedValues)

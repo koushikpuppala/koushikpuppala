@@ -43,7 +43,6 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
 		if (open) {
 			setQuery('')
 			setSelectedIndex(0)
-			// Wait for the dialog to mount and finish its enter transition before focusing the input.
 			setTimeout(() => inputRef.current?.focus(), 50)
 		}
 	}, [open])

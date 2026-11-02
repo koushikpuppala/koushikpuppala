@@ -1,11 +1,4 @@
 #!/bin/bash
-# Deploys one app from inside its folder on EC2 (~/services/portfolio/<app>), by hand or from the
-# deploy workflow. The folder name picks the app; the tag is the one CI pushed to ECR.
-#   ECR_REGISTRY=... ECR_REPOSITORY=... AWS_REGION=... ./deploy.sh 22-10-2026v1
-#   ./deploy.sh rollback      (server and client: switch back to the previous slot)
-#
-# server and client deploy blue-green: the new tag starts in the idle slot, nginx switches to it once
-# it is healthy, and the old slot is stopped (kept for rollback). admin is replaced in place.
 
 set -euo pipefail
 
@@ -56,9 +49,9 @@ login() {
     docker login --username AWS --password-stdin "$ECR_REGISTRY"
 }
 
-# --wait returns once the image's HEALTHCHECK reports healthy; the server's only does after its
-# entrypoint has applied database migrations.
 start() {
+  # --wait returns once the image's HEALTHCHECK reports healthy; the server's only does after its
+  # entrypoint has applied migrations.
   if ! docker compose "$@" up -d --wait --wait-timeout 180; then
     echo "❌ $APP did not become healthy"
     docker compose "$@" logs --tail 100
@@ -106,11 +99,11 @@ PORT=$(port "$TARGET")
 [ "$1" = rollback ] || docker compose -p "$(project "$TARGET")" pull
 start -p "$(project "$TARGET")"
 
-# nginx -t checks the new upstream before the reload; a failure restores the old one and leaves the
-# live slot serving.
 echo "🔀 Switching nginx to $TARGET (127.0.0.1:$PORT)..."
 [ -f "$UPSTREAM" ] && cp "$UPSTREAM" "$UPSTREAM.previous"
 printf 'server 127.0.0.1:%s;\n' "$PORT" > "$UPSTREAM"
+# nginx -t checks the new upstream before the reload; on failure the previous upstream is restored
+# and the new slot stopped.
 if ! sudo -n nginx -t; then
   [ -f "$UPSTREAM.previous" ] && mv "$UPSTREAM.previous" "$UPSTREAM"
   docker compose -p "$(project "$TARGET")" stop
@@ -122,8 +115,9 @@ sudo -n systemctl reload nginx
 echo "$TARGET" > .active-slot
 echo "$IMAGE_TAG" > ".tag-$TARGET"
 
-# Let requests already on the old slot finish, then stop it. It is kept (not removed) for rollback.
 if [ -n "$ACTIVE" ] && [ "$ACTIVE" != "$TARGET" ]; then
+  # Let requests already on the old slot finish; it is stopped, not removed, so rollback can start
+  # it again.
   sleep 10
   SLOT="$ACTIVE" PORT=$(port "$ACTIVE") IMAGE_TAG=$(cat ".tag-$ACTIVE" 2>/dev/null || echo "$IMAGE_TAG") \
     docker compose -p "$(project "$ACTIVE")" stop

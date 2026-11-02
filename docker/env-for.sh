@@ -1,12 +1,11 @@
 #!/bin/sh
-# Reads the full .env on stdin and prints only the lines the named app reads, so the internet facing
-# Next.js apps never hold the database, Firebase admin or Redis credentials. The server reads nearly
-# every key and gets the whole file. Usage: env-for.sh <client|admin|server> <build|run>
 set -eu
 
 APP=${1:?app name required}
 STAGE=${2:?build or run required}
 
+# Each app gets only its own keys, so the internet-facing Next.js apps never hold the database,
+# Firebase admin or Redis credentials.
 case "$APP" in
   server)
     cat
@@ -24,7 +23,7 @@ case "$APP" in
     ;;
 esac
 
-# The Sentry token only uploads source maps during the build, so a running container never needs it.
+# The Sentry token only uploads source maps during the build; it is never needed at runtime.
 if [ "$STAGE" = build ]; then KEYS="$KEYS|SENTRY_AUTH_TOKEN"; fi
 
 grep -E "^($KEYS)[[:space:]]*=" || true

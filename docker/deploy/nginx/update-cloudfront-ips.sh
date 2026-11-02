@@ -1,8 +1,4 @@
 #!/bin/bash
-# Writes the CloudFront origin facing IP ranges as nginx set_real_ip_from lines, so nginx takes the
-# visitor's address from X-Forwarded-For only when the request really came through CloudFront.
-# Run once during setup and weekly from cron (AWS changes the list); nginx reloads only when it changed.
-#   sudo crontab -e  ->  0 4 * * 1 /usr/local/sbin/update-cloudfront-ips.sh
 
 set -euo pipefail
 
@@ -10,11 +6,13 @@ OUT=/etc/nginx/portfolio/cloudfront-realip.conf
 TMP=$(mktemp)
 trap 'rm -f "$TMP"' EXIT
 
+# nginx takes the visitor address from X-Forwarded-For only when the request really came through
+# CloudFront, so these ranges must stay current.
 RANGES=$(curl -fsS https://ip-ranges.amazonaws.com/ip-ranges.json |
   jq -r '(.prefixes[] | select(.service == "CLOUDFRONT_ORIGIN_FACING") | .ip_prefix),
          (.ipv6_prefixes[] | select(.service == "CLOUDFRONT_ORIGIN_FACING") | .ipv6_prefix)')
 
-# An empty list would silently trust nobody and log CloudFront's addresses as visitors.
+# An empty list would make nginx trust no proxy, so the previous file is kept instead.
 if [ -z "$RANGES" ]; then
   echo "No CloudFront ranges found; keeping $OUT" >&2
   exit 1

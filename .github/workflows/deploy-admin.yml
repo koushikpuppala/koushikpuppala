@@ -1,9 +1,6 @@
 name: Deploy Admin
 run-name: Deploy Admin - ${{ github.ref_name }}
 
-# Runs when a push to master changes the admin or something it is built from, or by hand from the
-# Actions tab (for example after changing the ENV_FILE secret, which the build and the container read).
-# The version comes from the commit titles, and the commit is tagged admin-v<version> after a good deploy.
 on:
   push:
     branches:
@@ -21,8 +18,8 @@ on:
       - '.github/workflows/deploy-admin.yml'
   workflow_dispatch:
 
-# A running release is never cancelled: stopping it could leave the container half replaced. While
-# one runs, GitHub keeps only the newest waiting run, which already contains the older commits.
+# A running release is never cancelled; GitHub keeps only the newest waiting one, which already
+# contains the older commits.
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
@@ -35,9 +32,7 @@ permissions:
   contents: read
   id-token: write
 
-# No test job: master only changes through pull requests, and test.yml must pass on each one first.
 jobs:
-  # DD-MM-YYYYv<n> in Indian time, where n counts this app's releases pushed to ECR that day.
   tag:
     name: Pick image tag
     runs-on: ubuntu-latest
@@ -48,7 +43,6 @@ jobs:
       exists: ${{ steps.version.outputs.exists }}
 
     steps:
-      # Fail before any work when the repository prefix is missing, instead of at the image push.
       - name: Check required variables
         env:
           ECR_REPOSITORY_PREFIX: ${{ vars.ECR_REPOSITORY_PREFIX }}
@@ -63,10 +57,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # The next version comes from the conventional commit titles since the last admin-v* tag, looking
-      # only at commits that touch this app: a "!" or BREAKING CHANGE is major, feat is minor, anything
-      # else (fix, chore, docs) is a patch, so every build gets its own version. With no tag yet, the first
-      # release is the version in package.json as it is (the starting version).
       - name: Pick the version
         id: version
         run: |
@@ -146,7 +136,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v7.0.1
 
-      # Not committed: it only makes the image, Sentry's release name and the API docs report this version.
       - name: Stamp the version
         env:
           VERSION: ${{ needs.tag.outputs.version }}
@@ -177,8 +166,6 @@ jobs:
             ${{ needs.tag.outputs.version }}
             sha-${{ github.sha }}
 
-      # Only this app's keys, passed to the build as a BuildKit secret so they never reach an image
-      # layer or the Actions cache (a public repository's pull requests can read that cache).
       - name: Write build settings
         env:
           ENV_FILE: ${{ secrets.ENV_FILE }}
@@ -186,7 +173,6 @@ jobs:
           umask 077
           printf '%s\n' "$ENV_FILE" | sh docker/env-for.sh admin build > "$RUNNER_TEMP/build.env"
 
-      # Built into the runner's Docker first, so a vulnerable image is stopped before it reaches ECR.
       - name: Build Docker image
         uses: docker/build-push-action@v7.4.0
         with:
@@ -198,11 +184,11 @@ jobs:
           platforms: linux/amd64
           secret-files: |
             env=${{ runner.temp }}/build.env
+          build-args: |
+            DEPLOYMENT_ID=${{ needs.tag.outputs.tag }}
           cache-from: type=gha,scope=admin
           cache-to: type=gha,mode=max,scope=admin
 
-      # Fails on a high or critical CVE that has a fix. The scanner image is pinned by digest, since a
-      # moved tag would run unreviewed code with the runner's Docker socket.
       - name: Scan image for vulnerabilities
         env:
           IMAGE: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:sha-${{ github.sha }}
@@ -247,8 +233,6 @@ jobs:
           ssh-keyscan -H ${{ vars.EC2_HOST }} >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-      # The same docker/deploy/deploy.sh you run by hand: it logs EC2 into ECR with the instance role,
-      # pulls the tag and waits for the container to report healthy.
       - name: Deploy to EC2
         env:
           EC2_TARGET: ${{ vars.EC2_USER }}@${{ vars.EC2_HOST }}
@@ -258,7 +242,6 @@ jobs:
             ECR_REGISTRY='$ECR_REGISTRY' ECR_REPOSITORY='$ECR_REPOSITORY' AWS_REGION='$AWS_REGION' \
             ./deploy.sh '$IMAGE_TAG'"
 
-  # Tags the commit that just went live, so the next run counts from here.
   release:
     name: Tag release
     runs-on: ubuntu-latest

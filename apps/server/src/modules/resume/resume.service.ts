@@ -52,8 +52,6 @@ export class ResumeService extends BaseService {
 
 		if (!resume) throw new NotFoundException('No active resume published')
 
-		// The file's address stays private: visitors only get it through /resume/download, which counts
-		// the download and signs a short-lived link.
 		return { ...withFileName(resume), hasFile: true }
 	}
 
@@ -82,7 +80,6 @@ export class ResumeService extends BaseService {
 			throw new NotFoundException('The resume file is not available')
 		}
 
-		// Counted only once a link exists, so a missing file never inflates the number.
 		await this.prisma.resume.update({
 			where: { id: resume.id },
 			data: { downloads: { increment: 1 } },
@@ -203,8 +200,6 @@ export class ResumeService extends BaseService {
 		return media
 	}
 
-	// Runs after the update has committed. A failed cleanup only leaves an unused file behind,
-	// so it is logged and never fails the save.
 	private async removeReplacedMedia(mediaId: string, actor: string) {
 		try {
 			await this.media.remove(mediaId, actor)

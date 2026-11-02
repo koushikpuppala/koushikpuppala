@@ -43,7 +43,6 @@ export abstract class BaseService {
 	): OrderByList<F | G | 'id'> {
 		if (!sortBy) return fallback as OrderByList<F | G | 'id'>
 
-		// id is a tie-breaker so rows with equal sort values keep a stable order across pages.
 		return [{ [sortBy]: sortOrder ?? 'asc' }, { id: 'asc' }] as OrderByList<F | G | 'id'>
 	}
 }

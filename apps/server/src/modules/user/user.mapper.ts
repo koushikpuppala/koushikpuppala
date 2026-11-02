@@ -6,7 +6,6 @@ import type { UserRecord } from 'types/api'
 import type { AuthenticatedUser } from 'types/auth'
 import type { NameParts } from 'types/server'
 
-// Everything after the first word is treated as the last name.
 export const splitName = (name?: string): NameParts => {
 	if (!name) return { firstName: '', lastName: '' }
 

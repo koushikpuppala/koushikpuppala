@@ -12,7 +12,6 @@ export const adminFetch = async <T>(
 
 	const headers: Record<string, string> = {
 		Accept: 'application/json',
-		// FormData bodies need the browser to set the multipart boundary itself.
 		...(options.body instanceof FormData ? {} : { 'Content-Type': 'application/json' }),
 		...(options.headers as Record<string, string>),
 	}
@@ -39,7 +38,6 @@ export const adminFetch = async <T>(
 			}
 		}
 
-		// Unwrap the API's response envelope so callers receive the result directly.
 		if (json && typeof json === 'object' && 'result' in json)
 			return {
 				data: json.result as T,
@@ -54,7 +52,6 @@ export const adminFetch = async <T>(
 			statusCode,
 		}
 	} catch (err) {
-		// A request cancelled by a newer one is not an error; callers ignore aborted results.
 		if (options.signal?.aborted) return { data: null, error: null, aborted: true }
 
 		return {
@@ -65,8 +62,6 @@ export const adminFetch = async <T>(
 	}
 }
 
-// Three steps: the API issues a presigned URL, the browser uploads straight to S3, then the
-// API checks the object exists and creates the media record.
 export const uploadMediaToS3 = async (file: File, folder = 'general'): Promise<UploadedMedia> => {
 	const mediaType = file.type.startsWith('image/')
 		? 'IMAGE'
@@ -95,7 +90,6 @@ export const uploadMediaToS3 = async (file: File, folder = 'general'): Promise<U
 
 	const { uploadUrl, storageKey } = presignRes.data
 
-	// Content-Type must match the type the URL was signed for, or S3 rejects the upload.
 	const s3Res = await fetch(uploadUrl, {
 		method: 'PUT',
 		headers: {

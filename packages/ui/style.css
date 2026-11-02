@@ -2,7 +2,7 @@
 @source './src';
 
 @custom-variant dark (&:is(.dark *));
-/* Focus rings for keyboard users only: KeyboardFocus sets data-keyboard while Tab is in use. */
+/* Focus rings for keyboard users only: KeyboardFocus sets html[data-keyboard] while Tab is in use. */
 @custom-variant focus-ring (&:is(html[data-keyboard] *):focus-visible);
 
 @theme inline {
