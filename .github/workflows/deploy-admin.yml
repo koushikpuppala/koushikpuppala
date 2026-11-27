@@ -154,7 +154,7 @@ jobs:
 
       - name: Log into Amazon ECR
         id: ecr
-        uses: aws-actions/amazon-ecr-login@v2.1.7
+        uses: aws-actions/amazon-ecr-login@v2.2.0
 
       - name: Extract metadata from Dockerfile
         id: metadata
@@ -219,7 +219,7 @@ jobs:
 
       - name: Log into Amazon ECR
         id: ecr
-        uses: aws-actions/amazon-ecr-login@v2.1.7
+        uses: aws-actions/amazon-ecr-login@v2.2.0
 
       - name: Set up SSH key for EC2
         uses: webfactory/ssh-agent@v0.10.0
