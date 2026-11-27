@@ -1,53 +1,52 @@
 import type { RecentInquiriesProps } from 'types/components/admin'
 import Link from 'next/link'
-import { Button } from 'ui/button'
+import { SkeletonText } from 'ui/skeleton'
+import { formatDate } from 'utils/formatDate'
 import { Inbox } from 'components/icons'
 import { Badge } from 'components/ui/badge'
+import { DashboardPanel } from 'components/dashboard/dashboard-panel'
 
-const DAY = { month: 'short', day: 'numeric' } as const
-
-export const RecentInquiries = ({ contacts }: RecentInquiriesProps) => (
-	<div className='border-border bg-surface space-y-4 rounded-2xl border p-6 shadow-xs lg:col-span-7'>
-		<div className='border-border flex items-center justify-between border-b pb-4'>
-			<div className='flex items-center gap-2'>
-				<Inbox className='text-signal-ink size-4' />
-				<h2 className='font-display text-foreground text-base font-semibold'>Recent Inquiries</h2>
-			</div>
-			<Button asChild variant='ghost' size='sm'>
-				<Link href='/messages'>View all</Link>
-			</Button>
-		</div>
-
-		{contacts.length === 0 ? (
-			<div className='text-muted-foreground py-8 text-center text-sm'>
-				No visitor inquiries in inbox.
-			</div>
-		) : (
-			<div className='divide-border divide-y'>
-				{contacts.map(contact => (
-					<div
-						key={contact.id}
-						className='hover:bg-accent/30 flex flex-col justify-between gap-2 rounded-lg px-2 py-3.5 transition-colors sm:flex-row sm:items-center'>
-						<div className='min-w-0 space-y-1'>
-							<div className='flex items-center gap-2'>
-								<span className='text-foreground truncate font-sans text-sm font-semibold'>
-									{contact.name}
-								</span>
-								{contact.status === 'UNREAD' && <Badge variant='signal'>New</Badge>}
+export const RecentInquiries = ({ block }: RecentInquiriesProps) => (
+	<DashboardPanel
+		title='Recent messages'
+		icon={<Inbox aria-hidden className='size-4' />}
+		action={
+			<Link
+				href='/messages'
+				className='text-small text-signal-ink h-control-md focus-ring:outline-2 focus-ring:outline-offset-2 focus-ring:outline-signal-ink inline-flex items-center hover:underline'>
+				View all
+			</Link>
+		}
+		status={block.status}
+		refreshing={block.refreshing}
+		errorLabel="Couldn't load messages"
+		onRetry={block.reload}
+		skeleton={<SkeletonText lines={5} />}>
+		{block.data?.recent.length ? (
+			<ul className='divide-border -my-2 divide-y'>
+				{block.data.recent.map(contact => (
+					<li key={contact.id}>
+						<Link
+							href={`/messages?id=${contact.id}`}
+							className='min-h-row hover:bg-accent focus-ring:outline-2 focus-ring:outline-offset-2 focus-ring:outline-signal-ink flex items-center justify-between gap-3 rounded-md px-2 py-2'>
+							<div className='min-w-0'>
+								<div className='flex items-center gap-2'>
+									<span className='text-body text-foreground truncate font-medium'>
+										{contact.name}
+									</span>
+									{contact.status === 'UNREAD' && <Badge variant='signal'>New</Badge>}
+								</div>
+								<p className='text-small text-muted-foreground truncate'>{contact.subject}</p>
 							</div>
-							<p className='text-muted-foreground truncate font-mono text-xs'>{contact.subject}</p>
-						</div>
-						<div className='flex shrink-0 items-center justify-between gap-3 font-mono text-xs sm:justify-end'>
-							<span className='text-muted-foreground text-[0.6875rem]'>
-								{new Date(contact.createdAt).toLocaleDateString('en-US', DAY)}
+							<span className='text-caption text-muted-foreground shrink-0'>
+								{formatDate(contact.createdAt)}
 							</span>
-							<Button asChild size='sm' variant='outline'>
-								<Link href={`/messages?id=${contact.id}`}>Review</Link>
-							</Button>
-						</div>
-					</div>
+						</Link>
+					</li>
 				))}
-			</div>
+			</ul>
+		) : (
+			<p className='text-small text-muted-foreground py-6 text-center'>No messages yet</p>
 		)}
-	</div>
+	</DashboardPanel>
 )

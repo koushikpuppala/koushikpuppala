@@ -38,7 +38,7 @@ const TableHead = ({ className, ...props }: ComponentProps<'th'>) => (
 	<th
 		data-slot='table-head'
 		className={classNames(
-			'text-foreground h-11 bg-[color-mix(in_oklab,var(--signal)_10%,var(--surface))] px-3 py-2.5 text-left align-middle font-semibold whitespace-nowrap first:rounded-tl-lg last:rounded-tr-lg has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+			'text-foreground h-row bg-[color-mix(in_oklab,var(--signal)_10%,var(--surface))] px-3 py-2.5 text-left align-middle font-semibold whitespace-nowrap first:rounded-tl-lg last:rounded-tr-lg has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
 			className,
 		)}
 		{...props}
@@ -49,7 +49,7 @@ const TableCell = ({ className, ...props }: ComponentProps<'td'>) => (
 	<td
 		data-slot='table-cell'
 		className={classNames(
-			'text-foreground px-3 py-2.5 align-middle whitespace-nowrap has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
+			'text-foreground h-row px-3 py-2 align-middle whitespace-nowrap has-[[role=checkbox]]:pr-0 *:[[role=checkbox]]:translate-y-0.5',
 			className,
 		)}
 		{...props}

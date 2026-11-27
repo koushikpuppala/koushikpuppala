@@ -226,7 +226,7 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent
 				aria-label='Command palette'
-				className='border-border bg-surface max-w-xl overflow-hidden rounded-2xl p-0 shadow-2xl'>
+				className='border-border bg-surface shadow-overlay max-w-xl overflow-hidden rounded-2xl p-0'>
 				<div className='border-border flex items-center border-b px-4 py-3'>
 					<Search className='text-muted-foreground mr-3 size-4 shrink-0' />
 					<input
@@ -242,7 +242,7 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
 						type='button'
 						onClick={() => onOpenChange(false)}
 						aria-label='Close command palette'
-						className='border-border bg-surface-strong text-muted-foreground hover:text-foreground focus-ring:ring-2 focus-ring:ring-signal/40 ml-3 shrink-0 cursor-pointer rounded border px-1.5 py-0.5 font-mono text-[0.625rem] transition-colors outline-none'>
+						className='border-border bg-surface-strong text-muted-foreground hover:text-foreground focus-ring:ring-2 focus-ring:ring-signal/40 text-caption ml-3 shrink-0 cursor-pointer rounded border px-1.5 py-0.5 font-mono transition-colors outline-none'>
 						ESC
 					</button>
 				</div>
@@ -277,7 +277,7 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
 										/>
 										<span>{item.label}</span>
 									</div>
-									<span className='text-muted-foreground/70 font-mono text-[0.625rem] uppercase'>
+									<span className='text-muted-foreground/70 text-caption font-mono uppercase'>
 										{item.category}
 									</span>
 								</button>
@@ -286,7 +286,7 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
 					)}
 				</div>
 
-				<div className='border-border bg-surface-strong/40 text-muted-foreground flex items-center justify-between border-t px-4 py-2 font-mono text-[0.6875rem]'>
+				<div className='border-border bg-surface-strong/40 text-muted-foreground text-caption flex items-center justify-between border-t px-4 py-2 font-mono'>
 					<div className='flex items-center gap-3'>
 						<span>
 							<kbd className='border-border bg-surface py-0.2 rounded border px-1'>↑↓</kbd> Navigate

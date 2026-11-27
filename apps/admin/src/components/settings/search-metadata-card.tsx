@@ -6,10 +6,10 @@ import { Globe } from 'components/icons'
 import { Field } from 'components/form/field'
 import { ROBOTS_OPTIONS } from 'components/settings/settings-presets'
 
-const HINT = 'text-muted-foreground text-[11px]'
+const HINT = 'text-muted-foreground text-caption'
 
 export const SearchMetadataCard = ({ form, setField }: MetadataFieldsProps) => (
-	<div className='border-border bg-surface space-y-5 rounded-2xl border p-6 shadow-xs'>
+	<div className='border-border bg-surface space-y-5 rounded-2xl border p-6'>
 		<h2 className='text-foreground flex items-center gap-2 text-base font-semibold tracking-tight'>
 			<Globe className='text-signal-ink size-4' />
 			Search Engine Metadata

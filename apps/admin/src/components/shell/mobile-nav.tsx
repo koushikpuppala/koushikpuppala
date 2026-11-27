@@ -11,7 +11,7 @@ export const MobileNav = ({ pathname, onClose, onSignOut }: MobileNavProps) => (
 			className='bg-background/80 fixed inset-0 h-full w-full cursor-default border-0 backdrop-blur-sm'
 			onClick={onClose}
 		/>
-		<aside className='border-border bg-sidebar fixed inset-y-0 left-0 z-50 flex h-screen w-72 flex-col border-r p-4 shadow-2xl'>
+		<aside className='border-border bg-sidebar shadow-overlay fixed inset-y-0 left-0 z-50 flex h-screen w-72 flex-col border-r p-4'>
 			<div className='border-border flex shrink-0 items-center justify-between border-b pb-4'>
 				<div className='flex items-center gap-2'>
 					<LogoMark className='size-7 rounded-lg' />

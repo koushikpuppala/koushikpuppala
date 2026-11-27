@@ -118,7 +118,7 @@ export const MediaView = () => {
 
 			{error && !loading && <ErrorBanner message={error} onRetry={loadMedia} />}
 
-			<div className='border-border bg-surface flex flex-col justify-between gap-3 rounded-2xl border p-3 shadow-xs sm:flex-row sm:items-center'>
+			<div className='border-border bg-surface flex flex-col justify-between gap-3 rounded-2xl border p-3 sm:flex-row sm:items-center'>
 				<div className='relative max-w-sm flex-1'>
 					<Search className='text-muted-foreground absolute top-2.5 left-3 size-4' />
 					<Input
@@ -138,7 +138,7 @@ export const MediaView = () => {
 							className={classNames(
 								'cursor-pointer rounded-lg px-3 py-1.5 transition-colors',
 								filterType === type
-									? 'bg-primary text-primary-foreground font-semibold shadow-xs'
+									? 'bg-primary text-primary-foreground font-semibold'
 									: 'text-muted-foreground hover:bg-accent hover:text-foreground',
 							)}>
 							{type === 'ALL' ? 'All Files' : type === 'IMAGE' ? 'Images' : 'PDF Documents'}
@@ -163,7 +163,7 @@ export const MediaView = () => {
 						return (
 							<div
 								key={media.id}
-								className='group border-border bg-surface hover:border-signal/50 relative flex flex-col overflow-hidden rounded-2xl border shadow-xs transition-all'>
+								className='group border-border bg-surface hover:border-signal/50 relative flex flex-col overflow-hidden rounded-2xl border transition-all'>
 								<div className='bg-surface-strong relative grid aspect-video w-full place-items-center overflow-hidden'>
 									{media.mimeType?.startsWith('image/') ? (
 										<>
@@ -217,9 +217,9 @@ export const MediaView = () => {
 									<p className='text-foreground w-full truncate font-mono text-xs font-medium'>
 										{media.originalName || media.fileName}
 									</p>
-									<div className='text-muted-foreground flex items-center justify-between font-mono text-[0.625rem]'>
+									<div className='text-muted-foreground text-caption flex items-center justify-between font-mono'>
 										<span>{formatBytes(media.size)}</span>
-										<Badge variant='outline' className='px-1 py-0 text-[0.5625rem]'>
+										<Badge variant='outline' className='text-caption px-1 py-0'>
 											{media.mimeType?.split('/')[1]?.toUpperCase() || 'FILE'}
 										</Badge>
 									</div>

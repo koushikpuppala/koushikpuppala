@@ -20,7 +20,7 @@ export const UserMenu = ({ user, onSignOut }: UserMenuProps) => {
 				onClick={() => setOpen(prev => !prev)}
 				aria-expanded={open}
 				className='border-border bg-surface text-foreground hover:bg-accent focus-ring:ring-ring focus-ring:ring-2 flex cursor-pointer items-center gap-2 rounded-xl border px-2.5 py-1.5 text-xs transition-colors outline-none'>
-				<span className='bg-signal grid size-6 place-items-center rounded-full font-mono text-[0.625rem] font-bold text-white'>
+				<span className='bg-signal text-caption grid size-6 place-items-center rounded-full font-mono font-bold text-white'>
 					{user?.displayName?.[0] || 'K'}
 				</span>
 				<span className='hidden max-w-30 truncate font-medium sm:inline'>
@@ -29,10 +29,10 @@ export const UserMenu = ({ user, onSignOut }: UserMenuProps) => {
 			</button>
 
 			{open && (
-				<div className='border-border bg-surface animate-in fade-in-50 zoom-in-95 absolute right-0 z-50 mt-2 w-48 rounded-xl border p-1.5 font-mono text-xs shadow-xl duration-100'>
+				<div className='border-border bg-surface animate-in fade-in-50 zoom-in-95 shadow-overlay absolute right-0 z-50 mt-2 w-48 rounded-xl border p-1.5 font-mono text-xs duration-100'>
 					<div className='border-border mb-1 border-b px-2.5 py-2'>
 						<p className='text-foreground truncate font-sans font-semibold'>{user?.displayName}</p>
-						<p className='text-muted-foreground truncate text-[0.6875rem]'>{user?.email}</p>
+						<p className='text-muted-foreground text-caption truncate'>{user?.email}</p>
 					</div>
 					<Link
 						href='/settings'

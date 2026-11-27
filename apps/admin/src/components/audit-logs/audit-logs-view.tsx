@@ -134,7 +134,7 @@ export const AuditLogsView = () => {
 				cell: ({ row }) => (
 					<div>
 						<span className='text-foreground font-sans font-medium'>{row.original.entity}</span>
-						<span className='text-muted-foreground ml-1.5 block max-w-35 truncate font-mono text-[10px]'>
+						<span className='text-muted-foreground text-caption ml-1.5 block max-w-35 truncate font-mono'>
 							{row.original.entityId}
 						</span>
 					</div>

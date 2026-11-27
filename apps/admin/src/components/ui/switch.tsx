@@ -14,7 +14,7 @@ export const Switch = ({ checked, onChange, label }: SwitchProps) => (
 		)}>
 		<span
 			className={classNames(
-				'pointer-events-none inline-block size-5 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out',
+				'shadow-overlay pointer-events-none inline-block size-5 transform rounded-full bg-white ring-0 transition duration-200 ease-in-out',
 				checked ? 'translate-x-5' : 'translate-x-0',
 			)}
 		/>

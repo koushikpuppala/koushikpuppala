@@ -70,12 +70,12 @@ export const ProjectsView = () => {
 			render: p => (
 				<div className='flex max-w-xs flex-wrap gap-1'>
 					{(p.technologies || []).slice(0, 3).map((t, idx) => (
-						<Badge key={idx} variant='secondary' className='text-[0.625rem]'>
+						<Badge key={idx} variant='secondary' className='text-caption'>
 							{t}
 						</Badge>
 					))}
 					{(p.technologies || []).length > 3 && (
-						<span className='text-muted-foreground font-mono text-[0.625rem]'>
+						<span className='text-muted-foreground text-caption font-mono'>
 							+{(p.technologies || []).length - 3}
 						</span>
 					)}

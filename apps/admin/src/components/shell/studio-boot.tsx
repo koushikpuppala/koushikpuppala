@@ -78,7 +78,7 @@ export const StudioBoot = ({ stage }: StudioBootProps) => {
 					</div>
 				</div>
 
-				<div className='mx-auto w-full max-w-7xl space-y-6 p-4 sm:p-6 lg:p-8'>
+				<div className='max-w-content mx-auto w-full space-y-6 p-4 sm:p-6 lg:p-8'>
 					<div className='flex items-start justify-between gap-4'>
 						<div className='space-y-2.5'>
 							<Skeleton className='h-7 w-56' />
@@ -99,14 +99,14 @@ export const StudioBoot = ({ stage }: StudioBootProps) => {
 				<div
 					role='status'
 					aria-live='polite'
-					className='border-border bg-surface w-full max-w-sm space-y-6 rounded-2xl border p-6 shadow-xl'>
+					className='border-border bg-surface shadow-overlay w-full max-w-sm space-y-6 rounded-2xl border p-6'>
 					<div className='flex items-center gap-3'>
-						<LogoMark className='size-11 rounded-xl shadow-lg' />
+						<LogoMark className='shadow-overlay size-11 rounded-xl' />
 						<div>
 							<p className='font-display text-foreground text-base font-bold tracking-tight'>
 								Content Studio
 							</p>
-							<p className='text-muted-foreground font-mono text-[0.6875rem]'>
+							<p className='text-muted-foreground text-caption font-mono'>
 								admin.koushikpuppala.com
 							</p>
 						</div>

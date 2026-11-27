@@ -62,8 +62,36 @@
 	--color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Each shared step copies the size and line height of the Tailwind class it names, so the client renders the same. */
+@theme {
+	--text-caption: 0.75rem;
+	--text-caption--line-height: 1rem;
+	--text-body: 0.875rem;
+	--text-body--line-height: 1.25rem;
+	--text-subheading: 1rem;
+	--text-subheading--line-height: 1.5rem;
+	--text-title: 1.25rem;
+	--text-title--line-height: 1.75rem;
+	--text-control-lg: 0.9375rem;
+
+	--spacing-control-sm: 2rem;
+	--spacing-control-md: 2.25rem;
+	--spacing-control-lg: 2.75rem;
+	--spacing-control-xl: 3.25rem;
+	--spacing-row: 2.5rem;
+	--spacing-sidebar: 15rem;
+	--container-page: 1440px;
+	--container-content: 80rem;
+
+	--shadow-overlay: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+}
+
 :root {
 	--radius: 0.7rem;
+
+	--eyebrow-size: 0.6875rem;
+	--eyebrow-tracking: 0.16em;
+	--mono-xs-size: 0.6875rem;
 
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 	--ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
@@ -104,12 +132,15 @@
 
 	--border: rgba(0, 0, 0, 0.08);
 	--border-strong: rgba(0, 0, 0, 0.16);
+	--outline-border: var(--border-strong);
+	--field-bg: transparent;
 	--input: rgba(0, 0, 0, 0.12);
 	--ring: rgba(225, 29, 72, 0.5);
 
 	--grid-line: rgba(0, 0, 0, 0.05);
 	--grid-line-strong: rgba(0, 0, 0, 0.1);
 
+	--shadow-glow: 0 0 20px rgba(255, 51, 102, 0.12);
 	--shadow-signal: 0 10px 28px -12px rgba(225, 29, 72, 0.55);
 	--shadow-lift: 0 12px 32px -16px rgba(14, 16, 19, 0.22);
 
@@ -158,7 +189,8 @@
 
 	--border: rgba(255, 255, 255, 0.08);
 	--border-strong: rgba(255, 255, 255, 0.16);
-	--input: rgba(255, 255, 255, 0.12);
+	--field-bg: var(--surface);
+	--input: rgba(255, 255, 255, 0.24);
 	--ring: rgba(255, 51, 102, 0.6);
 
 	--grid-line: rgba(255, 255, 255, 0.05);
@@ -243,9 +275,9 @@
 
 @utility text-eyebrow {
 	font-family: var(--font-mono);
-	font-size: 0.6875rem;
+	font-size: var(--eyebrow-size);
 	font-weight: 500;
-	letter-spacing: 0.16em;
+	letter-spacing: var(--eyebrow-tracking);
 	text-transform: uppercase;
 	color: var(--muted-foreground);
 }
@@ -260,7 +292,7 @@
 
 @utility text-mono-xs {
 	font-family: var(--font-mono);
-	font-size: 0.6875rem;
+	font-size: var(--mono-xs-size);
 	letter-spacing: 0.02em;
 	font-variant-numeric: tabular-nums;
 }

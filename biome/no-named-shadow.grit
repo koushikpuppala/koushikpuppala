@@ -1,0 +1,10 @@
+language js
+
+or { JsStringLiteralExpression(), JsxString(), JsTemplateChunkElement() } as $text where {
+	$text <: r"(?s)(?:.*[\s:!'\"`])?shadow(?:-(?:xs|sm|md|lg|xl|2xl|inner|2xs))?(?:[\s'\"`].*)?",
+	register_diagnostic(
+		span = $text,
+		message = "The admin uses only the overlay shadow (shadow-overlay). Named shadows are not allowed.",
+		severity = "error"
+	)
+}

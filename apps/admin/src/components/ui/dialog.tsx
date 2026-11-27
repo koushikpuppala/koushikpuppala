@@ -101,7 +101,7 @@ export const DialogContent = ({
 		'aria-labelledby': ariaLabel ? undefined : ids?.titleId,
 		'aria-describedby': ids?.descriptionId,
 		className: classNames(
-			'border-border bg-surface relative w-full max-w-lg overflow-hidden rounded-2xl border p-6 shadow-2xl transition-all',
+			'border-border bg-surface relative w-full max-w-lg overflow-hidden rounded-2xl border p-6 shadow-overlay transition-all',
 			className,
 		),
 	}

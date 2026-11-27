@@ -6,7 +6,7 @@ import { Field } from 'components/form/field'
 import { PATHNAME_PRESETS } from 'components/settings/settings-presets'
 
 export const PathnamePicker = ({ form, setField, routeRecords, onSelect }: PathnamePickerProps) => (
-	<div className='border-border bg-surface space-y-4 rounded-2xl border p-6 shadow-xs'>
+	<div className='border-border bg-surface space-y-4 rounded-2xl border p-6'>
 		<div className='flex items-center justify-between'>
 			<div>
 				<h2 className='text-foreground text-sm font-semibold tracking-tight'>

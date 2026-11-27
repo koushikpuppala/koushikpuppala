@@ -48,7 +48,7 @@ export const LoginView = () => {
 		<div className='flex min-h-[85vh] items-center justify-center px-4 py-12 sm:px-6'>
 			<div className='w-full max-w-md space-y-8'>
 				<div className='space-y-2 text-center'>
-					<LogoMark className='mx-auto size-12 rounded-2xl shadow-lg' />
+					<LogoMark className='shadow-overlay mx-auto size-12 rounded-2xl' />
 					<h1 className='font-display text-foreground text-2xl font-bold tracking-tight sm:text-3xl'>
 						Content Studio
 					</h1>
@@ -57,7 +57,7 @@ export const LoginView = () => {
 					</p>
 				</div>
 
-				<div className='border-border bg-surface space-y-6 rounded-2xl border p-7 shadow-xl sm:p-9'>
+				<div className='border-border bg-surface shadow-overlay space-y-6 rounded-2xl border p-7 sm:p-9'>
 					{(error ?? accessError) && (
 						<div
 							role='alert'
@@ -122,7 +122,7 @@ export const LoginView = () => {
 
 					<div className='relative flex items-center justify-center'>
 						<span className='border-border w-full border-t' />
-						<span className='bg-surface text-muted-foreground px-3 font-mono text-[0.625rem] text-nowrap uppercase'>
+						<span className='bg-surface text-muted-foreground text-caption px-3 font-mono text-nowrap uppercase'>
 							Or fast access
 						</span>
 						<span className='border-border w-full border-t' />

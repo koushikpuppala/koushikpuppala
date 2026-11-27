@@ -16,7 +16,7 @@ import type {
 import { classNames } from 'utils/classNames'
 import { LoadingRegion, Skeleton, SkeletonText } from 'ui/skeleton'
 
-const CARD = 'border-border bg-surface rounded-2xl border shadow-xs'
+const CARD = 'border-border bg-surface rounded-2xl border'
 
 const keys = (count: number, prefix: string) =>
 	Array.from({ length: count }, (_, i) => `${prefix}-${i}`)
@@ -140,30 +140,32 @@ const Page = ({ label, children }: LabelledProps) => (
 export const DashboardSkeleton = () => {
 	return (
 		<Page label='dashboard'>
-			<div className={classNames(CARD, 'space-y-4 p-6')}>
-				<Skeleton className='h-3 w-40' />
-				<Skeleton className='h-8 w-72 max-w-full' />
-				<Skeleton className='h-4 w-96 max-w-full' />
-			</div>
-			<StatCardsSkeleton className='sm:grid-cols-2 lg:grid-cols-4' />
-			<div className='grid gap-6 lg:grid-cols-12'>
-				<div className={classNames(CARD, 'space-y-4 p-6 lg:col-span-7')}>
-					<Skeleton className='h-5 w-40' />
-					{keys(4, 'inquiry').map(key => (
-						<div key={key} className='flex items-center justify-between gap-4'>
-							<SkeletonText lines={2} className='flex-1' />
-							<Skeleton className='h-8 w-20 rounded-lg' />
-						</div>
+			<div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
+				<div className='space-y-2'>
+					<Skeleton className='h-7 w-60 max-w-full' />
+					<Skeleton className='h-4 w-32' />
+				</div>
+				<div className='flex gap-2'>
+					{keys(3, 'action').map(key => (
+						<Skeleton key={key} className='h-control-md w-28 rounded-lg' />
 					))}
 				</div>
+			</div>
+			<Skeleton className='h-row w-full rounded-lg' />
+			<StatCardsSkeleton className='grid-cols-2 lg:grid-cols-4' />
+			<div className='grid gap-6 lg:grid-cols-12'>
+				<div className={classNames(CARD, 'space-y-4 p-4 lg:col-span-7')}>
+					<Skeleton className='h-5 w-40' />
+					<SkeletonText lines={5} />
+				</div>
 				<div className='space-y-6 lg:col-span-5'>
-					<div className={classNames(CARD, 'space-y-3 p-6')}>
-						<Skeleton className='h-5 w-48' />
+					<div className={classNames(CARD, 'space-y-3 p-4')}>
+						<Skeleton className='h-5 w-40' />
 						{keys(3, 'health').map(key => (
 							<Skeleton key={key} className='h-4 w-full' />
 						))}
 					</div>
-					<div className={classNames(CARD, 'space-y-3 p-6')}>
+					<div className={classNames(CARD, 'space-y-3 p-4')}>
 						<Skeleton className='h-5 w-40' />
 						<SkeletonText lines={4} />
 					</div>

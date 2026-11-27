@@ -14,19 +14,19 @@ const variantClasses: Record<ButtonVariant, string> = {
 		'bg-signal-solid text-signal-foreground shadow-[var(--shadow-signal)] hover:brightness-108 active:scale-[0.985]',
 	destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
 	outline:
-		'border border-border-strong bg-transparent hover:border-foreground/35 hover:bg-accent active:scale-[0.985]',
+		'border border-[color:var(--outline-border)] bg-transparent hover:border-foreground/35 hover:bg-accent active:scale-[0.985]',
 	secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/75',
 	ghost: 'hover:bg-accent hover:text-accent-foreground',
 	link: 'text-foreground underline-offset-4 hover:underline',
 }
 
 const sizeClasses: Record<ButtonSize, string> = {
-	default: 'h-9 px-4 py-2',
-	sm: 'h-8 rounded-md px-3 text-xs',
-	lg: 'h-11 px-6 text-[0.9375rem]',
-	xl: 'h-13 px-7 text-base',
-	icon: 'h-9 w-9',
-	'icon-sm': 'h-8 w-8 rounded-md',
+	default: 'h-control-md px-4 py-2',
+	sm: 'h-control-sm rounded-md px-3 text-xs',
+	lg: 'h-control-lg px-6 text-control-lg',
+	xl: 'h-control-xl px-7 text-base',
+	icon: 'size-control-md',
+	'icon-sm': 'size-control-sm rounded-md',
 }
 
 export const buttonVariants = ({

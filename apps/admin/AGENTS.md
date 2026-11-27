@@ -21,6 +21,8 @@ Private administrative CMS application. It manages portfolio content, projects, 
 | apps/admin/src/lib/api-client.ts                     | Authenticated API client communicating with backend                                             |
 | apps/admin/src/constants/                            | API base URL (`NEXT_PUBLIC_BASE_URL`) and sidebar navigation                                    |
 | apps/admin/src/styles/globals.css                    | Global styles and design tokens                                                                 |
+| apps/admin/src/styles/tokens.css                     | Admin token layer: type scale, control sizes, radius, shadow, motion, layering, input border    |
+| apps/admin/app/design/                               | Hidden `/design` page (not in navigation) that shows every token in light and dark              |
 
 ## Commands
 
@@ -61,6 +63,7 @@ pnpm --filter admin lint
 - Page content scrolls inside `<main>`, which is `relative` so absolutely positioned elements (such as `sr-only` text) stay inside it instead of stretching the document past the fixed shell.
 - The resume upload accepts only a PDF of at most 10 MB (checked before uploading, and again by the API on save) and stores it in the `resume` S3 folder. The file card shows `downloadFileName`, the name visitors' browsers save it as.
 - Fonts: the admin uses Plus Jakarta Sans for body, headings and mono (`app/layout.tsx` loads it; `src/styles/globals.css` points `--font-sans`, `--font-display` and `--font-mono` at it). Plus Jakarta Sans has no monospace cut, so the same file sets `tabular-nums` on `.font-mono`, `pre`, `kbd`, `code`, `samp` and tables. The client keeps Geist, Bricolage Grotesque and Geist Mono from `packages/ui/style.css`; don't change those shared tokens for the admin.
+- Design tokens: `src/styles/tokens.css` is imported after `ui/style` and overrides the shared tokens only for the admin, in both `:root` and `.dark` (outside any `@layer`, or the shared rules would win). Use the type steps `text-caption`, `text-small`, `text-body`, `text-subheading`, `text-title` and `text-headline` (none under 12px), control heights `h-control-sm|md|lg` (32, 36, 40px), `h-row` for table rows (40px) and `shadow-overlay` as the only shadow. Control borders use `border-input`, and fields fill from `--field-bg`. `text-small` and `text-headline` exist only here, so shared components in `packages/ui` must not use them (a test fails if they do). Check any change on `/design`; `apps/e2e/tests/admin/design-tokens.spec.ts` tests its contrast, focus and axe results in both themes.
 - Destructive actions require confirmation dialogs before invoking server mutations.
 - Form choices and dates use `Select` (`ui/select`) and `DatePicker` (`ui/date-picker`), never a native `<select>` or `type='date'`. End to end tests pick an option by clicking the button, then `page.getByRole('option', …)`.
 - `DialogContent` defaults to `max-w-lg`; pass `max-w-*` in its `className` for a wider dialog (`classNames` merges them, so yours wins).

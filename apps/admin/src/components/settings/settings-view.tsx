@@ -55,7 +55,7 @@ export const SettingsView = () => {
 						<KeywordsCard form={form} setField={setField} />
 						<OpenGraphCard form={form} setField={setField} onPick={() => setPickingImage(true)} />
 
-						<div className='border-border bg-surface flex items-center justify-between rounded-2xl border p-6 shadow-xs'>
+						<div className='border-border bg-surface flex items-center justify-between rounded-2xl border p-6'>
 							<div>
 								<h2 className='text-foreground text-sm font-semibold'>Publish Status</h2>
 								<p className='text-muted-foreground mt-0.5 text-xs'>

@@ -1,14 +1,14 @@
 export const CONTROL =
-	'border-foreground/10 text-foreground focus-ring:ring-signal/40 rounded-lg border bg-transparent px-3 py-2 text-sm font-medium shadow transition-all outline-none hover:bg-foreground/5 focus-ring:ring-2'
+	'border-input text-foreground focus-ring:ring-signal/40 rounded-lg border bg-[color:var(--field-bg)] px-3 py-2 text-sm font-medium transition-all outline-none hover:border-foreground/40 focus-ring:border-signal-ink focus-ring:ring-2'
 
 export const PAGER =
-	'border-foreground/10 text-foreground focus-ring:ring-signal/40 flex cursor-pointer items-center justify-center gap-1 rounded-lg border bg-transparent px-4 py-2 text-sm font-medium whitespace-nowrap shadow-md transition-all outline-none not-disabled:hover:bg-foreground/5 focus-ring:ring-2 disabled:cursor-not-allowed disabled:opacity-50'
+	'border-input text-foreground focus-ring:ring-signal/40 flex cursor-pointer items-center justify-center gap-1 rounded-lg border bg-[color:var(--field-bg)] px-4 py-2 text-sm font-medium whitespace-nowrap transition-all outline-none not-disabled:hover:border-foreground/40 focus-ring:border-signal-ink focus-ring:ring-2 disabled:cursor-not-allowed disabled:opacity-50'
 
 export const PANEL =
-	'border-foreground/10 bg-surface z-40 mt-0.5 scrollbar-none rounded-lg border p-1 shadow-2xl outline-none'
+	'border-foreground/10 bg-surface z-40 mt-0.5 scrollbar-none rounded-lg border p-1 shadow-overlay outline-none'
 
 export const PANEL_DATE =
-	'border-foreground/10 bg-surface-strong z-60 mt-0.5 rounded-lg border p-1 shadow-2xl outline-none'
+	'border-foreground/10 bg-surface-strong z-60 mt-0.5 rounded-lg border p-1 shadow-overlay outline-none'
 
 export const OPTION =
 	'group text-foreground flex w-full cursor-pointer items-center rounded-lg px-2 py-1 text-sm capitalize hover:bg-foreground/10'

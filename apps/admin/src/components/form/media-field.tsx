@@ -50,7 +50,7 @@ export const MediaField = ({
 						{large && <ImageIcon className='size-3.5' />}
 						<span>{buttonLabel}</span>
 					</Button>
-					{hint && <p className='text-muted-foreground font-mono text-[0.6875rem]'>{hint}</p>}
+					{hint && <p className='text-muted-foreground text-caption font-mono'>{hint}</p>}
 				</div>
 			</div>
 		</div>

@@ -8,14 +8,14 @@ const HEADING =
 
 export const MetadataPreviews = ({ form }: Pick<MetadataFieldsProps, 'form'>) => (
 	<div className='space-y-6'>
-		<div className='border-border bg-surface space-y-3 rounded-2xl border p-5 shadow-xs'>
+		<div className='border-border bg-surface space-y-3 rounded-2xl border p-5'>
 			<h3 className={HEADING}>
 				<Eye className='size-3.5' />
 				Google Search SERP Preview
 			</h3>
 			<div className='border-border bg-background space-y-1.5 rounded-xl border p-4 text-left'>
 				<div className='text-muted-foreground flex items-center gap-1.5 text-xs'>
-					<div className='flex size-3.5 items-center justify-center rounded-full bg-emerald-500/20 text-[9px] font-bold text-emerald-500'>
+					<div className='text-caption flex size-3.5 items-center justify-center rounded-full bg-emerald-500/20 font-bold text-emerald-500'>
 						K
 					</div>
 					<span className='max-w-50 truncate'>{form.canonicalUrl}</span>
@@ -29,7 +29,7 @@ export const MetadataPreviews = ({ form }: Pick<MetadataFieldsProps, 'form'>) =>
 			</div>
 		</div>
 
-		<div className='border-border bg-surface space-y-3 rounded-2xl border p-5 shadow-xs'>
+		<div className='border-border bg-surface space-y-3 rounded-2xl border p-5'>
 			<h3 className={HEADING}>
 				<Share2 className='size-3.5' />
 				Social OpenGraph Card
@@ -52,11 +52,11 @@ export const MetadataPreviews = ({ form }: Pick<MetadataFieldsProps, 'form'>) =>
 					)}
 				</div>
 				<div className='space-y-1 p-3'>
-					<p className='text-muted-foreground font-mono text-[10px] font-semibold uppercase'>
+					<p className='text-muted-foreground text-caption font-mono font-semibold uppercase'>
 						{new URL(SITE_URL).host}
 					</p>
 					<p className='text-foreground line-clamp-1 text-xs font-semibold'>{form.title}</p>
-					<p className='text-muted-foreground line-clamp-2 text-[11px]'>{form.description}</p>
+					<p className='text-muted-foreground text-caption line-clamp-2'>{form.description}</p>
 				</div>
 			</div>
 		</div>

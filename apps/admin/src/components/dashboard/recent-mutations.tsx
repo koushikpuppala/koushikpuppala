@@ -1,44 +1,58 @@
-import type { RecentMutationsProps } from 'types/components/admin'
+import type { BadgeVariant, RecentMutationsProps } from 'types/components/admin'
 import Link from 'next/link'
+import { SkeletonText } from 'ui/skeleton'
+import { formatRelativeTime } from 'utils/formatRelativeTime'
 import { Activity } from 'components/icons'
 import { Badge } from 'components/ui/badge'
+import { DashboardPanel } from 'components/dashboard/dashboard-panel'
 
-const TIME = { hour: '2-digit', minute: '2-digit' } as const
+const ACTION_VARIANT: Record<string, BadgeVariant> = {
+	DELETE: 'destructive',
+	CREATE: 'success',
+	PUBLISH: 'success',
+}
 
-export const RecentMutations = ({ audits }: RecentMutationsProps) => (
-	<div className='border-border bg-surface space-y-3 rounded-2xl border p-6 shadow-xs'>
-		<div className='border-border flex items-center justify-between border-b pb-3'>
-			<div className='flex items-center gap-2'>
-				<Activity className='text-signal-ink size-4' />
-				<h2 className='font-display text-foreground text-sm font-semibold'>Recent Mutations</h2>
-			</div>
+export const RecentMutations = ({ block }: RecentMutationsProps) => (
+	<DashboardPanel
+		title='Recent changes'
+		icon={<Activity aria-hidden className='size-4' />}
+		action={
 			<Link
 				href='/audit-logs'
-				className='text-signal-ink font-mono text-[0.6875rem] hover:underline'>
+				className='text-small text-signal-ink h-control-md focus-ring:outline-2 focus-ring:outline-offset-2 focus-ring:outline-signal-ink inline-flex items-center hover:underline'>
 				View all
 			</Link>
-		</div>
-
-		{audits.length === 0 ? (
-			<div className='text-muted-foreground py-6 text-center font-sans text-xs'>
-				No recorded mutations yet.
-			</div>
-		) : (
-			<div className='space-y-2.5 font-mono text-xs'>
-				{audits.map(audit => (
-					<div key={audit.id} className='flex items-center justify-between py-1'>
-						<div className='flex min-w-0 items-center gap-2'>
-							<Badge variant={audit.action === 'DELETE' ? 'destructive' : 'secondary'}>
+		}
+		status={block.status}
+		refreshing={block.refreshing}
+		errorLabel="Couldn't load changes"
+		onRetry={block.reload}
+		skeleton={<SkeletonText lines={5} />}>
+		{block.data?.recent.length ? (
+			<ul className='divide-border -my-2 divide-y'>
+				{block.data.recent.map(audit => (
+					<li key={audit.id}>
+						<Link
+							href='/audit-logs'
+							className='min-h-row hover:bg-accent focus-ring:outline-2 focus-ring:outline-offset-2 focus-ring:outline-signal-ink grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-md px-2 py-2.5'>
+							<Badge
+								variant={ACTION_VARIANT[audit.action] ?? 'secondary'}
+								className='w-20 justify-center'>
 								{audit.action}
 							</Badge>
-							<span className='text-foreground truncate font-sans text-xs'>{audit.entity}</span>
-						</div>
-						<span className='text-muted-foreground shrink-0 text-[0.625rem]'>
-							{new Date(audit.createdAt).toLocaleTimeString([], TIME)}
-						</span>
-					</div>
+							<div className='min-w-0'>
+								<p className='text-body text-foreground truncate font-medium'>{audit.entity}</p>
+								<p className='text-caption text-muted-foreground truncate'>by {audit.actor}</p>
+							</div>
+							<span className='text-caption text-muted-foreground shrink-0 tabular-nums'>
+								{formatRelativeTime(audit.createdAt)}
+							</span>
+						</Link>
+					</li>
 				))}
-			</div>
+			</ul>
+		) : (
+			<p className='text-small text-muted-foreground py-6 text-center'>No changes yet</p>
 		)}
-	</div>
+	</DashboardPanel>
 )

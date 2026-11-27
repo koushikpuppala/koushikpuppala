@@ -52,6 +52,6 @@ describe('Button', () => {
 	})
 
 	it('exposes the same classes through buttonVariants', () => {
-		expect(buttonVariants({ variant: 'ghost', size: 'icon' })).toContain('h-9 w-9')
+		expect(buttonVariants({ variant: 'ghost', size: 'icon' })).toContain('size-control-md')
 	})
 })

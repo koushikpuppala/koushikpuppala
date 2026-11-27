@@ -60,7 +60,7 @@ export const DatePicker = ({
 
 			<PopoverPanel
 				anchor='bottom start'
-				className='border-foreground/10 bg-surface-strong z-60 mt-1 rounded-lg border p-1 shadow-2xl outline-none'>
+				className='border-foreground/10 bg-surface-strong z-60 mt-1 rounded-lg border p-1 shadow-overlay outline-none'>
 				{({ close }) => (
 					<>
 						<Calendar

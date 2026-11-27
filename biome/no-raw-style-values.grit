@@ -1,0 +1,13 @@
+language js
+
+or { JsStringLiteralExpression(), JsxString(), JsTemplateChunkElement() } as $text where {
+	$text <: or {
+		r"(?s).*(?:bg|text|border|ring|fill|stroke|from|via|to|shadow|outline|divide|decoration|accent|caret)-\[(?:#|rgb|hsl|oklch).*",
+		r"(?s)(?:.*[\s:!'\"`-])?(?:text|p|px|py|pt|pb|pl|pr|m|mx|my|gap|space|rounded|shadow|leading|tracking|h|w|size|min-h|max-w)-\[-?[0-9.]+(?:px|rem|em|ch|ex|pt|_[^\]]*)?\].*"
+	},
+	register_diagnostic(
+		span = $text,
+		message = "Use a design token instead of a raw color or an arbitrary size, spacing, radius, shadow, leading or tracking value.",
+		severity = "error"
+	)
+}

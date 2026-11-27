@@ -41,6 +41,7 @@ docker compose -f docker-compose.test.yml down
 
 - The emulator needs Java, so it runs in Docker; nothing needs installing on the host besides Docker and Playwright's browser (`pnpm --filter e2e exec playwright install chromium`).
 - Locally, running servers are reused (`reuseExistingServer`). Stop them if you changed app code, or the suite tests the old build.
+- Your own `pnpm dev` servers on ports 3000, 3001 and 8080 are reused too, so the suite would test the dev build with real settings. Set `E2E_CLIENT_URL` and `E2E_ADMIN_URL` to free ports (for example `http://127.0.0.1:3100` and `http://127.0.0.1:3101`) so Playwright builds and starts its own.
 - `NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST` is set only here and in CI; it must never be set for a real deployment.
 
 _Drafted by /audit from the repo, worth a quick human pass. Edit freely: once a line stops matching this draft, later runs treat it as curated and will flag rather than overwrite it._

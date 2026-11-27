@@ -19,7 +19,7 @@ export const KeywordsCard = ({ form, setField }: MetadataFieldsProps) => {
 	}
 
 	return (
-		<div className='border-border bg-surface space-y-4 rounded-2xl border p-6 shadow-xs'>
+		<div className='border-border bg-surface space-y-4 rounded-2xl border p-6'>
 			<h2 className='text-foreground text-base font-semibold tracking-tight'>
 				Meta Keywords & Discoverability
 			</h2>

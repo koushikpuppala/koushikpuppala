@@ -16,7 +16,7 @@ export const Badge = ({ className, variant = 'default', ...props }: BadgeProps) 
 	return (
 		<div
 			className={classNames(
-				'focus-ring:ring-ring focus-ring:ring-2 focus-ring:ring-offset-2 inline-flex items-center rounded-full border px-2.5 py-0.5 text-[0.6875rem] transition-colors outline-none',
+				'focus-ring:ring-ring focus-ring:ring-2 focus-ring:ring-offset-2 text-caption inline-flex items-center rounded-full border px-2.5 py-0.5 transition-colors outline-none',
 				variantClasses[variant],
 				className,
 			)}

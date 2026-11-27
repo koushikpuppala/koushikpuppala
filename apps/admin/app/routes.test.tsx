@@ -17,6 +17,7 @@ vi.mock('components/projects/projects-view', () => ({ ProjectsView: stub('Projec
 vi.mock('components/resume/resume-view', () => ({ ResumeView: stub('Resume') }))
 vi.mock('components/services/services-view', () => ({ ServicesView: stub('Services') }))
 vi.mock('components/socials/socials-view', () => ({ SocialsView: stub('Socials') }))
+vi.mock('components/design/design-system-view', () => ({ DesignSystemView: stub('Design') }))
 vi.mock('components/auth/login-view', () => ({ LoginView: stub('Login') }))
 vi.mock('components/media/media-view', () => ({ MediaView: stub('Media') }))
 vi.mock('components/messages/messages-view', () => ({ MessagesView: stub('Messages') }))
@@ -52,6 +53,7 @@ const VIEW_FOR: Record<string, string> = {
 	'./content/resume/page.tsx': 'Resume',
 	'./content/services/page.tsx': 'Services',
 	'./content/social/page.tsx': 'Socials',
+	'./design/page.tsx': 'Design',
 	'./login/page.tsx': 'Login',
 	'./media/page.tsx': 'Media',
 	'./messages/page.tsx': 'Messages',

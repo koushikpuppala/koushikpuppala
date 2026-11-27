@@ -1,78 +1,96 @@
-import type { HealthPanelProps, HealthRowProps } from 'types/components/admin'
+import type { HealthPanelProps, HealthRowProps, HealthRowsProps } from 'types/components/admin'
 import Link from 'next/link'
 import { classNames } from 'utils/classNames'
 import { Activity, ArrowUpRight, Database, Gauge, Server } from 'components/icons'
+import { DashboardPanel } from 'components/dashboard/dashboard-panel'
 
-const HealthRow = ({ icon, label, state, detail, last = false }: HealthRowProps) => (
-	<div
-		className={classNames(
-			'flex items-center justify-between py-1.5',
-			!last && 'border-border/50 border-b',
-		)}>
-		<span className='text-muted-foreground flex items-center gap-2'>
+const HealthRow = ({ icon, label, state, detail }: HealthRowProps) => (
+	<div className='min-h-row flex items-center justify-between'>
+		<span className='text-body text-muted-foreground flex items-center gap-2'>
 			{icon}
-			<span>{label}</span>
+			{label}
 		</span>
 		<span
 			className={classNames(
-				'font-semibold',
-				state === null ? 'text-muted-foreground' : state ? 'text-success' : 'text-destructive',
+				'text-body font-medium',
+				state === null
+					? 'text-muted-foreground'
+					: state
+						? 'text-success-ink'
+						: 'text-destructive-ink',
 			)}>
 			{state === null ? 'Checking…' : state ? `Up${detail ? ` · ${detail}` : ''}` : 'Down'}
 		</span>
 	</div>
 )
 
-export const HealthPanel = ({ health }: HealthPanelProps) => {
-	const check = (up: (data: Exclude<typeof health, false | null>) => boolean) =>
-		health === null ? null : health ? up(health) : false
+const HealthRows = ({ api, database, redis, apiDetail }: HealthRowsProps) => (
+	<div className='divide-border divide-y'>
+		<HealthRow
+			icon={<Server aria-hidden className='size-4' />}
+			label='API'
+			state={api}
+			detail={apiDetail}
+		/>
+		<HealthRow
+			icon={<Database aria-hidden className='size-4' />}
+			label='PostgreSQL'
+			state={database}
+		/>
+		<HealthRow
+			icon={<Activity aria-hidden className='size-4' />}
+			label='Redis cache'
+			state={redis}
+		/>
+	</div>
+)
+
+export const HealthPanel = ({ block }: HealthPanelProps) => {
+	const snapshot = block.data
+	const healthy = snapshot?.health.status === 'ok'
 
 	return (
-		<div className='border-border bg-surface space-y-4 rounded-2xl border p-6 shadow-xs'>
-			<div className='border-border flex items-center justify-between border-b pb-3'>
-				<div className='flex items-center gap-2'>
-					<Gauge className='text-signal-ink size-4' />
-					<h2 className='font-display text-foreground text-base font-semibold'>
-						System Infrastructure
-					</h2>
-				</div>
+		<DashboardPanel
+			title='System infrastructure'
+			icon={<Gauge aria-hidden className='size-4' />}
+			action={
 				<span
+					role='img'
+					aria-label={snapshot ? (healthy ? 'All systems up' : 'Degraded') : 'Checking'}
 					className={classNames(
 						'size-2 rounded-full',
-						health === null
-							? 'bg-muted-foreground'
-							: health && health.status === 'ok'
-								? 'bg-success animate-pulse'
-								: 'bg-destructive',
+						!snapshot ? 'bg-muted-foreground' : healthy ? 'bg-success' : 'bg-destructive',
 					)}
-					aria-hidden
 				/>
-			</div>
-
-			<div className='space-y-3 font-mono text-xs'>
-				<HealthRow
-					icon={<Server className='size-3.5' />}
-					label='API'
-					state={check(data => data.status === 'ok')}
-					detail={health ? health.responseTime : undefined}
+			}
+			footer={
+				<div className='flex items-center justify-between gap-3'>
+					<Link
+						href='/api-metrics'
+						className='text-signal-ink text-small h-control-md focus-ring:outline-2 focus-ring:outline-offset-2 focus-ring:outline-signal-ink inline-flex items-center gap-1 hover:underline'>
+						API telemetry <ArrowUpRight aria-hidden className='size-3' />
+					</Link>
+					{snapshot && (
+						<span className='text-caption text-muted-foreground'>
+							Checked at{' '}
+							{snapshot.checkedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+						</span>
+					)}
+				</div>
+			}
+			status={block.status}
+			refreshing={block.refreshing}
+			errorLabel='Health check unreachable'
+			onRetry={block.reload}
+			skeleton={<HealthRows api={null} database={null} redis={null} />}>
+			{snapshot && (
+				<HealthRows
+					api
+					apiDetail={snapshot.health.responseTime}
+					database={snapshot.health.services.database === 'up'}
+					redis={snapshot.health.services.redis === 'up'}
 				/>
-				<HealthRow
-					icon={<Database className='size-3.5' />}
-					label='PostgreSQL'
-					state={check(data => data.services.database === 'up')}
-				/>
-				<HealthRow
-					icon={<Activity className='size-3.5' />}
-					label='Redis cache'
-					state={check(data => data.services.redis === 'up')}
-					last
-				/>
-			</div>
-			<Link
-				href='/api-metrics'
-				className='text-signal-ink inline-flex items-center gap-1 font-mono text-[0.6875rem] hover:underline'>
-				API telemetry <ArrowUpRight className='size-3' />
-			</Link>
-		</div>
+			)}
+		</DashboardPanel>
 	)
 }

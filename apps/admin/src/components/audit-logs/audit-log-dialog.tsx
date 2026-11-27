@@ -72,7 +72,7 @@ const Side = ({ tone, value }: SideProps) => (
 				? 'border-destructive/20 bg-destructive/5'
 				: 'border-success/25 bg-success/5',
 		)}>
-		<span className='text-muted-foreground mb-1 block font-mono text-[10px] font-semibold tracking-wider uppercase'>
+		<span className='text-muted-foreground text-caption mb-1 block font-mono font-semibold tracking-wider uppercase'>
 			{tone === 'before' ? 'Before' : 'After'}
 		</span>
 		<Value value={value} />
@@ -124,7 +124,7 @@ const Section = ({ title, meta, children }: SectionProps) => (
 
 const Detail = ({ label, children }: DetailProps) => (
 	<div className='min-w-0 space-y-1'>
-		<dt className='text-muted-foreground font-mono text-[10px] font-semibold tracking-wider uppercase'>
+		<dt className='text-muted-foreground text-caption font-mono font-semibold tracking-wider uppercase'>
 			{label}
 		</dt>
 		<dd className='text-foreground text-sm'>{children}</dd>
@@ -240,7 +240,7 @@ export const AuditLogDialog = ({ log, onClose }: AuditLogDialogProps) => {
 										{(['oldData', 'newData'] as const).map(key =>
 											log[key] != null ? (
 												<div key={key} className='min-w-0 space-y-1.5'>
-													<span className='text-muted-foreground font-mono text-[10px] font-semibold tracking-wider uppercase'>
+													<span className='text-muted-foreground text-caption font-mono font-semibold tracking-wider uppercase'>
 														{key === 'oldData' ? 'Before' : 'After'}
 													</span>
 													<pre className='bg-background text-foreground rounded-lg p-3 font-mono text-xs leading-relaxed break-all whitespace-pre-wrap'>

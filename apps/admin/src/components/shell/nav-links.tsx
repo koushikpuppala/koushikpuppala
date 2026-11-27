@@ -23,7 +23,7 @@ export const NavLinks = ({ pathname, variant, onNavigate }: NavLinksProps) => {
 					{section.group && (
 						<p
 							className={classNames(
-								'text-muted-foreground font-mono text-[0.625rem] font-semibold tracking-wider uppercase',
+								'text-muted-foreground text-caption font-mono font-semibold tracking-wider uppercase',
 								styles.group,
 							)}>
 							{section.group}

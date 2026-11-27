@@ -4,7 +4,7 @@ import { Button } from 'ui/button'
 import { Image as ImageIcon } from 'components/icons'
 
 export const OpenGraphCard = ({ form, setField, onPick }: OpenGraphCardProps) => (
-	<div className='border-border bg-surface space-y-4 rounded-2xl border p-6 shadow-xs'>
+	<div className='border-border bg-surface space-y-4 rounded-2xl border p-6'>
 		<h2 className='text-foreground flex items-center gap-2 text-base font-semibold tracking-tight'>
 			<ImageIcon className='text-signal-ink size-4' />
 			OpenGraph & Social Share Banner

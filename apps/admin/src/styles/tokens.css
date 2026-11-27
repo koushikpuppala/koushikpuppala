@@ -1,0 +1,102 @@
+:root {
+	--radius: 0.5rem;
+
+	--eyebrow-size: 0.75rem;
+	--eyebrow-tracking: 0.08em;
+	--mono-xs-size: 0.75rem;
+
+	/* The shared 12% alpha border is far under the 3:1 WCAG 2.2 asks for input boundaries. */
+	--input: #878c95;
+	--outline-border: var(--input);
+	--field-bg: var(--surface);
+}
+
+.dark {
+	--input: #62666e;
+}
+
+/* In the base layer (after the shared rule) so a leading utility on a heading still wins. */
+@layer base {
+	h1,
+	h2,
+	h3,
+	h4 {
+		font-weight: 600;
+		letter-spacing: -0.01em;
+		line-height: 1.25;
+	}
+}
+
+/* Same names as the shared steps, so these values win in the admin; small and headline exist only here. */
+@theme {
+	--text-caption: 0.75rem;
+	--text-caption--line-height: 1rem;
+	--text-small: 0.8125rem;
+	--text-small--line-height: 1.125rem;
+	--text-body: 0.875rem;
+	--text-body--line-height: 1.25rem;
+	--text-subheading: 1rem;
+	--text-subheading--line-height: 1.375rem;
+	--text-title: 1.25rem;
+	--text-title--line-height: 1.625rem;
+	--text-headline: 1.75rem;
+	--text-headline--line-height: 2.125rem;
+}
+
+@theme {
+	--spacing-control-lg: 2.5rem;
+}
+
+/* Raw values live in :root so the dark theme can swap them; @theme inline lets the utilities follow. */
+:root {
+	--overlay-shadow: 0 12px 32px -12px rgba(14, 16, 19, 0.25);
+	--gutter-raw: 1rem;
+	--duration-fast-raw: 120ms;
+	--duration-base-raw: 180ms;
+}
+
+.dark {
+	--overlay-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7);
+}
+
+@media (min-width: 768px) {
+	:root {
+		--gutter-raw: 1.5rem;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--duration-fast-raw: 0ms;
+		--duration-base-raw: 0ms;
+	}
+}
+
+@theme inline {
+	--shadow-overlay: var(--overlay-shadow);
+	--spacing-gutter: var(--gutter-raw);
+}
+
+@utility duration-fast {
+	transition-duration: var(--duration-fast-raw);
+}
+
+@utility duration-base {
+	transition-duration: var(--duration-base-raw);
+}
+
+@utility z-sticky {
+	z-index: 10;
+}
+
+@utility z-sidebar {
+	z-index: 20;
+}
+
+@utility z-overlay {
+	z-index: 40;
+}
+
+@utility z-toast {
+	z-index: 60;
+}

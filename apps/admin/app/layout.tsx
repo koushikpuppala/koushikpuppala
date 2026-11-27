@@ -9,7 +9,11 @@ import { AdminShell } from 'components/shell/admin-shell'
 import { classNames } from 'utils/classNames'
 import { KeyboardFocus } from 'ui/keyboard-focus'
 
-const plusJakartaSans = Plus_Jakarta_Sans({ variable: '--font-jakarta', display: 'swap' })
+const plusJakartaSans = Plus_Jakarta_Sans({
+	variable: '--font-jakarta',
+	display: 'swap',
+	subsets: ['latin'],
+})
 
 export const viewport: Viewport = {
 	themeColor: '#090a0c',

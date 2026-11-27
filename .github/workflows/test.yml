@@ -35,7 +35,7 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           CODE=$(git diff --name-only "$BASE_SHA...$HEAD_SHA" | grep -vE \
-            '^docs/|^docker/deploy/|\.md$|\.gif$|^\.github/(ISSUE_TEMPLATE|PULL_REQUEST_TEMPLATE)/|^\.github/(FUNDING|dependabot)\.yml$|^\.github/workflows/deploy-[a-z]+\.yml$' || true)
+            '^docs/|\.md$|\.gif$|^\.github/(ISSUE_TEMPLATE|PULL_REQUEST_TEMPLATE)/|^\.github/(FUNDING|dependabot)\.yml$|^\.github/workflows/deploy-[a-z]+\.yml$' || true)
           if [ -n "$CODE" ]; then echo "code=true" >> "$GITHUB_OUTPUT"; else echo "code=false" >> "$GITHUB_OUTPUT"; fi
 
   unit:

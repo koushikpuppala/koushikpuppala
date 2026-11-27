@@ -25,7 +25,7 @@ export const Surface = ({
 				variantMap[variant],
 				interactive &&
 					'hover:border-border-strong hover:bg-surface/90 focus-ring:ring-signal focus-ring:ring-offset-background focus-ring:ring-2 focus-ring:ring-offset-2 cursor-pointer outline-none',
-				glow && 'hover:border-signal/50 hover:shadow-[0_0_20px_rgba(255,51,102,0.12)]',
+				glow && 'hover:border-signal/50 hover:shadow-[var(--shadow-glow)]',
 				className,
 			)}
 			{...props}>

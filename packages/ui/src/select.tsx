@@ -6,10 +6,10 @@ import { HiCheck, HiChevronDown } from 'react-icons/hi2'
 import { classNames } from 'utils/classNames'
 
 export const FIELD =
-	'border-border bg-surface text-foreground focus-ring:ring-2 focus-ring:ring-signal/40 flex h-9 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border px-3 text-left text-xs outline-none transition-colors hover:border-border-strong disabled:cursor-not-allowed disabled:opacity-50'
+	'border-input bg-surface text-foreground focus-ring:ring-2 focus-ring:ring-signal/40 flex h-control-md w-full cursor-pointer items-center justify-between gap-2 rounded-lg border px-3 text-left text-xs outline-none transition-colors hover:border-border-strong disabled:cursor-not-allowed disabled:opacity-50'
 
 const PANEL =
-	'border-foreground/10 bg-surface z-60 mt-1 max-h-64 overflow-y-auto scrollbar-none rounded-lg border p-1 shadow-2xl outline-none'
+	'border-input bg-surface z-60 mt-1 max-h-64 overflow-y-auto scrollbar-none rounded-lg border p-1 shadow-overlay outline-none'
 
 const OPTION =
 	'group text-foreground data-focus:bg-foreground/10 flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-xs select-none'

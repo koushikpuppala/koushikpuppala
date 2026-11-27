@@ -9,11 +9,9 @@ import type {
 } from 'react'
 import type {
 	AuditLogItem,
-	ContactListResult,
 	ContactMessage,
 	FetchResult,
 	HealthStatusData,
-	ListPage,
 	ListResult,
 } from '../../api/index'
 import type { AuthStage, SessionUser } from '../../auth/index'
@@ -291,17 +289,6 @@ export type RecentContact = Pick<
 
 export type RecentAudit = Pick<AuditLogItem, 'id' | 'actor' | 'action' | 'entity' | 'createdAt'>
 
-export type DashboardMetrics = {
-	projectsCount: number
-	publishedProjects: number
-	inboxCount: number
-	unreadInquiries: number
-	mediaCount: number
-	auditEventsCount: number
-	recentContacts: RecentContact[]
-	recentAudits: RecentAudit[]
-}
-
 export type HealthRowProps = {
 	icon: ReactNode
 	label: string
@@ -495,30 +482,95 @@ export type CollectionViewState<Row extends CollectionItem, P> = {
 	}
 }
 
-export type DashboardResponses = {
-	projects: FetchResult<ListPage<unknown>>
-	published: FetchResult<ListPage<unknown>>
-	contacts: FetchResult<ContactListResult<RecentContact>>
-	media: FetchResult<ListResult<unknown>>
-	audits: FetchResult<ListResult<RecentAudit>>
+export type DashboardBlockState<T> = {
+	status: 'loading' | 'ready' | 'error'
+	data: T | null
+	error: string | null
+	refreshing: boolean
 }
 
-export type HealthState = HealthStatusData | false | null
+export type DashboardBlock<T> = DashboardBlockState<T> & { reload: () => void }
+
+export type ProjectTotals = { total: number; published: number }
+
+export type ContactSummary = { total: number; unread: number; recent: RecentContact[] }
+
+export type AuditSummary = { total: number; recent: RecentAudit[] }
+
+export type HealthSnapshot = { health: HealthStatusData; checkedAt: Date }
+
+export type DashboardBlocks = {
+	projects: DashboardBlock<ProjectTotals>
+	contacts: DashboardBlock<ContactSummary>
+	media: DashboardBlock<number>
+	audits: DashboardBlock<AuditSummary>
+	health: DashboardBlock<HealthSnapshot>
+}
+
+export type AttentionItem = {
+	id: string
+	label: string
+	count?: number
+	href: string
+	tone: 'signal' | 'destructive'
+}
+
+export type AttentionSource = 'contacts' | 'projects'
+
+export type AttentionState = {
+	items: AttentionItem[]
+	loading: number
+	unavailable: AttentionSource[]
+	clear: boolean
+}
+
+export type DashboardHeaderProps = {
+	displayName: string
+	email: string
+	refreshing: boolean
+	onRefresh: () => void
+	children?: ReactNode
+}
+
+export type DashboardPanelProps = {
+	title: string
+	icon: ReactNode
+	action?: ReactNode
+	footer?: ReactNode
+	status: DashboardBlockState<unknown>['status']
+	refreshing: boolean
+	errorLabel: string
+	onRetry: () => void
+	skeleton: ReactNode
+	children: ReactNode
+}
 
 export type StatCardProps = {
 	label: string
 	icon: ReactNode
-	value: number
-	badge: ReactNode
+	status: DashboardBlockState<unknown>['status']
+	value: number | null
+	badge?: ReactNode
 	href: string
 	linkLabel: string
 }
 
-export type RecentInquiriesProps = { contacts: RecentContact[] }
+export type AttentionStripProps = { state: AttentionState }
 
-export type RecentMutationsProps = { audits: RecentAudit[] }
+export type RecentInquiriesProps = { block: DashboardBlock<ContactSummary> }
 
-export type HealthPanelProps = { health: HealthState }
+export type RecentMutationsProps = { block: DashboardBlock<AuditSummary> }
+
+export type HealthPanelProps = { block: DashboardBlock<HealthSnapshot> }
+
+export type HealthRowsProps = {
+	api: boolean | null
+	database: boolean | null
+	redis: boolean | null
+	apiDetail?: string
+}
+
+export type DashboardCardsProps = { blocks: DashboardBlocks }
 
 export type MetadataForm = {
 	id: string | null
@@ -654,3 +706,19 @@ export type TopBarProps = {
 export type UserMenuProps = { user: SessionUser | null; onSignOut: () => void }
 
 export type SidebarProps = { pathname: string }
+
+export type DesignSwatch = { name: string; swatchClassName: string; note?: string }
+
+export type DesignTextStep = {
+	name: string
+	size: string
+	className: string
+}
+
+export type DesignRadiusStep = { name: string; className: string }
+
+export type DesignControlStep = { name: string; height: string; className: string }
+
+export type DesignSectionProps = { title: string; description: string; children: ReactNode }
+
+export type DesignRow = { id: string; name: string; status: string; count: number }

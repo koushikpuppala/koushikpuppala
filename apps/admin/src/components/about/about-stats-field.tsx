@@ -36,7 +36,7 @@ export const AboutStatsField = ({ stats, onChange }: AboutStatsFieldProps) => {
 							<span className='text-signal-ink font-bold uppercase'>{stat.label}</span>
 							<span className='text-foreground font-medium'>{stat.value}</span>
 							{stat.detail && (
-								<span className='text-muted-foreground text-[0.7rem]'>{stat.detail}</span>
+								<span className='text-muted-foreground text-caption'>{stat.detail}</span>
 							)}
 						</div>
 						<button

@@ -203,44 +203,25 @@ jobs:
         run: docker push --all-tags "$IMAGE"
 
   deploy:
-    name: Deploy admin
+    name: Start the deployment
     runs-on: ubuntu-latest
     needs: [tag, build]
 
-    env:
-      IMAGE_TAG: ${{ needs.tag.outputs.tag }}
-
     steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v6.3.0
-        with:
-          aws-region: ${{ env.AWS_REGION }}
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
-
-      - name: Log into Amazon ECR
-        id: ecr
-        uses: aws-actions/amazon-ecr-login@v2.1.7
-
-      - name: Set up SSH key for EC2
-        uses: webfactory/ssh-agent@v0.10.0
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-
-      # Trust the host key on first contact so ssh does not stop at an interactive prompt.
-      - name: Configure SSH Known Hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ vars.EC2_HOST }} >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-
-      - name: Deploy to EC2
+      # Deployment lives in the private projects repo: its Deploy workflow runs deploy.sh on the server. The
+      # token may only start workflows there (Actions: write), it cannot change that repo.
+      - name: Ask the projects repo to deploy
         env:
-          EC2_TARGET: ${{ vars.EC2_USER }}@${{ vars.EC2_HOST }}
-          ECR_REGISTRY: ${{ steps.ecr.outputs.registry }}
+          GH_TOKEN: ${{ secrets.PROJECTS_DISPATCH_TOKEN }}
+          TAG: ${{ needs.tag.outputs.tag }}
         run: |
-          ssh "$EC2_TARGET" "cd ~/services/portfolio/admin && \
-            ECR_REGISTRY='$ECR_REGISTRY' ECR_REPOSITORY='$ECR_REPOSITORY' AWS_REGION='$AWS_REGION' \
-            ./deploy.sh '$IMAGE_TAG'"
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Missing secret: PROJECTS_DISPATCH_TOKEN"
+            exit 1
+          fi
+          gh workflow run deploy.yml --repo "$GITHUB_REPOSITORY_OWNER/projects" --ref master \
+            -f project=portfolio -f app=admin -f tag="$TAG"
+          echo "Deployment of $TAG started. Follow it: https://github.com/$GITHUB_REPOSITORY_OWNER/projects/actions/workflows/deploy.yml" >> "$GITHUB_STEP_SUMMARY"
 
   release:
     name: Tag release

@@ -4,6 +4,28 @@
 		"./biome/no-function-declaration.grit",
 		"./biome/no-anchor-element.grit",
 		{
+			"path": "./biome/no-raw-style-values.grit",
+			"includes": [
+				"apps/admin/**/*.ts",
+				"apps/admin/**/*.tsx",
+				"packages/ui/src/**/*.ts",
+				"packages/ui/src/**/*.tsx",
+				"!**/*.test.ts",
+				"!**/*.test.tsx",
+				"!**/*.d.ts"
+			]
+		},
+		{
+			"path": "./biome/no-named-shadow.grit",
+			"includes": [
+				"apps/admin/**/*.ts",
+				"apps/admin/**/*.tsx",
+				"!**/*.test.ts",
+				"!**/*.test.tsx",
+				"!**/*.d.ts"
+			]
+		},
+		{
 			"path": "./biome/no-local-type-declaration.grit",
 			"includes": [
 				"**/*.ts",

@@ -3,7 +3,7 @@ import { classNames } from 'utils/classNames'
 import { StatValueSkeleton } from 'components/skeletons'
 
 export const CountCard = ({ label, value, loaded, valueClassName, indicator }: CountCardProps) => (
-	<div className='border-border bg-surface space-y-1.5 rounded-2xl border p-5 shadow-xs'>
+	<div className='border-border bg-surface space-y-1.5 rounded-2xl border p-5'>
 		<div className='flex items-center justify-between'>
 			<p className='text-muted-foreground font-mono text-xs font-semibold tracking-wider uppercase'>
 				{label}

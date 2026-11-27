@@ -176,12 +176,12 @@ export const MediaPickerModal = ({
 												}}
 											/>
 											{isSelected && (
-												<div className='bg-signal absolute top-1.5 right-1.5 grid size-5 place-items-center rounded-full text-white shadow-sm'>
+												<div className='bg-signal absolute top-1.5 right-1.5 grid size-5 place-items-center rounded-full text-white'>
 													<Check className='size-3 stroke-3' />
 												</div>
 											)}
 										</div>
-										<p className='text-foreground mt-2 w-full truncate font-mono text-[0.6875rem]'>
+										<p className='text-foreground text-caption mt-2 w-full truncate font-mono'>
 											{media.originalName || media.fileName}
 										</p>
 									</button>

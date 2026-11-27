@@ -451,47 +451,91 @@ describe('MediaView', () => {
 })
 
 describe('DashboardView', () => {
-	const serve = (contactsStatus = 200) =>
+	const unhealthy = { status: 'degraded', uptime: 1, responseTime: '2ms', timestamp: '', services: { database: 'up', redis: 'down' } }
+	const healthy = { ...unhealthy, status: 'ok', services: { database: 'up', redis: 'up' } }
+
+	const serve = ({ contacts = 200, health = healthy, unread = 2, published = 3 } = {}) =>
 		server.use(
 			http.get(`${API}/api/v1/projects`, ({ request }) =>
-				ok({ items: [], pagination: { total: new URL(request.url).searchParams.get('isPublished') ? 3 : 5 } }),
+				ok({ items: [], pagination: { total: new URL(request.url).searchParams.get('isPublished') ? published : 5 } }),
 			),
 			http.get(`${API}/api/v1/contacts`, () =>
-				contactsStatus === 200
+				contacts === 200
 					? ok({
 							items: [{ id: 'c1', name: 'Grace', email: 'g@example.test', subject: 'Hello', status: 'UNREAD', createdAt: '2026-10-01T00:00:00.000Z' }],
 							pagination: { total: 4 },
-							unreadCount: 2,
+							unreadCount: unread,
 						})
-					: HttpResponse.json({ message: 'Inbox offline' }, { status: contactsStatus }),
+					: HttpResponse.json({ message: 'Inbox offline' }, { status: contacts }),
 			),
 			http.get(`${API}/api/v1/media`, () => ok({ items: [], pagination: { total: 9 } })),
 			http.get(`${API}/api/v1/audit-logs`, () =>
-				ok([{ id: 'a1', action: 'UPDATE', entity: 'Project', entityId: 'p1', actor: 'Ada', createdAt: '2026-10-01T00:00:00.000Z' }]),
+				ok([{ id: 'a1', action: 'UPDATE', entity: 'Project', entityId: 'p1', actor: 'Ada', createdAt: '2026-10-01T00:00:00.000Z' }], { count: 41 }),
 			),
-			http.get(`${API}/api/health`, () => ok({ status: 'ok', uptime: 1, responseTime: '2ms', timestamp: '', services: { database: 'up', redis: 'up' } })),
+			http.get(`${API}/api/health`, () => ok(health)),
 		)
 
-	it('shows counts, recent inquiries, recent changes and service health', async () => {
+	it('shows real totals, recent messages, recent changes and service health', async () => {
 		serve()
 		render(<DashboardView />)
 
-		expect(await screen.findByText('3 Published')).toBeInTheDocument()
-		expect(screen.getByText('2 Unread')).toBeInTheDocument()
-		expect(screen.getByRole('link', { name: 'Review' })).toHaveAttribute('href', '/messages?id=c1')
-		expect(screen.getAllByText('Project').length).toBeGreaterThan(0)
+		expect(await screen.findByText('3 published')).toBeInTheDocument()
+		expect(screen.getByText('41')).toBeInTheDocument()
+		expect(screen.getByRole('link', { name: /Grace/ })).toHaveAttribute('href', '/messages?id=c1')
 		expect(screen.getByText('PostgreSQL')).toBeInTheDocument()
+		expect(screen.getByRole('heading', { name: 'Welcome back, Ada' })).toBeInTheDocument()
 	})
 
-	it('shows the first failure with a retry', async () => {
-		serve(503)
+	it('lists what needs attention and links each item to where it is fixed', async () => {
+		serve({ health: unhealthy })
 		render(<DashboardView />)
 
-		expect(await screen.findByText(/Inbox offline/)).toBeInTheDocument()
+		const strip = await screen.findByRole('region', { name: 'Needs your attention' })
 
+		expect(await within(strip).findByRole('link', { name: '2 unread messages' })).toHaveAttribute('href', '/messages')
+		expect(within(strip).getByRole('link', { name: '2 unpublished projects' })).toHaveAttribute('href', '/content/projects')
+		expect(within(strip).getByRole('link', { name: 'Redis is down' })).toHaveAttribute('href', '/api-metrics')
+	})
+
+	it('shows the quiet line only when everything loaded and nothing needs attention', async () => {
+		serve({ unread: 0, published: 5 })
+		render(<DashboardView />)
+
+		expect(await screen.findByText('Nothing needs your attention')).toBeInTheDocument()
+	})
+
+	it('fails one block without touching the others, and retries only that block', async () => {
+		serve({ contacts: 503 })
+		render(<DashboardView />)
+
+		expect(await screen.findByText("Couldn't load messages")).toBeInTheDocument()
+		expect(await screen.findByText('3 published')).toBeInTheDocument()
+		expect(screen.getByText('Messages unavailable')).toBeInTheDocument()
+		expect(screen.queryByText('Nothing needs your attention')).not.toBeInTheDocument()
+
+		const paths: string[] = []
+		server.events.on('request:start', ({ request }) => paths.push(new URL(request.url).pathname))
 		serve()
-		await userEvent.click(screen.getByRole('button', { name: /retry/i }))
+		await userEvent.click(screen.getByRole('button', { name: 'Retry' }))
 
-		expect(await screen.findByText('2 Unread')).toBeInTheDocument()
+		expect(await screen.findByText('2 unread')).toBeInTheDocument()
+		expect(paths).toEqual(['/api/v1/contacts'])
+		server.events.removeAllListeners()
+	})
+
+	it('marks the API up when the health check is degraded', async () => {
+		serve({ health: unhealthy })
+		render(<DashboardView />)
+
+		const rows = await screen.findAllByText(/^(Up|Down)/)
+
+		expect(rows.map(row => row.textContent)).toEqual(['Up · 2ms', 'Up', 'Down'])
+	})
+
+	it('shows one page alert when every source fails', async () => {
+		server.use(http.get(`${API}/api/*`, () => HttpResponse.json({ message: 'down' }, { status: 503 })))
+		render(<DashboardView />)
+
+		expect(await screen.findAllByRole('alert')).toHaveLength(1)
 	})
 })

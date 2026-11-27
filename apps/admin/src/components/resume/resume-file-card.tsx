@@ -28,11 +28,11 @@ export const ResumeFileCard = ({
 					<p className='text-foreground truncate font-mono text-xs font-semibold'>
 						{fileUrl.split('/').pop() || 'No file uploaded'}
 					</p>
-					<p className='text-muted-foreground truncate font-mono text-[0.6875rem]'>
+					<p className='text-muted-foreground text-caption truncate font-mono'>
 						{fileUrl || 'No file URL'}
 					</p>
 					{downloadFileName ? (
-						<p className='text-muted-foreground truncate font-mono text-[0.6875rem]'>
+						<p className='text-muted-foreground text-caption truncate font-mono'>
 							Visitors download it as <span className='text-foreground'>{downloadFileName}</span>
 						</p>
 					) : null}

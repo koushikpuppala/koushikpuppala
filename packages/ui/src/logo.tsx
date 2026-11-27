@@ -29,7 +29,7 @@ export const LogoMark = ({ className, glyphClassName }: LogoMarkProps) => {
 	return (
 		<span
 			className={classNames(
-				'relative grid size-9 shrink-0 place-items-center overflow-hidden rounded-[0.7rem] bg-white',
+				'relative grid size-9 shrink-0 place-items-center overflow-hidden rounded-lg bg-white',
 				className,
 			)}>
 			<LogoGlyph className={classNames('relative size-full', glyphClassName)} loading='eager' />

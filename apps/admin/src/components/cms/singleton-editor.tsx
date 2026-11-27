@@ -115,7 +115,7 @@ export const SingletonEditor = ({
 
 			{error && !loading && <EditorError error={error} onRetry={onRetry} />}
 
-			<div className='border-border bg-surface space-y-6 rounded-2xl border p-6 shadow-2xs sm:p-8'>
+			<div className='border-border bg-surface space-y-6 rounded-2xl border p-6 sm:p-8'>
 				{loading ? (
 					<LoadingRegion label={title}>
 						{skeleton ?? <FormFieldsSkeleton rows={[2, 'tall', 2]} />}

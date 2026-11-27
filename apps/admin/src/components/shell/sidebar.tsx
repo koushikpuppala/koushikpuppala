@@ -12,7 +12,7 @@ export const Sidebar = ({ pathname }: SidebarProps) => (
 					<span className='font-display text-foreground block text-sm font-bold tracking-tight'>
 						Content Studio
 					</span>
-					<span className='text-muted-foreground block font-mono text-[0.625rem]'>
+					<span className='text-muted-foreground text-caption block font-mono'>
 						admin.koushikpuppala.com
 					</span>
 				</div>

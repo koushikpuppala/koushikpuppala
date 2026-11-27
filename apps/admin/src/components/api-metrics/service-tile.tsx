@@ -16,7 +16,7 @@ export const ServiceTile = ({
 	tone,
 	valueClassName,
 }: ServiceTileProps) => (
-	<div className='border-border bg-surface flex items-center gap-4 rounded-2xl border p-5 shadow-xs'>
+	<div className='border-border bg-surface flex items-center gap-4 rounded-2xl border p-5'>
 		<div className={classNames('flex size-11 items-center justify-center rounded-xl', TONES[tone])}>
 			{icon}
 		</div>
@@ -27,7 +27,7 @@ export const ServiceTile = ({
 			<p className={classNames('text-foreground mt-0.5 text-lg font-bold', valueClassName)}>
 				{value}
 			</p>
-			<p className='text-muted-foreground text-[11px]'>{detail}</p>
+			<p className='text-muted-foreground text-caption'>{detail}</p>
 		</div>
 	</div>
 )

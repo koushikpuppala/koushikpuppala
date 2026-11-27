@@ -49,7 +49,7 @@ export const TopBar = ({ pathname, menuOpen, onOpenMenu, onOpenPalette }: TopBar
 					className='border-border bg-surface text-muted-foreground hover:border-signal/50 hover:text-foreground ml-1 flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-1.5 text-xs transition-colors'>
 					<Search className='text-muted-foreground size-3.5' />
 					<span className='hidden md:inline'>Search commands…</span>
-					<kbd className='border-border bg-surface-strong text-muted-foreground rounded border px-1.5 py-0.5 font-mono text-[0.625rem]'>
+					<kbd className='border-border bg-surface-strong text-muted-foreground text-caption rounded border px-1.5 py-0.5 font-mono'>
 						⌘K
 					</kbd>
 				</button>
@@ -59,7 +59,7 @@ export const TopBar = ({ pathname, menuOpen, onOpenMenu, onOpenPalette }: TopBar
 				<div className='border-border bg-surface text-muted-foreground hidden items-center gap-2 rounded-full border px-3 py-1 font-mono text-xs md:flex'>
 					<span className='bg-success size-2 animate-pulse rounded-full' />
 					<span>API Connected</span>
-					<span className='text-[0.625rem] opacity-60'>v1</span>
+					<span className='text-caption'>v1</span>
 				</div>
 
 				<Link
